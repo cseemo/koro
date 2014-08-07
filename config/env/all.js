@@ -34,7 +34,11 @@ module.exports = {
 				'public/lib/angular-ui-tree/dist/angular-ui-tree.min.js',
 				'public/lib/ngmap/dist/ng-map.min.js',
 				'public/lib/ng-tags-input/ng-tags-input.min.js',
-				'public/lib/jquery.slimscroll/jquery.slimscroll.min.js'
+				'public/lib/jquery.slimscroll/jquery.slimscroll.min.js',
+				'/public/lib/flot/excanvas.js',
+				'public/lib/flot/jquery.flot.js',
+				'public/lib/flot/jquery.flot.*.js'
+				//'public/lib/flot/*.js'
 			]
 		},
 		css: [
