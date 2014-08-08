@@ -293,10 +293,12 @@ margin-right: 0px;
  <div class="pull-right">
  <a href="/#!/leads/create">Create a New Lead</a>
 </div>
- <form name="myForm" data-ng-submit="makeQuote()" data-ng-controller="LeadsController" data-ng-init="findOne()">
 
 
-	<div class="page-header">
+
+
+
+  <div class="page-header">
 
 <div class="clearfix"></div>
 
@@ -305,20 +307,20 @@ margin-right: 0px;
               <div class="white-content"> 
           <div class="col-md-12 form-container">
            
-                   
-		<h1>Company Name: <span data-ng-bind="lead.companyname"></span></h1>
-			<h2 data-ng-bind="lead.telephone"></h2>
-				<h2 data-ng-bind="lead.contactname"></h2>
-				Last Called: <span data-ng-bind="lead.lastCalled | date:'medium'"></span>
-				<br><br>
+            <form name="myForm" data-ng-submit="makeQuote()" data-ng-controller="LeadsController" data-ng-init="findOne()">        
+    <h1>Company Name: <span data-ng-bind="lead.companyname"></span></h1>
+      <h2 data-ng-bind="lead.telephone"></h2>
+        <h2 data-ng-bind="lead.contactname"></h2>
+        Last Called: <span data-ng-bind="lead.lastCalled | date:'medium'"></span>
+        <br><br>
 
 
-	Call Records: <br>
-	<div ng-repeat="callDetail in lead.callDetails">
+  Call Records: <br>
+  <div ng-repeat="callDetail in lead.callDetails">
 
-	<span data-ng-bind="callDetail.calltime"></span>
+  <span data-ng-bind="callDetail.calltime"></span>
 <br>
-	<span data-ng-bind="callDetail.comments"></span>
+  <span data-ng-bind="callDetail.comments"></span>
 
 </div>
 
@@ -326,18 +328,18 @@ margin-right: 0px;
 <div class="container">
 
 Call this Customer?: <a class="btn btn-primary" data-ng-click="dialLead();">
-			<i class="glyphicon glyphicon-play-circle"></i>
-		</a>
+      <i class="glyphicon glyphicon-play-circle"></i>
+    </a>
 <br><br>
 Next Lead: <a class="btn btn-primary" data-ng-click="nextLead();">
-			<i class="glyphicon glyphicon-forward"></i>
-		</a>
+      <i class="glyphicon glyphicon-forward"></i>
+    </a>
 <div class="form-group">
 <label class="control-label" for="content">Comments</label>
-					<div class="comments">
-						<textarea name="comments" data-ng-model="comments" id="comments" class="form-control"  style="width: 50%;" rows="5" placeholder="Call Comments"></textarea>
-					</div>
-				</div>
+          <div class="comments">
+            <textarea name="comments" data-ng-model="comments" id="comments" class="form-control"  style="width: 50%;" rows="5" placeholder="Call Comments"></textarea>
+          </div>
+        </div>
 
 </div>
 </div>
@@ -346,27 +348,27 @@ Next Lead: <a class="btn btn-primary" data-ng-click="nextLead();">
 </div>
 
 
-	<div class="pull-right" data-ng-show="authentication.user._id == lead.user._id">
-		<a class="btn btn-primary" href="/#!/leads/{{lead._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
+  <div class="pull-right" data-ng-show="authentication.user._id == lead.user._id">
+    <a class="btn btn-primary" href="/#!/leads/{{lead._id}}/edit">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" data-ng-click="remove();">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
 
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="lead.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="lead.user.displayName"></span>
-		</em>
-	</small>
-	</div><br>
+  <small>
+    <em class="text-muted">
+      Posted on
+      <span data-ng-bind="lead.created | date:'mediumDate'"></span>
+      by
+      <span data-ng-bind="lead.user.displayName"></span>
+    </em>
+  </small>
+  </div><br>
  <div class="white-content">
   <div class="col-md-14 form-container">
-	  <div id="CompInfo" >
+    <div id="CompInfo" >
 
                   
 
