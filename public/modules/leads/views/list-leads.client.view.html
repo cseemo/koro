@@ -1,0 +1,24 @@
+<div class="page" data-ng-controller="LeadsController" data-ng-init="find()">
+
+    <section class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Leads</strong></div>
+        <div class="panel-body">
+            <div class="list-group">
+                <a data-ng-repeat="lead in leads" data-ng-href="#!/leads/{{lead._id}}" class="list-group-item">
+                    <small class="list-group-item-text">
+                        Last Called 
+                        <span data-ng-bind="lead.lastCalled | date:'medium'"></span>
+                        by
+                        <span data-ng-bind="lead.user.displayName"></span>
+                    </small>
+                    <h4 class="list-group-item-heading" data-ng-bind="lead.companyname"></h4>
+                    <h4 class="list-group-item-heading" data-ng-bind="lead.telephone"></h4>
+                </a>
+            </div>
+            <div class="alert alert-warning text-center" data-ng-hide="!leads.$resolved || leads.length">
+                No Leads yet, why don't you <a href="/#!/leads/create">create one</a>?
+            </div>
+        </div>
+    </section> 
+
+</div>

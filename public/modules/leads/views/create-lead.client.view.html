@@ -1,0 +1,56 @@
+<div class="page" data-ng-controller="LeadsController">
+
+    <section class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> New Lead</strong></div>
+        <div class="panel-body">
+            <div class="col-md-12">
+                <form class="form-horizontal" data-ng-submit="create()" novalidate>
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="control-label" for="companyname">Company Name</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="companyname" id="companyname" class="form-control" placeholder="Company Name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="contactname">Contact Name</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="contactname" id="contactname" class="form-control" placeholder="Contact Name" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="email">Contact Email Address</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="lead.email" id="email" class="form-control" placeholder="Contact Email" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="telephone">Telephone Number</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="telephone" id="telephone" class="form-control" placeholder="Telephone Number">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="address">Address</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="address" id="address" class="form-control" placeholder="Address">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-default">
+                        </div>
+                        <div data-ng-show="error" class="text-danger">
+                            <strong data-ng-bind="error"></strong>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </section> 
+
+</div>
