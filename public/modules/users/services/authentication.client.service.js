@@ -7,7 +7,19 @@ angular.module('users').factory('Authentication', [
 		var _this = this;
 
 		_this._data = {
-			user: window.user
+			user: window.user,
+			hasRole: function(role) {
+				
+				if(!this.user)
+					return false;
+
+				for (var i in this.user.roles) {
+					if(this.user.roles[i] === role) {
+						return true;
+					}
+				}
+				return false;
+			}
 		};
 
 		return _this._data;

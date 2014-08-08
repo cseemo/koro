@@ -64,6 +64,5 @@
     }
   ]).controller('HeaderCtrl', ['$scope', function($scope) {}]).
     controller('NavContainerCtrl', ['$scope', function($scope) {}]).
-    controller('NavCtrl', ['$scope', function($scope) {console.log('NavCotntroller???');}]).
     controller('DashboardCtrl', ['$scope', function($scope) {}]);
 })();

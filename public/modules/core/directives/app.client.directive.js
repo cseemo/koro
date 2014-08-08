@@ -22,7 +22,6 @@ angular.module('core').directive('imgHolder', [
         };
         addBg = function(path) {
           $element.removeClass('body-wide body-lock');
-          console.log('path: ', path);
           switch (path) {
             case '/404':
             case '/pages/404':
