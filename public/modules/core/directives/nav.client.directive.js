@@ -29,7 +29,7 @@
           $window = $(window);
           $lists = $(ele.find('ul').parent('li'));
           $lists.append('<i class="fa fa-angle-down icon-has-ul-h"></i><i class="fa fa-angle-right icon-has-ul"></i>');
-          $a = $lists.children('a'); console.log('ele: ', ele);
+          $a = $lists.children('a');
           $listsRest = $(ele).children('li').not($lists);
           $aRest = $listsRest.children('a');
           $app = $('#app');

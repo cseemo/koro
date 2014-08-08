@@ -6,6 +6,8 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 	function($http, $scope, $stateParams, $location, Authentication, Leads ) {
 		$scope.authentication = Authentication;
 
+		if( ! Authentication.user ) $location.path('/signin');
+
 
 $scope.currentPrice = 85;
 $scope.currentNRR = 0;

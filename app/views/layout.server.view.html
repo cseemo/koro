@@ -36,14 +36,11 @@
         <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
         <!-- end Needs images -->
 
-        <link rel="stylesheet" href="/modules/core/css/main.css"/>
-        <link rel="stylesheet" href="/modules/core/css/ui.css">
-
     </head>
     <body 
             id="app"
             class="app"
-            data-custom-page 
+            data-custom-page
             data-off-canvas-nav
             data-ng-controller="AppController"
             data-ng-class=" {'layout-boxed': admin.layout === 'boxed' } "
@@ -93,9 +90,6 @@
 		{% if process.env.NODE_ENV === 'development' %}
 		<!--Livereload script rendered -->
 		<script type="text/javascript" src="http://localhost:35729/livereload.js"></script>
-        <script type="text/javascript">
-            console.log('got window: ', $(window));
-        </script>
 
 		{% endif %}
     </body>
