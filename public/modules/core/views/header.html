@@ -1,4 +1,4 @@
-<header class="top-header clearfix">
+<header class="top-header clearfix" data-ng-controller="HeaderController">
 
     <!-- Logo -->
     <div class="logo">
@@ -166,9 +166,8 @@
             <li class="dropdown text-normal nav-profile">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                     <img src="/modules/core/images/g1.jpg" alt="" class="img-circle img30_30">
-                    <span class="hidden-xs">
-                        Lisa Doe
-                    </span>
+                    <span class="hidden-xs" data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
+                    
                 </a>
                 <ul class="dropdown-menu with-arrow pull-right">
                     <li>
@@ -190,7 +189,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#/pages/signin">
+                        <a href="auth/signout">
                             <i class="fa fa-sign-out"></i>
                             Log Out
                         </a>
