@@ -15,7 +15,7 @@ angular.module('leads').config(['$stateProvider',
 		}).
 		state('viewLead', {
 			url: '/leads/:leadId',
-			templateUrl: 'modules/leads/views/view-lead.client.view.html'
+			templateUrl: 'modules/core/views/dashboard.client.view.html'
 		}).
 		state('editLead', {
 			url: '/leads/:leadId/edit',

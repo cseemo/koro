@@ -123,23 +123,20 @@ $scope.loa= $scope.myLOA[0];
 
 			// Get Next Lead Lead
 		$scope.nextLead = function() {
+	
+
 
 
 	var lead = $scope.lead ;
 	var comms = this.myForm.comments.$modelValue;
-	console.log('nicole %o',comms);
+	//console.log('nicole %o',comms);
 var now = Date();
+
 lead.callDetails.push({comments: comms, calltime: now});
 
 			lead.$update(function(data) {
 				console.log('dialLead',data);
-				//$location.path('leads/' + lead._id + '/dialing');
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-		});
-
-
-
+				//$location.path('/getnewlead');
 						$http({
 		method: 'get',
 		url: '/getnewlead',
@@ -153,6 +150,13 @@ console.log('Data.Response: %o',data[0]._id);
 	$location.path('leads/' + data[0]._id);
 		}
 	});
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+		});
+
+
+
+
 		
 
 
@@ -162,33 +166,26 @@ console.log('Data.Response: %o',data[0]._id);
 
 			var lead = $scope.lead ;
 lead.email = this.myForm.email.$viewValue;
-//window.alert(lead.email);
-			lead.$dial(function() {
-				$location.path('leads/' + lead._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
+
 		};
+
 
 $scope.dialLead = function() {
 	var lead = $scope.lead;
 
 	  lead.lastCalled = Date();
-			lead.$update(function(data) {
-				console.log('dialLead',data);
-				//$location.path('leads/' + lead._id + '/dialing');
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-		});  
+		
+window.open("http://admin:67028@192.168.0.114/servlet?number=" + lead.telephone + "&outgoing_uri=sip-67028.accounts.vocalos.com", "Dialing", "toolbar=no, scrollbars=no, resizable=no, top=800, left=10, width=100, height=10");	
 
-window.alert('Calling');
+window.alert('IP Phone Dialing '+lead.companyname+' at: '+lead.telephone);
 };
 
 
 
 $scope.makeQuote = function(){
-	console.log('Test');
-	console.log(this.myForm);
+	//window.alert("MakingQuote");
+	//console.log('Test');
+	//console.log(this.myForm);
 
 this.term = this.myForm.term.$viewValue;
 this.dsl = this.myForm.dsl_speed.$viewValue;
@@ -215,7 +212,7 @@ console.log('dmname: '+this.dmname);
 		method: 'post',
 		url: 'http://adsoap.com/nodeEMAILPDF',
 		data: {
-			term: this.term,
+			term: this.term.value,
 			dslspeed: this.dsl.svalue,
 			adllines: this.adl,
 			full_name: this.dmname,

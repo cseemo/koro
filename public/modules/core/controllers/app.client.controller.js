@@ -5,8 +5,8 @@
     function($scope, $rootScope) {
 
           $scope.main = {
-            brand: 'Rainbow',
-            name: 'Lisa Doe'
+            brand: 'GGN',
+            name: 'Justin Bentley'
           };
           $scope.pageTransitionOpts = [
             {

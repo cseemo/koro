@@ -1,5 +1,5 @@
 <div class="page page-dashboard" data-ng-controller="DashboardCtrl">
-
+<form name="myForm" data-ng-submit="makeQuote()" >  
     <!-- Stats -->
     <div class="row">
         <div class="col-lg-3 col-xsm-6">
@@ -9,20 +9,22 @@
                 </span>
                 <div class="box-info">
                     <p class="size-h2">36 <span class="size-h4">%</span></p>
-                    <p class="text-muted">Growth</p>
+                    <p class="text-muted">Close Ratio</p>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-xsm-6">
+          <a href="#!/leads" style="text-decoration:none">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-info">
                     <i class="fa fa-users"></i>
                 </span>
+              
                 <div class="box-info">
-                    <p class="size-h2">12 <span class="size-h4">%</span></p>
-                    <p class="text-muted">New users</p>
+                    <p class="size-h2" >12</p>
+                    <p class="text-muted">Proposals</p>
                 </div>
-            </div>
+            </div></a>
         </div>
         <div class="col-lg-3 col-xsm-6">
             <div class="panel mini-box">
@@ -30,8 +32,8 @@
                     <i class="fa fa-dollar"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">8,120</p>
-                    <p class="text-muted">Profit</span></p>
+                    <p class="size-h2">$1,302</p>
+                    <p class="text-muted">Commissions</span></p>
                 </div>
             </div>
         </div>
@@ -41,7 +43,7 @@
                     <i class="fa fa-shopping-cart"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">1324</p>
+                    <p class="size-h2">8</p>
                     <p class="text-muted">Sales</p>
                 </div>
             </div>
@@ -49,80 +51,226 @@
     </div>
     <!-- end stats -->
 
-    <div class="row">
-        <div class="col-lg-8">
+    <div class="row" data-ng-controller="LeadsController" data-ng-init="findOne()">
+        <div class="col-lg-7">
             <div class="panel panel-default">
-                <div class="panel-body" data-ng-controller="flotChartCtrl">
-                    <div data-flot-chart
-                         data-data="line1.data"
-                         data-options="line1.options"
-                         style="width: 100%; height: 372px;"
-                         ></div>
-                </div>
-            </div>              
-        </div>
-        <div class="col-lg-4">
-
-            <div class="row" data-ng-controller="chartCtrl">
+                <div class="panel-body" >
                 
-                <div class="col-xsm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-body text-center">
-                            <div easypiechart options="easypiechartsm1.options" percent="easypiechartsm1.percent" class="easypiechart easypiechart-sm">
-                                <span class="pie-percent" ng-bind="easypiechartsm1.percent"></span>
-                            </div>
-                            <p class="text-center text-muted">Bounce Rate</p>
-                        </div>
+
+                       
+        <h1>Company Name: <span data-ng-bind="lead.companyname" class="pull-right"></span></h1>
+           <h2>Telephone Number: <span data-ng-bind="lead.telephone" class="pull-right"></span>
+        <br>Contact Name: <span data-ng-bind="lead.contactname" class="pull-right"></h2>
+                <br>
+
+                <span class="pull-right"><b>Last Called: </b>{{lead.lastCalled | date:'medium'}}</span>
+             
+
+
+    <h3>Call Records: </h3>
+    <div ng-repeat="callDetail in lead.callDetails">
+
+    <span data-ng-bind="callDetail.calltime"></span>
+    <span data-ng-bind="callDetail.comments" class="pull-right"></span>
+
+</div>
+
+
+
+<div calss="panel-default">
+    <div class="panel-body">
+    <center>
+                                 <a class="btn btn-primary center" data-ng-click="dialLead();">
+        <span class="glyphicon glyphicon-earphone"></span>    Call Customer
+</a>
+
+                                   <a class="btn btn-danger center" data-ng-click="dialLead();">
+        <span class="glyphicon glyphicon-earphone"></span>End Call
+</a>
+               
+       </center>
+</div>
+
+
+         
+
+
+<div class="form-group">
+
+<center>
+<label class="control-label" for="content">Comments</label>
+                    <div class="comments">
+                        <textarea name="comments" data-ng-model="comments" id="comments" class="form-control"  style="width: 80%;" rows="5" placeholder="Call Comments"></textarea>
+                    
                     </div>
+                    </center>
+                    </div>
+
+
+                    <div calss="panel-default">
+    <div class="panel-body">
+           <center> <a class="btn btn-primary center" data-ng-click="nextLead();">
+       Next Lead
+</a>
+</center>
+</div>
+</div></div>
                 </div>
 
-                <div class="col-xsm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-body text-center">
-                            <div easypiechart options="easypiechartsm2.options" percent="easypiechartsm2.percent" class="easypiechart easypiechart-sm">
-                                <span class="pie-percent" ng-bind="easypiechartsm2.percent"></span>
-                            </div>
-                            <p class="text-center text-muted">New Visists</p>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-xsm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-body text-center">
-                            <div easypiechart options="easypiechartsm3.options" percent="easypiechartsm3.percent" class="easypiechart easypiechart-sm">
-                                <span class="pie-percent" ng-bind="easypiechartsm3.percent"></span>
-                            </div>
-                            <p class="text-center text-muted">Search Traffic</p>
-                        </div>
-                    </div>
-                </div>
+ 
+</div>
 
-                <div class="col-xsm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-body text-center">
-                            <div easypiechart options="easypiechartsm4.options" percent="easypiechartsm4.percent" class="easypiechart easypiechart-sm">
-                                <span class="pie-percent" ng-bind="easypiechartsm4.percent"></span>
-                            </div>
-                            <p class="text-center text-muted">Modern Browsers</p>
-                        </div>
-                    </div>
-                </div>
 
-            </div>
+
+
+
+
+
 
             
-        </div>
+            </div>  
+
+
+ <div class="col-lg-5">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+
+<center>
+<h3>Total Monthly: <span style="color: #ec5f3c">{{currentPrice|currency}}</span></h3>
+<h3>One-Time Fees: <span style="color: #ec5f3c">{{currentNRR|currency}} </span></h3>
+</center>
+
+
+              
+            
+            <div class="field">
+    <label class="form-text">DSL Speed:</label>
+
+    <select ng-model="dslspeed" ng-change="getQuote()" class="form-control text-center" style="width: 50%; float:right;" name="dsl_speed" id="dsl_speed" ng-options="speed.value for speed in mySpeeds"></select>
+
     </div>
 
-    <div class="panel panel-default" data-ng-controller="flotChartCtrl">
-        <div class="panel-body">
-            <div data-flot-chart-realtime
-                 data-type="realtime"
-                 style="width: 100%; height: 350px;"
-                 ></div>
-        </div>
-    </div>
+              
+    <div class="clearfix"></div> 
+
+
+            <div class="field">
+            <label class="form-text">Additional Lines:</label>
+            <input  ng-change="getQuote()" ng-model="price.adl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
+          </div>
+                              <div class="clearfix"></div> 
+
+
+                <div class="field">
+            <label class="form-text">Term:<span id='myphoneError' style='display: none; color: red'>How Long of a Term?</span></label>
+          <select ng-change="getQuote()" ng-model="myterm" class="form-control text-center" style="width: 50%; float:right;" name='term' id='term' ng-options="myterm.name for myterm in myTerms"></select>
+             </div>
+              <div class="clearfix"></div>   
+                  
+                        <div class="field">
+
+            <label class="form-text">DSL Modem:<span id='myphoneError' style='display: none; color: red'>What about the modem?</span></label>
+
+           <select  ng-change="getQuote()" ng-model="mymodem" class="form-control text-center" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
+                  
+                     <div class="clearfix"></div>
+                  
+                  <div class="field">
+            <label class="form-text">Static IP:<span id='myphoneError' style='display: none; color: red'>What about Static IPs?</span></label>
+           <select  ng-change="getQuote()" ng-model="myip" class="form-control text-center" style="width: 50%; float:right;" name='staticIP' id='staticIP' ng-options="ipopts.value for ipopts in myIP">
+            
+               </select></div>
+                  
+                     <div class="clearfix"></div>
+                  
+                  
+                        <div class="field">
+                  <label class="form-text" for="telephone">Waive NRCs:</label>
+                  <select  ng-change="getQuote()" ng-model="nrc" class="form-control text-center" style="width: 50%; float:right;" name="nrcs" id="nrcs" ng-options="nrcopt.value for nrcopt in myNRC"></select>
+              </div>
+                  
+                   <div class="clearfix"></div> 
+                        <div class="field">
+                  <label class="form-text" for="telephone">Credits Issued:</label>
+                  <select  ng-change="getQuote()" ng-model="mycredits" class="form-control text-center" style="width: 50%; float:right;" name="credits" id="credits" ng-options="creditopt.value for creditopt in myCredits">
+                  </select>
+              </div>
+                  
+              <div class="clearfix"></div> 
+                  
+                 <center>
+               
+                <input type="button" value="Show Company Info" ng-click="coInfo = 'true'" class="btn text-center submit-button" ng-show="!coInfo" ng-hide="coInfo"/>
+
+               </center>
+           
+       <div ng-show="coInfo">
+                          <center><h3><span style="color: #ec5f3c">Detail Info for Quote</span></h3></center>
+                          <div class="field">
+            <label class="form-text" for="companyname">Company Name:<span id='myconameError' style='display: none; color: red'>Company Name Cannot Be Blank</span></label>
+            <input ng-model="lead.companyname" type="text" style="width: 50%; float:right;" name="companyname" id="companyname" class="form-control text-center"  required>
+          </div><!--field-->
+<div class="clearfix"></div>    
+                  
+          <div class="form-text" class="field">
+            <label for="name">Person Name:<span id='myNameError' style='display: none; color: red'>Name Cannot Be Blank</span></label>
+            <input ng-model="lead.contactname" type="text" style="width: 50%; float:right;" name="dmname" id="dmname" class="form-control text-center"  required>
+          </div><!--field-->
+                  
+          <div class="clearfix"></div>  
+          <div class="field">
+            <label class="form-text" for="email">Email:<span id='myemailError' style='display: none; color: red'>This Does Not Appear to Be Valid</span></label>
+            <input ng-model="lead.email" ng-blur="updateEmail()" type="email" style="width: 50%; float:right;" name="email" id="email" class="form-control text-center"  required>
+          </div><!--field-->
+          <div class="clearfix"></div>   
+         
+         <div class="field">
+            <label class="form-text" for="telephone">Call Back Number:<span id='myphoneError' style='display: none; color: red'>Phone Number Cannot Be Blank</span></label>
+            <input ng-model="lead.telephone" type="text" style="width: 50%; float:right;" name="telephone" id="telephone" maxlength='10' placeholder='2125551111' class="form-control text-center"  />
+          </div><!--field-->
+                
+                
+                  
+                   <div class="clearfix"></div> 
+                        <div class="field">
+                  <label class="form-text" for="telephone">Send LOAs:</label>
+                  <select ng-model="loa"class="form-control text-center"  style="width: 50%; float:right;" name="sendloas" id="sendloas" ng-options="loa.name for loa in myLOA">
+                   
+                  </select>
+              </div>
+                   <div class="clearfix"></div> 
+        <center><br><br>
+                     <input type="button" value="Hide Company Info" ng-click="coInfo = 'false'" class="btn text-center submit-button"  />
+                
+
+              <input type="submit" id="price_it" value="Email Quote" class="btn text-center submit-button" ng-click="makeQuote()">
+
+
+                </center>
+             </div></div>
+
+
+
+
+
+</form>
+
+</div></div>
+
+ <div class="col-lg-5">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+<iframe src="http://www.centurylink.com/small-business/products/bundles/" style="width: 100%; height: 200px"></iframe>
+
+</div></div></div>
+
+
+
+    
 
 </div>
   
