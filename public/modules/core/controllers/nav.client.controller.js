@@ -6,7 +6,7 @@ angular.module('core').controller('NavController', ['$scope', 'Authentication', 
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
 
-		console.log('Menu items: ', $scope.menu);
+		//console.log('Menu items: ', $scope.menu);
 
 		$scope.toggleCollapsibleMenu = function() {
 			$scope.isCollapsed = !$scope.isCollapsed;

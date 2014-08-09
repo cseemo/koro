@@ -129,7 +129,8 @@ $scope.loa= $scope.myLOA[0];
 
 
 
-	var lead = $scope.lead ;
+	var lead = $scope.lead;
+
 	var comms = this.myForm.comments.$modelValue;
 	//console.log('nicole %o',comms);
 var now = Date();
@@ -147,9 +148,9 @@ lead.callDetails.push({comments: comms, calltime: now});
 		if(status === 200) {
 			//$scope.currentPrice = data.price;
 console.log('Data: ',data);
-console.log('Data.Response: %o',data[0]._id);
+console.log('Data.Response: %o',data._id);
 	
-	$location.path('leads/' + data[0]._id);
+	$location.path('leads/' + data._id);
 		}
 	});
 			}, function(errorResponse) {
@@ -177,7 +178,7 @@ $scope.dialLead = function() {
 
 	  lead.lastCalled = Date();
 		
-window.open("http://admin:67028@192.168.0.114/servlet?number=" + lead.telephone + "&outgoing_uri=sip-67028.accounts.vocalos.com", "Dialing", "toolbar=no, scrollbars=no, resizable=no, top=800, left=10, width=100, height=10");	
+window.open('http://admin:67028@192.168.0.114/servlet?number=' + lead.telephone + '&outgoing_uri=sip-67028.accounts.vocalos.com', 'Dialing', 'toolbar=no, scrollbars=no, resizable=no, top=800, left=10, width=100, height=10');	
 
 window.alert('IP Phone Dialing '+lead.companyname+' at: '+lead.telephone);
 };
@@ -287,7 +288,7 @@ console.log('Data Returned '+data);
 				leadId: $stateParams.leadId
 			});
 			//$scope.callDetails = $scope.lead.callDetails;
-			console.log('callDetails %o',$scope.lead);
+			//console.log('callDetails %o',$scope.lead);
 		};
 
 
