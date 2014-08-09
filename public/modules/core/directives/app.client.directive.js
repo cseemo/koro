@@ -5,15 +5,15 @@ angular.module('core').directive('imgHolder', [
     return {
       restrict: 'A',
       link: function(scope, ele, attrs) {
-        return Holder.run({
+        return (Holder.run({
           images: ele[0]
-        });
+        }));
       }
     };
   }
 ]).directive('customPage', function() {
   return {
-    restrict: "A",
+    restrict: 'A',
     controller: [
       '$scope', '$element', '$location', function($scope, $element, $location) {
         var addBg, path;
@@ -72,7 +72,7 @@ angular.module('core').directive('imgHolder', [
 ]).directive('goBack', [
   function() {
     return {
-      restrict: "A",
+      restrict: 'A',
       controller: [
         '$scope', '$element', '$window', function($scope, $element, $window) {
           return $element.on('click', function() {

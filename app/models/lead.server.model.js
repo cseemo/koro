@@ -62,7 +62,7 @@ var LeadSchema = new Schema({
 		default: 'City',
 		trim: true
 	},
-		state: {
+	state: {
 		type: String,
 		default: 'State',
 		trim: true
@@ -72,7 +72,7 @@ var LeadSchema = new Schema({
 		default: 'Zipcode',
 		trim: true
 	},
-		lastCalled: {
+	lastCalled: {
 		type: Date,
 		default: '1/1/2014',
 		trim: true
@@ -82,13 +82,23 @@ var LeadSchema = new Schema({
 		default: '1/1/2001',
 		trim: true
 	},
-		campaign: {
+	campaign: {
 		type: String,
 		default: '',
 		trim: true
 	},
-		FLUPDate: {
+	FLUPDate: {
 		type: Date,
+		default: '',
+		trim: true
+	},
+	speed: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	currentCarrier: {
+		type: String,
 		default: '',
 		trim: true
 	},

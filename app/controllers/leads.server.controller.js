@@ -220,13 +220,15 @@ console.log('Current Price'+currentPrice);
 
 
 
-exports.oldestFirst = function(req, res) { Lead.find({user: req.user}).sort('lastCalled').limit(1).populate('user', 'displayName').exec(function(err, leads) {
+exports.oldestFirst = function(req, res) { Lead.findOne({user: null}).sort('lastCalled').populate('user', 'displayName').exec(function(err, lead) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(leads);
+			lead.user = req.user;
+			lead.save();
+			res.jsonp(lead);
 		}
 	});
 };

@@ -7,8 +7,8 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		$scope.menu = Menus.getMenu('topbar');
 
 		if( ! Authentication.user ) $location.path('/signin');
-		console.log('does the user have the user role?: ', Authentication.hasRole('user'));
-		console.log('does the user have the admin role?: ', Authentication.hasRole('admin'));
+		// console.log('does the user have the user role?: ', Authentication.hasRole('user'));
+		// console.log('does the user have the admin role?: ', Authentication.hasRole('admin'));
 
 		$scope.toggleCollapsibleMenu = function() {
 			$scope.isCollapsed = !$scope.isCollapsed;

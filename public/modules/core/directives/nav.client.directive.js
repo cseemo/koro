@@ -83,7 +83,7 @@
             path = function() {
               return $location.path();
             };
-            highlightActive = function(links, path) {console.log('asdf');
+            highlightActive = function(links, path) {
               path = '#' + path;
               return angular.forEach(links, function(link) {
                 var $li, $link, href;
