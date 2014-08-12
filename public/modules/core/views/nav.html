@@ -7,14 +7,14 @@
         data-collapse-nav
         data-highlight-active>
         <li><a href="/"> <i class="fa fa-dashboard"></i>Dashboard </a></li>
-        <li data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);">
+        <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);">
             <a href="#!/{{item.link}}">
                 <i class="fa fa-file-text-o"></i>
                 <span data-ng-bind="item.title"></span>
             </a>
             <ul data-ng-if="item.menuItemType === 'dropdown'">
                 <li data-ng-repeat="subitem in item.items" data-ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
-                    <a href="/#!/{{item.link}}/{{subitem.link}}" data-ng-bind="subitem.title"></a>
+                    <a href="/#!/{{subitem.link}}" data-ng-bind="subitem.title"></a>
                 </li>
             </ul>
         </li>
