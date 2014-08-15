@@ -2,11 +2,86 @@
 
 
 // Leads controller
-angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$location', 'Authentication', 'Leads',
-	function($http, $scope, $stateParams, $location, Authentication, Leads ) {
+angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals',
+	function($http, $scope, $stateParams, $location, Authentication, Leads, Deals ) {
 		$scope.authentication = Authentication;
 
 		if( ! Authentication.user ) $location.path('/signin');
+
+
+
+$scope.convertToDeal = function(){
+console.log('Scope: %o',$scope);
+
+console.log('This %o', this);
+var dslspeed = this.dslspeed.value;
+console.log('DSL Speed: ', dslspeed);
+var lead = $scope.lead;
+	lead.status = 'Closed/Won';
+				lead.$update(function(response) {
+console.log('Lead Info To Populate %o',lead);
+					//console.log('Lead Saved %o',lead);
+	var deal = new Deals ({
+					companyname: lead.companyname,
+					
+					email: lead.email,
+	contactname: lead.contactname,
+	telephone: lead.telephone,
+	address: lead.address,
+	city: lead.city,
+	state: lead.state,
+	zipcode: lead.zipcode,
+	lastCalled: lead.lastCalled,
+	assigned: lead.assigned,
+	campaign: lead.campaign,
+	FLUPDate: lead.FLUPDate,
+	speed: lead.speed,
+	currentCarrier: lead.currentCarrier,
+	created: lead.created,
+	assignedRep: lead.assignedRep,
+	user: lead.user,
+	term: 	lead.term,
+		dslspeed: dslspeed,
+	adl: 		lead.adl,
+		modem: 	lead.modem,
+		waivenrcs:	lead.waivenrcs,
+	winbackcredits:	lead.winbackcredits,
+		staticip:	lead.staticip,
+				converted: Date.now()
+			});
+
+		
+
+			// Redirect after save
+			deal.$save(function(response) {
+				$location.path('convertingdeals/' + response._id);
+	//console.log('New Deal %o', deal);
+				// Clear form fields
+				$scope.name = '';
+
+			
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+
+			
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+
+
+			
+
+
+};
+
+
+
+$scope.start = function(){
+
+$scope.leadstatus = $scope.lead.status;
+
+};
 
 
 $scope.currentPrice = 85;
@@ -20,6 +95,9 @@ $scope.orig = angular.copy($scope.datas);
 
 $scope.coInfo = 'false';
 
+
+
+
 $scope.coInfon = function(){
 	if($scope.coInfo){
 		$scope.coInfon = 'Hide Company Info';
@@ -29,6 +107,29 @@ $scope.coInfon = function(){
 };
 
 
+$scope.leadstatus = function(){
+	$scope.leadstatus = $scope.lead.status;
+	return $scope.leadstatus;
+};
+
+$scope.checkIt = function(){
+window.alert('checking it');
+$scope.lead.address.editMode = true;
+$scope.leadstatus = $scope.lead.status;
+return $scope.leadstatus;
+};
+
+
+$scope.statuses = ['Lead','Call-Back','Follow-Up', 'Proposed', 'Closed/Won', 'Closed/Lost'];
+
+
+
+$scope.dispositions = ['No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'];
+
+$scope.positions = ['Receptionist','Owner','Other'];
+
+$scope.gatepos = $scope.positions[0];
+$scope.contpos = $scope.positions[1];
 
 $scope.mySpeeds = [
 {name: '1.5', value: '1.5Mbps/896Kbps',svalue: '1.5M/896K'},
@@ -123,22 +224,59 @@ $scope.loa= $scope.myLOA[0];
 			});
 		};
 
+		// Save Lead
+		$scope.saveLead = function() {
+	var lead = $scope.lead;
+	var rep = lead.assignedRep;
+	var comms = this.myForm.comments.$modelValue;
+	var dispo = $scope.disposition;
+	var who = $scope.callDetailscontact;
+	lead.status = $scope.leadstatus;
+	console.log('MyScope: %o',$scope);
+	//console.log('nicole %o',comms);
+	var now = Date();
+	//window.alert(lead.user.displayName);
+	lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
+lead.$update(function(data){},
+	 function(errorResponse) {
+		$scope.error = errorResponse.data.message;
+		});
+
+window.alert("complete");
+};
+
+$scope.FLUPS = function() {
+
+$http.get('/flups').success(function(data) {
+	$scope.myleads = data;
+	//console.log('Response %o',data);
+	//window.alert('Response');
+}).error(function(data) {
+
+console.log('Error: ' + data);
+});
+
+
+
+
+
+};
+
+
 			// Get Next Lead Lead
 		$scope.nextLead = function() {
-	
-
-
-
 	var lead = $scope.lead;
-
+	var rep = lead.assignedRep;
 	var comms = this.myForm.comments.$modelValue;
+	var dispo = $scope.disposition;
+	var who = $scope.callDetailscontact;
 	//console.log('nicole %o',comms);
-var now = Date();
-
-lead.callDetails.push({comments: comms, calltime: now});
-
-			lead.$update(function(data) {
-				console.log('dialLead',data);
+	lead.status = $scope.leadstatus;
+	var now = Date();
+	//window.alert(lead.user.displayName);
+	lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
+	lead.$update(function(data) {
+	console.log('dialLead',data);
 				//$location.path('/getnewlead');
 						$http({
 		method: 'get',
@@ -165,6 +303,7 @@ console.log('Data.Response: %o',data._id);
 
 		};
 
+
 			$scope.updateEmail = function() {
 
 			var lead = $scope.lead ;
@@ -174,13 +313,17 @@ lead.email = this.myForm.email.$viewValue;
 
 
 $scope.dialLead = function() {
+	console.log('http--: %o',Authentication);
 	var lead = $scope.lead;
 
-	  lead.lastCalled = Date();
-		
-window.open('http://admin:67028@192.168.0.114/servlet?number=' + lead.telephone + '&outgoing_uri=sip-67028.accounts.vocalos.com', 'Dialing', 'toolbar=no, scrollbars=no, resizable=no, top=800, left=10, width=100, height=10');	
 
-window.alert('IP Phone Dialing '+lead.companyname+' at: '+lead.telephone);
+	  lead.lastCalled = Date();
+	  $scope.leadstatus = $scope.lead.status;
+		return $scope.leadstatus;
+		
+//window.open('http://admin:67028@192.168.0.114/servlet?number=' + lead.telephone + '&outgoing_uri=sip-67028.accounts.vocalos.com', 'Dialing', 'toolbar=no, scrollbars=no, resizable=no, top=800, left=10, width=100, height=10');	
+
+//window.alert('IP Phone Dialing '+lead.companyname+' at: '+lead.telephone);
 };
 
 
@@ -189,6 +332,17 @@ $scope.makeQuote = function(){
 	//window.alert("MakingQuote");
 	//console.log('Test');
 	//console.log(this.myForm);
+var lead = $scope.lead;
+
+
+
+
+
+
+
+
+
+
 
 this.term = this.myForm.term.$viewValue;
 this.dsl = this.myForm.dsl_speed.$viewValue;
@@ -208,6 +362,21 @@ this.email = this.myForm.email.$viewValue;
 this.sendloas = this.myForm.sendloas.$viewValue;
 console.log('coname: '+this.coname);
 console.log('dmname: '+this.dmname);
+
+			lead.term =this.term.value;
+			lead.dslspeed =this.dsl.svalue;
+			lead.adl =this.adl;
+			lead.modem =this.modem.value;
+			lead.waivenrcs =this.nrcs.value;
+			lead.winbackcredits = this.credits.name;
+			lead.staticip =this.iptype.name;
+			
+
+			lead.$update(function() {
+				$location.path('leads/' + lead._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
 
 
  
@@ -233,11 +402,18 @@ console.log('dmname: '+this.dmname);
 .success(function(data, status) {
 		if(status === 200) {
 			//$scope.currentPrice = data.price;
-console.log('Data Returned '+data);
+//console.log('Data Returned '+data);
 			//$scope.currentPrice = data.price;
 			//$scope.currentNRR = data.nrr;
 			window.alert(data);
-		}
+
+
+//Get Quote Details and Save to Lead Object
+
+
+}
+
+
 	})
 .error(function(data){
 	console.log('OOps...'+data);
@@ -291,6 +467,16 @@ console.log('Data Returned '+data);
 			//console.log('callDetails %o',$scope.lead);
 		};
 
+	// Find existing Deal
+		$scope.findOneDeal = function() {
+			$scope.deal = Deals.get({ 
+				dealId: $stateParams.dealId
+			});
+
+
+			//$scope.callDetails = $scope.lead.callDetails;
+			console.log('Deal - Look for CallDetails %o',$scope.deal);
+		};
 
 
 
@@ -338,3 +524,19 @@ console.log(data);
 
 
 	}]);
+
+
+
+angular.module('leads').filter('datetime', function($filter)
+{
+return function(input){
+	if(input == null){return ""; }
+
+	var _date = $filter('date')(new Date(input),
+		'EEE MMM d @ hh:mm a');
+
+	return _date;
+};
+});
+
+

@@ -1,0 +1,86 @@
+<section data-ng-controller="LeadsController" data-ng-init="findOneDeal()">
+	<div class="page-header">
+
+	<div class="row">
+
+
+	 <div class="col-lg-6 col-xsm-6">
+	 <div class="panel panel-primary">
+       <div class="panel-body">
+
+
+       
+       
+		<h1 data-ng-bind="deal.companyname"></h1>
+	
+	
+
+
+	ContactName: {{deal.contactname}}<br>
+	Telephone: {{deal.telephone}}<br>
+	Converted Date: {{deal.converted}}<br>
+	Sales Rep: {{deal.assignedRep}}<br>
+	Deal Status: {{deal.stage}}<br>
+	Last Phone Call: {{deal.callDetails[0].calltime}}<br>
+	Project Manager: {{deal.projectmanager}}
+	</div></div></div>
+
+	<div class="col-lg-6 col-xsm-6">
+	 <div class="panel panel-primary">
+        	<div class="panel-body">
+				
+				<h2>Billing/Credit Info</h2>
+				Billing Contact: {{deal.billingcontact}}<br>
+				Billing Email: {{deal.billingemail}}<br>
+				Billing Address: {{deal.billingaddress}} {{deal.billingcity}}, {{deal.billingstate}} {{deal.billingzipcode}}<br>
+				Tax ID: {{deal.taxid}}<br>
+				Website: {{deal.website}}<br>
+			
+				</div></div></div></div>
+
+<div class="row">
+
+	<div class="col-lg-6 col-xsm-6">
+	 <div class="panel panel-primary">
+        	<div class="panel-body">
+
+	<h2>Services Ordered</h2>
+	DSL Speed: {{deal.dslspeed}}<br>
+	Number of Additional Lines: {{deal.adl}}<br>
+	Modem: {{deal.modem}}<br>
+	Static IP: {{deal.staticip}}<br>
+	Winback Credits: {{deal.winbackcredits}}<br>
+	Waive NRCs: {{deal.waivenrcs}}<br>
+	
+	</div></div></div>
+		<div class="col-lg-6 col-xsm-6">
+			 <div class="panel panel-primary">
+		        	<div class="panel-body">
+
+			<h2>Notes</h2>
+			Notes: {{deal.notes}}
+			</div>
+		</div>
+		</div>
+
+
+	</div>
+	<div class="pull-right" data-ng-show="authentication.user._id == deal.user._id">
+		<a class="btn btn-primary" href="/#!/deals/{{deal._id}}/edit">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a class="btn btn-primary" data-ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+	</div>
+	<small>
+		<em class="text-muted">
+			Converted to Deal on
+			<span data-ng-bind="deal.created | date:'mediumDate'"></span>
+			by
+			<span data-ng-bind="deal.user.displayName"></span>
+		</em>
+	</small>
+</section>
+</div>
+

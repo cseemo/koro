@@ -13,15 +13,27 @@ var CallSchema = new Schema({
 	
 	calltime: {
 		type: Date,
-		default: Date.now
+		default: ''
 	},
 	comments: {
 		type: String,
-		default: 'WTF'
+		default: ''
+	},
+	rep: {
+		type: String,
+		default: ''
+	},
+	who: {
+		type: String,
+		default: ''
+	},
+	disposition: {
+		type: String,
+		default: ''
 	}
 
-
 });
+
 mongoose.model('Call', CallSchema, 'leads');
 
 
@@ -44,7 +56,6 @@ var LeadSchema = new Schema({
 	contactname: {
 		type: String,
 		default: '',
-		required: 'Please fill Lead Contact Name',
 		trim: true
 	},
 	telephone: {
@@ -54,32 +65,32 @@ var LeadSchema = new Schema({
 	},
 	address: {
 		type: String,
-		default: 'Address',
+		default: '',
 		trim: true
 	},
 	city: {
 		type: String,
-		default: 'City',
+		default: '',
 		trim: true
 	},
 	state: {
 		type: String,
-		default: 'State',
+		default: '',
 		trim: true
 	},
 	zipcode: {
 		type: String,
-		default: 'Zipcode',
+		default: '',
 		trim: true
 	},
 	lastCalled: {
 		type: Date,
-		default: '1/1/2014',
+		default: '2001/01/01',
 		trim: true
 	},
 	assigned: {
 		type: Date,
-		default: '1/1/2001',
+		default: '2001/01/01',
 		trim: true
 	},
 	campaign: {
@@ -102,16 +113,47 @@ var LeadSchema = new Schema({
 		default: '',
 		trim: true
 	},
+	status: {
+		type: String,
+		default:'Lead'
+	},
 	created: {
 		type: Date,
 		default: Date.now
 	},
+	assignedRep: {
+		type: String,
+		default: null
+	},
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	dslspeed: {
+		type: String
+	},
+	adl: {
+		type: String
+	},
+	term: {
+		type: String
+	},
+	modem: {
+		type: String
+	},
+	staticip: {
+		type: String
+	},
+	waivenrcs: {
+		type: String
+	},
+	winbackcredits: {
+		type: String
 	}
-});
+	
 
+
+});
 
 
 mongoose.model('Lead', LeadSchema, 'leads');

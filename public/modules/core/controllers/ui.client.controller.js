@@ -7,7 +7,7 @@
       return ($scope.notify = function(type) {
         switch (type) {
           case 'info':
-            return logger.log('Heads up! This alert needs your attention, but it\'s not super important.');
+            return logger.log('Hola! Heads up! This alert needs your attention, but it\'s not super important.');
           case 'success':
             return logger.logSuccess('Well done! You successfully read this important alert message.');
           case 'warning':

@@ -1,0 +1,200 @@
+<section data-ng-controller="DealsController" data-ng-init="findOne()">
+    <div class="page-header">
+        <h1>Edit {{deal.companyname}} Details</h1>
+    </div>
+    <form class="form-horizontal" data-ng-submit="update()" novalidate>
+    <div class="row">
+
+
+     <div class="col-lg-6 col-xsm-6">
+     
+     <div class="panel panel-primary">
+        <div class="panel-body">
+             <fieldset class="form-horizontal">
+                <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="companyname">Company Name</label>
+                        <input type="text" data-ng-model="deal.companyname" id="name" class="form-control pull-right" style="width: 50%" class="form-control text-center"d>
+                        </div>
+
+                        <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="telephone">Telephone</label>
+                        <input type="text" data-ng-model="deal.telephone" class="form-control pull-right" style="width: 50%" >
+                        </div>
+
+                    <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="contactname">Contact Name</label>
+                        <input type="text" data-ng-model="deal.contactname" class="form-control pull-right" style="width: 50%" >
+                        </div>
+
+                    <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="dealstage">Deal Stage</label>
+                        <input type="text" data-ng-model="deal.stage" class="form-control pull-right" style="width: 50%" >
+                        </div>
+
+                        <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="projectmanager">Project Manager</label>
+                        <input type="text" data-ng-model="deal.projectmanager" class="form-control pull-right" style="width: 50%" >
+                        </div>
+                        <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="website">Website</label>
+                        <input type="text" data-ng-model="deal.website" class="form-control pull-right" style="width: 50%" >
+                        </div>
+                  
+                        </fieldset>
+    </div></div></div>
+
+
+     <div class="col-lg-6 col-xsm-6">
+     
+     <div class="panel panel-primary">
+        <div class="panel-body">
+             <fieldset class="form-horizontal">
+             <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="taxid">Federal Tax ID</label>
+                        <input type="text" data-ng-model="deal.taxid" class="form-control pull-right" style="width: 50%" >
+                        </div>
+                <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="billingcontact">Billing Contact</label>
+                        <input type="text" data-ng-model="deal.billingcontact" class="form-control pull-right" style="width: 50%" >
+                        </div>
+
+                        <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="billingtelephone">Billing Telephone</label>
+                        <input type="text" data-ng-model="deal.billingtelephone" class="form-control pull-right" style="width: 50%" >
+                        </div>
+
+                    <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="billingemail">Billing Email</label>
+                        <input type="text" data-ng-model="deal.billingemail" class="form-control pull-right" style="width: 50%" >
+                        </div>
+
+                    <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="billingaddress">Billing Address</label>
+                        <input type="text" data-ng-model="deal.billingaddress" class="form-control pull-right" style="width: 50%" >
+                        </div>
+                    <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="billingaddress">Billing City</label>
+                        <input type="text" data-ng-model="deal.billingcity" class="form-control pull-right" style="width: 50%" >
+                        </div>
+
+                         <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="billingaddress">Billing State</label>
+                        <input type="text" data-ng-model="deal.billingstate" class="form-control pull-right" style="width: 50%" >
+                        </div>
+                         <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="billingaddress">Billing Zip</label>
+                        <input type="text" data-ng-model="deal.billingzipcode" class="form-control pull-right" style="width: 50%" >
+                        </div>
+                        </fieldset>
+                    </div></div></div></div>
+
+<div class="row">
+
+    <div class="col-lg-6 col-xsm-6">
+     <div class="panel panel-primary">
+            <div class="panel-body">
+
+    <h2>Services Ordered</h2>
+
+              
+            
+            <div class="field">
+    <label class="form-text">DSL Speed:</label>
+
+    <select ng-model="mySpeeds" ng-value="deal.dslspeed" class="form-control text-center" style="width: 50%; float:right;" ng-options="speed.value for speed in mySpeeds track by speed.value"></select>
+
+    </div>
+
+              
+    <div class="clearfix"></div> 
+
+
+            <div class="field">
+            <label class="form-text">Additional Lines:</label>
+            <input   ng-model="deal.adl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
+          </div>
+                              <div class="clearfix"></div> 
+
+
+                <div class="field">
+            <label class="form-text">Term:<span id='myphoneError' style='display: none; color: red'>How Long of a Term?</span></label>
+          <select  ng-model="deal.term" class="form-control text-center" style="width: 50%; float:right;" name='term' id='term' ng-options="myterm.name for myterm in myTerms"></select>
+             </div>
+              <div class="clearfix"></div>   
+                  
+                        <div class="field">
+
+            <label class="form-text">DSL Modem:<span id='myphoneError' style='display: none; color: red'>What about the modem?</span></label>
+
+           <select   ng-model="deal.modem.name" class="form-control text-center" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
+                  
+                     <div class="clearfix"></div>
+                  
+                  <div class="field">
+            <label class="form-text">Static IP:<span id='myphoneError' style='display: none; color: red'>What about Static IPs?</span></label>
+           <select   ng-model="myip" class="form-control text-center" style="width: 50%; float:right;" name='staticIP' id='staticIP' ng-options="ipopts.value for ipopts in myIP">
+            
+               </select></div>
+                  
+                     <div class="clearfix"></div>
+                  
+                  
+                        <div class="field">
+                  <label class="form-text" for="telephone">Waive NRCs:</label>
+                  <select   ng-model="nrc" class="form-control text-center" style="width: 50%; float:right;" name="nrcs" id="nrcs" ng-options="nrcopt.value for nrcopt in myNRC"></select>
+              </div>
+                  
+                   <div class="clearfix"></div> 
+                        <div class="field">
+                  <label class="form-text" for="telephone">Credits Issued:</label>
+                  <select   ng-model="mycredits" class="form-control text-center" style="width: 50%; float:right;" name="credits" id="credits" ng-options="creditopt.value for creditopt in myCredits">
+                  </select>
+              </div>
+                  
+    
+    </div></div></div>
+        <div class="col-lg-6 col-xsm-6">
+             <div class="panel panel-primary">
+                    <div class="panel-body">
+
+            <h2>Notes</h2>
+            Notes: {{deal.notes}}
+            </div>
+        </div>
+        </div>
+
+
+    </div>
+
+
+    <span data-ng-click="testme()">Click Me</span>
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="update()" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label" for="name">Company Name</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="deal.companyname" id="name" class="form-control" class="form-control text-center"d>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-default">
+                </div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+        </form>
+    </div>
+</section>

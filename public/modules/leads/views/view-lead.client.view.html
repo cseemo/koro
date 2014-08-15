@@ -1,425 +1,236 @@
-  <!-- Bootstrap core CSS -->
-    <link href="http://adsoap.com/bootstrap.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800,600' rel='stylesheet' type='text/css'>
-   
-    <!-- Custom styles for this template -->
-    <link href="http://adsoap.com/style.css" rel="stylesheet">
-<style>
-      body{
-        position: relative;
-      }
-    .form-text {
-  color: #444;
-  line-height: 125%;
-  margin-top: 10px;
-}
-      
-  .script-text{ 
-        
-  color: #444;
-  font-size: 2em;
-  margin-top: 10px;
-      }
-      
-      
-      
-    .form-selectDSL {
-  background: #273b42;
- 
-  height: 50px;
-  margin: 10px auto;
-  color: white;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-  border: none;
-  font-size: 20px;
-  padding: 5px 10px;
-}
-      
-    .form-select {
-  background: #273b42;
-
-  height: 50px;
-  margin: 10px auto;
-  color: white;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-  border: none;
-  font-size: 20px;
-  padding: 5px 10px;
-}
-          .form-qty {
-  background: #273b42;
-
-  height: 50px;
-  margin: 10px auto;
-          margin-right: 130px;
-  color: white;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-  border: none;
-  font-size: 20px;
-  padding: 5px 10px;
-}
-      
-      .form-text {
-  color:#273b42;
-  font-size: 26px;
-
-  
-}
-
-.PopUp 
-{ 
-  display:    none;
-    position:   absolute;
-    z-index:    1000;
-    top:        0;
-    left:       0;
-    height:     100%;
-    width:      100%;
-    background: rgba( 255, 255, 255, .7 ) 
-          
-                50% 50% 
-                no-repeat;
-} 
-      
-.closeBut{
-   position:   fixed;
-    z-index:    1000;
-    top:      100;
-    left: 5;
-  
-}
-    
-      
-      .clearfix:after {
-     visibility: hidden;
-     display: block;
-     font-size: 0;
-     content: " ";
-     clear: both;
-     height: 0;
-     }
-.clearfix { display: inline-block; }
-/* start commented backslash hack \*/
-* html .clearfix { height: 1%; }
-.clearfix { display: block; }
-/* close commented backslash hack */
-     
-  .clink{
-    background color: -webkit-linear-gradient(top, #7bb44e 0%,#86c33f 48%,#47a23e 52%,#057533 100%);
-    background-image: -webkit-linear-gradient(top, rgb(123, 180, 78) 0%, rgb(134, 195, 63) 48%, rgb(71, 162, 62) 52%, rgb(5, 117, 51) 100%);
-  }
-    #confirmEmail { 
-  display:    none;
-    position:   fixed;
-      top: 15%;
-      left: 15%;
-  
-    width:      70%;
-    background: rgba( 120,120, 120, 1 )       
-                50% 50% 
-                no-repeat;
-  z-index: 999;
-  border-radius: 15px 15px 15px 15px; 
-}
-      
-     #Leadcomments{
-       color: #ec5f3c;
-         font-size: 16px;
-  font-weight:1600;
-     }
-      
-      #notificationModal{
-        display:    none;
-    position:   fixed;
-      top: 25%;
-      left: 25%;
-  
-    width:      50%;
-        
-    background: rgba( 120,120, 120, 1 )       
-                50% 50% 
-                no-repeat;
-  z-index: 999;
-  border-radius: 15px 15px 15px 15px; 
-}
-      #notificationContent{
-     
-  font-size: 22px;
-  font-weight:1600;}    
-        
-     
-
-      #CompanyInfo 
-{ 
-  display:    none;
-    position:   absolute;
-    align-content: center;
-   margin: 50px auto;
-  top: 75px;
-  
-    width:      100%;
-    background: rgba( 120,120, 120, 1 )       
-                50% 50% 
-                no-repeat;
-  z-index: 999;
-  border-radius: 15px 15px 15px 15px; 
-}
-      
-        .pwtext, .logtext{
-        float: right;
-        color:#273b42;
-  font-size: 12px;
-  
-      }
-      
-        .logtextW{
-      
-        color:#273b42;
-  font-size: 12px;
-  
-      
-      }
-      
-      
-      #joke{
- color:#ec5f3c;
-  font-size: 18px;
-  
-font-weight:900;}
-      
-      .modalbg {
-   
-    position:   relative;
-    z-index:    1000;
-    top:        0;
-    left:       0;
-    height:     70%;
-    width:      70%;
-   
-      
-}
-    .Mymodal{
-    display:none; 
-position: absolute;
-top: 50%;
-left: 25%;
-/* left: 50%; */
-width: 50%;
-
-align-content: center;
-
-background-color:#273b42;
-      border: 4px solid #888888;
-    border-radius: 20px;
-      box-shadow: 5px 5px 3px #888888;
-        
-        }
-      .modaltext{
-        padding:5px;
-        padding-top: 25px;
-        padding-bottom: 25px;
-        text-align: center;
-        color:#ec5f3c;
-  font-size: 16px;
-  vertical-align: middle;
-font-weight:900;
-      }
-      .MRR, .NRR{
-        color:#ec5f3c;
-         font-size: 30px;
-        font-weight:1500;
-        text-align: center;
-      }
-      .leadInfo{
-        color:#ec5f3c;
-         font-size: 30px;
-        font-weight:1500;
-      
-      }
-      
-      .row {
-margin-left: -15px;
-margin-right: 0px;
-      }
-      .col-md-12 form-container chad{
-        margin: 0 auto;
-        top: 75px;
-          border-color: #273b42;
-        
-      }
-      
-  iframe {
-    width: 1010px;
-   height: 1010px;
-        overflow: hidden;
-        overflow-x: hidden;
-        overflow-y: hidden;
-        margin: 0; padding: 0;
-    border: none;
-    
-}
-      .FLUPs{
-        
-                color:#273b42;
-  font-size: 14px;
-
-        
-      }
-      
-      .otherCALLS{
-        
-        color: #ec5f3c;
-           font-size: 16px;
-        font-weight:1500;
-        
-      }
-     
-  #FLUPArea{
-    max-height: 150px;
-    overflow-y:auto;
-  }
-  .navbar{
-    margin-top: 0;
-  }
-      
-    </style>
-
-
-   
- <div class="container">
- <div class="pull-right">
- <a href="/#!/leads/create">Create a New Lead</a>
-</div>
-
-
-
-
-
-  <div class="page-header">
-
-<div class="clearfix"></div>
-
-                  
-
-              <div class="white-content"> 
-          <div class="col-md-12 form-container">
-           
-            <form name="myForm" data-ng-submit="makeQuote()" data-ng-controller="LeadsController" data-ng-init="findOne()">        
-    <h1>Company Name: <span data-ng-bind="lead.companyname"></span></h1>
-      <h2 data-ng-bind="lead.telephone"></h2>
-        <h2 data-ng-bind="lead.contactname"></h2>
-        Last Called: <span data-ng-bind="lead.lastCalled | date:'medium'"></span>
-        <br><br>
-
-
-  Call Records: <br>
-  <div ng-repeat="callDetail in lead.callDetails">
-
-  <span data-ng-bind="callDetail.calltime"></span>
-<br>
-  <span data-ng-bind="callDetail.comments"></span>
-
-</div>
-
-
-<div class="container">
-
-Call this Customer?: <a class="btn btn-primary" data-ng-click="dialLead();">
-      <i class="glyphicon glyphicon-play-circle"></i>
-    </a>
-<br><br>
-Next Lead: <a class="btn btn-primary" data-ng-click="nextLead();">
-      <i class="glyphicon glyphicon-forward"></i>
-    </a>
-<div class="form-group">
-<label class="control-label" for="content">Comments</label>
-          <div class="comments">
-            <textarea name="comments" data-ng-model="comments" id="comments" class="form-control"  style="width: 50%;" rows="5" placeholder="Call Comments"></textarea>
-          </div>
+<div class="page page-dashboard" data-ng-controller="DashboardCtrl">
+<form name="myForm" data-ng-submit="makeQuote()" >  
+    <!-- Stats -->
+    <div class="row">
+        <div class="col-lg-3 col-xsm-6">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-success">
+                    <i class="fa fa-rocket"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">36 <span class="size-h4">%</span></p>
+                    <p class="text-muted">Close Ratio</p>
+                </div>
+            </div>
         </div>
+        <div class="col-lg-3 col-xsm-6">
+          <a href="#!/leads" style="text-decoration:none">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-info">
+                    <i class="fa fa-users"></i>
+                </span>
+              
+                <div class="box-info">
+                    <p class="size-h2" >12</p>
+                    <p class="text-muted">Proposals</p>
+                </div>
+            </div></a>
+        </div>
+        <div class="col-lg-3 col-xsm-6">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-warning">
+                    <i class="fa fa-dollar"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">$1,302</p>
+                    <p class="text-muted">Commissions</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xsm-6">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-danger">
+                    <i class="fa fa-shopping-cart"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">8</p>
+                    <p class="text-muted">Sales</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end stats -->
+ <span><a href="/#!/leads/create">Add New Opportunity</a></span>
+   
 
-</div>
-</div>
-
-
-</div>
-
-
-  <div class="pull-right" data-ng-show="authentication.user._id == lead.user._id">
-    <a class="btn btn-primary" href="/#!/leads/{{lead._id}}/edit">
-      <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn btn-primary" data-ng-click="remove();">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
-  </div>
-
-  <small>
-    <em class="text-muted">
-      Posted on
-      <span data-ng-bind="lead.created | date:'mediumDate'"></span>
-      by
-      <span data-ng-bind="lead.user.displayName"></span>
-    </em>
-  </small>
-  </div><br>
- <div class="white-content">
-  <div class="col-md-14 form-container">
-    <div id="CompInfo" >
-
+  <div class="row" data-ng-controller="LeadsController" data-ng-init="findOne()">
+    <div class="col-lg-7" >
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="glyphicon glyphicon-th">
+            </span>&nbsp;&nbsp;Lead Deatils   --- Assigned Rep: {{lead.user.displayName}}
+             
+               <input type="button" class="pull-right" value="Convert to Deal" ng-click="convertToDeal()" class="btn text-center button"/>
+            </div>
+          <div class="panel panel-primary">
+              <div class="panel-body">
+                <h1 class="pull-left">{{lead.companyname}}</h1>
+                <h2 class="pull-right">{{lead.telephone}}</h2>
                   
+                  <div class="clearfix"></div>
 
+                <h4 class="pull-left">{{lead.contactname}}</h4>
+                  <div class="pull-right">
+                    <span ng-click="editing = true" data-ng-bind="lead.address"></span><br>
+                    <span data-ng-bind="lead.city"></span>
+                    <span data-ng-bind="lead.state"></span>, 
+                    <span data-ng-bind="lead.zipcode"></span>
+                  </div>
                
-          <div class="col-md-12 form-container">
-                     <div class="row">
-        <div id="pricebox">
-            
-    
-     <div="MRR" class="MRR"> <center>Total Monthly Cost:{{currentPrice|currency}}  </center></div>
-                      
-     <div id="NRR" class="NRR"> <center>One-Time Fees: {{currentNRR|currency}}  </center></div>
-           
-            
-            </div>
-        </div><!--end row -->        
-            <div class="row">
-            <div class="col-md-10 pull-right">
-                
-            </div>
-           
-          </div> <!-- end row -->
-                <div class="row">
-        <p>
-            <br>
-                    </p>
-        </div><!--end row -->
-              
-              
-              
-              
-                <div class="clearfix"></div> 
-              <div id="hide_data">
-            <div class="wpcf7" id="wpcf7-f5-o1">
-    <label class="form-text">CoreConnect DSL Speed:</label>
+               <div class="clearfix"></div>
 
-    <select ng-model="dslspeed" ng-change="getQuote()" class="text-input wpcf7-form-control wpcf7-text text-field" style="width: 50%; float:right;" name="dsl_speed" id="dsl_speed" ng-options="speed.value for speed in mySpeeds"></select>
+               Qualify for: {{lead.speed}}<br>
+               Current Provider: {{lead.currentCarrier}}
+              </div>
+            </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">Call Records
+                 <span class="pull-right"><b>Last Called: </b>{{lead.lastCalled | date:'medium'}}</span>
+            </div>
+            <div class="panel-body ui-map" data-slim-scroll="" data-scroll-height="100px" style="overflow: scroll;  width: auto; height: 100px">
+                <div ng-repeat="callDetail in lead.callDetails">
+                <b>{{callDetail.calltime | datetime}}</b><br>
+                {{callDetail.rep}} spoke w/ {{callDetail.who}} - {{callDetail.disposition}} 
+
+                
+   
+                  <span data-ng-bind="callDetail.comments" class="pull-right"></span>
+                </div>
+            </div>
+          </div>
+
+
+          <div calss="panel-default">
+            <div class="panel-body">
+              <center>
+                <a class="btn btn-primary center" data-ng-click="dialLead();">
+                <span class="glyphicon glyphicon-earphone"></span>Call Customer</a>
+                <a class="btn btn-danger center" data-ng-click="dialLead();">
+                <span class="glyphicon glyphicon-earphone"></span>End Call</a>
+              </center>
+
+            </div>
+          </div>
+       
+
+        <div calss="panel-default">
+          <div class="panel-body">
+
+
+               <div class="form-inline form-group">
+
+                <div class="col-lg-6 col-xsm-6">
+                                     Who Answered?: 
+                      <input type="text" style="width: 60%;" class="form-control text-center" name="gatekeepername" ng-model="gatekeepername"></input>
+                </div>
+                <div class="col-lg-6 col-xsm-6 pull-right">
+                 
+                  Position: 
+                  <select ng-model="gatepos" style="width: 60%;" class="form-control text-center" name="gatekeeperposiiton" ng-options="position for position in positions"></select>
+
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-xsm-6">
+              <div class="form-group">
+                <label class="control-label" for="content">Comments:</label>
+                  <div class="comments">
+                    <textarea name="comments" data-ng-model="comments" id="comments" class="form-control"  style="width: 100%;" rows="5" placeholder="Call Comments"></textarea>
+                    
+                  </div>
+              </div>
+            </div>
+
+
+
+            <div class="col-lg-6 col-xsm-6">
+
+                <div class="form-group">
+
+
+                  <label class="control-label" for="content">
+                    Disposiiton:
+                  </label>
+                   <div class="field">
+                      <div class="form-inline form-group">
+                         Contact:
+                         <select ng-model="contpos" style="width: 30%;" class="form-control text-center pull-right" name="contactposiiton" ng-options="position for position in positions"></select>
+                          <input type="text" style="width: 40%;" class="form-control text-center pull-right" name="callDetailscontact" ng-model="callDetailscontact"></input>
+             
+               
+                      </div>
+                                    
+                    </div>
+<div class="clearfix"></div>
+                    <div class="field">
+                      <div class="form-inline form-group">
+                         Disposition: <select ng-model="disposition" ng-options="dispo for dispo in dispositions" style="width: 70%;" class="form-control text-center pull-right"></select>
+                      </div>
+                                    
+                    </div>
+                      <a ng-click="checkIt()">CheckIt</a>
+  <div class="field">
+                      <div class="form-inline form-group">
+                         Lead Status: {{lead.status}} <select ng-model="leadstatus" ng-options="status for status in statuses" style="width: 70%;" class="form-control text-center pull-right"></select>
+                      </div>
+                                    
+                    </div>
+                    </div>
+                </div>
+
+            <div class="col-lg-12 col-xsm-6">
+
+     
+           <center> <a class="btn btn-primary center" data-ng-click="saveLead();">
+       Save Lead
+            </a>
+            <a class="btn btn-primary center" data-ng-click="nextLead();">
+       Next Lead
+            </a>
+            </center>
+            </div>
+          </div>
+
+
+                           
+            </div>
+            </div>
+            </div>
+
+        <div class="col-lg-5">
+          <div class="panel panel-default">
+              <div class="panel-body">
+
+
+<center>
+<h3>Total Monthly: <span style="color: #ec5f3c">{{currentPrice|currency}}</span></h3>
+<h3>One-Time Fees: <span style="color: #ec5f3c">{{currentNRR|currency}} </span></h3>
+</center>
+
+
+              
+            
+            <div class="field">
+    <label class="form-text">DSL Speed:</label>
+
+    <select ng-model="dslspeed" ng-change="getQuote()" class="form-control text-center" style="width: 50%; float:right;" name="dsl_speed" id="dsl_speed" ng-options="speed.value for speed in mySpeeds"></select>
 
     </div>
+
               
-    <div class="clearfix"></div>   
+    <div class="clearfix"></div> 
+
+
             <div class="field">
-            <label class="form-text"># of Additional Lines:</label>
-            <input  ng-change="getQuote()" ng-model="price.adl" type="text-input" name="adl" id="adl" style="width: 50%; float:right;" class="text-input wpcf7-form-control wpcf7-text text-field" placeholder="?" />
+            <label class="form-text">Additional Lines:</label>
+            <input  ng-change="getQuote()" ng-model="price.adl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
           </div>
                               <div class="clearfix"></div> 
 
 
                 <div class="field">
             <label class="form-text">Term:<span id='myphoneError' style='display: none; color: red'>How Long of a Term?</span></label>
-          <select ng-change="getQuote()" ng-model="myterm" class="text-input wpcf7-form-control wpcf7-text text-field" style="width: 50%; float:right;" name='term' id='term' ng-options="myterm.name for myterm in myTerms"></select>
+          <select ng-change="getQuote()" ng-model="myterm" class="form-control text-center" style="width: 50%; float:right;" name='term' id='term' ng-options="myterm.name for myterm in myTerms"></select>
              </div>
               <div class="clearfix"></div>   
                   
@@ -427,13 +238,13 @@ Next Lead: <a class="btn btn-primary" data-ng-click="nextLead();">
 
             <label class="form-text">DSL Modem:<span id='myphoneError' style='display: none; color: red'>What about the modem?</span></label>
 
-           <select  ng-change="getQuote()" ng-model="mymodem" class="text-input wpcf7-form-control wpcf7-text text-field" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
+           <select  ng-change="getQuote()" ng-model="mymodem" class="form-control text-center" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
                   
                      <div class="clearfix"></div>
                   
                   <div class="field">
             <label class="form-text">Static IP:<span id='myphoneError' style='display: none; color: red'>What about Static IPs?</span></label>
-           <select  ng-change="getQuote()" ng-model="myip" class="text-input wpcf7-form-control wpcf7-text text-field" style="width: 50%; float:right;" name='staticIP' id='staticIP' ng-options="ipopts.value for ipopts in myIP">
+           <select  ng-change="getQuote()" ng-model="myip" class="form-control text-center" style="width: 50%; float:right;" name='staticIP' id='staticIP' ng-options="ipopts.value for ipopts in myIP">
             
                </select></div>
                   
@@ -442,61 +253,47 @@ Next Lead: <a class="btn btn-primary" data-ng-click="nextLead();">
                   
                         <div class="field">
                   <label class="form-text" for="telephone">Waive NRCs:</label>
-                  <select  ng-change="getQuote()" ng-model="nrc" class="text-input wpcf7-form-control wpcf7 text-field" style="width: 50%; float:right;" name="nrcs" id="nrcs" ng-options="nrcopt.value for nrcopt in myNRC"></select>
+                  <select  ng-change="getQuote()" ng-model="nrc" class="form-control text-center" style="width: 50%; float:right;" name="nrcs" id="nrcs" ng-options="nrcopt.value for nrcopt in myNRC"></select>
               </div>
                   
                    <div class="clearfix"></div> 
                         <div class="field">
                   <label class="form-text" for="telephone">Credits Issued:</label>
-                  <select  ng-change="getQuote()" ng-model="mycredits" class="text-input wpcf7-form-control wpcf7 text-field" style="width: 50%; float:right;" name="credits" id="credits" ng-options="creditopt.value for creditopt in myCredits">
+                  <select  ng-change="getQuote()" ng-model="mycredits" class="form-control text-center" style="width: 50%; float:right;" name="credits" id="credits" ng-options="creditopt.value for creditopt in myCredits">
                   </select>
               </div>
                   
               <div class="clearfix"></div> 
                   
-                 
-                     <div class="clearfix"></div> 
-                  
-        
-                
-     
-</div>
-
-
-                <div class="col-md-12"><center>
-                <br/><br/>
-                <input type="button" value="Show Company Info" ng-click="coInfo = 'true'" class="wpcf7-form-control wpcf7-submit submit-button" ng-show="!coInfo" ng-hide="coInfo"/>
-
-                
-
-
+                 <center>
+               
+                <input type="button" value="Show Company Info" ng-click="coInfo = 'true'" class="btn text-center submit-button" ng-show="!coInfo" ng-hide="coInfo"/>
 
                </center>
-            </div></div>
-                  <div class="clearfix"></div>   
+           
        <div ng-show="coInfo">
                           <center><h3><span style="color: #ec5f3c">Detail Info for Quote</span></h3></center>
                           <div class="field">
             <label class="form-text" for="companyname">Company Name:<span id='myconameError' style='display: none; color: red'>Company Name Cannot Be Blank</span></label>
-            <input ng-model="lead.companyname" type="text" style="width: 50%; float:right;" name="companyname" id="companyname" class="text-input wpcf7-form-control wpcf7-text text-field" required>
+            <input ng-model="lead.companyname" type="text" style="width: 50%; float:right;" name="companyname" id="companyname" class="form-control text-center"  required>
           </div><!--field-->
 <div class="clearfix"></div>    
                   
           <div class="form-text" class="field">
             <label for="name">Person Name:<span id='myNameError' style='display: none; color: red'>Name Cannot Be Blank</span></label>
-            <input ng-model="lead.contactname" type="text" style="width: 50%; float:right;" name="dmname" id="dmname" class="text-input wpcf7-form-control wpcf7-text text-field" required>
+            <input ng-model="lead.contactname" type="text" style="width: 50%; float:right;" name="dmname" id="dmname" class="form-control text-center"  required>
           </div><!--field-->
                   
           <div class="clearfix"></div>  
           <div class="field">
             <label class="form-text" for="email">Email:<span id='myemailError' style='display: none; color: red'>This Does Not Appear to Be Valid</span></label>
-            <input ng-model="lead.email" ng-blur="updateEmail()" type="email" style="width: 50%; float:right;" name="email" id="email" class="text-input wpcf7-form-control wpcf7-text text-field" required>
+            <input ng-model="lead.email" ng-blur="updateEmail()" type="email" style="width: 50%; float:right;" name="email" id="email" class="form-control text-center"  required>
           </div><!--field-->
           <div class="clearfix"></div>   
          
          <div class="field">
             <label class="form-text" for="telephone">Call Back Number:<span id='myphoneError' style='display: none; color: red'>Phone Number Cannot Be Blank</span></label>
-            <input ng-model="lead.telephone" type="text" style="width: 50%; float:right;" name="telephone" id="telephone" maxlength='10' placeholder='2125551111' class="phone wpcf7-form-control wpcf7-text text-field" />
+            <input ng-model="lead.telephone" type="text" style="width: 50%; float:right;" name="telephone" id="telephone" maxlength='10' placeholder='2125551111' class="form-control text-center"  />
           </div><!--field-->
                 
                 
@@ -504,19 +301,112 @@ Next Lead: <a class="btn btn-primary" data-ng-click="nextLead();">
                    <div class="clearfix"></div> 
                         <div class="field">
                   <label class="form-text" for="telephone">Send LOAs:</label>
-                  <select ng-model="loa"class="text-input wpcf7-form-control wpcf7 text-field" style="width: 50%; float:right;" name="sendloas" id="sendloas" ng-options="loa.name for loa in myLOA">
+                  <select ng-model="loa"class="form-control text-center"  style="width: 50%; float:right;" name="sendloas" id="sendloas" ng-options="loa.name for loa in myLOA">
                    
                   </select>
               </div>
                    <div class="clearfix"></div> 
-        <center>
-                     <input type="button" value="Hide Company Info" ng-click="coInfo = 'false'" class="wpcf7-form-control wpcf7-submit submit-button"/>
+        <center><br><br>
+                     <input type="button" value="Hide Company Info" ng-click="coInfo = 'false'" class="btn text-center submit-button"  />
                 
 
-              <input type="submit" id="price_it" value="Email Quote" class="wpcf7-form-control wpcf7-submit submit-button" />
+              <input type="submit" id="price_it" value="Email Quote" class="btn text-center submit-button" ng-click="makeQuote()">
 
 
                 </center>
              </div></div>
 
+
+
+
+
+</form>
+
+</div></div>
+
+<div class="col-lg-12">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                        <div class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> My Follow-Ups</strong></div>
+        <table class="table" data-ng-init="FLUPS()">
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Telephone</th>
+                    <th>Primary Contact</th>
+                    <th>Email</th>
+                    <th>Lead Status</th>
+                    <th>Next Contact Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="lead in myleads" >
+                
+                    <td><a data-ng-href="#!/leads/{{lead._id}}">{{lead.companyname}}</a></td>
+                    <td>{{lead.telephone}}</td>
+                    <td>{{lead.contactname}}</td>
+                    <td>{{lead.email}}</td>
+                    <td>{{lead.status}}</td>
+                    <td>{{lead.address}}</td>
+                    <td></td>
+                    </a>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div></div></div>
+
+ <div class="col-lg-12">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                        <div class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> My Deals</strong></div>
+        <table class="table">
+            <thead>
+                <tr>
+                   
+                    <th>Deal Name</th>
+                    <th>Status</th>
+                    <th>Project Manager</th>
+                    <th>Progress</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2</td>
+                    <td><span class="color-success"><i class="fa fa-level-up"></i></span> A16Z</td>
+                    <td><span class="label label-primary">Due</span></td>
+                    <td>Romayne Carlyn</td>
+                    <td><progressbar class="progressbar-xs no-margin" value="34" type="success"></progressbar></td>
+                </tr>
+                <tr>
+                
+                    <td><span class="color-success"><i class="fa fa-level-up"></i></span> A16Z</td>
+                    <td><span class="label label-primary">Due</span></td>
+                    <td>Romayne Carlyn</td>
+                    <td><progressbar class="progressbar-xs no-margin" value="34" type="success"></progressbar></td>
+                </tr>
+              
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div></div></div>
+
+
+
     
+
+</div>
+  

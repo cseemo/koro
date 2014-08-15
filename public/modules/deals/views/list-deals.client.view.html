@@ -1,0 +1,22 @@
+<section data-ng-controller="DealsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Deals</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="deal in deals" data-ng-href="#!/deals/{{deal._id}}" class="list-group-item">
+         <span class="pull-right" data-ng-bind="deal.stage"></span>
+        
+			<small class="list-group-item-text">
+				Converted to Deal On 
+				<span data-ng-bind="deal.converted | date:'medium'"></span>
+				by
+				<span data-ng-bind="deal.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="deal.companyname"></h4>
+
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!deals.$resolved || deals.length">
+    	No Deals yet, why don't you <a href="/#!/deals/create">create one</a>?
+    </div>
+</section>

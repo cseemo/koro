@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	Lead = mongoose.model('Lead'),
 	Call = mongoose.model('Call'),
+	Deal = mongoose.model('Deal'),
 	_ = require('lodash');
 
 /**
@@ -206,13 +207,13 @@ console.log('DSL '+dslPrice);
 var staticIPcost = staticIP.toFixed(2);
 var currentPrice = parseInt(dslPrice)+parseInt(adlPrice)+parseFloat(staticIPcost)+modemCostM;
 
-console.log('NRR Stuff: '+adlcostN+' -- Modem: '+modemCostN);
+//console.log('NRR Stuff: '+adlcostN+' -- Modem: '+modemCostN);
 
 
 var nrrCost = parseInt(adlcostN)+parseFloat(modemCostN);
 
-console.log('NRR Cost: '+nrrCost);
-console.log('Current Price'+currentPrice);
+//console.log('NRR Cost: '+nrrCost);
+//console.log('Current Price'+currentPrice);
 	// Return our object to the front end
 	res.send({ price: currentPrice, nrr: nrrCost });
 };
@@ -220,19 +221,47 @@ console.log('Current Price'+currentPrice);
 
 
 
-exports.oldestFirst = function(req, res) { Lead.findOne({user: null}).sort('lastCalled').populate('user', 'displayName').exec(function(err, lead) {
+exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exec(function(err, lead) {
+			if (err) {
+			return res.status(400).send({
+				message: 'Error Getting Leads - exports.OldestFirst'
+			});
+		} else {
+			lead.user = req.user;
+			lead.assignedRep = req.user.displayName;
+				lead.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
-			lead.user = req.user;
-			lead.save();
+			//console.log('Lead to Be Sent %o', lead);
 			res.jsonp(lead);
+		}
+
+			});
+			}
+		});
+};
+
+
+exports.createDeal = function(req, res) {
+	var deal = new Deal(req.body);
+	console.log('CreateDeal: %o', deal);
+	deal.user = req.user;
+
+	deal.save(function(err, callback) {
+		if (err) {
+			console.log('Error!! %o', err);
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			console.log('createDeal Passing: %o',callback);
+			res.jsonp(deal);
 		}
 	});
 };
-
 
 
 
@@ -252,12 +281,49 @@ exports.create = function(req, res) {
 	});
 };
 
+//Get Pie Chart Data for Leads Screen
+exports.getLeadData = function(req, res) {
+
+var mystuff = ['15','23','30'];
+console.log('mystuff %o',mystuff);
+	res.jsonp(mystuff);
+
+
+};
+
+
+exports.showDeal = function(req, res) {
+		//console.log('Deal Data: %o',req.deal);
+
+			res.jsonp(req.deal);
+	
+};
 /**
  * Show the current Lead
  */
 exports.read = function(req, res) {
-	res.jsonp(req.lead);
+		//console.log('Lead Data: %o',req.lead);
+//console.log('User Data: %o',req.user);
+
+	if(req.lead.user===null){
+		//console.log('USER NULL !!!!  %o',req.user);
+
+	req.lead.user = req.user;
+	req.lead.assignedRep = req.user.displayName;
+	}
+	//console.log('Lead Data: %o',lead);
+	req.lead.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			//console.log('Lead Data: %o',req.lead);
+			res.jsonp(req.lead);
+		}
+	});
 };
+
 
 
 /**
@@ -267,7 +333,7 @@ exports.update = function(req, res) {
 
 
 	var lead = req.lead ;
-console.log('Lead %o',lead);
+//console.log('Lead %o',lead);
 //console.log('REQ',req);
 lead = _.extend(lead , req.body);
 
@@ -281,6 +347,30 @@ lead = _.extend(lead , req.body);
 		}
 	});
 };
+
+/**
+ * Update a Deal
+ */
+exports.updateDeal = function(req, res) {
+console.log('REQ.deal %o',req.deal);
+
+	var deal = req.deal ;
+//console.log('Lead %o',lead);
+//console.log('REQ',req);
+deal = _.extend(deal , req.body);
+
+	deal.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(deal);
+		}
+	});
+};
+
+
 
 /**
  * Delete an Lead
@@ -299,19 +389,54 @@ exports.delete = function(req, res) {
 	});
 };
 
-/**
- * List of Leads
- */
-exports.list = function(req, res) { Lead.find().sort('-lastCalled').populate('user', 'displayName').exec(function(err, leads) {
+//Get Follow-Ups/Proposals
+exports.getFLUP = function(req, res) { Lead.find({$or: [ 
+	{status: 'Follow-Up'},
+	{status: 'Proposed'}
+
+	]}).where({user: req.user.id}).sort('-lastCalled').limit(50).exec(function(err, leads) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
+			//console.log('leads %o',leads);
 			res.jsonp(leads);
 		}
 	});
 };
+/**
+ * List of Leads
+ */
+exports.list = function(req, res) { Lead.find({$or: [ 
+	{user: req.user.id},
+	{assignedRep: null}
+
+	]}).sort('-lastCalled').limit(50).exec(function(err, leads) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			//console.log('leads %o',leads);
+			res.jsonp(leads);
+		}
+	});
+};
+
+exports.listdeals = function(req, res) { Deal.find().sort('-converted').limit(500).exec(function(err, deals) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			//console.log('leads %o',leads);
+			res.jsonp(deals);
+		}
+	});
+};
+
+
 
 exports.listbyRep = function(req, res) { Lead.find({user: req.user.id}).sort('-lastCalled').populate('user', 'displayName').exec(function(err, leads) {
 		if (err) {
@@ -323,6 +448,16 @@ exports.listbyRep = function(req, res) { Lead.find({user: req.user.id}).sort('-l
 		}
 	});
 };
+
+
+exports.dealByID = function(req, res, next, id) { Deal.findById(id).populate('user', 'displayName').exec(function(err, deal) {
+		if (err) return next(err);
+		if (! deal) return next(new Error('Failed to load Deal ' + id));
+		req.deal = deal ;
+		next();
+	});
+};
+
 
 /**
  * Lead middleware

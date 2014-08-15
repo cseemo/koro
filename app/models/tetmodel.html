@@ -1,0 +1,236 @@
+'use strict';
+
+/**
+ * Module dependencies.
+ */
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema;
+
+/**
+ * Calls Schema
+ */
+var CallSchema = new Schema({
+	
+	calltime: {
+		type: Date,
+		default: Date.now
+	},
+	comments: {
+		type: String,
+		default: ''
+	},
+	rep: {
+		type: String,
+		default: ''
+	},
+	who: {
+		type: String,
+		default: ''
+	},
+	disposition: {
+		type: String,
+		default: ''
+	}
+
+});
+mongoose.model('Call', CallSchema, 'leads');
+
+
+/**
+ * Lead Schema
+ */
+var LeadSchema = new Schema({
+	companyname: {
+		type: String,
+		default: '',
+		required: 'Please fill in Company Name',
+		trim: true
+	},
+	callDetails: [CallSchema.schema],
+	email: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	contactname: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	telephone: {
+		type: String,
+		default: '602-555-1212',
+		trim: true
+	},
+	address: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	city: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	state: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	zipcode: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	lastCalled: {
+		type: Date,
+		default: '2001/01/01',
+		trim: true
+	},
+	assigned: {
+		type: Date,
+		default: '2001/01/01',
+		trim: true
+	},
+	campaign: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	FLUPDate: {
+		type: Date,
+		default: '',
+		trim: true
+	},
+	speed: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	currentCarrier: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	status: {
+		type: String,
+		default:'Lead'
+	},
+	created: {
+		type: Date,
+		default: Date.now
+	},
+	assignedRep: {
+		type: String,
+		default: null
+	},
+	user: {
+		type: Schema.ObjectId,
+		ref: 'User'
+	}
+});
+
+
+
+mongoose.model('Lead', LeadSchema, 'leads');
+
+
+/**
+ * Credit Info Schema
+ */
+var CreditInfoSchema = new Schema({
+	
+	billingcontact: {
+		type: Date,
+		default: null
+	},
+	billingemail: {
+		type: String,
+		default: ''
+	},
+	taxid: {
+		type: String,
+		default: ''
+	},
+	website: {
+		type: String,
+		default: ''
+	},
+	billingaddress: {
+		type: String,
+		default: ''
+	},
+	billingcity: {
+		type: String,
+		default: ''
+	},
+	billingstate: {
+		type: String,
+		default: ''
+	},
+	billingzipcode: {
+		type: String,
+		default: ''
+	}
+
+});
+mongoose.model('CreditInfo', CreditInfoSchema, 'leads');
+
+
+
+
+var ProjectSchema = new Schema({
+
+	notes: {
+		type: String,
+		default: ''
+	},
+	projectmanager: {
+		type: String,
+		default: 'Nobody Yet'
+	}
+	
+
+	});
+mongoose.model('Project', ProjectSchema, 'leads');
+
+
+var LineDetailSchema = new Schema({
+
+number: {
+		type: String,
+		default: null
+	},
+	type: {
+		type: String,
+		default: ''
+	},
+	hunting: {
+		type: String,
+		default: ''
+	},
+	features: {
+		type: String,
+		default: ''
+	}
+
+	});
+mongoose.model('LineDetail', LineDetailSchema, 'leads');
+
+
+var DealSchema = new Schema({
+	lead: [LeadSchema.schema],
+	project: [ProjectSchema.schema],
+	converted: {
+		type: Date,
+		default: Date.now()
+	},
+	stage: {
+		type: String,
+		default: 'Pending Assignment'
+	}
+
+	});
+mongoose.model('Deal', DealSchema, 'leads');
+
+
