@@ -19,6 +19,7 @@ $scope.clockIn= function(type) {
 				case 'break': 
 			window.alert("You have been clocked-in for break at "+Date.now());
 			$cookieStore.put('breakEnd', Date.now());
+			
 			break;
 
 			case 'lunch': 

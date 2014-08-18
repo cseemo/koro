@@ -41,7 +41,7 @@ console.log('Lead Info To Populate %o',lead);
 	assignedRep: lead.assignedRep,
 	user: lead.user,
 	term: 	lead.term,
-		dslspeed: dslspeed,
+	dslspeed: dslspeed,
 	adl: 		lead.adl,
 		modem: 	lead.modem,
 		waivenrcs:	lead.waivenrcs,
@@ -530,7 +530,7 @@ console.log(data);
 angular.module('leads').filter('datetime', function($filter)
 {
 return function(input){
-	if(input == null){return ""; }
+	if(input === null){return ""; }
 
 	var _date = $filter('date')(new Date(input),
 		'EEE MMM d @ hh:mm a');

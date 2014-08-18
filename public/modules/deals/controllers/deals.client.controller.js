@@ -65,14 +65,19 @@ $scope.myLOA = [
 ];
 
 $scope.mymodem = $scope.myModem[0];
-console.log('Right Here fuckface %o ', $scope);
-$scope.dslspeed = $scope.chadsspeed;
 $scope.myterm = $scope.myTerms[2];
 $scope.nrc = $scope.myNRC[1];
 $scope.mycredits = $scope.myCredits[0];
 $scope.myip= $scope.myIP[0];
 $scope.loa= $scope.myLOA[0];
 
+
+
+$scope.dslspeed = function(){
+console.log('This : %o',this);
+
+return $scope.deal.dslspeed;
+};
 
 
 		// Create new Deal
@@ -153,7 +158,7 @@ console.log('Dealcontroller Deal: %o',deal);
 			$scope.deal = Deals.get({ 
 				dealId: $stateParams.dealId
 			});
-			$scope.dslspeed = $scope.deal.dslspeed;
+
 		};
 	}
 ]);

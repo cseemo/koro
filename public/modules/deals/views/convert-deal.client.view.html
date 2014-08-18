@@ -92,7 +92,7 @@
 
     <div class="col-lg-6 col-xsm-6">
      <div class="panel panel-primary">
-            <div class="panel-body">
+            <div class="panel-body" ng-init="dslspeed()">
 
     <h2>Services Ordered</h2>
 
@@ -100,8 +100,8 @@
             
             <div class="field">
     <label class="form-text">DSL Speed:</label>
-
-    <select ng-model="mySpeeds" ng-value="deal.dslspeed" class="form-control text-center" style="width: 50%; float:right;" ng-options="speed.value for speed in mySpeeds track by speed.value"></select>
+      DSL SPeed: {{deal.dslspeed}}
+    <select ng-model="dslspeed" name="dslspeed" dslspeed="chosenspeed" ng-value="dslspeed" class="form-control text-center" style="width: 50%; float:right;" ng-options="speed.value for speed in mySpeeds track by speed.value"></select>
 
     </div>
 
