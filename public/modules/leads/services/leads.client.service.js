@@ -7,6 +7,10 @@ angular.module('leads').factory('Leads', ['$resource',
 		}, {
 			update: {
 				method: 'PUT'
+			},
+			getLeadsTypes: {
+				method: 'GET',
+				url: '/leads/stats/types'
 			}
 		});
 	}

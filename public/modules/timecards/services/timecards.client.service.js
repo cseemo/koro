@@ -7,6 +7,10 @@ angular.module('timecards').factory('Timecards', ['$resource',
 		}, {
 			update: {
 				method: 'PUT'
+			},
+			getDaily: {
+				method: 'GET',
+				url: '/timecards/byday'
 			}
 		});
 	}

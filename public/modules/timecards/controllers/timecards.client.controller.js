@@ -42,6 +42,11 @@ window.alert('ClockOut')
 
 
 };
+
+		$scope.getByDay = function() {
+			var timecard = Timecards.getDaily();
+		}();
+
 		// Create new Timecard
 		$scope.create = function() {
 

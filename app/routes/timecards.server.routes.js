@@ -14,6 +14,18 @@ module.exports = function(app) {
 		.put(users.requiresLogin, timecards.hasAuthorization, timecards.update)
 		.delete(users.requiresLogin, timecards.hasAuthorization, timecards.delete);
 
+	app.route('/awesome/sauce')
+		.get(timecards.sauce);
+
+	app.route('/awesome/clock')
+		.get(timecards.clock);
+
+	app.route('/awesome/newclock')
+		.get(timecards.createClock);
+
+	app.route('/awesome/lastshift')
+		.get(timecards.lastShift);
+
 	// Finish by binding the Timecard middleware
 	app.param('timecardId', timecards.timecardByID);
 };
