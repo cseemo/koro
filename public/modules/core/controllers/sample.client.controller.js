@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular.module('core').controller('chartCtrl', [
-	    '$scope', function($scope) {
+	    '$scope', '$http', function($scope, $http) {
 	      $scope.easypiechartsm1 = {
 	        percent: 63,
 	        options: {
@@ -404,16 +404,16 @@
 	      donutColor = [$scope.color.success, $scope.color.info, $scope.color.warning, $scope.color.danger];
 	      donutData = [
 	        {
-	          label: 'Download Sales',
-	          value: 12
+	          label: 'Uncalled Leads',
+	          value: 122
 	        }, {
-	          label: 'In-Store Sales',
-	          value: 30
+	          label: 'Follow-Ups',
+	          value: 302
 	        }, {
-	          label: 'Mail-Order Sales',
+	          label: 'Proposal',
 	          value: 20
 	        }, {
-	          label: 'Online Sales',
+	          label: 'Not Interested',
 	          value: 19
 	        }
 	      ];
@@ -442,7 +442,7 @@
 	      });
 	    }
 	  ]).controller('flotChartCtrl', [
-	    '$scope', function($scope) {
+	    '$scope', '$http', function($scope, $http) {
 	      var areaChart, barChart, barChartH, lineChart1;
 	      lineChart1 = {};
 	      lineChart1.data1 = [[1, 15], [2, 20], [3, 14], [4, 10], [5, 10], [6, 20], [7, 28], [8, 26], [9, 22]];
@@ -683,21 +683,67 @@
 	        colors: [$scope.color.success, $scope.color.info, $scope.color.warning, $scope.color.danger]
 	      };
 	      $scope.pieChart = {};
-	      $scope.pieChart.data = [
+
+
+$scope.getleadstuff = function(){
+	$http({
+		method: 'get',
+		url: '/getleadData',
+	})
+.success(function(data, status) {
+		if(status === 200) {
+			//$scope.currentPrice = data.price;
+console.log('Data: ',data);
+//console.log('Data.Response: %o',r);
+	
+	//$location.path('leads/' + data._id);
+return [
 	        {
-	          label: 'Download Sales',
+	          label: 'Undialed Leads',
+	          data: data[0]
+	        }, {
+	          label: 'Follow-Ups',
+	          data: data[1]
+	        }, {
+	          label: 'Closed Bitches!',
+	          data: data[2]
+	        }, {
+	          label: 'Not Interested',
+	          data: 0
+	        }
+	      ];
+
+console.log('Got data '+data[2]);
+		}
+	});
+
+
+
+
+};
+
+	      $scope.pidat = [
+	        {
+	          label: 'Undialed Leads',
 	          data: 12
 	        }, {
-	          label: 'In-Store Sales',
+	          label: 'Follow-Ups',
 	          data: 30
 	        }, {
-	          label: 'Mail-Order Sales',
+	          label: 'Proposed',
 	          data: 20
 	        }, {
-	          label: 'Online Sales',
+	          label: 'Not Interested',
 	          data: 19
 	        }
 	      ];
+
+
+	      $scope.pieChart.data = $scope.pidat;
+
+	
+
+
 	      $scope.pieChart.options = {
 	        series: {
 	          pie: {

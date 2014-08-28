@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	Lead = mongoose.model('Lead'),
 	Call = mongoose.model('Call'),
+	Deal = mongoose.model('Deal'),
 	_ = require('lodash');
 
 /**
@@ -30,6 +31,111 @@ var getErrorMessage = function(err) {
 	}
 
 	return message;
+};
+
+/*
+ * Qwest loop qualification check
+ */
+exports.getQwestLoop = function(req, res) {
+
+	var request = require('request');
+	var address = req.params.address;
+	var findCookies = function(cookies) {
+		var cookieBuffer = '';
+		for(var cookie in cookies) {
+			
+			cookieBuffer += cookies[cookie].split(';')[0] +'; ';
+		}
+		return cookieBuffer;
+	};
+
+	var checkAddress = function(id, cookies, callback) {
+		request.post({
+			url: 'https://shop.centurylink.com/MasterWebPortal/freeRange/smb/shopjumpin.action', 
+			headers: {
+				'Cookie': cookies + ' remember_me=addressID%7C'+id+'; profile_cookie=redirectTarget%7Chttps%3A%2F%2Fshop.centurylink.com%2Fsmall-business%2Fproducts%2Fbundles%2F~redirectTargetQ%7Chttps%3A%2F%2Fshop.centurylink.com%2FMasterWebPortal%2FfreeRange%2Fshop%2FSMBNCBundle.action%3FselectedProd%3Dcc~redirectTargetCTL%7Chttps%3A%2F%2Fshop.centurylink.com%2Fsmallbusiness%2Fproducts%2Fbundles%2Fcore-connect%2F; '
+			}
+
+		}, callback);
+	}
+
+	var b = request('https://shop.centurylink.com/small-business/', function(err, response, body) {
+		if(err) {
+			console.log('err? ', err);
+		}
+
+		for(var cookie in response.headers['set-cookie']) {
+			if(response.headers['set-cookie'][cookie].match(/TCAT_JSESSIONID/g)) {
+				
+				var currentCookie = response.headers['set-cookie'][cookie].split(';');
+				for(var c in currentCookie) {
+					if(currentCookie[c].match(/TCAT_JSESSIONID/g)) {
+						
+						var tcat = currentCookie[c].split('=')[1];
+
+						console.log('Session %s started\nAttempting to search for addressid: %s', tcat, address);
+						checkAddress(address, findCookies(response.headers['set-cookie']), function(err, response, body) {
+							var re = /addressid2.{9}(.*)" /g;
+							var matches = re.exec(body);
+							var awesome = function(cookies) {
+								request({
+									url: 'https://shop.centurylink.com/MasterWebPortal/freeRange/smb/SMBDisplay.action',
+									headers: {
+										'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+										Referer: 'https://shop.centurylink.com/MasterWebPortal/freeRange/smb/shopjumpin.action',
+										'Cookie': cookies
+										
+									}
+								}, function(err, response, body) {
+									var results = [];
+									var re = /DisplayProduct:.*Internet ([0-9\.]+)([a-zA-Z]).*[\/]([0-9]+)([a-zA-Z]).*ps/g;
+									var m;
+									var index = body.search('End ProductConfiguration');
+									if(index > -1) {
+										console.log('Found index at: %d original size is: %d', index, body.length);
+										body = body.substring(0, index);
+										
+									}
+									while (m = re.exec(body)) {
+										
+										if (m.index === re.lastIndex) {
+											re.lastIndex++;
+										}
+										
+										results.push({
+											name: m[1] + '.' + m[3],
+											value: m[1] + m[2] + 'bps/' + m[3] + m[4] + 'bps',
+											svalue: m[1] + m[2] + '/' + m[3] + m[4],
+											download: m[1],
+											downloadRate: m[2],
+											upload: m[3],
+											uploadRate: m[4]
+										});
+									}
+
+									console.log(results);
+									res.send({speeds: results});
+									return true;
+								});
+							};
+
+							if(matches) {
+
+								console.log('Found multi unit address re-quering server for primary unit number (%s)', matches[1].split('|')[2]);
+								checkAddress(address+'~geoSecId%7C' + matches[1].split('|')[2], findCookies(response.headers['set-cookie']), function(err, response, body) {
+									awesome(response.headers['set-cookie']);
+								});
+							} else {
+								console.log('no mismatch found, fetching bandwidth availability');
+								awesome(findCookies(response.headers['set-cookie']) + ' TCAT_JSESSIONID='+tcat+'; ');
+							}
+						});
+						
+					}
+				}
+			}
+		}
+	});
 };
 
 //Test Posting our Form Data to PHP File to render PDF
@@ -206,13 +312,13 @@ console.log('DSL '+dslPrice);
 var staticIPcost = staticIP.toFixed(2);
 var currentPrice = parseInt(dslPrice)+parseInt(adlPrice)+parseFloat(staticIPcost)+modemCostM;
 
-console.log('NRR Stuff: '+adlcostN+' -- Modem: '+modemCostN);
+//console.log('NRR Stuff: '+adlcostN+' -- Modem: '+modemCostN);
 
 
 var nrrCost = parseInt(adlcostN)+parseFloat(modemCostN);
 
-console.log('NRR Cost: '+nrrCost);
-console.log('Current Price'+currentPrice);
+//console.log('NRR Cost: '+nrrCost);
+//console.log('Current Price'+currentPrice);
 	// Return our object to the front end
 	res.send({ price: currentPrice, nrr: nrrCost });
 };
@@ -220,19 +326,47 @@ console.log('Current Price'+currentPrice);
 
 
 
-exports.oldestFirst = function(req, res) { Lead.findOne({user: null}).sort('lastCalled').populate('user', 'displayName').exec(function(err, lead) {
+exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exec(function(err, lead) {
+			if (err) {
+			return res.status(400).send({
+				message: 'Error Getting Leads - exports.OldestFirst'
+			});
+		} else {
+			lead.user = req.user;
+			lead.assignedRep = req.user.displayName;
+				lead.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
-			lead.user = req.user;
-			lead.save();
+			//console.log('Lead to Be Sent %o', lead);
 			res.jsonp(lead);
+		}
+
+			});
+			}
+		});
+};
+
+
+exports.createDeal = function(req, res) {
+	var deal = new Deal(req.body);
+	console.log('CreateDeal: %o', deal);
+	deal.user = req.user;
+
+	deal.save(function(err, callback) {
+		if (err) {
+			console.log('Error!! %o', err);
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			console.log('createDeal Passing: %o',callback);
+			res.jsonp(deal);
 		}
 	});
 };
-
 
 
 
@@ -252,12 +386,50 @@ exports.create = function(req, res) {
 	});
 };
 
+//Get Pie Chart Data for Leads Screen
+exports.getLeadData = function(req, res) {
+
+var mystuff = ['15','23','30'];
+console.log('mystuff %o',mystuff);
+	res.jsonp(mystuff);
+
+
+};
+
+
+exports.showDeal = function(req, res) {
+		//console.log('Deal Data: %o',req.deal);
+
+			res.jsonp(req.deal);
+	
+};
+
 /**
  * Show the current Lead
  */
 exports.read = function(req, res) {
-	res.jsonp(req.lead);
+		//console.log('Lead Data: %o',req.lead);
+//console.log('User Data: %o',req.user);
+
+	if(req.lead.user===null){
+		//console.log('USER NULL !!!!  %o',req.user);
+
+	req.lead.user = req.user;
+	req.lead.assignedRep = req.user.displayName;
+	}
+	//console.log('Lead Data: %o',lead);
+	req.lead.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			//console.log('Lead Data: %o',req.lead);
+			res.jsonp(req.lead);
+		}
+	});
 };
+
 
 
 /**
@@ -267,7 +439,7 @@ exports.update = function(req, res) {
 
 
 	var lead = req.lead ;
-console.log('Lead %o',lead);
+//console.log('Lead %o',lead);
 //console.log('REQ',req);
 lead = _.extend(lead , req.body);
 
@@ -281,6 +453,30 @@ lead = _.extend(lead , req.body);
 		}
 	});
 };
+
+/**
+ * Update a Deal
+ */
+exports.updateDeal = function(req, res) {
+console.log('REQ.deal %o',req.deal);
+
+	var deal = req.deal ;
+//console.log('Lead %o',lead);
+//console.log('REQ',req);
+deal = _.extend(deal , req.body);
+
+	deal.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(deal);
+		}
+	});
+};
+
+
 
 /**
  * Delete an Lead
@@ -299,19 +495,70 @@ exports.delete = function(req, res) {
 	});
 };
 
-/**
- * List of Leads
- */
-exports.list = function(req, res) { Lead.find().sort('-lastCalled').populate('user', 'displayName').exec(function(err, leads) {
+//Get Follow-Ups/Proposals
+exports.getFLUP = function(req, res) { Lead.find({$or: [ 
+	{status: 'Follow-Up'},
+	{status: 'Proposed'}
+
+	]}).where({user: req.user.id}).sort('-lastCalled').limit(50).exec(function(err, leads) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
+			//console.log('leads %o',leads);
 			res.jsonp(leads);
 		}
 	});
 };
+
+//Get Deals
+exports.getDEALS = function(req, res) { Deal.find().where({user: req.user.id}).sort('-converted').limit(50).exec(function(err, deals) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			console.log('Deals: %o', deals);
+			//console.log('leads %o',leads);
+			res.jsonp(deals);
+		}
+	});
+};
+
+
+/**
+ * List of Leads
+ */
+exports.list = function(req, res) { Lead.find({$or: [ 
+	{user: req.user.id},
+	{assignedRep: null}
+
+	]}).sort('-lastCalled').limit(50).exec(function(err, leads) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			//console.log('leads %o',leads);
+			res.jsonp(leads);
+		}
+	});
+};
+
+exports.listdeals = function(req, res) { Deal.find().sort('-converted').limit(500).exec(function(err, deals) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			//console.log('leads %o',leads);
+			res.jsonp(deals);
+		}
+	});
+};
+
+
 
 exports.listbyRep = function(req, res) { Lead.find({user: req.user.id}).sort('-lastCalled').populate('user', 'displayName').exec(function(err, leads) {
 		if (err) {
@@ -323,6 +570,16 @@ exports.listbyRep = function(req, res) { Lead.find({user: req.user.id}).sort('-l
 		}
 	});
 };
+
+
+exports.dealByID = function(req, res, next, id) { Deal.findById(id).populate('user', 'displayName').exec(function(err, deal) {
+		if (err) return next(err);
+		if (! deal) return next(new Error('Failed to load Deal ' + id));
+		req.deal = deal ;
+		next();
+	});
+};
+
 
 /**
  * Lead middleware

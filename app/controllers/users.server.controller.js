@@ -8,6 +8,19 @@ var mongoose = require('mongoose'),
 	User = mongoose.model('User'),
 	_ = require('lodash');
 
+
+exports.list = function(req, res) { User.find().exec(function(err, users) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(users);
+		}
+	});
+};
+
+
 /**
  * Get the error message from error object
  */

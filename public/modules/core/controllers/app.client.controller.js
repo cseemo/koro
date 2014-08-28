@@ -25,7 +25,7 @@
           ];
           $scope.admin = {
             layout: 'wide',
-            menu: 'vertical',
+            menu: 'horizontal',
             fixedHeader: true,
             fixedSidebar: false,
             pageTransition: $scope.pageTransitionOpts[0]
@@ -64,5 +64,18 @@
     }
   ]).controller('HeaderCtrl', ['$scope', function($scope) {}]).
     controller('NavContainerCtrl', ['$scope', function($scope) {}]).
-    controller('DashboardCtrl', ['$scope', function($scope) {}]);
+    controller('DashboardCtrl', ['$scope', 'Leads', function($scope, Leads) {
+
+        $scope.myleads = 5;
+   
+$scope.getLead = function(){
+$scope.myleads = 'working';
+
+  console.log('Myscope',$scope);
+};
+
+
+
+
+    }]);
 })();

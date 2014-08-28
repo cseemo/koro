@@ -61,55 +61,7 @@
                     <input type="text" class="form-control" placeholder="Search...">
                 </div>
             </li>
-            <li class="dropdown">
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="badge badge-danger">3</span>
-                </a>
-                <div class="dropdown-menu with-arrow panel panel-dark">
-                    <div class="panel-heading">
-                        You have 3 mails.
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <a href="javascript:;" class="media">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-warning"><i class="fa fa-envelope-o"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">Lisa sent you a mail</span>
-                                    <span class="text-muted block">2min ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="javascript:;" class="media">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-envelope-o"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">Jane sent you a mail</span>
-                                    <span class="text-muted">3 hours ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="javascript:;" class="media">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-success"><i class="fa fa-envelope-o"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">Lynda sent you a mail</span>
-                                    <span class="text-muted">9 hours ago</span>
-                                </div>
-                            </a>
-                        </li>                       
-                    </ul>
-                    <div class="panel-footer">
-                        <a href="#/mail/inbox">Show all mails.</a>
-                    </div>
-                </div>
-            </li>
+
             <li class="dropdown">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-bell-o"></i>
@@ -159,10 +111,80 @@
                     </div>
                 </div>
             </li>
-        </ul> 
+             </ul> 
 
         <ul class="nav-right pull-right list-unstyled">
 
+
+            <li class="dropdown">
+            
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-clock-o"></i>
+                     <span class="label label-info" style="font-size: 8px;">{{clockedInVal}}</span>
+
+                </a>
+                <div class="dropdown-menu with-arrow panel panel-dark" >
+                    <div class="panel-heading" >
+                        Manage Your Timeclock
+                    </div>
+                    <ul class="list-group" ng-hide="clockedIn">
+                        <li class="list-group-item">
+                            <a href="javascript:;"  ng-click="clockIn('shift')" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-coffee"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Clock In</span>
+                                   
+                                </div>
+                            </a>
+                        </li>
+                       
+                                           
+                    </ul>
+                
+                    <ul class="list-group" ng-show="clockedIn">
+                        <li class="list-group-item">
+                            <a href="javascript:;"  ng-click="clockOut('break')" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-coffee"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Clock out for Break</span>
+                                   
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="javascript:;" class="media" ng-click="clockOut('lunch')">
+                                <span class="pull-left media-icon">
+                                    <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-cutlery"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Clock-Out for Lunch</span>
+                               
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="javascript:;" class="media" ng-click="clockOut('shift')">
+                                <span class="pull-left media-icon">
+                                    <span class="btn-icon-lined btn-icon-round btn-success"><i class="fa fa-home"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Clock-Out</span>
+                                   
+                                </div>
+                            </a>
+                        </li>                       
+                    </ul>
+                    <div class="panel-footer">
+                        <a href="#!/timecards">View My Timecard</a>
+
+                    </div>
+                </div>
+            </li>
+       
             <li class="dropdown text-normal nav-profile">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                     <img src="/modules/core/images/g1.jpg" alt="" class="img-circle img30_30">

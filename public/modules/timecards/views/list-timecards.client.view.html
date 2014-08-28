@@ -1,0 +1,21 @@
+<section data-ng-controller="TimecardsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Timecards</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="timecard in timecards" data-ng-href="#!/timecards/{{timecard._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="timecard.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="timecard.user.displayName"></span>
+                <span>{{timecard.start | date:'medium'}} -- {{timecard.end | date:'medium'}}</span>
+                <span>- - - {{timecard.Difference}}seconds</span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="timecard.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!timecards.$resolved || timecards.length">
+    	No Timecards yet, why don't you <a href="/#!/timecards/create">create one</a>?
+    </div>
+</section>
