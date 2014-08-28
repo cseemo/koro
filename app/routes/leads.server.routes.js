@@ -30,6 +30,10 @@ module.exports = function(app) {
 		app.route('/getleadData')
 		.get(leads.getLeadData);
 
+	app.route('/qwest/check/:address')
+		.get(leads.getQwestLoop);
+		//.get(leads.qwestLoopQual);
+
 		
 	// Finish by binding the Lead middleware
 	app.param('leadId', leads.leadByID);

@@ -241,6 +241,8 @@
 <center>
 <h3>Total Monthly: <span style="color: #ec5f3c">{{currentPrice|currency}}</span></h3>
 <h3>One-Time Fees: <span style="color: #ec5f3c">{{currentNRR|currency}} </span></h3>
+<p data-ng-show="qwestCheckingService">Verifying address for Centurylink service <i class="fa fa-cog fa-spin"></i></p>
+<p data-ng-show="!qwestValidService && !qwestCheckingService">Unable to verify address for Centurylink service</p>
 </center>
 
 

@@ -150,6 +150,25 @@ $scope.mySpeeds = [
 {name: '100.12', value: '100Mbps/12Mbps',svalue: '100M/12M'},
 ];
 
+$scope.defaultSpeeds = [
+{name: '1.5', value: '1.5Mbps/896Kbps',svalue: '1.5M/896K'},
+{name: '3.0', value: '3Mbps/896Kbps',svalue: '3M/896K'},
+{name: '7.0', value: '7Mbps/896Kbps',svalue: '7M/896K'},
+{name: '7.2', value: '7Mbps/2Mbps',svalue: '7M/2M'},
+{name: '7.5', value: '7Mbps/5Mbps',svalue: '7M/5M'},
+{name: '12.0', value: '12Mbps/896Kbps',svalue: '12M/896K'},
+{name: '12.2', value: '12Mbps/2Mbps',svalue: '12M/2M'},
+{name: '12.5', value: '12Mbps/5Mbps',svalue: '12M/5M'},
+{name: '20.0', value: '20Mbps/896Kbps',svalue: '20M/896K'},
+{name: '20.2', value: '20Mbps/2Mbps',svalue: '20M/2M'},
+{name: '20.5', value: '20Mbps/5Mbps',svalue: '20M/5M'},
+{name: '40.5', value: '40Mbps/5Mbps',svalue: '40M/5M'},
+{name: '40.20', value: '40Mbps/20Mbps',svalue: '40M/20M'},
+{name: '60.30', value: '60Mbps/30Mbps',svalue: '60M/30M'},
+{name: '80.40', value: '80Mbps/40Mbps',svalue: '80M/40M'},
+{name: '100.12', value: '100Mbps/12Mbps',svalue: '100M/12M'},
+];
+
 $scope.myTerms = [
 {name: '12 Months', value: '1'},
 {name: '24 Months', value: '2'},
@@ -195,10 +214,6 @@ $scope.nrc = $scope.myNRC[1];
 $scope.mycredits = $scope.myCredits[0];
 $scope.myip= $scope.myIP[0];
 $scope.loa= $scope.myLOA[0];
-
-
-
-
 
 		// Create new Lead
 		$scope.create = function() {
@@ -517,6 +532,64 @@ console.log('dmname: '+this.dmname);
 			//$scope.callDetails = $scope.lead.callDetails;
 			console.log('Deal - Look for CallDetails %o',$scope.deal);
 		};
+
+		$scope.qwestLoop = function(address_id) {
+			if(address_id) {
+				console.log('addressid: ', address_id);
+
+				$http.get('/qwest/check/' + address_id)
+					.success(function(data, status, headers, config) {
+						//console.log('status: ', status);
+						//console.log('response: ', data);
+						console.log('speedData: ', data);
+						//$scope.results = data.speeds;
+						//$scope.availableSpeeds = data.speeds;
+						$scope.qwestCheckingService = false;
+						if(data.speeds.length) {
+							$scope.mySpeeds = data.speeds;
+							$scope.qwestValidService = true;
+							$scope.dslspeed = $scope.mySpeeds[0];
+						} else {
+							$scope.mySpeeds = $scope.defaultSpeeds;
+							$scope.qwestValidService = false;
+							// Remove this shit
+							$scope.dslspeed = $scope.mySpeeds[10];
+						}
+						//$scope.states = data.responseData.addresses;
+					})
+					.error(function(data, status, headers, config) {
+
+					});
+			}
+		};
+
+		$scope.addressSearch = function() {
+			$scope.qwestCheckingService = true;
+			var addy = encodeURIComponent(
+				$scope.lead.address + ',' + $scope.lead.city + ',' + $scope.lead.state
+			);
+			$http.jsonp('http://geoamsrv.centurylink.com/geoam/addressmatch/addresses?callback=JSON_CALLBACK&q='+addy+'&_=1409090948562')
+			.success(function(data, status, headers, config) {
+				//console.log('status: ', status);
+				//console.log('response: ', data);
+				console.log('responseData: ', data.responseData.addresses)
+				$scope.addresses = data.responseData.addresses;
+
+				// New for chard!
+				if($scope.addresses && $scope.addresses[0] && $scope.addresses[0].id)
+				$scope.qwestLoop($scope.addresses[0].id);
+			})
+			.error(function(data, status, headers, config) {
+
+			});
+		};
+		
+		setTimeout(function() {
+			$scope.lead.$promise.then(function() {
+				$scope.addressSearch();
+				console.log('search complete');
+			});	
+		}, 500);
 
 
 
