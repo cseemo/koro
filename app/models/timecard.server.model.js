@@ -44,7 +44,7 @@ var TimecardSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
-	},
+	}
 });
 
 TimecardSchema.methods.Difference = function() {

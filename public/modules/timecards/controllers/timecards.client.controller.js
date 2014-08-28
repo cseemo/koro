@@ -20,6 +20,8 @@ timecard.$update(function(data){},
 		});
 
 
+
+
 window.alert('ClockIn')
 
 };

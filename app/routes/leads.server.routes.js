@@ -23,6 +23,9 @@ module.exports = function(app) {
 
 		app.route('/flups')
 		.get(leads.getFLUP);
+	
+		app.route('/getDeals')
+		.get(leads.getDEALS);
 
 		app.route('/getleadData')
 		.get(leads.getLeadData);

@@ -52,6 +52,7 @@ exports.createClock = function(req, res) {
 };
 
 exports.clock = function(req, res) {
+	console.log('got to clock function');
 	Timecard.findOne({user: req.user.id, end: null}).exec(function(err, timecard) {
 		if(err) {
 			console.log(err);

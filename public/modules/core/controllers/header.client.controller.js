@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$location', '$cookieStore',
-	function($scope, Authentication, Menus, $location, $cookieStore) {
+angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$location', '$cookieStore', '$http',
+	function($scope, Authentication, Menus, $location, $cookieStore, $http) {
 		$scope.authentication = Authentication;
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
@@ -13,7 +13,10 @@ $scope.clockedIn = false;
 $scope.clockedInVal = 'Clocked-Out';
 
 $scope.clockIn= function(type) {
+	console.log('Got Here');
 	$scope.clockedIn = true;
+
+	//console.log('timecard %o',$scope);
 		$scope.clockedInVal = 'Clocked-In';
 			switch(type){
 				case 'break': 
@@ -33,6 +36,14 @@ $scope.clockIn= function(type) {
 			break;
 			}
 			
+	$http.get('/awesome/clock').success(function(data) {
+	
+	console.log('Response %o',data);
+	//window.alert('Response');
+}).error(function(data) {
+
+console.log('Error: ' + data);
+});
 
 		};
 
@@ -58,6 +69,15 @@ $scope.clockIn= function(type) {
 			$cookieStore.put('shiftEnd', Date.now());
 			break;
 			}
+
+				$http.get('/awesome/clock').success(function(data) {
+	
+	console.log('Response %o',data);
+	//window.alert('Response');
+}).error(function(data) {
+
+console.log('Error: ' + data);
+});
 			
 
 		};

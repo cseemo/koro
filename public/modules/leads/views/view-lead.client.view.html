@@ -5,7 +5,7 @@
         <div class="col-lg-3 col-xsm-6">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-success">
-                    <i class="fa fa-rocket"></i>
+                    <i class="fa fa-certificate"></i>
                 </span>
                 <div class="box-info">
                     <p class="size-h2">36 <span class="size-h4">%</span></p>
@@ -17,7 +17,7 @@
           <a href="#!/leads" style="text-decoration:none">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-info">
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-file-text"></i>
                 </span>
               
                 <div class="box-info">
@@ -40,7 +40,7 @@
         <div class="col-lg-3 col-xsm-6">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-danger">
-                    <i class="fa fa-shopping-cart"></i>
+                    <i class="fa fa-money"></i>
                 </span>
                 <div class="box-info">
                     <p class="size-h2">8</p>
@@ -130,8 +130,11 @@
 
                 </div>
             </div>
+            <br><br>
 
             <div class="col-lg-6 col-xsm-6">
+            
+
               <div class="form-group">
                 <label class="control-label" for="content">Comments:</label>
                   <div class="comments">
@@ -168,34 +171,67 @@
                       </div>
                                     
                     </div>
-                      <a ng-click="checkIt()">CheckIt</a>
-  <div class="field">
-                      <div class="form-inline form-group">
-                         Lead Status: {{lead.status}} <select ng-model="leadstatus" ng-options="status for status in statuses" style="width: 70%;" class="form-control text-center pull-right"></select>
-                      </div>
-                                    
-                    </div>
-                    </div>
+
+                     <div ng-show="disposition==='Follow-Up'">
+                      <div class="input-group ui-datepicker" ng-click="open($event)">
+                   Follow-Up: <input type="text" 
+                           class="form-control pull-right"
+                           datepicker-popup="{{format}}"
+                           ng-model="dt"
+                           is-open="opened"
+                           min="minDate"
+                           max="'2016-06-22'"
+                           datepicker-options="dateOptions"
+                           ng-required="true" 
+                           close-text="Close"
+                           style="width: 65%"
+                           name="FLUPDate">
+                    <span class="input-group-addon" ><i class="fa fa-calendar"></i></span>
+                     
+
+
                 </div>
 
-            <div class="col-lg-12 col-xsm-6">
-
-     
-           <center> <a class="btn btn-primary center" data-ng-click="saveLead();">
-       Save Lead
-            </a>
-            <a class="btn btn-primary center" data-ng-click="nextLead();">
-       Next Lead
-            </a>
-            </center>
+                   <div ng-model="mytime" class="pull-right" ng-change="changed()" style="display:inline-block;">
+                    <timepicker class="ui-timepicker" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                </div>  
+                
             </div>
-          </div>
+
+            </div></div>
 
 
+
+
+            <div class="col-lg-12 col-xsm-6">   
+
+  <div class="field">
+                      <div class="form-inline form-group">
+                         Lead Status:<select ng-model="leadstatus" ng-options="status for status in statuses" style="width: 70%;" class="form-control text-center pull-right"></select>
+                      </div>
+                                    
+                   
+                </div>
+
+            
+<br>
+               
+                     <center> <a class="btn btn-primary center" data-ng-click="saveLead();">
+                 Save Lead
+                      </a>
+                      <a class="btn btn-primary center" data-ng-click="nextLead();">
+                 Next Lead
+                      </a>
+                      </center>
+                      </div>
+
+
+
+          </div></div></div>
+
+</div>
                            
-            </div>
-            </div>
-            </div>
+           
 
         <div class="col-lg-5">
           <div class="panel panel-default">
@@ -350,7 +386,7 @@
                     <td>{{lead.contactname}}</td>
                     <td>{{lead.email}}</td>
                     <td>{{lead.status}}</td>
-                    <td>{{lead.address}}</td>
+                    <td>{{lead.FLUPDate | date:'medium'}}</td>
                     <td></td>
                     </a>
                 </tr>
@@ -370,7 +406,7 @@
 
                         <div class="panel panel-default">
         <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> My Deals</strong></div>
-        <table class="table">
+        <table class="table" data-ng-init="DEALS()"> 
             <thead>
                 <tr>
                    
@@ -381,6 +417,20 @@
                 </tr>
             </thead>
             <tbody>
+             <tbody>
+                <tr data-ng-repeat="deal in mydeals" >
+                
+                    <td><a data-ng-href="#!/deal/{{deal._id}}">{{deal.companyname}}</a></td>
+                    <td>{{deal.telephone}}</td>
+                    <td>{{deal.contactname}}</td>
+                    <td>{{deal.email}}</td>
+                    <td>{{deal.status}}</td>
+                    <td>{{deal.FLUPDate | date:'medium'}}</td>
+                    <td></td>
+                    </a>
+                </tr>
+                
+          
                 <tr>
                     <td>2</td>
                     <td><span class="color-success"><i class="fa fa-level-up"></i></span> A16Z</td>

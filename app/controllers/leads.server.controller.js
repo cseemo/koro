@@ -405,6 +405,22 @@ exports.getFLUP = function(req, res) { Lead.find({$or: [
 		}
 	});
 };
+
+//Get Deals
+exports.getDEALS = function(req, res) { Deal.find().where({user: req.user.id}).sort('-converted').limit(50).exec(function(err, deals) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			console.log('Deals: %o', deals);
+			//console.log('leads %o',leads);
+			res.jsonp(deals);
+		}
+	});
+};
+
+
 /**
  * List of Leads
  */

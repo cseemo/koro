@@ -26,6 +26,19 @@ exports.create = function(req, res) {
 	});
 };
 
+//Get Deals
+exports.getDEALS = function(req, res) { Deal.find().where({user: req.user.id}).sort('-converted').limit(50).exec(function(err, deals) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			//console.log('leads %o',leads);
+			res.jsonp(deals);
+		}
+	});
+};
+
 /**
  * Show the current Deal
  */

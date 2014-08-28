@@ -22,8 +22,6 @@ module.exports = function(app) {
 		
 
 		
-
-		
 	// Finish by binding the Lead middleware
 	
 	app.param('dealId', leads.dealByID);

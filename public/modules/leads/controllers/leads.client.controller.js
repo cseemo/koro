@@ -225,26 +225,44 @@ $scope.loa= $scope.myLOA[0];
 		};
 
 		// Save Lead
-		$scope.saveLead = function() {
-	var lead = $scope.lead;
-	var rep = lead.assignedRep;
-	var comms = this.myForm.comments.$modelValue;
-	var dispo = $scope.disposition;
-	var who = $scope.callDetailscontact;
-	lead.status = $scope.leadstatus;
-	console.log('MyScope: %o',$scope);
-	//console.log('nicole %o',comms);
-	var now = Date();
-	//window.alert(lead.user.displayName);
-	lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
-lead.$update(function(data){},
-	 function(errorResponse) {
-		$scope.error = errorResponse.data.message;
-		});
+			$scope.saveLead = function() {
+				//console.log('Follow-Up %o',$scope.dt);
+				//console.log('Time %o',$scope.mytime);
+				var date = $scope.dt;
+				var time = $scope.mytime;
+				var datetime = new Date(date.getFullYear(), 
+					date.getMonth(), 
+					date.getDate(), 
+					time.getHours(), 
+					time.getMinutes(), 
+					time.getSeconds());
+				console.log('Follow-Up: ', datetime);
+				//window.alert(datetime);
 
-window.alert("complete");
-};
 
+				//console.log('This %o',this.$$childHead);
+				var lead = $scope.lead;
+				lead.FLUPDate = datetime;
+				var rep = lead.assignedRep;
+				var comms = this.myForm.comments.$modelValue;
+				var dispo = $scope.disposition;
+				var who = $scope.callDetailscontact;
+				lead.status = dispo;
+				console.log('saveLead Scope: %o',$scope);
+				//console.log('nicole %o',comms);
+				var now = Date();
+				//window.alert(lead.user.displayName);
+					lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
+					lead.$update(function(data){},
+					 function(errorResponse) {
+						$scope.error = errorResponse.data.message;
+						});
+
+				window.alert("Follow-Up set for :" + lead.FLUPDate);
+			};
+
+
+//Get Follow-Ups for Table
 $scope.FLUPS = function() {
 
 $http.get('/flups').success(function(data) {
@@ -257,11 +275,24 @@ console.log('Error: ' + data);
 });
 
 
+};
 
+//Get Deals for Table Below
+
+$scope.DEALS = function() {
+	console.log('WTF');
+
+$http.get('/getDeals').success(function(data) {
+	$scope.mydeals = data;
+	//console.log('Deal Response %o', data);
+	//window.alert('Response');
+}).error(function(data) {
+
+console.log('Error: ' + data);
+});
 
 
 };
-
 
 			// Get Next Lead Lead
 		$scope.nextLead = function() {
@@ -270,8 +301,17 @@ console.log('Error: ' + data);
 	var comms = this.myForm.comments.$modelValue;
 	var dispo = $scope.disposition;
 	var who = $scope.callDetailscontact;
+	var date = $scope.dt;
+	var time = $scope.mytime;
+	var datetime = new Date(date.getFullYear(), 
+					date.getMonth(), 
+					date.getDate(), 
+					time.getHours(), 
+					time.getMinutes(), 
+					time.getSeconds());
+	lead.FLUPDate = datetime;
 	//console.log('nicole %o',comms);
-	lead.status = $scope.leadstatus;
+	lead.status = dispo;
 	var now = Date();
 	//window.alert(lead.user.displayName);
 	lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
@@ -520,6 +560,65 @@ console.log(data);
 
 };
 
+ $scope.today = function() {
+        return $scope.dt = new Date();
+      };
+      $scope.today();
+      $scope.showWeeks = true;
+      $scope.toggleWeeks = function() {
+        return $scope.showWeeks = !$scope.showWeeks;
+      };
+      $scope.clear = function() {
+        return $scope.dt = null;
+      };
+      $scope.disabled = function(date, mode) {
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+      };
+      $scope.toggleMin = function() {
+        var _ref;
+        return $scope.minDate = (_ref = $scope.minDate) != null ? _ref : {
+          "null": new Date()
+        };
+      };
+      $scope.toggleMin();
+      $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        return $scope.opened = true;
+      };
+      $scope.dateOptions = {
+        'year-format': "'yy'",
+        'starting-day': 1
+      };
+      $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
+      $scope.format = $scope.formats[0];
+   
+
+$scope.mytime = $scope.dt;
+      $scope.hstep = 1;
+      $scope.mstep = 5;
+      $scope.options = {
+        hstep: [1, 2, 3],
+        mstep: [1, 5, 10, 15, 25, 30]
+      };
+      $scope.ismeridian = true;
+      $scope.toggleMode = function() {
+        return $scope.ismeridian = !$scope.ismeridian;
+      };
+      $scope.update = function() {
+        var d;
+        d = new Date();
+        d.setHours(14);
+        d.setMinutes(0);
+        return $scope.mytime = d;
+      };
+      $scope.changed = function() {
+        return console.log('Time changed to: ' + $scope.mytime);
+      };
+      return $scope.clear = function() {
+        return $scope.mytime = null;
+};
+
 
 
 
@@ -538,5 +637,6 @@ return function(input){
 	return _date;
 };
 });
+
 
 

@@ -17,6 +17,10 @@ angular.module('timecards').config(['$stateProvider',
 			url: '/timecards/:timecardId',
 			templateUrl: 'modules/timecards/views/view-timecard.client.view.html'
 		}).
+		state('updateTimecard', {
+			url: '/awesome/clock',
+			templateUrl: 'modules/timecards/views/view-timecard.client.view.html'
+		}).
 		state('editTimecard', {
 			url: '/timecards/:timecardId/edit',
 			templateUrl: 'modules/timecards/views/edit-timecard.client.view.html'
