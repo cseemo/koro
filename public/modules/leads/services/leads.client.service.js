@@ -11,7 +11,12 @@ angular.module('leads').factory('Leads', ['$resource',
 			getLeadsTypes: {
 				method: 'GET',
 				url: '/leads/stats/types'
-			}
+			},
+			getLeadTotalsByStatus: {
+				method: 'GET',
+				url: '/stats/leads/by/status',
+				isArray: true,
+			},
 		});
 	}
 ]);

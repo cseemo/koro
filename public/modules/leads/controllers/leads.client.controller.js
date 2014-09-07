@@ -8,92 +8,79 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 
 		if( ! Authentication.user ) $location.path('/signin');
 
+		$scope.convertToDeal = function(){
+			//console.log('Scope: %o',$scope);
 
+			var dslspeed = this.dslspeed.value,
+			 	lead = $scope.lead;
+				lead.status = 'Closed/Won';
+			
+			console.log('DSL Speed: ', dslspeed);
+			console.log('This %o', this);
+			
+			lead.$update(function(response) {
+				console.log('Lead Info To Populate %o',lead);
+				//console.log('Lead Saved %o',lead);
+			
+				var deal = new Deals ({
+					companyname:	lead.companyname,
+					email:			lead.email,
+					contactname:	lead.contactname,
+					telephone:		lead.telephone,
+					address:		lead.address,
+					city:			lead.city,
+					state:			lead.state,
+					zipcode:		lead.zipcode,
+					lastCalled:		lead.lastCalled,
+					assigned:		lead.assigned,
+					campaign:		lead.campaign,
+					FLUPDate:		lead.FLUPDate,
+					speed:			lead.speed,
+					currentCarrier: lead.currentCarrier,
+					created:		lead.created,
+					assignedRep:	lead.assignedRep,
+					user:			lead.user,
+					term:			lead.term,
+					dslspeed:		dslspeed,
+					adl:			lead.adl,
+					modem:			$scope.lead.modem,
+					waivenrcs:		lead.waivenrcs,
+					winbackcredits:	lead.winbackcredits,
+					staticip:		lead.staticip,
+					converted:		Date.now()
+				});
 
-$scope.convertToDeal = function(){
-console.log('Scope: %o',$scope);
-
-console.log('This %o', this);
-var dslspeed = this.dslspeed.value;
-console.log('DSL Speed: ', dslspeed);
-var lead = $scope.lead;
-	lead.status = 'Closed/Won';
-				lead.$update(function(response) {
-console.log('Lead Info To Populate %o',lead);
-					//console.log('Lead Saved %o',lead);
-	var deal = new Deals ({
-					companyname: lead.companyname,
+				// Redirect after save
+				deal.$save(function(response) {
+					$location.path('convertingdeals/' + response._id);
+					//console.log('New Deal %o', deal);
 					
-					email: lead.email,
-	contactname: lead.contactname,
-	telephone: lead.telephone,
-	address: lead.address,
-	city: lead.city,
-	state: lead.state,
-	zipcode: lead.zipcode,
-	lastCalled: lead.lastCalled,
-	assigned: lead.assigned,
-	campaign: lead.campaign,
-	FLUPDate: lead.FLUPDate,
-	speed: lead.speed,
-	currentCarrier: lead.currentCarrier,
-	created: lead.created,
-	assignedRep: lead.assignedRep,
-	user: lead.user,
-	term: 	lead.term,
-	dslspeed: dslspeed,
-	adl: 		lead.adl,
-		modem: 	lead.modem,
-		waivenrcs:	lead.waivenrcs,
-	winbackcredits:	lead.winbackcredits,
-		staticip:	lead.staticip,
-				converted: Date.now()
-			});
-
-		
-
-			// Redirect after save
-			deal.$save(function(response) {
-				$location.path('convertingdeals/' + response._id);
-	//console.log('New Deal %o', deal);
-				// Clear form fields
-				$scope.name = '';
-
+					// Clear form fields
+					$scope.name = '';
+			
+				}, function(errorResponse) {
+					$scope.error = errorResponse.data.message;
+				});
 			
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
+		};
 
-			
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-
-
-			
+		$scope.start = function(){
+			$scope.leadstatus = $scope.lead.status;
+		};
 
 
-};
+		$scope.currentPrice = 85;
+		$scope.currentNRR = 0;
+		$scope.adl = 0;
+		//$log.info(speeds);
 
-
-
-$scope.start = function(){
-
-$scope.leadstatus = $scope.lead.status;
-
-};
-
-
-$scope.currentPrice = 85;
-$scope.currentNRR = 0;
-$scope.adl = 0;
-//$log.info(speeds);
-
-//FORM DATA CONTROL TEST
-$scope.datas = [];
-$scope.orig = angular.copy($scope.datas);
-
-$scope.coInfo = 'false';
+		//FORM DATA CONTROL TEST
+		$scope.datas = [];
+		$scope.orig = angular.copy($scope.datas);
+		$scope.coInfo = 'false';
 
 
 
@@ -594,44 +581,38 @@ console.log('dmname: '+this.dmname);
 
 
 
-$scope.getQuote = function() {
+		$scope.getQuote = function() {
 	
-
-console.log('Form',this.myForm);
-
-this.term = this.myForm.term;
-this.dsl = this.myForm.dsl_speed;
-this.adl = this.myForm.adl;
-this.modem = this.myForm.modem;
-this.nrcs = this.myForm.nrcs;
-this.credits = this.myForm.credits;
-this.iptype = this.myForm.staticIP;
-
-
+			console.log('Form',this.myForm);
+			this.term = this.myForm.term;
+			this.dsl = this.myForm.dsl_speed;
+			this.adl = this.myForm.adl;
+			this.modem = this.myForm.modem;
+			this.nrcs = this.myForm.nrcs;
+			this.credits = this.myForm.credits;
+			this.iptype = this.myForm.staticIP;
 
 			$http({
-		method: 'post',
-		url: '/quote',
-		data: {
-			term: this.term.$viewValue,
-			adl: this.adl.$viewValue,
-			dsl: this.myForm.dsl_speed.$viewValue,
-			modem: this.modem.$viewValue,
-			nrcs: this.nrcs.$viewValue,
-			credits: this.credits.$viewValue,
-			iptype: this.iptype.$viewValue
-		}
-	})
-.success(function(data, status) {
-		if(status === 200) {
-			//$scope.currentPrice = data.price;
-console.log(data);
-			$scope.currentPrice = data.price;
-			$scope.currentNRR = data.nrr;
-		}
-	});
-
-};
+				method: 'post',
+				url: '/quote',
+				data: {
+					term: this.term.$viewValue,
+					adl: this.adl.$viewValue,
+					dsl: this.myForm.dsl_speed.$viewValue,
+					modem: this.modem.$viewValue,
+					nrcs: this.nrcs.$viewValue,
+					credits: this.credits.$viewValue,
+					iptype: this.iptype.$viewValue
+				}
+			}).success(function(data, status) {
+				if(status === 200) {
+					//$scope.currentPrice = data.price;
+					console.log(data);
+					$scope.currentPrice = data.price;
+					$scope.currentNRR = data.nrr;
+				}
+			});
+		};
 
  $scope.today = function() {
         return $scope.dt = new Date();
