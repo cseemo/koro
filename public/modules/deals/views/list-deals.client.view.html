@@ -3,17 +3,19 @@
         <h1>Deals</h1>
     </div>
     <div class="list-group">
-        <a data-ng-repeat="deal in deals" data-ng-href="#!/deals/{{deal._id}}" class="list-group-item">
-         <span class="pull-right" data-ng-bind="deal.stage"></span>
+        <div data-ng-repeat="deal in deals" class="list-group-item">
+         <span class="label label-primary pull-right" data-ng-bind="deal.stage"></span>
         
 			<small class="list-group-item-text">
-				Converted to Deal On 
+
+				Converted {{today - deal.converted}}Days Ago
 				<span data-ng-bind="deal.converted | date:'medium'"></span>
 				by
-				<span data-ng-bind="deal.user.displayName"></span>
+				<span data-ng-bind="deal.assignedRep"></span>
 			</small>
 			<h4 class="list-group-item-heading" data-ng-bind="deal.companyname"></h4>
-
+            <a data-ng-href="#!/deals/{{deal._id}}/edit"> 
+            <span class="label label-primary">{{deal.stage}}</span>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!deals.$resolved || deals.length">

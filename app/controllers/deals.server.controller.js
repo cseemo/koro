@@ -26,6 +26,38 @@ exports.create = function(req, res) {
 	});
 };
 
+
+
+
+//Count Total Deals
+exports.getDealsbyTotal = function(req, res) {
+	console.log('got to Count Deals');
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	Deal.aggregate([{
+		"$group": { 
+			_id: "$stage",
+			total: {
+				"$sum": 1
+			}
+		}
+	}]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
+
+
 //Get Deals
 exports.getDEALS = function(req, res) { Deal.find().where({user: req.user.id}).sort('-converted').limit(50).exec(function(err, deals) {
 		if (err) {
@@ -81,6 +113,12 @@ exports.delete = function(req, res) {
 		}
 	});
 };
+
+
+//List Deals w/
+var cutoff = new Date();
+cutoff.setDate(cutoff.getDate()-5);
+//MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
 
 /**
  * List of Deals

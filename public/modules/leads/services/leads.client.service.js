@@ -11,7 +11,32 @@ angular.module('leads').factory('Leads', ['$resource',
 			getLeadsTypes: {
 				method: 'GET',
 				url: '/leads/stats/types'
-			}
+			},
+			getLeadTotalsByStatus: {
+				method: 'GET',
+				url: '/stats/leads/by/status',
+				isArray: true,
+			},
+				getLeadTotalsByState: {
+				method: 'GET',
+				url: '/stats/leads/by/state',
+				isArray: true,
+			},
+
+				getLeadTotalsByCarrier: {
+				method: 'GET',
+				url: '/stats/leads/by/carrier',
+				isArray: true,
+			},
+
+				getDealsTotal: {
+				method: 'GET',
+				url: '/stats/deals/total',
+				isArray: true,
+			},
+
+
+			
 		});
 	}
 ]);

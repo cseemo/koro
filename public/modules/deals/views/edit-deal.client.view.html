@@ -1,10 +1,22 @@
 <section data-ng-controller="DealsController" data-ng-init="findOne()">
     <div class="page-header">
-        <h1>Edit {{deal.companyname}} Details</h1>
+        <h1>{{deal.companyname}} - Order Management</h1>
     </div>
     <form class="form-horizontal" data-ng-submit="update()" novalidate>
     <div class="row">
-
+     <div class="col-lg-12 col-xsm-6">
+     <div class="panel panel-primary">
+        <div class="panel-body">
+            <div class="field">
+            <label class="form-text">Deal Stage: {{deal.stage}}</label>
+          <select data-ng-model="mystage" ng-init="deal.stage" class="form-control text-center" style="width: 50%; float:right;" ng-options="mystage.name for mystage in myDealstages"></select>
+          <br>
+          <button class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Assign Deal</button>
+           
+             </div>
+            </div>
+            </div>
+            </div>
 
      <div class="col-lg-6 col-xsm-6">
      
@@ -35,6 +47,11 @@
                     <label class="form-label" style="font-size: 24px;" for="projectmanager">Project Manager</label>
                         <input type="text" data-ng-model="deal.projectmanager" class="form-control pull-right" style="width: 50%" >
                         </div>
+                        <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="website">Website</label>
+                        <input type="text" data-ng-model="deal.website" class="form-control pull-right" style="width: 50%" >
+                        </div>
+                  
                         </fieldset>
     </div></div></div>
 
@@ -66,19 +83,18 @@
                     <div class="form-group">
                     <label class="form-label" style="font-size: 24px;" for="billingaddress">Billing Address</label>
                         <input type="text" data-ng-model="deal.billingaddress" class="form-control pull-right" style="width: 50%" >
+                         </div>
+                       <div class="form-inline">
+                       <div class="form-group">
+                    <label class="form-label" style="font-size: 24px;" for="billingaddress">City</label>
+                        <input type="text" data-ng-model="deal.billingcity" class="form-control pull-right" style="width: 20%" >
+                
+                    <label class="form-label" style="font-size: 24px;" for="billingaddress">State</label>
+                        <input type="text" data-ng-model="deal.billingstate" class="form-control pull-right" style="width: 15%" >
+               
+                    <label class="form-label" style="font-size: 24px;" for="billingaddress">Zip</label>
+                        <input type="text" data-ng-model="deal.billingzipcode" class="form-control pull-right" style="width: 15%" >
                         </div>
-                    <div class="form-group">
-                    <label class="form-label" style="font-size: 24px;" for="billingaddress">Billing City</label>
-                        <input type="text" data-ng-model="deal.billingcity" class="form-control pull-right" style="width: 50%" >
-                        </div>
-
-                         <div class="form-group">
-                    <label class="form-label" style="font-size: 24px;" for="billingaddress">Billing State</label>
-                        <input type="text" data-ng-model="deal.billingstate" class="form-control pull-right" style="width: 50%" >
-                        </div>
-                         <div class="form-group">
-                    <label class="form-label" style="font-size: 24px;" for="billingaddress">Billing Zip</label>
-                        <input type="text" data-ng-model="deal.billingzipcode" class="form-control pull-right" style="width: 50%" >
                         </div>
                         </fieldset>
                     </div></div></div></div>
@@ -87,17 +103,14 @@
 
     <div class="col-lg-6 col-xsm-6">
      <div class="panel panel-primary">
-            <div class="panel-body">
+            <div class="panel-body" ng-init="dslspeed()">
 
     <h2>Services Ordered</h2>
-
-              
             
             <div class="field">
     <label class="form-text">DSL Speed:</label>
-
-    <select ng-model="dslspeed" class="form-control text-center" style="width: 50%; float:right;" name="dsl_speed" id="dsl_speed" ng-options="speed.value for speed in mySpeeds"></select>
-
+     
+    <input   ng-model="deal.dslspeed" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
     </div>
 
               
@@ -106,48 +119,107 @@
 
             <div class="field">
             <label class="form-text">Additional Lines:</label>
-            <input   ng-model="price.adl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
+            <input   ng-model="deal.adl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
           </div>
                               <div class="clearfix"></div> 
 
 
                 <div class="field">
             <label class="form-text">Term:<span id='myphoneError' style='display: none; color: red'>How Long of a Term?</span></label>
-          <select  ng-model="myterm" class="form-control text-center" style="width: 50%; float:right;" name='term' id='term' ng-options="myterm.name for myterm in myTerms"></select>
+          <input   ng-model="deal.term" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
              </div>
               <div class="clearfix"></div>   
                   
                         <div class="field">
 
             <label class="form-text">DSL Modem:<span id='myphoneError' style='display: none; color: red'>What about the modem?</span></label>
-
-           <select   ng-model="mymodem" class="form-control text-center" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
-                  
+            <input   ng-model="deal.modem" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" /></div>
+                              
                      <div class="clearfix"></div>
                   
                   <div class="field">
             <label class="form-text">Static IP:<span id='myphoneError' style='display: none; color: red'>What about Static IPs?</span></label>
-           <select   ng-model="myip" class="form-control text-center" style="width: 50%; float:right;" name='staticIP' id='staticIP' ng-options="ipopts.value for ipopts in myIP">
-            
-               </select></div>
+            <input   ng-model="deal.staticip" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" /></div>
                   
                      <div class="clearfix"></div>
                   
                   
                         <div class="field">
                   <label class="form-text" for="telephone">Waive NRCs:</label>
-                  <select   ng-model="nrc" class="form-control text-center" style="width: 50%; float:right;" name="nrcs" id="nrcs" ng-options="nrcopt.value for nrcopt in myNRC"></select>
+                  <input   ng-model="deal.waivenrcs" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
               </div>
                   
                    <div class="clearfix"></div> 
                         <div class="field">
                   <label class="form-text" for="telephone">Credits Issued:</label>
-                  <select   ng-model="mycredits" class="form-control text-center" style="width: 50%; float:right;" name="credits" id="credits" ng-options="creditopt.value for creditopt in myCredits">
-                  </select>
+                  <input   ng-model="deal.winbackcredits" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
               </div>
-                  
+                   <div class="field">
+                   <center>
+                   <h4>
+                   <br>
+                   ${{deal.mrc}} per Month<br>
+                  ${{deal.nrc}} One-Time
+
+     </h4></center>
+   
+    </div>
+                  <div class="clearfix"></div> 
     
     </div></div></div>
+          <div class="col-lg-6 col-xsm-6">
+             <div class="panel panel-primary">
+                    <div class="panel-body">
+
+            <h2>Telephone Line Details</h2>
+             <div class="field">
+             <div data-ng-repeat="line in deal.lineDetails">
+             Line #{{$index+1}}<br/>
+              <label class="form-label" style="font-size: 24px;">Telephone Number</label>
+              <input ng-model="line.number" type="text" style="width: 50%;" class="form-control text-center pull-right" />
+              <br/>
+              <label class="form-label" style="font-size: 24px;">VM:</label>
+            <label class="switch" style="vertical-align: middle"><input type="checkbox" style="vertical-align: middle" ng-model="line.voicemail"><i></i></label>
+            <label class="form-label" style="font-size: 24px;">ESM:</label>
+            <label class="switch" style="vertical-align: middle"><input type="checkbox" style="vertical-align: middle" ng-model="line.esm"><i></i></label>
+
+            <label class="form-label" style="font-size: 24px;">E03:</label>
+            <label class="switch" style="vertical-align: middle"><input type="checkbox" style="vertical-align: middle" ng-model="line.eo3"><i></i></label>
+
+            <label class="form-label" style="font-size: 24px;">CID:</label>
+            <label class="switch" style="vertical-align: middle"><input type="checkbox" style="vertical-align: middle" ng-model="line.nnk"><i></i></label>
+            <label class="form-label" style="font-size: 24px;">6DA:</label>
+            <label class="switch" style="vertical-align: middle"><input type="checkbox" style="vertical-align: middle" ng-model="line.da6"><i></i></label>
+             <span data-ng-hide="line.hunting==true">
+            <label class="form-label" style="font-size: 24px;">CW:</label>
+             <label class="switch" style="vertical-align: middle"><input type="checkbox" style="vertical-align: middle" ng-model="line.cw"><i></i></label>
+            <label class="form-label" style="font-size: 24px;">CWID:</label>
+           <label class="switch" style="vertical-align: middle"><input type="checkbox" style="vertical-align: middle" ng-model="line.cwid"><i></i></label>
+         </span>
+           <br>
+            <span class="form-inline" data-ng-hide="line.cw==true">
+             <label class="form-label" style="font-size: 24px;">Hunting:</label>
+            <label class="switch" style="vertical-align: middle"><input type="checkbox" ng-model="line.hunting"><i></i></label>
+            <span data-ng-show="line.hunting==true">
+           <label class="form-label" style="font-size: 24px;">Group:</label>
+            <input ng-model="line.huntgroup" type="text" style="width: 10%;" class="form-control text-center">
+           <label class="form-label" style="font-size: 24px;">Hunt Order:</label>
+            <input ng-model="line.huntorder" type="text" style="width: 10%;" class="form-control text-center">
+           </span></span>
+             <br/><br/>
+             </div>
+             
+             <br/>
+             <input type="button" value="Save It" ng-click="update()">
+             </div>
+
+
+
+
+            </div>
+        </div>
+        </div>
+
         <div class="col-lg-6 col-xsm-6">
              <div class="panel panel-primary">
                     <div class="panel-body">
@@ -160,9 +232,6 @@
 
 
     </div>
-
-
-    <span data-ng-click="testme()">Click Me</span>
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="update()" novalidate>
             <fieldset>
@@ -186,9 +255,9 @@
                 <div class="form-group">
                     <input type="submit" value="Update" class="btn btn-default">
                 </div>
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
+        <div data-ng-show="error" class="text-danger">
+          <strong data-ng-bind="error"></strong>
+        </div>
             </fieldset>
         </form>
     </div>

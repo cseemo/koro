@@ -5,6 +5,57 @@ angular.module('deals').controller('DealsController', ['$scope', '$stateParams',
 	function($scope, $stateParams, $location, Authentication, Leads, Deals ) {
 		$scope.authentication = Authentication;
 
+$scope.buildDTW = function(){
+	console.log('got here %',$scope);
+	console.log('Total Lines: ', $scope.deal);
+	$scope.deal.$promise.then(function(){
+		$scope.deal.adl;
+	var totlines = parseInt($scope.deal.adl)+1;
+	console.log('Total Lines: %o', totlines);
+	if(totlines<2){
+		$scope.deal.lineDetails.push({});
+	}else{
+		for(var i = 0; i < totlines ; i++) {
+		$scope.deal.lineDetails.push({});
+	}
+
+	}
+		
+});
+
+
+};
+
+$scope.myDealstages = [
+{name: 'Pending Assignment', value: '5'},
+{name: 'Pending Review', value: '20'},
+{name: 'QC Approved', value: '40'},
+{name: 'Pending Order Number', value: '55'},
+{name: 'Pending Install', value: '70'},
+{name: 'Installed', value: '90'},
+{name: 'Paid', value: '100'},
+
+];
+
+$scope.mystage = $scope.myDealstages[0];
+
+
+
+ $scope.getDays = function() {
+ 	//window.alert("Hi");
+	var date = new Date();
+	console.log('Date: ', date);
+	//var converted = $scope.deal.converted;
+//console.log('date' + date+ ' converted' + converted);
+$scope.dayssince = 7;
+};
+
+$scope.stub = function(){
+
+	var a = true;
+
+};
+
 $scope.myspeed = $scope.dslspeed;
 
 		$scope.mySpeeds = [
@@ -83,6 +134,7 @@ return $scope.deal.dslspeed;
 		// Create new Deal
 		$scope.testme = function(){
 //window.alert(this.name);
+	console.log('Testing %', $scope);
 	var deal = new Deals ({
 				name: this.name,
 				user: this.user,
@@ -136,9 +188,32 @@ return $scope.deal.dslspeed;
 			}
 		};
 
+		//Assign Deal to a Project Manager - update Mongo
+		$scope.assignDeal = function(){
+
+			console.log('Find USer Info for PM Name %o', Authentication.user);
+			var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[1].name;
+			deal.stagenum=$scope.myDealstages[1].value;
+			deal.projectmanager = Authentication.user.displayName;
+			$scope.mystage = $scope.myDealstages[1];
+			
+			console.log('Dealcontroller Deal: %o',deal);
+			
+
+			deal.$update(function() {
+				$location.path('deals/' + deal._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+				$location.path('deals/' + deal._id + '/edit');
+		};
+
 		// Update existing Deal
 		$scope.update = function() {
 			var deal = $scope.deal ;
+			deal.stage=$scope.mystage.name;
+			deal.stagenum=$scope.mystage.value;
 console.log('Dealcontroller Deal: %o',deal);
 			deal.$update(function() {
 				$location.path('deals/' + deal._id);
@@ -150,6 +225,7 @@ console.log('Dealcontroller Deal: %o',deal);
 		// Find a list of Deals
 		$scope.find = function() {
 			$scope.deals = Deals.query();
+			$scope.today = new Date();
 
 		};
 
@@ -157,7 +233,10 @@ console.log('Dealcontroller Deal: %o',deal);
 		$scope.findOne = function() {
 			$scope.deal = Deals.get({ 
 				dealId: $stateParams.dealId
+
 			});
+			console.log('Deal Info: %o', $scope.deal);
+			$scope.mystage = $scope.deal.stage;
 
 		};
 	}

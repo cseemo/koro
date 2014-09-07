@@ -22,7 +22,7 @@
               
                 <div class="box-info">
                     <p class="size-h2" >12</p>
-                    <p class="text-muted">Proposals</p>
+                    <p class="text-muted">Deals Pending</p>
                 </div>
             </div></a>
         </div>
@@ -64,8 +64,8 @@
             </div>
           <div class="panel panel-primary">
               <div class="panel-body">
-                <h1 class="pull-left">{{lead.companyname}}</h1>
-                <h2 class="pull-right">{{lead.telephone}}</h2>
+               <p><h1 class="pull-left">{{lead.companyname}}</h1></p>
+                <p><h2 class="pull-right">{{lead.telephone}}</h2></p>
                   
                   <div class="clearfix"></div>
 
@@ -241,8 +241,10 @@
 <center>
 <h3>Total Monthly: <span style="color: #ec5f3c">{{currentPrice|currency}}</span></h3>
 <h3>One-Time Fees: <span style="color: #ec5f3c">{{currentNRR|currency}} </span></h3>
-<p data-ng-show="qwestCheckingService">Verifying address for Centurylink service <i class="fa fa-cog fa-spin"></i></p>
-<p data-ng-show="!qwestValidService && !qwestCheckingService">Unable to verify address for Centurylink service</p>
+<p data-ng-show="qwestCheckingServiceA">Validating Address with Centurylink <i class="fa fa-cog fa-spin"></i></p>
+
+<p data-ng-show="qwestCheckingService"><i class="fa fa-cog fa-spin"></i>  Qualifying Address for DSL  <i class="fa fa-cog fa-spin"></i></p>
+<p data-ng-show="!qwestValidService && !qwestCheckingService && !qwestCheckingServiceA">Unable to verify address for Centurylink service</p>
 </center>
 
 
@@ -261,7 +263,7 @@
 
             <div class="field">
             <label class="form-text">Additional Lines:</label>
-            <input  ng-change="getQuote()" ng-model="price.adl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
+            <input  ng-change="getQuote()" ng-model="myadl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
           </div>
                               <div class="clearfix"></div> 
 
@@ -387,7 +389,7 @@
                     <td>{{lead.telephone}}</td>
                     <td>{{lead.contactname}}</td>
                     <td>{{lead.email}}</td>
-                    <td>{{lead.status}}</td>
+                    <td><span class="label label-primary">{{lead.status}}</span></td>
                     <td>{{lead.FLUPDate | date:'medium'}}</td>
                     <td></td>
                     </a>
@@ -413,9 +415,11 @@
                 <tr>
                    
                     <th>Deal Name</th>
+                     <th>Telephone</th>
                     <th>Status</th>
                     <th>Project Manager</th>
                     <th>Progress</th>
+                    <th>Converted</th>
                 </tr>
             </thead>
             <tbody>
@@ -424,29 +428,14 @@
                 
                     <td><a data-ng-href="#!/deal/{{deal._id}}">{{deal.companyname}}</a></td>
                     <td>{{deal.telephone}}</td>
-                    <td>{{deal.contactname}}</td>
-                    <td>{{deal.email}}</td>
-                    <td>{{deal.status}}</td>
-                    <td>{{deal.FLUPDate | date:'medium'}}</td>
+                    <td><span class="label label-primary">{{deal.stage}}</span></td>
+                    <td>{{deal.projectmanager}}</td>
+                    <td><progressbar class="progressbar-xs no-margin" value="deal.stagenum" type="success"></progressbar></td>
+                    <td>{{deal.converted | date:'medium'}}</td>
                     <td></td>
                     </a>
                 </tr>
-                
-          
-                <tr>
-                    <td>2</td>
-                    <td><span class="color-success"><i class="fa fa-level-up"></i></span> A16Z</td>
-                    <td><span class="label label-primary">Due</span></td>
-                    <td>Romayne Carlyn</td>
-                    <td><progressbar class="progressbar-xs no-margin" value="34" type="success"></progressbar></td>
-                </tr>
-                <tr>
-                
-                    <td><span class="color-success"><i class="fa fa-level-up"></i></span> A16Z</td>
-                    <td><span class="label label-primary">Due</span></td>
-                    <td>Romayne Carlyn</td>
-                    <td><progressbar class="progressbar-xs no-margin" value="34" type="success"></progressbar></td>
-                </tr>
+
               
             </tbody>
         </table>

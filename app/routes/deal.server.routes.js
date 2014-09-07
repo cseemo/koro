@@ -7,7 +7,7 @@ module.exports = function(app) {
 
 	// Leads Route
 		app.route('/deals/:dealId')
-		.put(users.requiresLogin, leads.updateDeal)
+		.put(users.requiresLogin, deals.update)
 		.get(leads.showDeal);
 
 		app.route('/convertingdeals/:dealId')
@@ -19,6 +19,9 @@ module.exports = function(app) {
 		app.route('/deals')
 		.get(leads.listdeals)
 		.post(users.requiresLogin, leads.createDeal);
+		
+		app.route('/stats/deals/total')
+		.get(deals.getDealsbyTotal);
 		
 
 		
