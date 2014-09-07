@@ -34,6 +34,9 @@ module.exports = function(app) {
 		.get(leads.getQwestLoop);
 		//.get(leads.qwestLoopQual);
 
+	app.route('/stats/leads/by/status')
+		.get(leads.getLeadsByStatus);
+
 		
 	// Finish by binding the Lead middleware
 	app.param('leadId', leads.leadByID);
