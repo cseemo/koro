@@ -3,26 +3,25 @@
     <!-- Stats -->
     <div class="row">
         <div class="col-lg-3 col-xsm-6">
-            <div class="panel mini-box">
+                       <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-success">
-                    <i class="fa fa-certificate"></i>
+                    <i class="fa fa-phone-square"></i>
                 </span>
-                <div class="box-info">
-                    <p class="size-h2">36 <span class="size-h4">%</span></p>
-                    <p class="text-muted">Close Ratio</p>
+                <div class="box-info" ng-click="getLead()">
+                    <p class="size-h2">{{myleads}}</p>
+                    <p class="text-muted">Total Leads</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-xsm-6">
+        <div class="col-lg-3 col-xsm-3">
           <a href="#!/leads" style="text-decoration:none">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-info">
                     <i class="fa fa-file-text"></i>
                 </span>
-              
                 <div class="box-info">
-                    <p class="size-h2" >12</p>
-                    <p class="text-muted">Deals Pending</p>
+                    <p class="size-h2" >{{mydeals}}</p>
+                    <p class="text-muted">Deals</p>
                 </div>
             </div></a>
         </div>
@@ -32,19 +31,19 @@
                     <i class="fa fa-dollar"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">{{mrcTotal}}</p>
-                    <p class="text-muted">MRC Sold</span></p>
+                    <p class="size-h2">${{mrcTotal}}</p>
+                    <p class="text-muted">Revenue Sold</span></p>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-xsm-6">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-danger">
-                    <i class="fa fa-money"></i>
+                    <i class="fa fa-phone"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">8</p>
-                    <p class="text-muted">Sales</p>
+                    <p class="size-h2">{{mycallDetails}}</p>
+                    <p class="text-muted">Calls</p>
                 </div>
             </div>
         </div>

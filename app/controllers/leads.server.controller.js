@@ -541,6 +541,45 @@ exports.getLeadsByCarrier = function(req, res) {
 	});	
 };
 
+//get telephone calls
+exports.getCallsbyRep = function(req, res) {
+	console.log('got to Cals By Rep');
+	console.log('Req.USer',req.user.displayName);
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	Lead.aggregate([ 
+	{	$project : { 'callDetails' : 1 } },
+	{	$unwind  : "$callDetails"},
+	{	$group 	 : 
+		{
+			_id: '$callDetails.rep',
+			total: {
+				'$sum': 1
+			}
+			
+			
+		}
+
+	}
+
+	]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			console.log('Rresuls????????? %o',results);
+			// var total = 0;
+			// Object.keys(results).forEach(function(key) {
+			// 	console.log(results[key]);
+			// 	calltime = results[key].calltime;
+			// 	results.push({_id: 'Call', 'calltime': calltime});
+			// });
+			//results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
 
 //getLeadsByState
 exports.getLeadsByState = function(req, res) {

@@ -105,9 +105,6 @@ console.log('Lead Info To Populate %o',lead);
 			});
 
 
-			
-
-
 };
 
 
@@ -562,6 +559,10 @@ console.log('dmname: '+this.dmname);
 			//$scope.callDetails = $scope.lead.callDetails;
 			console.log('Deal - Look for CallDetails %o',$scope.deal);
 		};
+
+
+		//get Call Details
+
 
 
 		$scope.qwestLoop = function(address_id) {

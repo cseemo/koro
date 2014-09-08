@@ -64,7 +64,7 @@
     }
   ]).controller('HeaderCtrl', ['$scope', function($scope) {}]).
     controller('NavContainerCtrl', ['$scope', function($scope) {}]).
-    controller('DashboardCtrl', ['$scope', 'Leads', function($scope, Leads) {
+    controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', function($scope, Authentication, Leads) {
 
        
 
@@ -166,6 +166,28 @@
         })
 
       });
+
+
+
+         $scope.mycallDetails = Leads.getCallsbyRep();
+
+        $scope.mycallDetails.$promise.then(function(results){
+          $scope.mycallDetails = 0;
+        console.log('Get call Details %o', results);
+        Object.keys(results).forEach(function(key) {
+
+          console.log('Results Key %o', results[key]);
+          console.log(Authentication.user.displayName);
+          if(results[key]._id==Authentication.user.displayName)
+          {
+            $scope.mycallDetails = results[key].total;
+            console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
+
+          }
+
+        });
+      });
+
 
         //Get Total Deals
          $scope.mydeals = Leads.getDealsTotal();

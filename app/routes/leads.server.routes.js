@@ -42,9 +42,13 @@ module.exports = function(app) {
 		app.route('/stats/leads/by/carrier')
 		.get(leads.getLeadsByCarrier);
 
-				app.route('/stats/leads/by/state')
+		app.route('/stats/leads/by/state')
 		.get(leads.getLeadsByState);
 	
+		//Get Call Details by Rep
+		app.route('/records/calldetails/rep')
+		.get(leads.getCallsbyRep);
+		
 		
 	// Finish by binding the Lead middleware
 	app.param('leadId', leads.leadByID);
