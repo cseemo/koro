@@ -8,106 +8,79 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 
 		if( ! Authentication.user ) $location.path('/signin');
 
+		$scope.convertToDeal = function(){
+			//console.log('Scope: %o',$scope);
 
-// $scope.googleStuff = {};
+			var dslspeed = this.dslspeed.value,
+			 	lead = $scope.lead;
+				lead.status = 'Closed/Won';
+			
+			console.log('DSL Speed: ', dslspeed);
+			console.log('This %o', this);
+			
+			lead.$update(function(response) {
+				console.log('Lead Info To Populate %o',lead);
+				//console.log('Lead Saved %o',lead);
+			
+				var deal = new Deals ({
+					companyname:	lead.companyname,
+					email:			lead.email,
+					contactname:	lead.contactname,
+					telephone:		lead.telephone,
+					address:		lead.address,
+					city:			lead.city,
+					state:			lead.state,
+					zipcode:		lead.zipcode,
+					lastCalled:		lead.lastCalled,
+					assigned:		lead.assigned,
+					campaign:		lead.campaign,
+					FLUPDate:		lead.FLUPDate,
+					speed:			lead.speed,
+					currentCarrier: lead.currentCarrier,
+					created:		lead.created,
+					assignedRep:	lead.assignedRep,
+					user:			lead.user,
+					term:			lead.term,
+					dslspeed:		dslspeed,
+					adl:			lead.adl,
+					modem:			$scope.lead.modem,
+					waivenrcs:		lead.waivenrcs,
+					winbackcredits:	lead.winbackcredits,
+					staticip:		lead.staticip,
+					converted:		Date.now()
+				});
 
-// $scope.googleFactory.getSearchResults()
-//   .then(function (response) {
-//     $scope.googleStuff = response.data.responseData.results;
-//     console.log('Factory: %o',response.data.responseData.results);
-//   }, function (error) {
-//     console.error(error);
-//   });
-
-
-
-
-$scope.convertToDeal = function(){
-console.log('Scope: %o',$scope);
-var dslspeed = $scope.dslspeed.value;
-var modem = $scope.mymodem.value;
-var term = $scope.myterm.name;
-var waivenrcs = $scope.nrc.value;
-var staticip = $scope.myip.value;
-var credits = $scope.mycredits.value;
-var adl = $scope.myadl;
-var mrc = $scope.currentPrice;
-var nrc = $scope.currentNRR;
-console.log(mrc + ' ' + nrc);
-
-console.log('Static IP ' + staticip + ' --- Credits: ' + credits);
-//console.log('This %o', this);
-// var dslspeed = this.dslspeed.value;
-// var modem = this.modem.$modelValue.value;
-// var term = this.modem.$modelValue.value;
-// var waivenrcs = this.nrc.value;
-// var staticip = $scope.myip.value;
-// var credits = $scope.mycredits.value;
-// var adl = this.adl.$modelValue;
-
-//console.log('Modem: ', modem);
-//console.log('ADL: ', adl);
-
-//console.log('DSL Speed: ', dslspeed);
-var lead = $scope.lead;
-	lead.status = 'Closed/Won';
-				lead.$update(function(response) {
-console.log('Lead Info To Populate %o',lead);
-					//console.log('Lead Saved %o',lead);
-	var deal = new Deals ({
-					companyname: lead.companyname,
+				// Redirect after save
+				deal.$save(function(response) {
+					$location.path('convertingdeals/' + response._id);
+					//console.log('New Deal %o', deal);
 					
-					email: lead.email,
-	contactname: lead.contactname,
-	telephone: lead.telephone,
-	address: lead.address,
-	city: lead.city,
-	state: lead.state,
-	zipcode: lead.zipcode,
-	lastCalled: lead.lastCalled,
-	assigned: lead.assigned,
-	campaign: lead.campaign,
-	FLUPDate: lead.FLUPDate,
-	speed: dslspeed,
-	currentCarrier: lead.currentCarrier,
-	created: lead.created,
-	assignedRep: lead.assignedRep,
-	user: lead.user,
-	term: 	term,
-	dslspeed: dslspeed,
-	adl: 		adl,
-		modem: 	modem,
-		waivenrcs:	waivenrcs,
-	winbackcredits:	credits,
-		staticip:	staticip,
-		mrc: mrc,
-		nrc: nrc,
-				converted: Date.now()
-			});
-
-		
-
-			// Redirect after save
-			deal.$save(function(response) {
-				$location.path('convertingdeals/' + response._id);
-	//console.log('New Deal %o', deal);
-				// Clear form fields
-				$scope.name = '';
-
+					// Clear form fields
+					$scope.name = '';
+			
+				}, function(errorResponse) {
+					$scope.error = errorResponse.data.message;
+				});
 			
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
+		};
 
-			
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-
-
-};
+		$scope.start = function(){
+			$scope.leadstatus = $scope.lead.status;
+		};
 
 
+		$scope.currentPrice = 85;
+		$scope.currentNRR = 0;
+		$scope.adl = 0;
+		//$log.info(speeds);
+
+		//FORM DATA CONTROL TEST
+		$scope.datas = [];
+		$scope.orig = angular.copy($scope.datas);
+		$scope.coInfo = 'false';
 
 
 $scope.start = function(){

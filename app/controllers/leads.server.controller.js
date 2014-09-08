@@ -33,6 +33,32 @@ var getErrorMessage = function(err) {
 	return message;
 };
 
+exports.getLeadsByStatus = function(req, res) {
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	Lead.aggregate([{
+		"$group": { 
+			_id: "$status",
+			total: {
+				"$sum": 1
+			}
+		}
+	}]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
+
 /*
  * Qwest loop qualification check
  */
