@@ -13,7 +13,7 @@ var LineDetailSchema = new Schema({
 
 	number: {
 		type: String,
-		default: null
+		default: ''
 	},
 	type: {
 		type: String,
@@ -199,6 +199,10 @@ var DealSchema = new Schema({
 		stagenum: {
 		type: Number,
 		default: 5
+	},
+	ctlordernumber: {
+		type: String,
+
 	},
 
 	billingtelephone: {

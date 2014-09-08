@@ -27,17 +27,18 @@ $scope.buildDTW = function(){
 };
 
 $scope.myDealstages = [
-{name: 'Pending Assignment', value: '5'},
-{name: 'Pending Review', value: '20'},
-{name: 'QC Approved', value: '40'},
-{name: 'Pending Order Number', value: '55'},
-{name: 'Pending Install', value: '70'},
-{name: 'Installed', value: '90'},
-{name: 'Paid', value: '100'},
+{name: 'Pending Rep Review', value: '0', number: 0},
+{name: 'Pending Assignment', value: '5', number: 1},
+{name: 'Pending Review', value: '20', number: 2},
+{name: 'QC Approved', value: '40', number: 3},
+{name: 'Pending Order Number', value: '55', number: 4},
+{name: 'Pending Install', value: '70', number: 5},
+{name: 'Installed', value: '90', number: 6},
+{name: 'Paid', value: '100', number: 7},
 
 ];
 
-$scope.mystage = $scope.myDealstages[0];
+$scope.mystage = 'Please Choose';
 
 
 
@@ -188,32 +189,61 @@ return $scope.deal.dslspeed;
 			}
 		};
 
+
+		$scope.QCApproved = function() {
+			var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[4].name;
+			deal.stagenum=$scope.myDealstages[4].value;
+
+
+		};
+		//ASSIGN Centurylink Orer Number and update DEAL
+		$scope.assignOrderNumber = function() {
+			var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[5].name;
+			deal.stagenum=$scope.myDealstages[5].value;
+
+
+		};
+
+		//Reject Order
+		$scope.rejectDeal = function(){
+				var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[0].name;
+			deal.stagenum=$scope.myDealstages[0].value;
+
+		};
+
 		//Assign Deal to a Project Manager - update Mongo
 		$scope.assignDeal = function(){
 
 			console.log('Find USer Info for PM Name %o', Authentication.user);
 			var deal = $scope.deal;
-			deal.stage=$scope.myDealstages[1].name;
-			deal.stagenum=$scope.myDealstages[1].value;
+			deal.stage=$scope.myDealstages[2].name;
+			deal.stagenum=$scope.myDealstages[2].value;
 			deal.projectmanager = Authentication.user.displayName;
-			$scope.mystage = $scope.myDealstages[1];
+			$scope.mystage = $scope.myDealstages[2];
 			
 			console.log('Dealcontroller Deal: %o',deal);
 			
 
-			deal.$update(function() {
-				$location.path('deals/' + deal._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-				$location.path('deals/' + deal._id + '/edit');
+			deal.$update();
+			// function() {
+			// 	$location.path('deals/' + deal._id);
+			// }, function(errorResponse) {
+			// 	$scope.error = errorResponse.data.message;
+			// });
+			// 	$location.path('deals/' + deal._id + '/edit');
 		};
 
 		// Update existing Deal
 		$scope.update = function() {
 			var deal = $scope.deal ;
+			console.log('Look for deal.stage and deal.stagenum %o', $scope);
+			if($scope.mystage){
 			deal.stage=$scope.mystage.name;
 			deal.stagenum=$scope.mystage.value;
+			}
 console.log('Dealcontroller Deal: %o',deal);
 			deal.$update(function() {
 				$location.path('deals/' + deal._id);

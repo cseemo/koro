@@ -145,6 +145,27 @@
         // plotChart1.draw();
       });
 
+        //Get Total MRC
+        $scope.mrcTotal = Leads.getRevenueSold();
+
+        $scope.mrcTotal.$promise.then(function(){
+        console.log('Get taht Deal TOtal!');
+        var data = [];
+        Object.keys($scope.mrcTotal).forEach(function(key) {
+          if($scope.mrcTotal[key]._id && $scope.mrcTotal[key]._id !== 'total') {
+            data.push({label: $scope.mrcTotal[key]._id, data: $scope.mrcTotal[key].total});
+            console.log('Total: ', $scope.mrcTotal[key]._id + ' ' + $scope.mrcTotal[key].total);
+          }
+          if($scope.mrcTotal[key]._id == 'total'){
+          //Fill out box of Total Leads
+               $scope.mrcTotal = $scope.mrcTotal[key].total;
+               console.log('Chads tingy: ', $scope.mrcTotal[key].total);
+          }
+
+
+        })
+
+      });
 
         //Get Total Deals
          $scope.mydeals = Leads.getDealsTotal();
@@ -155,12 +176,13 @@
         Object.keys($scope.mydeals).forEach(function(key) {
           if($scope.mydeals[key]._id && $scope.mydeals[key]._id !== 'total') {
             data.push({label: $scope.mydeals[key]._id, data: $scope.mydeals[key].total});
-            console.log('Total: ', $scope.mydeals[key]._id + ' ' + $scope.mydeals[key].total);
+            //console.log('Total: ', $scope.mydeals[key]._id + ' ' + $scope.mydeals[key].total);
           }
           if($scope.mydeals[key]._id == 'total'){
           //Fill out box of Total Leads
+          console.log('My Scope %o', $scope);
                $scope.mydeals = $scope.mydeals[key].total;
-               console.log('Chads tingy: ', $scope.mydeals[key].total);
+               //console.log('Chads tingy: ', $scope.mydeals[key]._id);
           }
 
 
@@ -215,8 +237,8 @@
         Object.keys($scope.LeadCarrierTotals).forEach(function(key) {
           if($scope.LeadCarrierTotals[key]._id && $scope.LeadCarrierTotals[key]._id !== 'total') {
             data2.push({label: $scope.LeadCarrierTotals[key]._id, data: $scope.LeadCarrierTotals[key].total});
-            console.log('Carrier: ', $scope.LeadCarrierTotals[key]._id + ' ' + $scope.LeadCarrierTotals[key].total);
-        console.log('Getting Carrier Info: ',data2);
+            //console.log('Carrier: ', $scope.LeadCarrierTotals[key]._id + ' ' + $scope.LeadCarrierTotals[key].total);
+        //console.log('Getting Carrier Info: ',data2);
         
           }
         });

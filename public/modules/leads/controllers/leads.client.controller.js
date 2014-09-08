@@ -9,6 +9,18 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 		if( ! Authentication.user ) $location.path('/signin');
 
 
+// $scope.googleStuff = {};
+
+// $scope.googleFactory.getSearchResults()
+//   .then(function (response) {
+//     $scope.googleStuff = response.data.responseData.results;
+//     console.log('Factory: %o',response.data.responseData.results);
+//   }, function (error) {
+//     console.error(error);
+//   });
+
+
+
 
 $scope.convertToDeal = function(){
 console.log('Scope: %o',$scope);
@@ -276,7 +288,7 @@ $scope.loa= $scope.myLOA[0];
 					time.getMinutes(), 
 					time.getSeconds());
 				console.log('Follow-Up: ', datetime);
-				//window.alert(datetime);
+				// window.alert(datetime);
 
 
 				//console.log('This %o',this.$$childHead);
@@ -288,13 +300,13 @@ $scope.loa= $scope.myLOA[0];
 				var who = $scope.callDetailscontact;
 				lead.status = dispo;
 				if(dispo=='Follow-Up'){
-						window.alert("Follow-Up set for :" + lead.FLUPDate);
+						//window.alert("Follow-Up set for :" + lead.FLUPDate);
 						lead.FLUPDate = datetime;
 					}
 				console.log('saveLead Scope: %o',$scope);
 				//console.log('nicole %o',comms);
 				var now = Date();
-				//window.alert(lead.user.displayName);
+				// window.alert(lead.user.displayName);
 					lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
 					lead.$update(function(data){},
 					 function(errorResponse) {
@@ -311,7 +323,7 @@ $scope.FLUPS = function() {
 $http.get('/flups').success(function(data) {
 	$scope.myleads = data;
 	//console.log('Response %o',data);
-	//window.alert('Response');
+	// window.alert('Response');
 }).error(function(data) {
 
 console.log('Error: ' + data);
@@ -328,7 +340,7 @@ $scope.DEALS = function() {
 $http.get('/getDeals').success(function(data) {
 	$scope.mydeals = data;
 	console.log('Deal Response %o', data.responseData);
-	//window.alert('Response');
+	// window.alert('Response');
 }).error(function(data) {
 
 console.log('Error: ' + data);
@@ -356,7 +368,7 @@ console.log('Error: ' + data);
 	//console.log('nicole %o',comms);
 	lead.status = dispo;
 	var now = Date();
-	//window.alert(lead.user.displayName);
+	// window.alert(lead.user.displayName);
 	lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
 	lead.$update(function(data) {
 	console.log('dialLead',data);
@@ -406,13 +418,13 @@ $scope.dialLead = function() {
 		
 //window.open('http://admin:67028@192.168.0.114/servlet?number=' + lead.telephone + '&outgoing_uri=sip-67028.accounts.vocalos.com', 'Dialing', 'toolbar=no, scrollbars=no, resizable=no, top=800, left=10, width=100, height=10');	
 
-//window.alert('IP Phone Dialing '+lead.companyname+' at: '+lead.telephone);
+// window.alert('IP Phone Dialing '+lead.companyname+' at: '+lead.telephone);
 };
 
 
 
 $scope.makeQuote = function(){
-	//window.alert("MakingQuote");
+	// window.alert("MakingQuote");
 	//console.log('Test');
 	console.log('Myform: %o', this.myForm);
 var lead = $scope.lead;

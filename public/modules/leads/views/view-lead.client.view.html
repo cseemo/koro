@@ -32,8 +32,8 @@
                     <i class="fa fa-dollar"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">$1,302</p>
-                    <p class="text-muted">Commissions</span></p>
+                    <p class="size-h2">{{mrcTotal}}</p>
+                    <p class="text-muted">MRC Sold</span></p>
                 </div>
             </div>
         </div>
@@ -50,10 +50,15 @@
         </div>
     </div>
     <!-- end stats -->
+
+
+
  <span><a href="/#!/leads/create">Add New Opportunity</a></span>
    
 
   <div class="row" data-ng-controller="LeadsController" data-ng-init="findOne()">
+ <!--  <a ng-click="getgoogleStuff()">Google It</a>
+  {{googleStuff}} -->
     <div class="col-lg-7" >
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -426,11 +431,13 @@
              <tbody>
                 <tr data-ng-repeat="deal in mydeals" >
                 
-                    <td><a data-ng-href="#!/deal/{{deal._id}}">{{deal.companyname}}</a></td>
+                    <td><a data-ng-href="#!/deals/{{deal._id}}/edit">{{deal.companyname}}</a></td>
                     <td>{{deal.telephone}}</td>
-                    <td><span class="label label-primary">{{deal.stage}}</span></td>
+                    <td data-ng-hide="deal.stagenum!=0"><span class="label label-danger">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum!=0"><span class="label label-primary">{{deal.stage}}</span></td>
                     <td>{{deal.projectmanager}}</td>
                     <td><progressbar class="progressbar-xs no-margin" value="deal.stagenum" type="success"></progressbar></td>
+
                     <td>{{deal.converted | date:'medium'}}</td>
                     <td></td>
                     </a>

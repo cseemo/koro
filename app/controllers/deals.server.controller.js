@@ -26,15 +26,41 @@ exports.create = function(req, res) {
 	});
 };
 
+//Get Total MRC Sold by Rep
+exports.getDealMRCTotal = function(req, res){
+Deal.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
+		"$group": { 
+			_id: "$mrc",
+			total: {
+				"$sum": "$mrc"
+			}
+		}
+	}]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
 
+
+};
 
 
 //Count Total Deals
 exports.getDealsbyTotal = function(req, res) {
-	console.log('got to Count Deals');
+	console.log('got to Count Deals FIND USER %o', req.user);
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
-	Deal.aggregate([{
+	Deal.aggregate([  { $match: {assignedRep:req.user.displayName} }, 
+	{
 		"$group": { 
 			_id: "$stage",
 			total: {

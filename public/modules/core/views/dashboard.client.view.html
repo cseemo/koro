@@ -31,8 +31,8 @@
                     <i class="fa fa-dollar"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">$1,302</p>
-                    <p class="text-muted">Commissions</span></p>
+                    <p class="size-h2">${{mrcTotal}}</p>
+                    <p class="text-muted">Revenue Sold</span></p>
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
                          ></div>
                 </div>
             </div>
-        </div> -->
+        </div> 
     </div>
 
 <div class="row">
@@ -127,25 +127,99 @@
             </div>
             </div>
 
-            </div>
-
+           -->
+                </div>
+                <div data-ng-controller="LeadsController" >
             <div class="row">
-                <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Horizontal Bar Chart</h3>
-                </div>
-                <div class="panel-body">
-                    <div id="LeadCarrier2Totals"
-                    data-flot-chart
-                         data-data="LeadCarrierTotals"
-                         data-options="barChar2Options"
-                         style="width: 100%; height: 300px;"
-                         ></div>
-                </div>
-            </div> 
-            </div>
-        </div>
+                
+<div class="col-lg-12">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                        <div class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> My Follow-Ups</strong></div>
+        <table class="table" data-ng-init="FLUPS()">
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Telephone</th>
+                    <th>Primary Contact</th>
+                    <th>Email</th>
+                    <th>Lead Status</th>
+                    <th>Next Contact Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="lead in myleads" >
+                
+                    <td><a data-ng-href="#!/leads/{{lead._id}}">{{lead.companyname}}</a></td>
+                    <td>{{lead.telephone}}</td>
+                    <td>{{lead.contactname}}</td>
+                    <td>{{lead.email}}</td>
+                    <td><span class="label label-primary">{{lead.status}}</span></td>
+                    <td>{{lead.FLUPDate | date:'medium'}}</td>
+                    <td></td>
+                    </a>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div></div></div>
+<br><br>
+</div>
+
+ <div class="col-lg-12" >
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                        <div class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> My Deals</strong></div>
+        <table class="table" data-ng-init="DEALS()"> 
+            <thead>
+                <tr>
+                   
+                    <th>Deal Name</th>
+                     <th>Telephone</th>
+                    <th>Status</th>
+                    <th>Project Manager</th>
+                    <th>Progress</th>
+                    <th>Converted</th>
+                </tr>
+            </thead>
+            <tbody>
+             <tbody>
+                <tr data-ng-repeat="deal in mydeals" >
+                
+                    <td><a data-ng-href="#!/deals/{{deal._id}}/edit">{{deal.companyname}}</a></td>
+                    <td>{{deal.telephone}}</td>
+                    <td data-ng-hide="deal.stagenum!=0"><span class="label label-danger">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum!=0"><span class="label label-primary">{{deal.stage}}</span></td>
+                    <td>{{deal.projectmanager}}</td>
+                    <td><progressbar class="progressbar-xs no-margin" value="deal.stagenum" type="success"></progressbar></td>
+
+                    <td>{{deal.converted | date:'medium'}}</td>
+                    <td></td>
+                    </a>
+                </tr>
+
+              
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</div></div></div>
+
+
+
+    </div>
     <!-- end stats -->
 
     <!-- end stats -->

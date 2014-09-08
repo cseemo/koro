@@ -518,7 +518,7 @@ exports.getLeadsByCarrier = function(req, res) {
 	console.log('got to getLeadsByCarrier');
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
-	Lead.aggregate([{
+	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
 		"$group": { 
 			_id: "$currentCarrier",
 			total: {
@@ -547,7 +547,7 @@ exports.getLeadsByState = function(req, res) {
 	console.log('got to getLeadsByState');
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
-	Lead.aggregate([{
+	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
 		"$group": { 
 			_id: "$state",
 			total: {
@@ -575,7 +575,7 @@ exports.getLeadsByStatus = function(req, res) {
 	console.log('got to getLeadsByStatus');
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
-	Lead.aggregate([{
+	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
 		"$group": { 
 			_id: "$status",
 			total: {
@@ -600,7 +600,7 @@ exports.getLeadsByStatus = function(req, res) {
 
 
 //Get Deals
-exports.getDEALS = function(req, res) { Deal.find().where({assignedRep: req.user.displayName}).sort('converted').limit(50).exec(function(err, deals) {
+exports.getDEALS = function(req, res) { Deal.find().where({assignedRep: req.user.displayName}).sort('stagenum').limit(50).exec(function(err, deals) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)

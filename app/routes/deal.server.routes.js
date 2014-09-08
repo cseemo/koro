@@ -23,6 +23,9 @@ module.exports = function(app) {
 		app.route('/stats/deals/total')
 		.get(deals.getDealsbyTotal);
 		
+		app.route('/stats/deals/mrctotal')
+		.get(deals.getDealMRCTotal);
+		
 
 		
 	// Finish by binding the Lead middleware

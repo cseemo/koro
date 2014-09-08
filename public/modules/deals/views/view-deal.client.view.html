@@ -20,8 +20,7 @@
 	</div>
 	</div>
 	</div>
-
-
+	
 	<div class="row">
 
 
@@ -34,7 +33,8 @@
 	Sales Rep: {{deal.assignedRep}}<br>
 	Deal Status: {{deal.stage}}<br>
 	Last Phone Call: {{deal.callDetails[0].calltime}}<br>
-	Project Manager: {{deal.projectmanager}}
+	Project Manager: {{deal.projectmanager}}<br>
+	<span data-ng-show="deal.stagenum>55">Centurylink Order Number: {{deal.ctlordernumber}}  -  Order Due Date: 01/2/2014</span>
 	</div></div></div>
 
 	<div class="col-lg-6 col-xsm-6">

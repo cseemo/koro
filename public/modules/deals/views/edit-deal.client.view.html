@@ -8,14 +8,36 @@
      <div class="panel panel-primary">
         <div class="panel-body">
             <div class="field">
-            <label class="form-text">Deal Stage: {{deal.stage}}</label>
-          <select data-ng-model="mystage" ng-init="deal.stage" class="form-control text-center" style="width: 50%; float:right;" ng-options="mystage.name for mystage in myDealstages"></select>
+            <h4>Deal Stage: {{deal.stage}}</h4>
+          <!--<select data-ng-model="mystage" class="form-control text-center" style="width: 50%; float:right;" ng-options="mystage.name for mystage in myDealstages"></select> -->
           <br>
-          <button class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Assign Deal</button>
+          <div data-ng-show="deal.stagenum==55" >
+          <fieldset class="form-inline">
+            <div class="form-group">
+          <label class="form-label">Centurylink Order Number:
+          <input type="text" data-ng-model="deal.ctlordernumber" style="width: 30%" class="form-control"/></label>
+            </div></fieldset></div>
+        <br>
+          <button data-ng-show="deal.stagenum==5" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Assign Deal</button>
+          <button data-ng-show="deal.stagenum==20" class="btn btn-w-md btn-gap btn-info" data-ng-click="QCApproved()">QC Approve</button>
+
+          <button data-ng-show="deal.stagenum==55" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignOrderNumber()">Assign CTL Order Number</button>
+      
+
+          <button data-ng-show="deal.stagenum==70" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Confirm Installation</button>
+
+
+          <button class="btn btn-w-md btn-gap btn-danger" data-ng-click="rejectDeal()">Reject Order</button>
            
+
+
+       
              </div>
             </div>
             </div>
+
+            <input type="submit" value="Update" class="btn btn-default">
+              
             </div>
 
      <div class="col-lg-6 col-xsm-6">
@@ -208,10 +230,8 @@
            </span></span>
              <br/><br/>
              </div>
-             
-             <br/>
-             <input type="button" value="Save It" ng-click="update()">
-             </div>
+  
+              </div>
 
 
 
@@ -235,12 +255,7 @@
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="update()" novalidate>
             <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="name">Company Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="deal.companyname" id="name" class="form-control" class="form-control text-center"d>
-                    </div>
-                </div>
+             
 
 
 
