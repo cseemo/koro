@@ -1,0 +1,115 @@
+<section data-ng-controller="AdminusersController" data-ng-init="findOne()">
+    <div class="page-header">
+        <h1>Edit User - {{userB.displayName}}</h1>
+    </div>
+
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="updateUser()" novalidate>
+            <fieldset>
+
+
+          
+                <h3 data-ng-bind="userB.displayName"></h3>
+               
+                    {{userB.firstName}}
+                    <small class="list-group-item-text">
+                       userBname: <span data-ng-bind="userB.username"></span><br>
+                       Email: <span data-ng-bind="userB.email"></span><br>
+                       Telephone: <span data-ng-bind="userB.telephone"></span>
+                    </small>
+
+                    <fieldset>
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="userB.firstName" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="userB.lastName" placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" class="form-control" data-ng-model="userB.email" placeholder="Email">
+                </div>
+
+                <label class="form-label" style="font-size: 14px;">Roles:</label>
+                
+            <label class="switch" style="vertical-align: middle">User<input type="checkbox" style="vertical-align: middle" ng-model="userB.roles['user']" class="pull-right"><i></i></label>
+
+             <label class="switch" style="vertical-align: middle">Admin<input type="checkbox" style="vertical-align: middle" ng-model="userB.roles['admin']" class="pull-right"><i></i></label>
+
+             <p data-ng-repeat="role in userB.roles">
+             Role: {{role}}
+             </p>
+           
+                              <!--  <div class="list-group">
+                <a data-ng-repeat="userB in users" data-ng-href="#!/users/{{user._id}}/" class="list-group-item">
+                  <small class="pull-right list-group-item-text">
+                  Created: <span data-ng-bind="userB.created"></span>
+                  </small> -->
+
+
+
+<!--                   <div class="form-group">
+                    <label class="control-label" for="companyname">Company Name</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="lead.companyname" id="companyname" class="form-control" placeholder="Company Name" required>
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                    <label class="control-label" for="contactname">Contact Name</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="lead.contactname" id="contactname" class="form-control" placeholder="Contact Name" >
+                    </div>
+                </div>
+
+     <div class="form-group">
+                    <label class="control-label" for="email">Contact Email Address</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="lead.email" id="email" class="form-control" placeholder="Contact Email" >
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                    <label class="control-label" for="telephone">Telephone Number</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="lead.telephone" id="telephone" class="form-control" placeholder="Telephone Number">
+                    </div>
+                </div>
+
+
+                    <div class="form-group">
+                    <label class="control-label" for="address">Service Address</label>
+                    <div class="form-inline">
+                     <input type="text" data-ng-model="lead.address" id="address" class="form-control" placeholder="Address">
+                    <label class="form-label" for="address">City</label>
+                        <input type="text" data-ng-model="lead.city" class="form-control" placeholder="City">
+                <label class="form-label" for="address">State</label>
+                        <input type="text" data-ng-model="lead.state" class="form-control" placeholder="State">
+                <label class="form-label" for="address">Zip</label>
+                        <input type="text" data-ng-model="lead.zipcode" class="form-control" placeholder="Zipcode">
+                
+                </div>
+                </div>
+
+ -->
+                    
+
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-default">
+              
+                </div>
+
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+        </form>
+    </div>
+</section>
+
+
+
+
+                    
