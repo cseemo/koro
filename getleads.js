@@ -25,7 +25,7 @@ request('https://script.google.com/macros/s/AKfycbwRM0AWlTwLf_YGaSfTpygjEO2uI0J0
  
 		    var collection = db.collection('leads');
 		    //for(i in data) {
-		   	for(var i = 0; i < 300; i++){
+		   	for(var i = 0; i < 500; i++){
 		   		console.log('Lead :'+data[i].Company);
  
 		   		if(data[i].Company.length > 1) {

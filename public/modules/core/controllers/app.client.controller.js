@@ -55,6 +55,7 @@
           }, true);
           return ($scope.color = {
             primary: '#248AAF',
+            secondary: '#3CBC8D',
             success: '#3CBC8D',
             info: '#29B7D3',
             infoAlt: '#666699',
@@ -86,7 +87,7 @@
       colors: [$scope.color.primary, $scope.color.success, $scope.color.info, $scope.color.warning, $scope.color.danger],
       tooltip: true,
       tooltipOpts: {
-        content: "%total",
+        content: '%total',
         defaultTheme: false
       }
     };
@@ -130,7 +131,8 @@
             data.push({label: $scope.LeadTotals[key]._id, data: $scope.LeadTotals[key].total});
             console.log('Total: ', $scope.LeadTotals[key]._id + ' ' + $scope.LeadTotals[key].total);
           }
-          if($scope.LeadTotals[key]._id == 'total'){
+          if($scope.LeadTotals[key]._id === 'total'){
+            //Marin had double == JSLint suggested ===
           //Fill out box of Total Leads
                $scope.myleads = $scope.LeadTotals[key].total;
                console.log('Chads tingy: ', $scope.LeadTotals[key].total);
@@ -154,16 +156,17 @@
         Object.keys($scope.mrcTotal).forEach(function(key) {
           if($scope.mrcTotal[key]._id && $scope.mrcTotal[key]._id !== 'total') {
             data.push({label: $scope.mrcTotal[key]._id, data: $scope.mrcTotal[key].total});
-            console.log('Total: ', $scope.mrcTotal[key]._id + ' ' + $scope.mrcTotal[key].total);
+            //console.log('Total: ', $scope.mrcTotal[key]._id + ' ' + $scope.mrcTotal[key].total);
           }
-          if($scope.mrcTotal[key]._id == 'total'){
+          if($scope.mrcTotal[key]._id === 'total'){
           //Fill out box of Total Leads
                $scope.mrcTotal = $scope.mrcTotal[key].total;
-               console.log('Chads tingy: ', $scope.mrcTotal[key].total);
+               //console.log('Chads tingy: ', $scope.mrcTotal[key].total);
           }
 
 
-        })
+        });
+        //Semi colon above suggested by JSLint marin didn't have one
 
       });
 
@@ -178,7 +181,8 @@
 
           console.log('Results Key %o', results[key]);
           console.log(Authentication.user.displayName);
-          if(results[key]._id==Authentication.user.displayName)
+          //Converted == to === JSLint
+          if(results[key]._id===Authentication.user.displayName)
           {
             $scope.mycallDetails = results[key].total;
             console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
@@ -200,7 +204,8 @@
             data.push({label: $scope.mydeals[key]._id, data: $scope.mydeals[key].total});
             //console.log('Total: ', $scope.mydeals[key]._id + ' ' + $scope.mydeals[key].total);
           }
-          if($scope.mydeals[key]._id == 'total'){
+          //JSLint convert == to ===
+          if($scope.mydeals[key]._id === 'total'){
           //Fill out box of Total Leads
           console.log('My Scope %o', $scope);
                $scope.mydeals = $scope.mydeals[key].total;
@@ -227,14 +232,14 @@
                     show: true,
                     fill: 1,
                     barWidth: 1,
-                    align: "center",
+                    align: 'center',
                     horizontal: true
                   },
             grid:
             {
                 hoverable: true,
                 borderWidth: 1,
-                borderColor: "#eeeeee",
+                borderColor: '#eeeeee',
               },
             tooltip: true,
             tooltipOpts:{
@@ -242,7 +247,7 @@
               },
             colors: [$scope.color.success, $scope.color.info, $scope.color.warning, $scope.color.danger],
           xaxis: {
-            xaxisLabel: "Test",
+            xaxisLabel: 'Test',
             max: 50
           }
           

@@ -20,18 +20,18 @@ $scope.clockIn= function(type) {
 		$scope.clockedInVal = 'Clocked-In';
 			switch(type){
 				case 'break': 
-			window.alert("You have been clocked-in for break at "+Date.now());
+			window.alert('You have been clocked-in for break at '+Date.now());
 			$cookieStore.put('breakEnd', Date.now());
 			
 			break;
 
 			case 'lunch': 
-			window.alert("You have been clocked-in for lunch at "+Date.now());
+			window.alert('You have been clocked-in for lunch at '+Date.now());
 			$cookieStore.put('lunchEnd', Date.now());
 			break;
 
 			case 'shift': 
-			window.alert("You have been clocked-in at "+Date.now());
+			window.alert('You have been clocked-in at '+Date.now());
 			$cookieStore.put('shiftStart', Date.now());
 			break;
 			}
@@ -53,19 +53,19 @@ console.log('Error: ' + data);
 			$scope.clockedInVal = 'Clocked-Out';
 			switch(type){
 				case 'break': 
-			window.alert("You have been clocked-out for break at "+Date.now());
+			window.alert('You have been clocked-out for break at '+Date.now());
 			$cookieStore.put('breakStart', Date.now());
 				$scope.clockedInVal = 'At Break';
 			break;
 
 			case 'lunch': 
-			window.alert("You have been clocked-out for lunch at "+Date.now());
+			window.alert('You have been clocked-out for lunch at '+Date.now());
 			$cookieStore.put('lunchStart', Date.now());
 				$scope.clockedInVal = 'At Lunch';
 			break;
 
 			case 'shift': 
-			window.alert("You have been clocked-out at "+Date.now());
+			window.alert('You have been clocked-out at '+Date.now());
 			$cookieStore.put('shiftEnd', Date.now());
 			break;
 			}

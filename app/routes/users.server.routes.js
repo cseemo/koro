@@ -41,6 +41,19 @@ module.exports = function(app) {
 	app.route('/auth/linkedin').get(passport.authenticate('linkedin'));
 	app.route('/auth/linkedin/callback').get(users.oauthCallback('linkedin'));
 
+	//FIX THIS -- REQUIRES LOGIN
+	app.route('/users/:userId/edit')
+	.put(users.updateUser)
+	.get(users.showUser);
+
+	app.route('/users/edit')
+	.put(users.updateUser)
+	.get(users.list);
+
+	app.route('/adminusers')
+	//.put(users.requiresLogin, users.updateUser)
+	.get(users.list);
+
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);
 };

@@ -5,7 +5,7 @@
 	<div class="row">
 
 
-	 <div class="col-lg-12 col-xsm-6">
+	  <div class="col-lg-10 col-lg-offset-1 col-md-6">
 	 <div class="panel panel-primary">
        <div class="panel-body">
          <a data-ng-href="#!/deals/{{deal._id}}/edit"> 
@@ -22,11 +22,19 @@
 	</div>
 	
 	<div class="row">
+	 <div class="col-lg-8 col-lg-offset-2 col-md-6">
+	 <div class="panel panel-primary">
+       <div class="panel-body">
+	 <h2>Deal Notes</h2>
+	 {{deal.notes}}
+	 </div></div>
+	 </div></div>
 
-
+	 <div class="row">
 	 <div class="col-lg-6 col-xsm-6">
 	 <div class="panel panel-primary">
        <div class="panel-body">
+     <h2>Company Info</h2>
 	ContactName: {{deal.contactname}}<br>
 	Telephone: {{deal.telephone}}<br>
 	Converted Date: {{deal.converted}}<br>

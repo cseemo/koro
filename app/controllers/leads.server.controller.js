@@ -37,10 +37,10 @@ exports.getLeadsByStatus = function(req, res) {
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Lead.aggregate([{
-		"$group": { 
-			_id: "$status",
+		'$group': { 
+			_id: '$status',
 			total: {
-				"$sum": 1
+				'$sum': 1
 			}
 		}
 	}]).exec(function(err, results) {
@@ -101,7 +101,7 @@ exports.getQwestLoop = function(req, res) {
 
 						console.log('Session %s started\nAttempting to search for addressid: %s', tcat, address);
 						checkAddress(address, findCookies(response.headers['set-cookie']), function(err, response, body) {
-							var re = /addressid2.{9}(.*)" /g;
+							var re = /addressid2.{9}(.*)' /g;
 							var matches = re.exec(body);
 							var awesome = function(cookies) {
 								request({
@@ -116,6 +116,7 @@ exports.getQwestLoop = function(req, res) {
 									var results = [];
 									var re = /DisplayProduct:.*Internet ([0-9\.]+)([a-zA-Z]).*[\/]([0-9]+)([a-zA-Z]).*ps/g;
 									var m;
+									console.log('ResponseBody ', body);
 									var index = body.search('End ProductConfiguration');
 									if(index > -1) {
 										console.log('Found index at: %d original size is: %d', index, body.length);
@@ -360,7 +361,7 @@ exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exe
 		} else {
 			lead.user = req.user;
 			lead.assignedRep = req.user.displayName;
-				lead.save(function(err) {
+			lead.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
@@ -545,10 +546,10 @@ exports.getLeadsByCarrier = function(req, res) {
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
-		"$group": { 
-			_id: "$currentCarrier",
+		'$group': { 
+			_id: '$currentCarrier',
 			total: {
-				"$sum": 1
+				'$sum': 1
 			}
 		}
 	}]).exec(function(err, results) {
@@ -575,7 +576,7 @@ exports.getCallsbyRep = function(req, res) {
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Lead.aggregate([ 
 	{	$project : { 'callDetails' : 1 } },
-	{	$unwind  : "$callDetails"},
+	{	$unwind  : '$callDetails'},
 	{	$group 	 : 
 		{
 			_id: '$callDetails.rep',
@@ -613,10 +614,10 @@ exports.getLeadsByState = function(req, res) {
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
-		"$group": { 
-			_id: "$state",
+		'$group': { 
+			_id: '$state',
 			total: {
-				"$sum": 1
+				'$sum': 1
 			}
 		}
 	}]).exec(function(err, results) {
@@ -641,10 +642,10 @@ exports.getLeadsByStatus = function(req, res) {
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
-		"$group": { 
-			_id: "$status",
+		'$group': { 
+			_id: '$status',
 			total: {
-				"$sum": 1
+				'$sum': 1
 			}
 		}
 	}]).exec(function(err, results) {

@@ -79,13 +79,18 @@
                     <span data-ng-bind="lead.city"></span>
                     <span data-ng-bind="lead.state"></span>, 
                     <span data-ng-bind="lead.zipcode"></span>
+                
                   </div>
-               
+                
                <div class="clearfix"></div>
 
                Qualify for: {{lead.speed}}<br>
                Current Provider: {{lead.currentCarrier}}
+               <div class="pull-right"><a class="btn btn-primary" href="/#!/leads/{{lead._id}}/edit">
+      <i class="glyphicon glyphicon-edit"></i> Edit
+    </a></div>
               </div>
+
             </div>
           <div class="panel panel-info">
             <div class="panel-heading">Call Records
@@ -282,7 +287,7 @@
 
             <label class="form-text">DSL Modem:<span id='myphoneError' style='display: none; color: red'>What about the modem?</span></label>
 
-           <select  ng-change="getQuote()" ng-model="lead.mymodem" class="form-control text-center" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
+           <select  ng-change="getQuote()" ng-model="mymodem" class="form-control text-center" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
                   
                      <div class="clearfix"></div>
                   

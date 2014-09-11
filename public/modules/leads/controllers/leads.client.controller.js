@@ -10,17 +10,27 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 
 		$scope.convertToDeal = function(){
 			//console.log('Scope: %o',$scope);
+			console.log('This %o', this);
 
 			var dslspeed = this.dslspeed.value,
 			 	lead = $scope.lead;
 				lead.status = 'Closed/Won';
+				var term = this.myterm.name;
+				var 	adl = 		this.myadl;
+				var 	modem =	this.mymodem.value;
+				var 	waivenrcs =	this.nrc.value;
+				var 	winbackcredits =	this.mycredits.value;
+				var 	staticip =	this.myip.value;
+				var 	converted = 	Date.now();
+				var mrc = this.currentPrice;
+				var nrc = this.currentNRR;
 			
 			console.log('DSL Speed: ', dslspeed);
-			console.log('This %o', this);
+		
 			
 			lead.$update(function(response) {
 				console.log('Lead Info To Populate %o',lead);
-				//console.log('Lead Saved %o',lead);
+				
 			
 				var deal = new Deals ({
 					companyname:	lead.companyname,
@@ -40,14 +50,16 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 					created:		lead.created,
 					assignedRep:	lead.assignedRep,
 					user:			lead.user,
-					term:			lead.term,
+					term:			term,
 					dslspeed:		dslspeed,
-					adl:			lead.adl,
-					modem:			$scope.lead.modem,
-					waivenrcs:		lead.waivenrcs,
-					winbackcredits:	lead.winbackcredits,
-					staticip:		lead.staticip,
-					converted:		Date.now()
+					adl:			adl,
+					modem:			modem,
+					waivenrcs:		waivenrcs,
+					winbackcredits:	winbackcredits,
+					staticip:		staticip,
+					converted:		converted,
+					mrc: 			mrc,
+					nrc:            nrc, 
 				});
 
 				// Redirect after save
@@ -67,27 +79,6 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 			});
 		};
 
-		$scope.start = function(){
-			$scope.leadstatus = $scope.lead.status;
-		};
-
-
-		$scope.currentPrice = 85;
-		$scope.currentNRR = 0;
-		$scope.adl = 0;
-		//$log.info(speeds);
-
-		//FORM DATA CONTROL TEST
-		$scope.datas = [];
-		$scope.orig = angular.copy($scope.datas);
-		$scope.coInfo = 'false';
-
-
-$scope.start = function(){
-
-$scope.leadstatus = $scope.lead.status;
-
-};
 
 
 $scope.currentPrice = 85;
@@ -496,7 +487,8 @@ console.log('dmname: '+this.dmname);
 		};
 
 		// Update existing Lead
-		$scope.update = function() {
+		$scope.updateLead = function() {
+			console.log('Got here');
 			var lead = $scope.lead ;
 
 			lead.$update(function() {
@@ -504,6 +496,12 @@ console.log('dmname: '+this.dmname);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
+		};
+
+		//Test
+		$scope.chad = function(){
+
+			window.alert("tetst");
 		};
 
 
@@ -687,6 +685,8 @@ $scope.mytime = $scope.dt;
       $scope.toggleMode = function() {
         return $scope.ismeridian = !$scope.ismeridian;
       };
+
+
       $scope.update = function() {
         var d;
         d = new Date();

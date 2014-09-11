@@ -5,11 +5,28 @@ angular.module('deals').controller('DealsController', ['$scope', '$stateParams',
 	function($scope, $stateParams, $location, Authentication, Leads, Deals ) {
 		$scope.authentication = Authentication;
 
+$scope.step = 1;
+
+$scope.nextStep = function(){
+var current = $scope.step-0+1;
+console.log('Current: ',current);
+$scope.step = current;
+console.log('Current Step: ',$scope.step);
+};
+
+$scope.lastStep = function(){
+var current = $scope.step-1;
+
+$scope.step = current;
+console.log('Current Step: ',$scope.step);
+};
+
+
 $scope.buildDTW = function(){
 	console.log('got here %',$scope);
 	console.log('Total Lines: ', $scope.deal);
 	$scope.deal.$promise.then(function(){
-		$scope.deal.adl;
+		//$scope.deal.adl;
 	var totlines = parseInt($scope.deal.adl)+1;
 	console.log('Total Lines: %o', totlines);
 	if(totlines<2){

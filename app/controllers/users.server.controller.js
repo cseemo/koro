@@ -105,6 +105,57 @@ exports.signin = function(req, res, next) {
 	})(req, res, next);
 };
 
+
+/**
+ * Show the current Users Info
+ */
+exports.showUser = function(req, res) {
+	// console.log('Req.user %o ', req.user);
+		console.log('Req Params %o ', req.profile);
+	res.jsonp(req.profile);
+};
+
+/**
+ * Update user details
+ */
+exports.updateUser = function(req, res) {
+	// Init Variables
+	console.log('req.userB?? %o ',req.params);
+	var user = req.userB;
+	var message = null;
+
+	// For security measurement we remove the roles from the req.body object
+	delete req.body.roles;
+
+	if (user) {
+		// Merge existing user
+		user = _.extend(user, req.body);
+		user.updated = Date.now();
+		user.displayName = user.firstName + ' ' + user.lastName;
+
+		user.save(function(err) {
+			if (err) {
+				return res.send(400, {
+					message: getErrorMessage(err)
+				});
+			} else {
+				req.login(user, function(err) {
+					if (err) {
+						res.send(400, err);
+					} else {
+						res.jsonp(user);
+					}
+				});
+			}
+		});
+	} else {
+		res.send(400, {
+			message: 'User is not signed in'
+		});
+	}
+};
+
+
 /**
  * Update user details
  */
