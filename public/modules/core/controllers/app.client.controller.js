@@ -87,7 +87,7 @@
       colors: [$scope.color.primary, $scope.color.success, $scope.color.info, $scope.color.warning, $scope.color.danger],
       tooltip: true,
       tooltipOpts: {
-        content: '%total',
+        content: '%p.0%, %s',
         defaultTheme: false
       }
     };

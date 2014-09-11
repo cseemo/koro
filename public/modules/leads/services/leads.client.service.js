@@ -40,17 +40,11 @@ angular.module('leads').factory('Leads', ['$resource',
 				url: '/stats/deals/mrctotal',
 				isArray: true,
 			},
-
 				getCallsbyRep: {
 				method: 'GET',
 				url: '/records/calldetails/rep',
 				isArray: true,
-			}
-
-		
-
-
-			
+			}			
 		});
 	}
 ]);

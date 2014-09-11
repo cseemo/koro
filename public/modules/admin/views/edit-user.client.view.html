@@ -34,9 +34,9 @@
 
                 <label class="form-label" style="font-size: 14px;">Roles:</label>
                 
-            <label class="switch" style="vertical-align: middle">User<input type="checkbox" style="vertical-align: middle" ng-model="userB.roles['user']" class="pull-right"><i></i></label>
+            <label class="switch" style="vertical-align: middle">User<input type="checkbox" style="vertical-align: middle" ng-model="roles.user" class="pull-right"><i></i></label>
 
-             <label class="switch" style="vertical-align: middle">Admin<input type="checkbox" style="vertical-align: middle" ng-model="userB.roles['admin']" class="pull-right"><i></i></label>
+            <label class="switch" style="vertical-align: middle">Admin<input type="checkbox" style="vertical-align: middle" ng-model="roles.admin" class="pull-right"><i></i></label>
 
              <p data-ng-repeat="role in userB.roles">
              Role: {{role}}
