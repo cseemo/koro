@@ -5,7 +5,6 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 
 		// Storage for our "switches" role type current condition (true or false)
 		$scope.roles = {};
-	
 
 		// Find existing Deal
 		$scope.findOne = function() {
@@ -46,10 +45,12 @@ console.log('notify');
 			// Clear our current roles list
 			$scope.userB.roles = [];
 
-			// Update our roles list with our current keys 
-			$scope.userB.roles = Object.keys($scope.roles);
-
-			console.log('Got here');
+			// Go through each role and if it is set to true add it to our array
+			Object.keys($scope.roles).forEach(function(key){
+				if($scope.roles[key]) {
+					$scope.userB.roles.push(key);
+				}
+			});
 
 			console.log('Scope %o', $scope);
 			//var userB = $scope.userB ;
