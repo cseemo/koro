@@ -5,6 +5,75 @@ angular.module('deals').controller('DealsController', ['$scope', '$stateParams',
 	function($scope, $stateParams, $location, Authentication, Leads, Deals ) {
 		$scope.authentication = Authentication;
 
+$scope.step = 1;
+
+$scope.nextStep = function(){
+var current = $scope.step-0+1;
+console.log('Current: ',current);
+$scope.step = current;
+console.log('Current Step: ',$scope.step);
+};
+
+$scope.lastStep = function(){
+var current = $scope.step-1;
+
+$scope.step = current;
+console.log('Current Step: ',$scope.step);
+};
+
+
+$scope.buildDTW = function(){
+	console.log('got here %',$scope);
+	console.log('Total Lines: ', $scope.deal);
+	$scope.deal.$promise.then(function(){
+		//$scope.deal.adl;
+	var totlines = parseInt($scope.deal.adl)+1;
+	console.log('Total Lines: %o', totlines);
+	if(totlines<2){
+		$scope.deal.lineDetails.push({});
+	}else{
+		for(var i = 0; i < totlines ; i++) {
+		$scope.deal.lineDetails.push({});
+	}
+
+	}
+		
+});
+
+
+};
+
+$scope.myDealstages = [
+{name: 'Pending Rep Review', value: '0', number: 0},
+{name: 'Pending Assignment', value: '5', number: 1},
+{name: 'Pending Review', value: '20', number: 2},
+{name: 'QC Approved', value: '40', number: 3},
+{name: 'Pending Order Number', value: '55', number: 4},
+{name: 'Pending Install', value: '70', number: 5},
+{name: 'Installed', value: '90', number: 6},
+{name: 'Paid', value: '100', number: 7},
+
+];
+
+$scope.mystage = 'Please Choose';
+
+
+
+ $scope.getDays = function() {
+ 	//window.alert("Hi");
+	var date = new Date();
+	console.log('Date: ', date);
+	//var converted = $scope.deal.converted;
+//console.log('date' + date+ ' converted' + converted);
+$scope.dayssince = 7;
+};
+
+$scope.stub = function(){
+
+	var a = true;
+
+};
+
 $scope.myspeed = $scope.dslspeed;
 
 		$scope.mySpeeds = [
@@ -83,6 +152,7 @@ return $scope.deal.dslspeed;
 		// Create new Deal
 		$scope.testme = function(){
 //window.alert(this.name);
+	console.log('Testing %', $scope);
 	var deal = new Deals ({
 				name: this.name,
 				user: this.user,
@@ -136,9 +206,61 @@ return $scope.deal.dslspeed;
 			}
 		};
 
+
+		$scope.QCApproved = function() {
+			var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[4].name;
+			deal.stagenum=$scope.myDealstages[4].value;
+
+
+		};
+		//ASSIGN Centurylink Orer Number and update DEAL
+		$scope.assignOrderNumber = function() {
+			var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[5].name;
+			deal.stagenum=$scope.myDealstages[5].value;
+
+
+		};
+
+		//Reject Order
+		$scope.rejectDeal = function(){
+				var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[0].name;
+			deal.stagenum=$scope.myDealstages[0].value;
+
+		};
+
+		//Assign Deal to a Project Manager - update Mongo
+		$scope.assignDeal = function(){
+
+			console.log('Find USer Info for PM Name %o', Authentication.user);
+			var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[2].name;
+			deal.stagenum=$scope.myDealstages[2].value;
+			deal.projectmanager = Authentication.user.displayName;
+			$scope.mystage = $scope.myDealstages[2];
+			
+			console.log('Dealcontroller Deal: %o',deal);
+			
+
+			deal.$update();
+			// function() {
+			// 	$location.path('deals/' + deal._id);
+			// }, function(errorResponse) {
+			// 	$scope.error = errorResponse.data.message;
+			// });
+			// 	$location.path('deals/' + deal._id + '/edit');
+		};
+
 		// Update existing Deal
 		$scope.update = function() {
 			var deal = $scope.deal ;
+			console.log('Look for deal.stage and deal.stagenum %o', $scope);
+			if($scope.mystage){
+			deal.stage=$scope.mystage.name;
+			deal.stagenum=$scope.mystage.value;
+			}
 console.log('Dealcontroller Deal: %o',deal);
 			deal.$update(function() {
 				$location.path('deals/' + deal._id);
@@ -150,6 +272,7 @@ console.log('Dealcontroller Deal: %o',deal);
 		// Find a list of Deals
 		$scope.find = function() {
 			$scope.deals = Deals.query();
+			$scope.today = new Date();
 
 		};
 
@@ -157,7 +280,10 @@ console.log('Dealcontroller Deal: %o',deal);
 		$scope.findOne = function() {
 			$scope.deal = Deals.get({ 
 				dealId: $stateParams.dealId
+
 			});
+			console.log('Deal Info: %o', $scope.deal);
+			$scope.mystage = $scope.deal.stage;
 
 		};
 	}

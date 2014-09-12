@@ -10,17 +10,27 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 
 		$scope.convertToDeal = function(){
 			//console.log('Scope: %o',$scope);
+			console.log('This %o', this);
 
 			var dslspeed = this.dslspeed.value,
 			 	lead = $scope.lead;
 				lead.status = 'Closed/Won';
+				var term = this.myterm.name;
+				var 	adl = 		this.myadl;
+				var 	modem =	this.mymodem.value;
+				var 	waivenrcs =	this.nrc.value;
+				var 	winbackcredits =	this.mycredits.value;
+				var 	staticip =	this.myip.value;
+				var 	converted = 	Date.now();
+				var mrc = this.currentPrice;
+				var nrc = this.currentNRR;
 			
 			console.log('DSL Speed: ', dslspeed);
-			console.log('This %o', this);
+		
 			
 			lead.$update(function(response) {
 				console.log('Lead Info To Populate %o',lead);
-				//console.log('Lead Saved %o',lead);
+				
 			
 				var deal = new Deals ({
 					companyname:	lead.companyname,
@@ -40,14 +50,16 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 					created:		lead.created,
 					assignedRep:	lead.assignedRep,
 					user:			lead.user,
-					term:			lead.term,
+					term:			term,
 					dslspeed:		dslspeed,
-					adl:			lead.adl,
-					modem:			$scope.lead.modem,
-					waivenrcs:		lead.waivenrcs,
-					winbackcredits:	lead.winbackcredits,
-					staticip:		lead.staticip,
-					converted:		Date.now()
+					adl:			adl,
+					modem:			modem,
+					waivenrcs:		waivenrcs,
+					winbackcredits:	winbackcredits,
+					staticip:		staticip,
+					converted:		converted,
+					mrc: 			mrc,
+					nrc:            nrc, 
 				});
 
 				// Redirect after save
@@ -67,20 +79,18 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 			});
 		};
 
-		$scope.start = function(){
-			$scope.leadstatus = $scope.lead.status;
-		};
 
 
-		$scope.currentPrice = 85;
-		$scope.currentNRR = 0;
-		$scope.adl = 0;
-		//$log.info(speeds);
+$scope.currentPrice = 85;
+$scope.currentNRR = 0;
+$scope.myadl = 0;
+//$log.info(speeds);
 
-		//FORM DATA CONTROL TEST
-		$scope.datas = [];
-		$scope.orig = angular.copy($scope.datas);
-		$scope.coInfo = 'false';
+//FORM DATA CONTROL TEST
+$scope.datas = [];
+$scope.orig = angular.copy($scope.datas);
+
+$scope.coInfo = 'false';
 
 
 
@@ -239,28 +249,32 @@ $scope.loa= $scope.myLOA[0];
 					time.getMinutes(), 
 					time.getSeconds());
 				console.log('Follow-Up: ', datetime);
-				//window.alert(datetime);
+				// window.alert(datetime);
 
 
 				//console.log('This %o',this.$$childHead);
 				var lead = $scope.lead;
-				lead.FLUPDate = datetime;
+				
 				var rep = lead.assignedRep;
 				var comms = this.myForm.comments.$modelValue;
 				var dispo = $scope.disposition;
 				var who = $scope.callDetailscontact;
 				lead.status = dispo;
+				if(dispo=='Follow-Up'){
+						//window.alert("Follow-Up set for :" + lead.FLUPDate);
+						lead.FLUPDate = datetime;
+					}
 				console.log('saveLead Scope: %o',$scope);
 				//console.log('nicole %o',comms);
 				var now = Date();
-				//window.alert(lead.user.displayName);
+				// window.alert(lead.user.displayName);
 					lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
 					lead.$update(function(data){},
 					 function(errorResponse) {
 						$scope.error = errorResponse.data.message;
 						});
 
-				window.alert("Follow-Up set for :" + lead.FLUPDate);
+				
 			};
 
 
@@ -270,7 +284,7 @@ $scope.FLUPS = function() {
 $http.get('/flups').success(function(data) {
 	$scope.myleads = data;
 	//console.log('Response %o',data);
-	//window.alert('Response');
+	// window.alert('Response');
 }).error(function(data) {
 
 console.log('Error: ' + data);
@@ -286,8 +300,8 @@ $scope.DEALS = function() {
 
 $http.get('/getDeals').success(function(data) {
 	$scope.mydeals = data;
-	//console.log('Deal Response %o', data);
-	//window.alert('Response');
+	console.log('Deal Response %o', data.responseData);
+	// window.alert('Response');
 }).error(function(data) {
 
 console.log('Error: ' + data);
@@ -315,7 +329,7 @@ console.log('Error: ' + data);
 	//console.log('nicole %o',comms);
 	lead.status = dispo;
 	var now = Date();
-	//window.alert(lead.user.displayName);
+	// window.alert(lead.user.displayName);
 	lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
 	lead.$update(function(data) {
 	console.log('dialLead',data);
@@ -365,26 +379,16 @@ $scope.dialLead = function() {
 		
 //window.open('http://admin:67028@192.168.0.114/servlet?number=' + lead.telephone + '&outgoing_uri=sip-67028.accounts.vocalos.com', 'Dialing', 'toolbar=no, scrollbars=no, resizable=no, top=800, left=10, width=100, height=10');	
 
-//window.alert('IP Phone Dialing '+lead.companyname+' at: '+lead.telephone);
+// window.alert('IP Phone Dialing '+lead.companyname+' at: '+lead.telephone);
 };
 
 
 
 $scope.makeQuote = function(){
-	//window.alert("MakingQuote");
+	// window.alert("MakingQuote");
 	//console.log('Test');
-	//console.log(this.myForm);
+	console.log('Myform: %o', this.myForm);
 var lead = $scope.lead;
-
-
-
-
-
-
-
-
-
-
 
 this.term = this.myForm.term.$viewValue;
 this.dsl = this.myForm.dsl_speed.$viewValue;
@@ -483,7 +487,8 @@ console.log('dmname: '+this.dmname);
 		};
 
 		// Update existing Lead
-		$scope.update = function() {
+		$scope.updateLead = function() {
+			console.log('Got here');
 			var lead = $scope.lead ;
 
 			lead.$update(function() {
@@ -491,6 +496,12 @@ console.log('dmname: '+this.dmname);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
+		};
+
+		//Test
+		$scope.chad = function(){
+
+			window.alert("tetst");
 		};
 
 
@@ -520,7 +531,14 @@ console.log('dmname: '+this.dmname);
 			console.log('Deal - Look for CallDetails %o',$scope.deal);
 		};
 
+
+		//get Call Details
+
+
+
 		$scope.qwestLoop = function(address_id) {
+			$scope.qwestCheckingServiceA = false;
+			$scope.qwestCheckingService = true;
 			if(address_id) {
 				console.log('addressid: ', address_id);
 
@@ -551,14 +569,14 @@ console.log('dmname: '+this.dmname);
 		};
 
 		$scope.addressSearch = function() {
-			$scope.qwestCheckingService = true;
+			$scope.qwestCheckingServiceA = true;
 			var addy = encodeURIComponent(
 				$scope.lead.address + ',' + $scope.lead.city + ',' + $scope.lead.state
 			);
 			$http.jsonp('http://geoamsrv.centurylink.com/geoam/addressmatch/addresses?callback=JSON_CALLBACK&q='+addy+'&_=1409090948562')
 			.success(function(data, status, headers, config) {
 				//console.log('status: ', status);
-				//console.log('response: ', data);
+				console.log('response: ', data);
 				console.log('responseData: ', data.responseData.addresses)
 				$scope.addresses = data.responseData.addresses;
 
@@ -569,50 +587,58 @@ console.log('dmname: '+this.dmname);
 			.error(function(data, status, headers, config) {
 
 			});
+
 		};
-		
+
 		setTimeout(function() {
 			$scope.lead.$promise.then(function() {
 				$scope.addressSearch();
 				console.log('search complete');
+				
 			});	
 		}, 500);
 
+		
 
 
-
-		$scope.getQuote = function() {
+$scope.getQuote = function() {
 	
-			console.log('Form',this.myForm);
-			this.term = this.myForm.term;
-			this.dsl = this.myForm.dsl_speed;
-			this.adl = this.myForm.adl;
-			this.modem = this.myForm.modem;
-			this.nrcs = this.myForm.nrcs;
-			this.credits = this.myForm.credits;
-			this.iptype = this.myForm.staticIP;
+
+console.log('Form',this.myForm);
+
+this.term = this.myForm.term;
+this.dsl = this.myForm.dsl_speed;
+this.adl = this.myForm.adl;
+this.modem = this.myForm.modem;
+this.nrcs = this.myForm.nrcs;
+this.credits = this.myForm.credits;
+this.iptype = this.myForm.staticIP;
+console.log('Scope',$scope);
+
 
 			$http({
-				method: 'post',
-				url: '/quote',
-				data: {
-					term: this.term.$viewValue,
-					adl: this.adl.$viewValue,
-					dsl: this.myForm.dsl_speed.$viewValue,
-					modem: this.modem.$viewValue,
-					nrcs: this.nrcs.$viewValue,
-					credits: this.credits.$viewValue,
-					iptype: this.iptype.$viewValue
-				}
-			}).success(function(data, status) {
-				if(status === 200) {
-					//$scope.currentPrice = data.price;
-					console.log(data);
-					$scope.currentPrice = data.price;
-					$scope.currentNRR = data.nrr;
-				}
-			});
-		};
+		method: 'post',
+		url: '/quote',
+		data: {
+			term: this.term.$viewValue,
+			adl: this.adl.$viewValue,
+			dsl: this.myForm.dsl_speed.$viewValue,
+			modem: this.modem.$viewValue,
+			nrcs: this.nrcs.$viewValue,
+			credits: this.credits.$viewValue,
+			iptype: this.iptype.$viewValue
+		}
+	})
+.success(function(data, status) {
+		if(status === 200) {
+			//$scope.currentPrice = data.price;
+console.log(data);
+			$scope.currentPrice = data.price;
+			$scope.currentNRR = data.nrr;
+		}
+	});
+
+};
 
  $scope.today = function() {
         return $scope.dt = new Date();
@@ -659,6 +685,8 @@ $scope.mytime = $scope.dt;
       $scope.toggleMode = function() {
         return $scope.ismeridian = !$scope.ismeridian;
       };
+
+
       $scope.update = function() {
         var d;
         d = new Date();

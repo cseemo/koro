@@ -3,26 +3,25 @@
     <!-- Stats -->
     <div class="row">
         <div class="col-lg-3 col-xsm-6">
-            <div class="panel mini-box">
+                       <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-success">
-                    <i class="fa fa-certificate"></i>
+                    <i class="fa fa-crosshairs"></i>
                 </span>
-                <div class="box-info">
-                    <p class="size-h2">36 <span class="size-h4">%</span></p>
-                    <p class="text-muted">Close Ratio</p>
+                <div class="box-info" ng-click="getLead()">
+                    <p class="size-h2">{{myleads}}</p>
+                    <p class="text-muted">Total Leads</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-xsm-6">
+        <div class="col-lg-3 col-xsm-3">
           <a href="#!/leads" style="text-decoration:none">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-info">
                     <i class="fa fa-file-text"></i>
                 </span>
-              
                 <div class="box-info">
-                    <p class="size-h2" >12</p>
-                    <p class="text-muted">Proposals</p>
+                    <p class="size-h2" >{{mydeals}}</p>
+                    <p class="text-muted">Deals</p>
                 </div>
             </div></a>
         </div>
@@ -32,28 +31,33 @@
                     <i class="fa fa-dollar"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">$1,302</p>
-                    <p class="text-muted">Commissions</span></p>
+                    <p class="size-h2">${{mrcTotal}}</p>
+                    <p class="text-muted">Revenue Sold</span></p>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-xsm-6">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-danger">
-                    <i class="fa fa-money"></i>
+                    <i class="fa fa-phone"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">8</p>
-                    <p class="text-muted">Sales</p>
+                    <p class="size-h2">{{mycallDetails}}</p>
+                    <p class="text-muted">Calls</p>
                 </div>
             </div>
         </div>
     </div>
     <!-- end stats -->
+
+
+
  <span><a href="/#!/leads/create">Add New Opportunity</a></span>
    
 
   <div class="row" data-ng-controller="LeadsController" data-ng-init="findOne()">
+ <!--  <a ng-click="getgoogleStuff()">Google It</a>
+  {{googleStuff}} -->
     <div class="col-lg-7" >
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -64,8 +68,8 @@
             </div>
           <div class="panel panel-primary">
               <div class="panel-body">
-                <h1 class="pull-left">{{lead.companyname}}</h1>
-                <h2 class="pull-right">{{lead.telephone}}</h2>
+               <p><h1 class="pull-left">{{lead.companyname}}</h1></p>
+                <p><h2 class="pull-right">{{lead.telephone}}</h2></p>
                   
                   <div class="clearfix"></div>
 
@@ -75,13 +79,18 @@
                     <span data-ng-bind="lead.city"></span>
                     <span data-ng-bind="lead.state"></span>, 
                     <span data-ng-bind="lead.zipcode"></span>
+                
                   </div>
-               
+                
                <div class="clearfix"></div>
 
                Qualify for: {{lead.speed}}<br>
                Current Provider: {{lead.currentCarrier}}
+               <div class="pull-right"><a class="btn btn-primary" href="/#!/leads/{{lead._id}}/edit">
+      <i class="glyphicon glyphicon-edit"></i> Edit
+    </a></div>
               </div>
+
             </div>
           <div class="panel panel-info">
             <div class="panel-heading">Call Records
@@ -241,8 +250,10 @@
 <center>
 <h3>Total Monthly: <span style="color: #ec5f3c">{{currentPrice|currency}}</span></h3>
 <h3>One-Time Fees: <span style="color: #ec5f3c">{{currentNRR|currency}} </span></h3>
-<p data-ng-show="qwestCheckingService">Verifying address for Centurylink service <i class="fa fa-cog fa-spin"></i></p>
-<p data-ng-show="!qwestValidService && !qwestCheckingService">Unable to verify address for Centurylink service</p>
+<p data-ng-show="qwestCheckingServiceA">Validating Address with Centurylink <i class="fa fa-cog fa-spin"></i></p>
+
+<p data-ng-show="qwestCheckingService"><i class="fa fa-cog fa-spin"></i>  Qualifying Address for DSL  <i class="fa fa-cog fa-spin"></i></p>
+<p data-ng-show="!qwestValidService && !qwestCheckingService && !qwestCheckingServiceA">Unable to verify address for Centurylink service</p>
 </center>
 
 
@@ -261,7 +272,7 @@
 
             <div class="field">
             <label class="form-text">Additional Lines:</label>
-            <input  ng-change="getQuote()" ng-model="price.adl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
+            <input  ng-change="getQuote()" ng-model="myadl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
           </div>
                               <div class="clearfix"></div> 
 
@@ -276,7 +287,7 @@
 
             <label class="form-text">DSL Modem:<span id='myphoneError' style='display: none; color: red'>What about the modem?</span></label>
 
-           <select  ng-change="getQuote()" ng-model="lead.mymodem" class="form-control text-center" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
+           <select  ng-change="getQuote()" ng-model="mymodem" class="form-control text-center" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
                   
                      <div class="clearfix"></div>
                   
@@ -387,7 +398,7 @@
                     <td>{{lead.telephone}}</td>
                     <td>{{lead.contactname}}</td>
                     <td>{{lead.email}}</td>
-                    <td>{{lead.status}}</td>
+                    <td><span class="label label-primary">{{lead.status}}</span></td>
                     <td>{{lead.FLUPDate | date:'medium'}}</td>
                     <td></td>
                     </a>
@@ -413,40 +424,29 @@
                 <tr>
                    
                     <th>Deal Name</th>
+                     <th>Telephone</th>
                     <th>Status</th>
                     <th>Project Manager</th>
                     <th>Progress</th>
+                    <th>Converted</th>
                 </tr>
             </thead>
             <tbody>
              <tbody>
                 <tr data-ng-repeat="deal in mydeals" >
                 
-                    <td><a data-ng-href="#!/deal/{{deal._id}}">{{deal.companyname}}</a></td>
+                    <td><a data-ng-href="#!/deals/{{deal._id}}/edit">{{deal.companyname}}</a></td>
                     <td>{{deal.telephone}}</td>
-                    <td>{{deal.contactname}}</td>
-                    <td>{{deal.email}}</td>
-                    <td>{{deal.status}}</td>
-                    <td>{{deal.FLUPDate | date:'medium'}}</td>
+                    <td data-ng-hide="deal.stagenum!=0"><span class="label label-danger">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum!=0"><span class="label label-primary">{{deal.stage}}</span></td>
+                    <td>{{deal.projectmanager}}</td>
+                    <td><progressbar class="progressbar-xs no-margin" value="deal.stagenum" type="success"></progressbar></td>
+
+                    <td>{{deal.converted | date:'medium'}}</td>
                     <td></td>
                     </a>
                 </tr>
-                
-          
-                <tr>
-                    <td>2</td>
-                    <td><span class="color-success"><i class="fa fa-level-up"></i></span> A16Z</td>
-                    <td><span class="label label-primary">Due</span></td>
-                    <td>Romayne Carlyn</td>
-                    <td><progressbar class="progressbar-xs no-margin" value="34" type="success"></progressbar></td>
-                </tr>
-                <tr>
-                
-                    <td><span class="color-success"><i class="fa fa-level-up"></i></span> A16Z</td>
-                    <td><span class="label label-primary">Due</span></td>
-                    <td>Romayne Carlyn</td>
-                    <td><progressbar class="progressbar-xs no-margin" value="34" type="success"></progressbar></td>
-                </tr>
+
               
             </tbody>
         </table>

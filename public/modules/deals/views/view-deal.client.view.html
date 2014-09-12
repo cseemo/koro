@@ -1,28 +1,48 @@
 <section data-ng-controller="LeadsController" data-ng-init="findOneDeal()">
 	<div class="page-header">
 
+
 	<div class="row">
 
 
+	  <div class="col-lg-10 col-lg-offset-1 col-md-6">
+	 <div class="panel panel-primary">
+       <div class="panel-body">
+         <a data-ng-href="#!/deals/{{deal._id}}/edit"> 
+       <button class="btn btn-w-md btn-gap btn-info pull-right">Update Deal</button></a>
+ 		
+       <center>
+		<h1 data-ng-bind="deal.companyname"></h1>
+		<h3 data-ng-bind="deal.stage"></h3>
+		</center>
+		
+		</div>
+	</div>
+	</div>
+	</div>
+	
+	<div class="row">
+	 <div class="col-lg-8 col-lg-offset-2 col-md-6">
+	 <div class="panel panel-primary">
+       <div class="panel-body">
+	 <h2>Deal Notes</h2>
+	 {{deal.notes}}
+	 </div></div>
+	 </div></div>
+
+	 <div class="row">
 	 <div class="col-lg-6 col-xsm-6">
 	 <div class="panel panel-primary">
        <div class="panel-body">
-
-
-       
-       
-		<h1 data-ng-bind="deal.companyname"></h1>
-	
-	
-
-
+     <h2>Company Info</h2>
 	ContactName: {{deal.contactname}}<br>
 	Telephone: {{deal.telephone}}<br>
 	Converted Date: {{deal.converted}}<br>
 	Sales Rep: {{deal.assignedRep}}<br>
 	Deal Status: {{deal.stage}}<br>
 	Last Phone Call: {{deal.callDetails[0].calltime}}<br>
-	Project Manager: {{deal.projectmanager}}
+	Project Manager: {{deal.projectmanager}}<br>
+	<span data-ng-show="deal.stagenum>55">Centurylink Order Number: {{deal.ctlordernumber}}  -  Order Due Date: 01/2/2014</span>
 	</div></div></div>
 
 	<div class="col-lg-6 col-xsm-6">
@@ -57,8 +77,27 @@
 			 <div class="panel panel-primary">
 		        	<div class="panel-body">
 
-			<h2>Notes</h2>
-			Notes: {{deal.notes}}
+			<h2>Line Details</h2>
+			<div data-ng-repeat="line in deal.lineDetails track by $index">
+			  <b>Line {{$index+1}}: ({{line.number}})</b>:
+              <span ng-show="line.vm==true">
+             Voicemail</span>
+              <span ng-show="line.hunting==true">
+             Hunting: {{line.huntorder}} in Group {{line.huntgroup}}</span>
+             <span ng-show="line.esm==true">
+             Call Forwarding</span>
+            <span ng-show="line.cw==true">
+             Call Waiting</span>
+              <span ng-show="line.cwid==true">
+             Call Waiting ID</span>
+              <span ng-show="line.nnk==true">
+             Caller ID</span>
+              <span ng-show="line.eo3==true">
+             Call Transfer</span>
+              <span ng-show="line.da6==true">
+             Six-Way Calling</span>
+              <br/>
+             </div>
 			</div>
 		</div>
 		</div>
@@ -76,9 +115,9 @@
 	<small>
 		<em class="text-muted">
 			Converted to Deal on
-			<span data-ng-bind="deal.created | date:'mediumDate'"></span>
+			<span data-ng-bind="deal.converted | date:'mediumDate'"></span>
 			by
-			<span data-ng-bind="deal.user.displayName"></span>
+			<span data-ng-bind="deal.assignedRep"></span>
 		</em>
 	</small>
 </section>

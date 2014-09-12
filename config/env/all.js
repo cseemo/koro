@@ -21,6 +21,7 @@ module.exports = {
         		'/modules/core/css/ui.css'
 			],
 			js: [
+				'public/lib/jquery/dist/jquery.min.js',
 				'public/lib/angular/angular.js',
 				'public/lib/angular-resource/angular-resource.js', 
 				'public/lib/angular-cookies/angular-cookies.js', 
@@ -30,7 +31,6 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-				'public/lib/jquery/dist/jquery.min.js',
 				'public/lib/jquery.easy-pie-chart/dist/angular.easypiechart.js',
 				'public/lib/textAngular/dist/textAngular.min.js',
 				'public/lib/angular-ui-tree/dist/angular-ui-tree.min.js',
@@ -39,7 +39,8 @@ module.exports = {
 				'public/lib/jquery.slimscroll/jquery.slimscroll.min.js',
 				'/public/lib/flot/excanvas.js',
 				'public/lib/flot/jquery.flot.js',
-				'public/lib/flot/jquery.flot.*.js'
+				'public/lib/flot/jquery.flot.*.js',
+				'public/lib/flot.tooltip/js/jquery.flot.tooltip.min.js',
 				//'public/lib/flot/*.js'
 			]
 		},

@@ -24,6 +24,14 @@ angular.module('users').config(['$stateProvider',
 		state('signin', {
 			url: '/signin',
 			templateUrl: 'modules/users/views/signin.client.view.html'
+		}).
+		state('edituser', {
+			url: '/users/:userId/edit',
+			templateUrl: 'modules/admin/views/edit-user.client.view.html'
+		}).
+		state('editusers', {
+			url: '/adminusers',
+			templateUrl: 'modules/admin/views/useroverview.client.view.html'
 		});
 	}
 ]);

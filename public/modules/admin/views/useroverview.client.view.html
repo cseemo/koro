@@ -3,7 +3,7 @@
         <div class="panel-heading"><strong><span class="glyphicon glyphicon-user"></span> Users</strong></div>
      
             <div class="list-group">
-                <a data-ng-repeat="user in users" data-ng-href="#!/users/{{user._id}}/" class="list-group-item">
+                <a data-ng-repeat="user in users" data-ng-href="#!/users/{{user._id}}/edit" class="list-group-item">
                   <small class="pull-right list-group-item-text">
                   Created: <span data-ng-bind="user.created"></span>
                   </small>
@@ -14,8 +14,13 @@
                        Username: <span data-ng-bind="user.username"></span><br>
                        Email: <span data-ng-bind="user.email"></span><br>
                        Telephone: <span data-ng-bind="user.telephone"></span>
+
+                      <!--  <p data-ng-repeat="role in user.roles">
+                       {{role}}
+                       </p>
+ -->
                     </small>
-                
+                </a>
             </div>
             <div class="alert alert-warning text-center" data-ng-hide="!leads.$resolved || leads.length">
                 No Leads yet, why don't you <a href="/#!/leads/create">create one</a>?

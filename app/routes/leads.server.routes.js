@@ -30,13 +30,25 @@ module.exports = function(app) {
 		app.route('/getleadData')
 		.get(leads.getLeadData);
 
-	app.route('/qwest/check/:address')
+		app.route('/qwest/check/:address')
 		.get(leads.getQwestLoop);
 		//.get(leads.qwestLoopQual);
 
-	app.route('/stats/leads/by/status')
+
+		app.route('/stats/leads/by/status')
 		.get(leads.getLeadsByStatus);
 
+
+		app.route('/stats/leads/by/carrier')
+		.get(leads.getLeadsByCarrier);
+
+		app.route('/stats/leads/by/state')
+		.get(leads.getLeadsByState);
+	
+		//Get Call Details by Rep
+		app.route('/records/calldetails/rep')
+		.get(leads.getCallsbyRep);
+		
 		
 	// Finish by binding the Lead middleware
 	app.param('leadId', leads.leadByID);

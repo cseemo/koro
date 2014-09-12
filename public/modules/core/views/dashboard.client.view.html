@@ -5,11 +5,11 @@
         <div class="col-lg-3 col-xsm-3">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-success">
-                    <i class="fa fa-rocket"></i>
+                    <i class="fa fa-crosshairs"></i>
                 </span>
                 <div class="box-info" ng-click="getLead()">
-                    <p class="size-h2">{{myleads}}<span class="size-h4">%</span></p>
-                    <p class="text-muted">Close Ratio</p>
+                    <p class="size-h2">{{myleads}}</p>
+                    <p class="text-muted">Total Leads</p>
                 </div>
             </div>
         </div>
@@ -17,12 +17,11 @@
           <a href="#!/leads" style="text-decoration:none">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-info">
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-barcode"></i>
                 </span>
-              
                 <div class="box-info">
-                    <p class="size-h2" >12</p>
-                    <p class="text-muted">Proposals</p>
+                    <p class="size-h2" >{{mydeals}}</p>
+                    <p class="text-muted">Deals</p>
                 </div>
             </div></a>
         </div>
@@ -32,23 +31,24 @@
                     <i class="fa fa-dollar"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">$1,302</p>
-                    <p class="text-muted">Commissions</span></p>
+                    <p class="size-h2">${{mrcTotal}}</p>
+                    <p class="text-muted">Revenue Sold</span></p>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-xsm-6">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-danger">
-                    <i class="fa fa-shopping-cart"></i>
+                    <i class="fa fa-phone"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">8</p>
-                    <p class="text-muted">Sales</p>
+                    <p class="size-h2">{{mycallDetails}}</p>
+                    <p class="text-muted">Calls</p>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- <div class="row">
         <div class="col-lg-3 col-xsm-6" data-ng-repeat="leadTotal in LeadTotals">
@@ -65,10 +65,10 @@
     </div> -->
 
     <div class="row">
-    	<div class="col-md-4">
+        <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Pie Chart</h3>
+                    <h3 class="panel-title">Leads By Status</h3>
                 </div>
                 <div class="panel-body">
                     <div id="leadschart"
@@ -79,7 +79,149 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Leads by State</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="leadsStatechart"
+                         data-data="pieChart.data"
+                         data-options="pieChart.options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </div>
+        </div>
+
+         <div class="col-md-4">
+            <!-- <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Leads by Carrier</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="LeadCarrierTotals"
+                         data-data="pieChart.data"
+                         data-options="pieChart.options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </div>
+        </div> 
     </div>
+
+<div class="row">
+     <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Leads by Carrier</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="LeadCarrierTotals"
+                         data-data="pieChart.data"
+                         data-options="pieChart.options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </div>
+            </div>
+
+           -->
+                </div>
+                <div data-ng-controller="LeadsController" >
+            <div class="row">
+                
+<div class="col-lg-12">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                        <div class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> My Follow-Ups</strong></div>
+        <table class="table" data-ng-init="FLUPS()">
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Telephone</th>
+                    <th>Primary Contact</th>
+                    <th>Email</th>
+                    <th>Lead Status</th>
+                    <th>Next Contact Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="lead in myleads" >
+                
+                    <td><a data-ng-href="#!/leads/{{lead._id}}">{{lead.companyname}}</a></td>
+                    <td>{{lead.telephone}}</td>
+                    <td>{{lead.contactname}}</td>
+                    <td>{{lead.email}}</td>
+                    <td><span class="label label-primary">{{lead.status}}</span></td>
+                    <td>{{lead.FLUPDate | date:'medium'}}</td>
+                    <td></td>
+                    </a>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div></div></div>
+<br><br>
+</div>
+
+ <div class="col-lg-12" >
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                        <div class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> My Deals</strong></div>
+        <table class="table" data-ng-init="DEALS()"> 
+            <thead>
+                <tr>
+                   
+                    <th>Deal Name</th>
+                     <th>Telephone</th>
+                    <th>Status</th>
+                    <th>Project Manager</th>
+                    <th>Progress</th>
+                    <th>Converted</th>
+                </tr>
+            </thead>
+            <tbody>
+             <tbody>
+                <tr data-ng-repeat="deal in mydeals" >
+                
+                    <td><a data-ng-href="#!/deals/{{deal._id}}/edit">{{deal.companyname}}</a></td>
+                    <td>{{deal.telephone}}</td>
+                    <td data-ng-hide="deal.stagenum!=0"><span class="label label-danger">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum!=0"><span class="label label-primary">{{deal.stage}}</span></td>
+                    <td>{{deal.projectmanager}}</td>
+                    <td><progressbar class="progressbar-xs no-margin" value="deal.stagenum" type="success"></progressbar></td>
+
+                    <td>{{deal.converted | date:'medium'}}</td>
+                    <td></td>
+                    </a>
+                </tr>
+
+              
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</div></div></div>
+
+
+
+    </div>
+    <!-- end stats -->
+
     <!-- end stats -->
 
  

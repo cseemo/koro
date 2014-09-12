@@ -37,10 +37,10 @@ exports.getLeadsByStatus = function(req, res) {
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Lead.aggregate([{
-		"$group": { 
-			_id: "$status",
+		'$group': { 
+			_id: '$status',
 			total: {
-				"$sum": 1
+				'$sum': 1
 			}
 		}
 	}]).exec(function(err, results) {
@@ -101,7 +101,7 @@ exports.getQwestLoop = function(req, res) {
 
 						console.log('Session %s started\nAttempting to search for addressid: %s', tcat, address);
 						checkAddress(address, findCookies(response.headers['set-cookie']), function(err, response, body) {
-							var re = /addressid2.{9}(.*)" /g;
+							var re = /addressid2.{9}(.*)' /g;
 							var matches = re.exec(body);
 							var awesome = function(cookies) {
 								request({
@@ -116,6 +116,7 @@ exports.getQwestLoop = function(req, res) {
 									var results = [];
 									var re = /DisplayProduct:.*Internet ([0-9\.]+)([a-zA-Z]).*[\/]([0-9]+)([a-zA-Z]).*ps/g;
 									var m;
+									console.log('ResponseBody ', body);
 									var index = body.search('End ProductConfiguration');
 									if(index > -1) {
 										console.log('Found index at: %d original size is: %d', index, body.length);
@@ -360,7 +361,7 @@ exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exe
 		} else {
 			lead.user = req.user;
 			lead.assignedRep = req.user.displayName;
-				lead.save(function(err) {
+			lead.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
@@ -526,7 +527,7 @@ exports.getFLUP = function(req, res) { Lead.find({$or: [
 	{status: 'Follow-Up'},
 	{status: 'Proposed'}
 
-	]}).where({user: req.user.id}).sort('-lastCalled').limit(50).exec(function(err, leads) {
+	]}).where({user: req.user.id}).sort('FLUPDate').limit(50).exec(function(err, leads) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
@@ -538,14 +539,140 @@ exports.getFLUP = function(req, res) { Lead.find({$or: [
 	});
 };
 
-//Get Deals
-exports.getDEALS = function(req, res) { Deal.find().where({user: req.user.id}).sort('-converted').limit(50).exec(function(err, deals) {
+//Get Leads by Carrier
+//getLeadsByState
+exports.getLeadsByCarrier = function(req, res) {
+	console.log('got to getLeadsByCarrier');
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
+		'$group': { 
+			_id: '$currentCarrier',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]).exec(function(err, results) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
-			console.log('Deals: %o', deals);
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
+
+//get telephone calls
+exports.getCallsbyRep = function(req, res) {
+	console.log('got to Cals By Rep');
+	console.log('Req.USer',req.user.displayName);
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	Lead.aggregate([ 
+	{	$project : { 'callDetails' : 1 } },
+	{	$unwind  : '$callDetails'},
+	{	$group 	 : 
+		{
+			_id: '$callDetails.rep',
+			total: {
+				'$sum': 1
+			}
+			
+			
+		}
+
+	}
+
+	]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			console.log('Rresuls????????? %o',results);
+			// var total = 0;
+			// Object.keys(results).forEach(function(key) {
+			// 	console.log(results[key]);
+			// 	calltime = results[key].calltime;
+			// 	results.push({_id: 'Call', 'calltime': calltime});
+			// });
+			//results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
+
+//getLeadsByState
+exports.getLeadsByState = function(req, res) {
+	console.log('got to getLeadsByState');
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
+		'$group': { 
+			_id: '$state',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
+
+//getLeadsByStatus
+exports.getLeadsByStatus = function(req, res) {
+	console.log('got to getLeadsByStatus');
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
+		'$group': { 
+			_id: '$status',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
+
+
+//Get Deals
+exports.getDEALS = function(req, res) { Deal.find().where({assignedRep: req.user.displayName}).sort('stagenum').limit(50).exec(function(err, deals) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			console.log('getDeals: ', deals);
 			//console.log('leads %o',leads);
 			res.jsonp(deals);
 		}

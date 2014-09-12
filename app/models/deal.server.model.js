@@ -1,6 +1,7 @@
 
 'use strict';
 
+
 /**
  * Module dependencies.
  */
@@ -10,9 +11,9 @@ var mongoose = require('mongoose'),
 
 var LineDetailSchema = new Schema({
 
-number: {
+	number: {
 		type: String,
-		default: null
+		default: ''
 	},
 	type: {
 		type: String,
@@ -22,12 +23,45 @@ number: {
 		type: String,
 		default: ''
 	},
-	features: {
+	huntgroup: {
+		type: String,
+		default: ''
+	},
+	huntorder: {
+		type: String,
+		default: ''
+	},
+	vm: {
+		type: String,
+		default: ''
+	},
+	esm: {
+		type: String,
+		default: ''
+	},
+	nnk: {
+		type: String,
+		default: ''
+	},
+	cw: {
+		type: String,
+		default: ''
+	},
+	cwid: {
+		type: String,
+		default: ''
+	},
+	da6: {
+		type: String,
+		default: ''
+	},
+	eo3: {
 		type: String,
 		default: ''
 	}
 
-	});
+
+});
 
 mongoose.model('LineDetail', LineDetailSchema, 'deals');
 
@@ -38,8 +72,16 @@ var DealSchema = new Schema({
 	companyname: {
 		type: String,
 		default: '',
-		required: 'Please fill in Company Name',
 		trim: true
+	},
+	lineDetails: [LineDetailSchema.schema],
+	mrc: {
+		type: Number,
+		default: 0
+	},
+	nrc: {
+		type: Number,
+		default: 0
 	},
 	email: {
 		type: String,
@@ -154,6 +196,15 @@ var DealSchema = new Schema({
 		type: String,
 		default: 'Pending Assignment'
 	},
+		stagenum: {
+		type: Number,
+		default: 5
+	},
+	ctlordernumber: {
+		type: String,
+
+	},
+
 	billingtelephone: {
 		type: String,
 		default: null
