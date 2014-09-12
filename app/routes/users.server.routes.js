@@ -47,7 +47,7 @@ module.exports = function(app) {
 	.get(users.showUser);
 
 	app.route('/users/edit')
-	.put(users.updateUser)
+	.put(users.updateUser2)
 	.get(users.list);
 
 	app.route('/adminusers')
