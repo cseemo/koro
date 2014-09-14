@@ -35,6 +35,7 @@ var getErrorMessage = function(err) {
 				break;
 			default:
 				message = 'Something went wrong';
+				console.log('error: ', err);
 		}
 	} else {
 		for (var errName in err.errors) {
@@ -157,7 +158,7 @@ exports.updateUser = function(req, res) {
 
 exports.updateUser2 = function(req, res) {
 	// Init Variables
-	var user = req.user;
+	var user = req.profile;
 	var message = null;
 
 	// We are not updating the password, so we should remove it otherwise it will re-encode hte password
@@ -169,7 +170,6 @@ exports.updateUser2 = function(req, res) {
 		// Merge existing user
 		user = _.extend(user, req.body);
 		user.updated = Date.now();
-		user.displayName = user.firstName + ' ' + user.lastName;
 
 		console.log('updating user??:', user);
 
@@ -179,13 +179,7 @@ exports.updateUser2 = function(req, res) {
 					message: getErrorMessage(err)
 				});
 			} else {
-				req.login(user, function(err) {
-					if (err) {
-						res.send(400, err);
-					} else {
-						res.jsonp(user);
-					}
-				});
+				res.jsonp(user);
 			}
 		});
 	} else {
