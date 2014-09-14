@@ -43,11 +43,11 @@ module.exports = function(app) {
 
 	//FIX THIS -- REQUIRES LOGIN
 	app.route('/users/:userId/edit')
-	.put(users.hasAuthorization(['admin']), users.updateUser2)
-	.get(users.showUser);
+		.put(users.hasAuthorization(['admin']), users.updateUser2)
+		.get(users.showUser);
 
 	app.route('/users/edit')
-	.put(users.updateUser)
+	.put(users.updateUser2)
 	.get(users.list);
 
 	app.route('/adminusers')
