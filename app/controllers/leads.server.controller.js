@@ -425,7 +425,7 @@ console.log('mystuff %o',mystuff);
 
 
 exports.showDeal = function(req, res) {
-		//console.log('Deal Data: %o',req.deal);
+		console.log('Deal Data: %o',req.deal);
 
 			res.jsonp(req.deal);
 	

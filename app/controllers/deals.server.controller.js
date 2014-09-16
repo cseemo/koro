@@ -7,6 +7,9 @@ var mongoose = require('mongoose'),
 	Deal = mongoose.model('Deal'),
 	_ = require('lodash');
 
+
+//APPROVE A DEAL
+
 /**
  * Create a Deal
  */
@@ -109,9 +112,9 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var deal = req.deal ;
-
+	console.log('Deal Start',deal);
 	deal = _.extend(deal , req.body);
-
+	console.log('Deal Extended',deal);
 	deal.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -179,4 +182,488 @@ exports.hasAuthorization = function(req, res, next) {
 		return res.status(403).send('User is not authorized');
 	}
 	next();
+};
+
+exports.makePDF = function(req, res){
+	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+	console.log('REQ Deal', req.deal);
+	var id = req.deal._id;
+	// Deal.findById(id).exec(function(err, deal) {
+	// 	if (err) return next(err);
+	// 	if (! deal) return ('Failed to load Deal ' + id);
+	// 	req.deal = deal ;
+	// });
+	//var signDate = Date.now('EEE MMM d @ hh:mm a');
+	var signDate = req.deal.signDate;
+
+
+	var teln = [
+		{
+			number: '602 555-9812'
+		}, 
+		{
+			number: '602 454-1332'
+		}, 
+		{
+			number: '602-323-2333'
+		}, 
+		{
+			number: '602 424-4344'
+		}, 
+		{
+			number: '602 444-2242'
+		}, 
+		{
+			number: '602 443-9812'
+		}, 
+		{
+			number: '602 454-3452'
+		}, 
+		{
+			number: '602-334-2333'
+		}, 
+		{
+			number: '602 395-8743'
+		}, 
+		{
+			number: '602 444-2242'
+		},
+		{
+			number: '602 442-0921'
+		}, 
+		{
+			number: '602 320-3651'
+		}, 
+		{
+			number: '602-447-3334'
+		}, 
+		{
+			number: '602 328-4344'
+		}, 
+		{
+			number: '602 444-2242'
+		},  
+		{
+			number: '602 555-4448'
+		}, 
+		{
+			number: '602 434-4434'
+		}, 
+		{
+			number: '602 544-3233'
+		}, 
+		{
+			number: '602 442-4434'
+		},
+		{
+			number: '602 544-3332'
+		}, 
+		{
+			number: '602 442-3231'
+		}
+		];
+	console.log('Making a PDF');
+	//console.log('Name: ',req.query.name);
+	//var blobStream = require('blob-stream');
+
+
+	//var name = req.query.name;
+	var PDFDocument = require('pdfkit');
+	var fs=require('fs');
+	var doc = new PDFDocument();
+
+	//var stream = doc.pipe(blobStream());
+
+
+	doc.pipe( fs.createWriteStream('loa'+req.deal._id+'.pdf') );
+	 
+
+	//FILL OUT LD LOA
+	doc.image('sigcert.png', 255, 655);  
+	//var bg = doc.image('LOCALLOA.png', 0, 0,{width: 600});
+	var bg2 = doc.image('LDLOA.png', 0, 0,{width: 600});
+	//var bg = doc.image('FCTicket.jpg', 0, 0, 600, 800);
+
+		//Set Email
+		doc.y = 640;
+		doc.x = 250;
+		doc.fontSize(9);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text('User Email: '+req.deal.contactemail);
+
+		//Set IP Address
+		doc.y = 650;
+		doc.x = 250;
+		doc.fontSize(9);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text('User IP: '+ip);
+
+
+		//Set Company Name
+		doc.y = 220;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.companyname);
+
+		//Set Address
+		doc.y = 251;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.address);
+
+
+		//Set City
+		doc.y = 285;
+		doc.x = 150;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.city);
+
+		//Set State
+		doc.y = 285;
+		doc.x = 420;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.state);
+
+		//Set Zip
+		doc.y = 285;
+		doc.x = 485;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.zipcode);
+
+		//Set BTN
+		doc.y = 325;
+		doc.x = 275;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.telephone);
+
+		//Set Additional Lines
+		//Set X Start & Y Start Values
+		var xs = 100;
+		var ys = 355;
+		var i =0;
+		req.deal.lineDetails.forEach(function(num){
+		// console.log('hello',num.number);
+		// console.log(i);
+		// console.log('XS: '+xs+' and YS: '+ys);
+
+		doc.y = ys;
+		doc.x = xs;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(num.number);
+
+
+		i++;
+		xs+=150;
+		if(i===3){
+			ys = 380;
+			xs=100;
+		}
+		if(i===6){
+			ys = 400;
+			xs=100;
+		}
+		if(i===9){
+			ys = 420;
+			xs=100;
+		}
+		if(i===12){
+			ys = 440;
+			xs=100;
+		}
+		if(i===15){
+			ys = 465;
+			xs=100;
+		}
+		if(i===18){
+			ys = 530;
+			xs=100;
+		}
+		if(i===21){
+			ys = 550;
+			xs=100;
+		}
+			
+		});
+
+
+		//Set Signature
+		doc.y = 635;
+		doc.x = 130;
+		doc.fontSize(24);
+		doc.font('SANTO.ttf');
+		doc.fillColor('black');
+		doc.text(req.deal.contactname);
+
+		//Set Date
+		doc.y = 645;
+		doc.x = 460;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text(signDate);
+
+
+
+		//Set Printed Name
+		doc.y = 670;
+		doc.x = 160;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text(req.deal.contactname);
+		doc.image('sigcert.png', 675, 200);
+
+		//Set Title
+		doc.y = 670;
+		doc.x = 410;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text(req.deal.contacttitle);
+
+		doc.addPage();
+
+		//FILL OUT LOCAL LOA
+		doc.image('sigcert.png', 255, 685);  
+		var bg = doc.image('LOCALLOA.png', 0, 0,{width: 600});
+		//var bg = doc.image('LDLOA.png', 0, 0,{width: 600});
+		//var bg = doc.image('FCTicket.jpg', 0, 0, 600, 800);
+
+		//Set Email
+		doc.y = 670;
+		doc.x = 250;
+		doc.fontSize(9);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text('User Email: '+req.deal.contactemail);
+
+		//Set IP Address
+		doc.y = 680;
+		doc.x = 250;
+		doc.fontSize(9);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text('User IP: '+ip);
+
+		//Set Company Name
+		doc.y = 220;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.companyname);
+
+		//Set Address
+		doc.y = 251;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.address);
+
+
+		//Set City
+		doc.y = 285;
+		doc.x = 150;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.city);
+
+		//Set State
+		doc.y = 285;
+		doc.x = 420;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.state);
+
+		//Set Zip
+		doc.y = 285;
+		doc.x = 485;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.zipcode);
+
+		//Set BTN
+		doc.y = 325;
+		doc.x = 275;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.telephone);
+
+		//Set Additional Lines
+		// doc.y = 365;
+		// doc.x = 100;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.text('602 555-1322');
+
+
+
+		//Set X Start & Y Start Values
+		var xs = 100;
+		var ys = 365;
+		var i =0;
+		req.deal.lineDetails.forEach(function(num){
+				console.log('hello',num.number);
+				console.log(i);
+				console.log('XS: '+xs+' and YS: '+ys);
+
+				doc.y = ys;
+				doc.x = xs;
+				doc.fontSize(14);
+				doc.font('Times-Roman');
+				doc.text(num.number);
+
+
+				i++;
+				xs+=150;
+				if(i===3){
+					ys = 390;
+					xs=100;
+				}
+				if(i===6){
+					ys = 410;
+					xs=100;
+				}
+				if(i===9){
+					ys = 430;
+					xs=100;
+				}
+				if(i===12){
+					ys = 450;
+					xs=100;
+				}
+				if(i===15){
+					ys = 470;
+					xs=100;
+				}
+				if(i===18){
+					ys = 530;
+					xs=100;
+				}
+				if(i===21){
+					ys = 550;
+					xs=100;
+				}
+			
+		});
+
+		// for(var i = 0; i < teln.length; i++){
+		// doc.y = ys;
+		// doc.x = xs;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.text(teln[i]);
+
+		// xs+=150;
+		// if(i==3){
+		// 	xs=100;
+		// 	ys+=20;
+		// }
+
+
+
+		// 	}
+
+		//This needs to be a FOR LOOP
+		//Add X for each new line
+		//If X==3 then Add Y so that it skips to next line
+
+		// //2nd Row of Lines
+		// doc.y = 385;
+		// doc.x = 100;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.text('602 555-2222');
+
+		// //2nd Column of Lines
+		// doc.y = 365;
+		// doc.x = 250;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.text('602 555-3333');
+
+		//Set Signature
+		doc.y = 655;
+		doc.x = 130;
+		doc.fontSize(24);
+		doc.font('SANTO.ttf');
+		doc.fillColor('black');
+		doc.text(req.deal.contactname);
+
+		//Set Date
+		doc.y = 665;
+		doc.x = 460;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text(signDate);
+
+		//Set Printed Name
+		doc.y = 690;
+		doc.x = 160;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text(req.deal.contactname);
+		doc.image('sigcert.png', 675, 200);
+
+		//Set Title
+		doc.y = 690;
+		doc.x = 410;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text(req.deal.contacttitle);
+
+
+   // Write headers
+    res.writeHead(200, {
+        'Content-Type': 'application/pdf',
+        'Access-Control-Allow-Origin': '*',
+         'X-Frame-Options': 'SAMEORIGIN',
+        'Content-Disposition': 'inline; filename=testout.pdf'
+    });
+
+
+doc.pipe( res );
+//res.download('out.pdf');
+
+
+    // // Process image
+    // request({
+    //     url: 'http://adsoap.com/images/FCTicket.jpg',
+    //     encoding: null // Prevents Request from converting response to string
+    // }, function(err, response, body) {
+    //     if (err) throw err;
+
+    //     // Inject image
+    //     doc.image(body); // `body` is a Buffer because we told Request
+    //                      // to not make it a string
+
+    //     doc.end(); // Close document and, by extension, response
+    //     return;
+    // });
+
+
+
+// res.setHeader('Content-disposition', 'attachment; filename=test');
+
+// res.end(new Buffer(doc), 'binary');
+
+
+doc.end();
+
+// stream.on('finish', function(){
+// 	iframe.src = stream.toBlobURL('application/pdf');
+// });
+
+return;
 };

@@ -93,6 +93,16 @@ var DealSchema = new Schema({
 		default: '',
 		trim: true
 	},
+	contacttitle: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	contactemail: {
+		type: String,
+		default: '',
+		trim: true
+	},
 	telephone: {
 		type: String,
 		default: '602-555-1212',
@@ -191,6 +201,10 @@ var DealSchema = new Schema({
 	converted: {
 		type: Date,
 		default: Date.now()
+	},
+	signDate: {
+		type: String,
+		default: ''
 	},
 	stage: {
 		type: String,

@@ -1,11 +1,12 @@
 'use strict';
 
 // Deals controller
-angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals',
-	function($scope, $stateParams, $location, Authentication, Leads, Deals ) {
+angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter',
+	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter) {
 		$scope.authentication = Authentication;
 
 $scope.step = 1;
+//$scope.myiframe = 'blob:http%3A//localhost%3A3000/d43e67f4-bab2-4778-b97c-6385c4b158a8';
 
 $scope.nextStep = function(){
 var current = $scope.step-0+1;
@@ -21,6 +22,77 @@ $scope.step = current;
 console.log('Current Step: ',$scope.step);
 };
 
+
+	$scope.makePDF = function(){
+		var deal = $scope.deal;
+		console.log('My Deal: %o',deal);
+		deal.stage=$scope.myDealstages[8].name;
+		deal.stagenum=$scope.myDealstages[8].value;
+		var dealId = $scope.deal._id;
+		var signDate = new Date();
+		var month = signDate.getMonth();
+		var year = signDate.getYear();
+		var day = signDate.getDay();
+		console.log('signdate: %o',signDate);
+		console.log('mydate: '+month+'/'+day+'/'+year);
+		var testdate = $filter('date')(signDate, 'MMM dd, yyyy');
+		console.log(testdate);
+		deal.signDate = testdate;
+
+		deal.$update(function(data) {
+			console.log('Deal Updating',data);
+		
+		// }).$promise(function() {
+		// 	console.log('Promising');
+		}).then(function(data, response, status, headers) {
+			console.log('done');
+				console.log('Deal Updated - SUCCESS: ',data);
+				//console.log('Data.Response: %o',data._id);
+					 $http({method: 'GET', url: '/pdf/'+dealId, responseType: 'arraybuffer'}).
+    					success(function(data, status, headers, config) {
+    
+     					var file = new Blob([data], {type: 'application/pdf'});
+     					var fileURL = URL.createObjectURL(file);
+     					window.open(fileURL);
+
+			    });
+	
+	});
+
+
+		// .success(function(data, status) {
+		// 	console.log('Success!');
+		// });
+
+			// if(status === 200) {
+			// 	//$scope.currentPrice = data.price;
+			// 	console.log('Deal Updated - SUCCESS: ',data);
+			// 	console.log('Data.Response: %o',data._id);
+			// 		 $http({method: 'GET', url: '/pdf/'+dealId+'?name='+name, responseType: 'arraybuffer'}).
+   //  					success(function(data, status, headers, config) {
+    
+   //   					var file = new Blob([data], {type: 'application/pdf'});
+   //   					var fileURL = URL.createObjectURL(file);
+   //   					window.open(fileURL);
+
+			//     }).
+			//     error(function(data, status, headers, config) {
+			//       // called asynchronously if an error occurs
+			//       // or server returns response with an error status.
+			//       console.log('error');
+			//     });
+	
+
+
+
+			// }	
+			//});
+
+
+
+			
+
+		};
 
 $scope.buildDTW = function(){
 	console.log('got here %',$scope);
@@ -45,7 +117,8 @@ $scope.buildDTW = function(){
 
 $scope.myDealstages = [
 {name: 'Pending Rep Review', value: '0', number: 0},
-{name: 'Pending Assignment', value: '5', number: 1},
+{name: 'LOAS Signed', value: '5', number: 8},
+{name: 'Pending Assignment', value: '10', number: 1},
 {name: 'Pending Review', value: '20', number: 2},
 {name: 'QC Approved', value: '40', number: 3},
 {name: 'Pending Order Number', value: '55', number: 4},

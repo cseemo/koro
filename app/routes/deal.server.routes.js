@@ -13,8 +13,11 @@ module.exports = function(app) {
 		app.route('/convertingdeals/:dealId')
 		.get(leads.showDeal);
 
-		app.route('/convertingdeals/:dealId')
+		app.route('/approve/:dealId')
 		.get(leads.showDeal);
+
+		app.route('/pdf/:dealId')
+		.get(deals.makePDF);
 
 		app.route('/deals')
 		.get(leads.listdeals)

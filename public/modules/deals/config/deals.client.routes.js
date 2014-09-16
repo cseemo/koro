@@ -21,6 +21,10 @@ angular.module('deals').config(['$stateProvider',
 			url: '/deals/:dealId/edit',
 			templateUrl: 'modules/deals/views/edit-deal.client.view.html'
 		}).
+		state('approvingDeal', {
+			url: '/approve/:dealId',
+			templateUrl: 'modules/deals/views/approve-deal.client.view.html'
+		}).
 		state('convertingDeal', {
 			url: '/convertingdeals/:dealId',
 			templateUrl: 'modules/deals/views/convert-deal.client.view.html'
