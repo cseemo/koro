@@ -540,7 +540,7 @@ exports.makePDF = function(req, res){
 		doc.y = 655;
 		doc.x = 130;
 		doc.fontSize(24);
-		doc.font('./SANTO.ttf');
+		doc.font('Times-Roman');
 		doc.fillColor('black');
 		doc.text(req.deal.contactname);
 
