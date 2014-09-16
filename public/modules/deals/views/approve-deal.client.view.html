@@ -1,0 +1,60 @@
+<section data-ng-controller="DealsController" data-ng-init="findOne()">
+<div class="page-header">
+
+
+	<div class="row">
+		<div class="col-lg-10 col-lg-offset-1 col-md-6">
+	 		<div class="panel panel-primary">
+       			<div class="panel-body">
+			       <center>
+			       <h2>Centurylink Online Order Overview</h2>
+			       <h4>This tool willl allow you to quickly fill out the appropriate forms to have your telephone numbers switched from your current provider to Centurylink.</h4>
+
+       				<div class="col-lg-10 col-lg-offset-1 col-md-6">
+	 					<div class="panel panel-primary">
+       						<div class="panel-body">
+       							<h3>Please review the information in this box to ensure order accuracy</h3>
+
+				       			<div class="col-lg-10 col-lg-offset-1 col-md-6">
+				                	<div class="form-group">
+				                    	<label class="form-label" style="font-size: 24px;" for="companyname">Company Name</label>
+				                        <input type="text" data-ng-model="deal.companyname" id="name" class="form-control pull-right" style="width: 50%" class="form-control text-center"d>
+				                    </div>
+
+				                    <div class="form-group">
+				                    	<label class="form-label" style="font-size: 24px;" for="telephone">Telephone</label>
+				                        <input type="text" data-ng-model="deal.telephone" class="form-control pull-right" style="width: 50%" >
+				                    </div>
+
+				                    <div class="form-group">
+				                    	<label class="form-label" style="font-size: 24px;" for="contactname">Your Name</label>
+				                        <input type="text" data-ng-model="deal.contactname" class="form-control pull-right" style="width: 50%" >
+				                    </div>
+
+				                    <div class="form-group">
+				                    	<label class="form-label" style="font-size: 24px;" for="contactname">Your Email Address</label>
+				                        <input type="text" data-ng-model="deal.contactemail" class="form-control pull-right" style="width: 50%" >
+				                    </div>
+
+				                    <div class="form-group">
+				                    	<label class="form-label" style="font-size: 24px;" for="contactname">Your Title</label>
+				                        <input type="text" data-ng-model="deal.contacttitle" class="form-control pull-right" style="width: 50%" >
+				                    </div>
+				                    <button class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Next Step</button>
+				                    <button class="btn btn-w-md btn-gap btn-info" data-ng-click="makePDF()">Sign PDF</button>
+
+				                </div>
+       						</div>
+       					</div>	
+       				</div>
+
+
+
+       				</center>
+       			</div>
+       		</div>
+       	</div>
+    </div>
+</div>
+</section>
+
