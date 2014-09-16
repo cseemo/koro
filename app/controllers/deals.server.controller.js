@@ -286,7 +286,7 @@ exports.makePDF = function(req, res){
 		var ys = 355;
 		var i =0;
 
-		if(req.deal.lineDetails.length > 0){
+		if(req.deal.lineDetails!=[null]){
 
 
 		
@@ -453,7 +453,7 @@ exports.makePDF = function(req, res){
 		var ys = 365;
 		var i =0;
 
-		if(req.deal.lineDetails.length > 0){
+		if(req.deal.lineDetails!=[null]){
 
 			req.deal.lineDetails.forEach(function(num){
 				console.log('hello',num.number);
