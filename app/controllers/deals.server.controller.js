@@ -197,71 +197,7 @@ exports.makePDF = function(req, res){
 	var signDate = req.deal.signDate;
 
 
-	var teln = [
-		{
-			number: '602 555-9812'
-		}, 
-		{
-			number: '602 454-1332'
-		}, 
-		{
-			number: '602-323-2333'
-		}, 
-		{
-			number: '602 424-4344'
-		}, 
-		{
-			number: '602 444-2242'
-		}, 
-		{
-			number: '602 443-9812'
-		}, 
-		{
-			number: '602 454-3452'
-		}, 
-		{
-			number: '602-334-2333'
-		}, 
-		{
-			number: '602 395-8743'
-		}, 
-		{
-			number: '602 444-2242'
-		},
-		{
-			number: '602 442-0921'
-		}, 
-		{
-			number: '602 320-3651'
-		}, 
-		{
-			number: '602-447-3334'
-		}, 
-		{
-			number: '602 328-4344'
-		}, 
-		{
-			number: '602 444-2242'
-		},  
-		{
-			number: '602 555-4448'
-		}, 
-		{
-			number: '602 434-4434'
-		}, 
-		{
-			number: '602 544-3233'
-		}, 
-		{
-			number: '602 442-4434'
-		},
-		{
-			number: '602 544-3332'
-		}, 
-		{
-			number: '602 442-3231'
-		}
-		];
+
 	console.log('Making a PDF');
 	//console.log('Name: ',req.query.name);
 	//var blobStream = require('blob-stream');
@@ -349,6 +285,11 @@ exports.makePDF = function(req, res){
 		var xs = 100;
 		var ys = 355;
 		var i =0;
+
+		if(req.deal.lineDetails.length > 0){
+
+
+		
 		req.deal.lineDetails.forEach(function(num){
 		// console.log('hello',num.number);
 		// console.log(i);
@@ -393,13 +334,14 @@ exports.makePDF = function(req, res){
 		}
 			
 		});
+	}
 
 
 		//Set Signature
 		doc.y = 635;
 		doc.x = 130;
 		doc.fontSize(24);
-		doc.font('SANTO.ttf');
+		doc.font('SANTO.TTF');
 		doc.fillColor('black');
 		doc.text(req.deal.contactname);
 
@@ -510,7 +452,10 @@ exports.makePDF = function(req, res){
 		var xs = 100;
 		var ys = 365;
 		var i =0;
-		req.deal.lineDetails.forEach(function(num){
+
+		if(req.deal.lineDetails.length > 0){
+
+			req.deal.lineDetails.forEach(function(num){
 				console.log('hello',num.number);
 				console.log(i);
 				console.log('XS: '+xs+' and YS: '+ys);
@@ -554,6 +499,7 @@ exports.makePDF = function(req, res){
 				}
 			
 		});
+	}
 
 		// for(var i = 0; i < teln.length; i++){
 		// doc.y = ys;
@@ -594,7 +540,7 @@ exports.makePDF = function(req, res){
 		doc.y = 655;
 		doc.x = 130;
 		doc.fontSize(24);
-		doc.font('SANTO.ttf');
+		doc.font('./SANTO.ttf');
 		doc.fillColor('black');
 		doc.text(req.deal.contactname);
 
