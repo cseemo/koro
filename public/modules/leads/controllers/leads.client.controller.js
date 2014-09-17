@@ -430,6 +430,7 @@ console.log('dmname: '+this.dmname);
 		method: 'post',
 		url: 'http://adsoap.com/nodeEMAILPDF',
 		data: {
+			lead: lead._id;
 			term: this.term.value,
 			dslspeed: this.dsl.svalue,
 			adllines: this.adl,
