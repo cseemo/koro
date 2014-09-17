@@ -3,7 +3,7 @@
         <h1>Deals</h1>
     </div>
     <div class="list-group">
-        <div data-ng-repeat="deal in deals" class="list-group-item">
+        <div data-ng-repeat="deal in deals" class="list-group-item" data-ng-show="authentication.user.displayName===deal.assignedRep || authentication.hasRole('manager') || authentication.hasRole('admin')">
          <span class="label label-primary pull-right" data-ng-bind="deal.stage"></span>
         
 			<small class="list-group-item-text">
