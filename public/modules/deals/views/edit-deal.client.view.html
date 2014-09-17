@@ -19,14 +19,14 @@
           <input type="text" data-ng-model="deal.ctlordernumber" style="width: 30%" class="form-control"/></label>
             </div></fieldset></div>
         <br>
-        
+            <button data-ng-show="deal.stagenum==0" class="btn btn-w-md btn-gap btn-info" data-ng-click="resubmit()">Submit Deal</button>
           <button data-ng-show="deal.stagenum==5" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Assign Deal</button>
           <button data-ng-show="deal.stagenum==20" class="btn btn-w-md btn-gap btn-info" data-ng-click="QCApproved()">QC Approve</button>
 
           <button data-ng-show="deal.stagenum==55" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignOrderNumber()">Assign CTL Order Number</button>
       
 
-          <button data-ng-show="deal.stagenum==70" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Confirm Installation</button>
+          <button data-ng-show="deal.stagenum==70" class="btn btn-w-md btn-gap btn-info" data-ng-click="confirmInstall()">Confirm Installation</button>
 
 
           <button class="btn btn-w-md btn-gap btn-danger" data-ng-click="rejectDeal()">Reject Order</button>

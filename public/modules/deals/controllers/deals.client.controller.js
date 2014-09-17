@@ -283,6 +283,23 @@ return $scope.deal.dslspeed;
 			}
 		};
 
+		//confirm Installation
+		$scope.confirmInstall = function() {
+			var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[6].name;
+			deal.stagenum=$scope.myDealstages[6].value;
+
+
+		};
+
+		//resubmit order after Rep Review
+		$scope.resubmit = function() {
+			var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[4].name;
+			deal.stagenum=$scope.myDealstages[4].value;
+
+
+		};
 
 		$scope.QCApproved = function() {
 			var deal = $scope.deal;
@@ -303,8 +320,8 @@ return $scope.deal.dslspeed;
 		//Reject Order
 		$scope.rejectDeal = function(){
 				var deal = $scope.deal;
-			deal.stage=$scope.myDealstages[0].name;
-			deal.stagenum=$scope.myDealstages[0].value;
+			deal.stage=$scope.myDealstages[2].name;
+			deal.stagenum=$scope.myDealstages[2].value;
 
 		};
 
