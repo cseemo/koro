@@ -286,9 +286,9 @@ exports.makePDF = function(req, res){
 		var ys = 355;
 		var i =0;
 
-		if(req.deal.lineDetails!=[null]){
+		if(req.deal.lineDetails[0].number!=null){
 
-
+			console.log('This account has numbers online');
 		
 		req.deal.lineDetails.forEach(function(num){
 		// console.log('hello',num.number);
@@ -334,6 +334,8 @@ exports.makePDF = function(req, res){
 		}
 			
 		});
+	}else{
+		console.log('Sorry no numbers inputted');
 	}
 
 
