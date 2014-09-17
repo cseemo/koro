@@ -3,7 +3,10 @@
         <h1>Deals</h1>
     </div>
     <div class="list-group">
-        <div data-ng-repeat="deal in deals | orderBy: 'stagenum'" class="list-group-item" data-ng-show="authentication.user.displayName===deal.assignedRep || (authentication.hasRole('manager') || authentication.hasRole('typist') || authentication.hasRole('admin'))" data-ng-hide="deal.stagenum===0 && authentication.hasRole('typist')">
+   
+        <div data-ng-repeat="deal in deals | orderBy: 'stagenum'">
+        <div class="list-group-item" data-ng-show="authentication.user.displayName===deal.assignedRep || authentication.hasRole('admin') || authentication.hasRole('manager') || authentication.hasRole('typist')" data-ng-hide="deal.stagenum===0 && authentication.hasRole('typist')">
+         
          <span class="label label-primary pull-right" data-ng-bind="deal.stage"></span>
         
 			<small class="list-group-item-text">
@@ -17,7 +20,7 @@
             <a data-ng-href="#!/deals/{{deal._id}}/edit"> 
             <span class="label label-primary">{{deal.stage}}</span>
         </a>
-    </div>
+    </div></div>
     <div class="alert alert-warning text-center" data-ng-hide="!deals.$resolved || deals.length">
     	No Deals yet, why don't you <a href="/#!/deals/create">create one</a>?
     </div>
