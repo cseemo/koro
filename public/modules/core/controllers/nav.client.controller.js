@@ -6,6 +6,18 @@ angular.module('core').controller('NavController', ['$scope', 'Authentication', 
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
 
+
+		if( Authentication.user ) {
+			console.log('Logged In ');
+			$scope.canSee=true;
+		}
+
+		if( ! Authentication.user ) {
+			console.log('not logged in');
+			$scope.canSee=false;
+
+		}
+		
 		//console.log('Menu items: ', $scope.menu);
 		$scope.getLead = function() {
 			//window.alert('gettinglead');

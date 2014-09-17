@@ -357,7 +357,7 @@ console.log('Dealcontroller Deal: %o',deal);
 			});
 			console.log('Deal Info: %o', $scope.deal);
 			$scope.mystage = $scope.deal.stage;
-
+			
 		};
 	}
 ]);

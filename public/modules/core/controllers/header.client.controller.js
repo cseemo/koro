@@ -6,7 +6,17 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
 
-		if( ! Authentication.user ) $location.path('/signin');
+		//if( ! Authentication.user ) $location.path('/signin');
+		if( Authentication.user ) {
+			console.log('Logged In ');
+			$scope.canSee=true;
+		}
+
+		if( ! Authentication.user ) {
+			console.log('not logged in');
+			$scope.canSee=false;
+
+		}
 		// console.log('does the user have the user role?: ', Authentication.hasRole('user'));
 		// console.log('does the user have the admin role?: ', Authentication.hasRole('admin'));
 $scope.clockedIn = false;
