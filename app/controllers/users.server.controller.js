@@ -158,19 +158,19 @@ exports.updateUser = function(req, res) {
 exports.updateUser2 = function(req, res) {
 	// Init Variables
 	var user = req.profile;
+	console.log('Should be user being updated', req.profile);
 	var message = null;
 
-	// We are not updating the password, so we should remove it otherwise it will re-encode hte password
-	// We are deleteing from the body as the object is converted into a Model derived object with i assume getter/setters so delete does not work
-	delete req.body.password;
-	delete req.body.salt;
-
+	//Marin Drunken fix to deal with preSave webhook
+	user.reusePassword = true;
 	if (user) {
 		// Merge existing user
 		user = _.extend(user, req.body);
+		// console.log('user req.body -- ??', req.body);
+		// console.log('user profile', req.profile);
 		user.updated = Date.now();
 
-		console.log('updating user??:', user);
+		// console.log('updating user??:', user);
 
 		user.save(function(err) {
 			if (err) {
