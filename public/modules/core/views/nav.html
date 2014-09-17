@@ -25,6 +25,20 @@
         <span>Dashboard</span>
          </a>
          </li>
+
+         <li>
+             <a href="#!/" ng-click="getLead()">
+                <i class="fa fa-phone"></i>
+                <span>Dial</span>
+             </a>
+          </li>
+
+          <li>
+             <a href="#!/leads">
+                <i class="fa fa-upload"></i>
+                <span>Leads</span>
+             </a>
+          </li>
         
         <li>
              <a href="#!/deals">
@@ -32,6 +46,7 @@
                 <span>Deals</span>
              </a>
           </li>
+          <div data-ng-show="hasRole['admin']">
         <li>
 
              <a href="#!/adminusers">
@@ -42,19 +57,6 @@
 
         </li>
 
-         <li>
-             <a href="#!/" ng-click="getLead()">
-                <i class="fa fa-phone"></i>
-                <span>Dial</span>
-             </a>
-          </li>
-
-        <li>
-             <a href="#!/leads">
-                <i class="fa fa-upload"></i>
-                <span>Leads</span>
-             </a>
-          </li>
           <li>
              <a href="#!/timecards">
                 <i class="fa fa-clock-o"></i>
@@ -67,6 +69,7 @@
                 <span>Reports</span>
              </a>
           </li>
+          </div>
             
     </ul>
 </div>
