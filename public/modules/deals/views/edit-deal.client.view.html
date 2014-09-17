@@ -18,6 +18,7 @@
           <input type="text" data-ng-model="deal.ctlordernumber" style="width: 30%" class="form-control"/></label>
             </div></fieldset></div>
         <br>
+        <span data-ng-show="authentication.hasRole('typist','admin','manager')">
           <button data-ng-show="deal.stagenum==5" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Assign Deal</button>
           <button data-ng-show="deal.stagenum==20" class="btn btn-w-md btn-gap btn-info" data-ng-click="QCApproved()">QC Approve</button>
 
@@ -28,7 +29,7 @@
 
 
           <button class="btn btn-w-md btn-gap btn-danger" data-ng-click="rejectDeal()">Reject Order</button>
-           
+           </span>
 
 
        
