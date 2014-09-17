@@ -22,11 +22,12 @@
 
 
                 <label class="form-label" style="font-size: 14px;">Roles:<span data-ng-repeat="role in user.roles">{{role}} </span></label>
-          
-
+          	
 
 				<div class="text-center form-group">
 					<button type="submit" class="btn btn-large btn-primary">Save Profile</button>
+					</div>	<div class="text-center form-group">
+					<a href="#!/settings/password"><button class="btn btn-large btn-primary">Change Password</button>
 				</div>
 				<div data-ng-show="success" class="text-center text-success">
 					<strong>Profile Saved Successfully</strong>
