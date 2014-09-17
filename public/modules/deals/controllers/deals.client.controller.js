@@ -55,6 +55,10 @@ console.log('Current Step: ',$scope.step);
      					var fileURL = URL.createObjectURL(file);
      					window.open(fileURL);
 
+			    }).then(function(){
+
+			    	console.log('Ready to send Signed LOAs -- just type the damn code!');
+
 			    });
 	
 	});
@@ -117,7 +121,6 @@ $scope.buildDTW = function(){
 
 $scope.myDealstages = [
 {name: 'Pending Rep Review', value: '0', number: 0},
-{name: 'LOAS Signed', value: '5', number: 8},
 {name: 'Pending Assignment', value: '10', number: 1},
 {name: 'Pending Review', value: '20', number: 2},
 {name: 'QC Approved', value: '40', number: 3},
@@ -125,6 +128,7 @@ $scope.myDealstages = [
 {name: 'Pending Install', value: '70', number: 5},
 {name: 'Installed', value: '90', number: 6},
 {name: 'Paid', value: '100', number: 7},
+{name: 'LOAs Signed', value: '5', number: 8}
 
 ];
 

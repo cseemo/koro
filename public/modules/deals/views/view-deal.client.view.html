@@ -8,7 +8,7 @@
 	  <div class="col-lg-10 col-lg-offset-1 col-md-6">
 	 <div class="panel panel-primary">
        <div class="panel-body">
-       <span data-ng-show="authentication.hasRole('typist','admin','manager')">
+       <span data-ng-show="authentication.hasRole('typist') || authentication.hasRole('manager') || authentication.hasRole('admin') ">
          <a data-ng-href="#!/deals/{{deal._id}}/edit"> 
        <button class="btn btn-w-md btn-gap btn-info pull-right">Update Deal</button></a></span>
  		
@@ -16,7 +16,6 @@
 		<h1 data-ng-bind="deal.companyname"></h1>
 		<h3 data-ng-bind="deal.stage"></h3>
 		</center>
-		<embed width="50%" data-ng-src="{{myiframe}}" type="application/pdf" title="Document to Be Signed">
 		</div>
 	</div>
 	</div>

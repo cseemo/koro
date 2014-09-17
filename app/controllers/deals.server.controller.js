@@ -5,7 +5,62 @@
  */
 var mongoose = require('mongoose'),
 	Deal = mongoose.model('Deal'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	mandrill = require('mandrill-api/mandrill');
+
+
+var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
+	
+
+//SEND Signed LOAs back to customer
+exports.sendSigned = function(req, res) {
+console.log('Sending Signed LOAs');
+console.log('Req.body %o', req.body);
+
+var message = {
+	'html': '<p>Centurylink Signed LOAs</p>',
+	'text': 'Centurylink Return Email',
+	'subject': 'Letter of Authorization (Centurylink)',
+	'from_email': 'yourrep@centurylink.net',
+	'from_name': 'Me and You',
+	'to': [{
+		'email': req.body.email,
+		'name': req.body.contactname,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': 'cseemo@gmail.com'
+	},
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': null,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null,
+	'attachments': [{
+		'type': 'application/pdf',
+		'name': 'testfule.pdf',
+		'content': req.deal._id+'.pdf'
+	}]
+};
+
+var async = false;
+
+mandrill_client.messages.send({'message': message, 'async': async}, function(result){
+	console.log(result);
+},
+function(e){
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+});
+
+};
 
 
 //APPROVE A DEAL
@@ -32,10 +87,10 @@ exports.create = function(req, res) {
 //Get Total MRC Sold by Rep
 exports.getDealMRCTotal = function(req, res){
 Deal.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
-		"$group": { 
-			_id: "$mrc",
+		'$group': { 
+			_id: '$mrc',
 			total: {
-				"$sum": "$mrc"
+				'$sum': '$mrc'
 			}
 		}
 	}]).exec(function(err, results) {
@@ -64,10 +119,10 @@ exports.getDealsbyTotal = function(req, res) {
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Deal.aggregate([  { $match: {assignedRep:req.user.displayName} }, 
 	{
-		"$group": { 
-			_id: "$stage",
+		'$group': { 
+			_id: '$stage',
 			total: {
-				"$sum": 1
+				'$sum': 1
 			}
 		}
 	}]).exec(function(err, results) {
@@ -209,9 +264,9 @@ exports.makePDF = function(req, res){
 	var doc = new PDFDocument();
 
 	//var stream = doc.pipe(blobStream());
-
-
-	doc.pipe( fs.createWriteStream('loa'+req.deal._id+'.pdf') );
+	var buffers = [];
+	var myfileName = 'loa'+req.deal._id+'.pdf';
+	doc.pipe( fs.createWriteStream(myfileName) );
 	 
 
 	//FILL OUT LD LOA
@@ -288,14 +343,16 @@ exports.makePDF = function(req, res){
 
 
 		//console.log('LineDetails #:', req.deal.lineDetails.length);
-		if(req.deal.lineDetails.lenght > 0){
+		if(req.deal.lineDetails.length > 0){
 
-			console.log('This account has numbers online');
+			//console.log('This account has numbers online');
 		
 		req.deal.lineDetails.forEach(function(num){
-		// console.log('hello',num.number);
+		//console.log('num.number',num.number);
 		// console.log(i);
 		// console.log('XS: '+xs+' and YS: '+ys);
+		if(num!=null){
+			//console.log('num.number is here: ',num.number);
 
 		doc.y = ys;
 		doc.x = xs;
@@ -334,11 +391,13 @@ exports.makePDF = function(req, res){
 			ys = 550;
 			xs=100;
 		}
+	}
 			
 		});
 	}else{
 		console.log('Sorry no numbers inputted');
-		console.log(req.deal.lineDetails);
+		console.log('Length',req.deal.lineDetails);
+		console.log('Length',req.deal.lineDetails.length);
 	}
 
 
@@ -458,13 +517,17 @@ exports.makePDF = function(req, res){
 		var ys = 365;
 		var i =0;
 
-		if(req.deal.lineDetails.lenght > 0){
+		if(req.deal.lineDetails.length > 0){
 			console.log('Got numbers ', req.deal.lineDetails);
 
 			req.deal.lineDetails.forEach(function(num){
-				console.log('hello',num.number);
-				console.log(i);
-				console.log('XS: '+xs+' and YS: '+ys);
+
+			if(num!=null){
+
+
+				// console.log('hello',num.number);
+				// console.log(i);
+				// console.log('XS: '+xs+' and YS: '+ys);
 
 				doc.y = ys;
 				doc.x = xs;
@@ -503,6 +566,8 @@ exports.makePDF = function(req, res){
 					ys = 550;
 					xs=100;
 				}
+
+			}
 			
 		});
 	}
@@ -581,11 +646,12 @@ exports.makePDF = function(req, res){
         'Content-Type': 'application/pdf',
         'Access-Control-Allow-Origin': '*',
          'X-Frame-Options': 'SAMEORIGIN',
-        'Content-Disposition': 'inline; filename=testout.pdf'
+        'Content-Disposition': 'inline; filename=Centurylink_Signed_LOAs.pdf'
     });
 
 
 doc.pipe( res );
+
 //res.download('out.pdf');
 
 
@@ -611,11 +677,123 @@ doc.pipe( res );
 // res.end(new Buffer(doc), 'binary');
 
 
+
+doc.on('data', buffers.push.bind(buffers));
 doc.end();
 
+doc.on('end', function(){
+		console.log('Sending Email');
+		//console.log('Res',res);
+		
+	
+	
+
+		buffers = buffers.toString('base64');
+	//.toString('base64');
+
+
+
+
+
+		var message = {
+	'html': '<p>Centurylink Signed LOAs: ' + res.toString('base64') + '</p>',
+	'text': 'Centurylink Return Email',
+	'subject': 'restoString(base64)',
+	'from_email': 'yourrep@centurylink.net',
+	'from_name': 'Using BUffers',
+	'to': [{
+		'email': req.deal.contactemail,
+		'name': req.deal.contactname,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': 'cseemo@gmail.com'
+	},
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': null,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null,
+	'attachments': [{
+		'type': 'application/pdf',
+		'name': 'mytestPDF.pdf',
+		'content': buffers.toString('base64')
+	}]
+};
+
+
+
+
+
+var async = false;
+
+mandrill_client.messages.send({'message': message, 'async': async}, function(result){
+	console.log('Results from Mandrill', result);
+},
+function(e){
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+});
+
+});
+
+//var myPDF 
 // stream.on('finish', function(){
 // 	iframe.src = stream.toBlobURL('application/pdf');
 // });
 
+	//console.log('What is the res???',res);
+// var message = {
+// 	'html': '<p>Centurylink Signed LOAs</p>',
+// 	'text': 'Centurylink Return Email',
+// 	'subject': 'Letter of Authorization (Centurylink)',
+// 	'from_email': 'yourrep@centurylink.net',
+// 	'from_name': 'Test Test',
+// 	'to': [{
+// 		'email': req.deal.contactemail,
+// 		'name': req.deal.contactname,
+// 			'type': 'to'
+// 	}],
+// 	'headers': {
+// 		'Reply-To': 'cseemo@gmail.com'
+// 	},
+// 	'important': false,
+// 	'track_opens': null,
+// 	'track_clicks': null,
+// 	'auto_text': null,
+// 	'auto_html': null,
+// 	'inline_css': null,
+// 	'url_strip_qs': null,
+// 	'preserver_recipients': null,
+// 	'view_content_link': null,
+// 	'bcc_address': 'fivecsconsulting@gmail.com',
+// 	'tracking_domain': null,
+// 	'signing_domain': null,
+// 	'return_path_domain': null,
+// 	'attachments': [{
+// 		'type': 'application/pdf',
+// 		'name': myfileName,
+// 		'content': new Buffer(doc).toString('base64')
+// 	}]
+// };
+
+// doc.end();
+
+// var async = false;
+
+// mandrill_client.messages.send({'message': message, 'async': async}, function(result){
+// 	console.log('Results from Mandrill', result);
+// },
+// function(e){
+// 	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+// });
 return;
 };
+
