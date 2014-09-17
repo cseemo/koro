@@ -34,7 +34,7 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 			
 				var deal = new Deals ({
 					companyname:	lead.companyname,
-					email:			lead.email,
+					contactemail:	lead.email,
 					contactname:	lead.contactname,
 					telephone:		lead.telephone,
 					address:		lead.address,

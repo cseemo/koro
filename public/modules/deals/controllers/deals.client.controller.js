@@ -326,15 +326,78 @@ return $scope.deal.dslspeed;
 			// 	$location.path('deals/' + deal._id + '/edit');
 		};
 
-		// Update existing Deal
-		$scope.update = function() {
+		//Submit Order Packet
+			$scope.submitOrder = function() {
 			var deal = $scope.deal ;
 			console.log('Look for deal.stage and deal.stagenum %o', $scope);
 			if($scope.mystage){
 			deal.stage=$scope.mystage.name;
 			deal.stagenum=$scope.mystage.value;
 			}
-console.log('Dealcontroller Deal: %o',deal);
+			console.log('Dealcontroller Deal: %o',deal);
+			deal.$update(function() {
+				console.log('Updating Deal before sending Order Packet');
+				//$location.path('deals/' + deal._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			}).then(function() {
+
+				$http({
+		method: 'post',
+		url: 'http://adsoap.com/nodeEMAILPDF',
+		data: {
+			mylead: deal._id,
+			term: deal.term,
+			dslspeed: deal.dslspeed,
+			adllines: deal.adl,
+			full_name: deal.contactname,
+			phone: deal.telephone,
+			email: deal.contactemail, 
+			companyname: deal.companyname, 
+			modem: deal.modem,
+			nrc: deal.waivenrcs,
+			credits: deal.winbackcredits,
+			staticIP: deal.staticIP,
+			sendloas: 1
+		},
+		headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+	})
+.success(function(data, status) {
+	$location.path('deals/' + deal._id);
+		if(status === 200) {
+			//$scope.currentPrice = data.price;
+//console.log('Data Returned '+data);
+			//$scope.currentPrice = data.price;
+			//$scope.currentNRR = data.nrr;
+			window.alert(data);
+
+
+
+//Get Quote Details and Save to Lead Object
+
+
+}
+
+
+	})
+.error(function(data){
+	console.log('OOps...'+data);
+});
+
+
+
+			});
+		};
+
+		// Update existing Deal
+			$scope.update = function() {
+			var deal = $scope.deal ;
+			console.log('Look for deal.stage and deal.stagenum %o', $scope);
+			if($scope.mystage){
+			deal.stage=$scope.mystage.name;
+			deal.stagenum=$scope.mystage.value;
+			}
+			console.log('Dealcontroller Deal: %o',deal);
 			deal.$update(function() {
 				$location.path('deals/' + deal._id);
 			}, function(errorResponse) {
