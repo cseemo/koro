@@ -46,17 +46,14 @@
                 <span>Deals</span>
              </a>
           </li>
-          <div data-ng-show="hasRole['admin']">
+         
+          <div data-ng-show="authentication.hasRole('user')===true">
         <li>
-
              <a href="#!/adminusers">
                 <i class="fa fa-users"></i>
                 <span>Users</span>
              </a>
-
-
         </li>
-
           <li>
              <a href="#!/timecards">
                 <i class="fa fa-clock-o"></i>

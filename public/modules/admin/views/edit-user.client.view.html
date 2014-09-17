@@ -36,11 +36,15 @@
                 
             <label class="switch" style="vertical-align: middle">User<input type="checkbox" style="vertical-align: middle" ng-model="roles.user" class="pull-right"><i></i></label>
 
+              <label class="switch" style="vertical-align: middle">Typist<input type="checkbox" style="vertical-align: middle" ng-model="roles.typist" class="pull-right"><i></i></label>
+
+                <label class="switch" style="vertical-align: middle">Manager<input type="checkbox" style="vertical-align: middle" ng-model="roles.manager" class="pull-right"><i></i></label>
+
             <label class="switch" style="vertical-align: middle">Admin<input type="checkbox" style="vertical-align: middle" ng-model="roles.admin" class="pull-right"><i></i></label>
 
-             <p data-ng-repeat="role in userB.roles">
+            <!--  <p data-ng-repeat="role in userB.roles">
              Role: {{role}}
-             </p>
+             </p> -->
            
                               <!--  <div class="list-group">
                 <a data-ng-repeat="userB in users" data-ng-href="#!/users/{{user._id}}/" class="list-group-item">
