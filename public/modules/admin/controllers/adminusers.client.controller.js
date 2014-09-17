@@ -26,6 +26,11 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 			console.log('This %o ', this);
 		};
 
+		$scope.resetPW = function() {
+
+
+		};
+
 $scope.notify = function() {
 console.log('notify');
 };

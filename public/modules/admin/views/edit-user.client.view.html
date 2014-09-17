@@ -17,6 +17,8 @@
                        Email: <span data-ng-bind="userB.email"></span><br>
                        Telephone: <span data-ng-bind="userB.telephone"></span>
                     </small>
+                     <button class="btn btn-w-md btn-gap btn-warning pull-right" data-ng-click="resetPW()">Reset Password</button></a></span>
+        
 
                     <fieldset>
                 <div class="form-group">
@@ -41,6 +43,8 @@
                 <label class="switch" style="vertical-align: middle">Manager<input type="checkbox" style="vertical-align: middle" ng-model="roles.manager" class="pull-right"><i></i></label>
 
             <label class="switch" style="vertical-align: middle">Admin<input type="checkbox" style="vertical-align: middle" ng-model="roles.admin" class="pull-right"><i></i></label>
+
+
 
             <!--  <p data-ng-repeat="role in userB.roles">
              Role: {{role}}

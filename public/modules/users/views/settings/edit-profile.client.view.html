@@ -21,15 +21,8 @@
 				</div>
 
 
-                <label class="form-label" style="font-size: 14px;">Roles:</label>
-                
-            <label class="switch" style="vertical-align: middle">User<input type="checkbox" style="vertical-align: middle" ng-model="user.roles.user" class="pull-right"><i></i></label>
-
-             <label class="switch" style="vertical-align: middle">Admin<input type="checkbox" style="vertical-align: middle" ng-model="user.roles.admin" class="pull-right"><i></i></label>
-
-             <p data-ng-repeat="role in user.roles">
-             Role: {{role}}
-             </p>
+                <label class="form-label" style="font-size: 14px;">Roles:<span data-ng-repeat="role in user.roles">{{role}} </span></label>
+          
 
 
 				<div class="text-center form-group">
