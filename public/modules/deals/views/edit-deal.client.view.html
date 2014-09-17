@@ -10,6 +10,7 @@
             <div class="field">
             <h4>Deal Stage: {{deal.stage}}</h4>
           <!--<select data-ng-model="mystage" class="form-control text-center" style="width: 50%; float:right;" ng-options="mystage.name for mystage in myDealstages"></select> -->
+          <span data-ng-show="authentication.hasRole('typist') || authentication.hasRole('manager') || authentication.hasRole('admin') ">
           <br>
           <div data-ng-show="deal.stagenum==55" >
           <fieldset class="form-inline">
@@ -18,7 +19,7 @@
           <input type="text" data-ng-model="deal.ctlordernumber" style="width: 30%" class="form-control"/></label>
             </div></fieldset></div>
         <br>
-        <span data-ng-show="authentication.hasRole('typist','admin','manager')">
+        
           <button data-ng-show="deal.stagenum==5" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Assign Deal</button>
           <button data-ng-show="deal.stagenum==20" class="btn btn-w-md btn-gap btn-info" data-ng-click="QCApproved()">QC Approve</button>
 
