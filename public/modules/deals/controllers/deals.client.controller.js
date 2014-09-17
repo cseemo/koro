@@ -35,7 +35,7 @@ console.log('Current Step: ',$scope.step);
 		var day = signDate.getDay();
 		console.log('signdate: %o',signDate);
 		console.log('mydate: '+month+'/'+day+'/'+year);
-		var testdate = $filter('date')(signDate, 'MMM dd, yyyy');
+		var testdate = $filter('date')(signDate, 'MM/dd/yyyy');
 		console.log(testdate);
 		deal.signDate = testdate;
 

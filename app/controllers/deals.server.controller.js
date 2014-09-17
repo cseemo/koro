@@ -286,7 +286,9 @@ exports.makePDF = function(req, res){
 		var ys = 355;
 		var i =0;
 
-		if(req.deal.lineDetails[0].number!=null){
+
+		//console.log('LineDetails #:', req.deal.lineDetails.length);
+		if(req.deal.lineDetails.lenght > 0){
 
 			console.log('This account has numbers online');
 		
@@ -336,6 +338,7 @@ exports.makePDF = function(req, res){
 		});
 	}else{
 		console.log('Sorry no numbers inputted');
+		console.log(req.deal.lineDetails);
 	}
 
 
@@ -455,7 +458,8 @@ exports.makePDF = function(req, res){
 		var ys = 365;
 		var i =0;
 
-		if(req.deal.lineDetails!=[null]){
+		if(req.deal.lineDetails.lenght > 0){
+			console.log('Got numbers ', req.deal.lineDetails);
 
 			req.deal.lineDetails.forEach(function(num){
 				console.log('hello',num.number);
@@ -542,7 +546,7 @@ exports.makePDF = function(req, res){
 		doc.y = 655;
 		doc.x = 130;
 		doc.fontSize(24);
-		doc.font('Times-Roman');
+		doc.font('SANTO.TTF');
 		doc.fillColor('black');
 		doc.text(req.deal.contactname);
 
