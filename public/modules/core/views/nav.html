@@ -6,7 +6,7 @@
         data-slim-scroll
         data-collapse-nav
         data-highlight-active
-        data-ng-show="canSee==='true'">
+        >
 
         <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);">
             <a href="#!/{{item.link}}">
