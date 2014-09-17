@@ -424,13 +424,14 @@ console.log('dmname: '+this.dmname);
 				$scope.error = errorResponse.data.message;
 			});
 
+			var myleadT = lead._id;
 
  
 			$http({
 		method: 'post',
 		url: 'http://adsoap.com/nodeEMAILPDF',
 		data: {
-			lead: lead._id;
+			mylead: myleadT,
 			term: this.term.value,
 			dslspeed: this.dsl.svalue,
 			adllines: this.adl,
