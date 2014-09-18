@@ -110,8 +110,8 @@ exports.signin = function(req, res, next) {
  * Show the current Users Info
  */
 exports.showUser = function(req, res) {
-	// console.log('Req.user %o ', req.user);
-		console.log('Req Params %o ', req.profile);
+	// //console.log('Req.user %o ', req.user);
+		//console.log('Req Params %o ', req.profile);
 	res.jsonp(req.profile);
 };
 
@@ -120,7 +120,7 @@ exports.showUser = function(req, res) {
  */
 exports.updateUser = function(req, res) {
 	// Init Variables
-	console.log('req.userB?? %o ',req.params);
+	//console.log('req.userB?? %o ',req.params);
 	var user = req.userB;
 	var message = null;
 
@@ -158,7 +158,7 @@ exports.updateUser = function(req, res) {
 exports.updateUser2 = function(req, res) {
 	// Init Variables
 	var user = req.profile;
-	console.log('Should be user being updated', req.profile);
+	//console.log('Should be user being updated', req.profile);
 	var message = null;
 
 	//Marin Drunken fix to deal with preSave webhook
@@ -166,11 +166,11 @@ exports.updateUser2 = function(req, res) {
 	if (user) {
 		// Merge existing user
 		user = _.extend(user, req.body);
-		// console.log('user req.body -- ??', req.body);
-		// console.log('user profile', req.profile);
+		// //console.log('user req.body -- ??', req.body);
+		// //console.log('user profile', req.profile);
 		user.updated = Date.now();
 
-		// console.log('updating user??:', user);
+		// //console.log('updating user??:', user);
 
 		user.save(function(err) {
 			if (err) {
@@ -234,7 +234,7 @@ exports.update = function(req, res) {
 exports.changePassword = function(req, res, next) {
 	// Init Variables
 	var passwordDetails = req.body;
-	console.log('Password Details',req.body);
+	//console.log('Password Details',req.body);
 	var message = null;
 
 	if (req.user) {
@@ -290,9 +290,9 @@ exports.changePassword = function(req, res, next) {
  */
 exports.resetPassword = function(req, res) {
 	// Init Variables
-	console.log('Reset Password');
+	//console.log('Reset Password');
 	//var passwordDetails = req.body;
-	console.log('Req',req);
+	//console.log('Req',req);
 	var message = null;
 
 	User.findById(req.body._id, function(err, user) {
@@ -308,7 +308,7 @@ exports.resetPassword = function(req, res) {
 			});
 		}else{
 
-			console.log('looks like the new password is updated',user.password);
+			//console.log('looks like the new password is updated',user.password);
 			return res.send(200, 'Yeah baby!!');
 
 }

@@ -113,14 +113,14 @@ UserSchema.pre('save', function(next) {
 				next();
 			}
 		}else{
-			console.log('Resetting Password');
-			console.log('Current Salt', this.salt);
+			//console.log('Resetting Password');
+			//console.log('Current Salt', this.salt);
 			if (this.password && this.password.length > 6) {
 				//this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-				console.log('Password before hash',this.password);
+				//console.log('Password before hash',this.password);
 				this.password = this.hashPassword(this.password);
-				console.log('Password after hash',this.password);
-				console.log('Salt right now', this.salt);
+				//console.log('Password after hash',this.password);
+				//console.log('Salt right now', this.salt);
 				next();
 			}
 			next();

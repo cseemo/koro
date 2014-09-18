@@ -25,6 +25,9 @@ console.log('Current Step: ',$scope.step);
 
 
 	$scope.makePDF = function(){
+
+		$scope.step = 3;
+		$scope.spinny = true;
 		var deal = $scope.deal;
 		console.log('My Deal: %o',deal);
 		deal.stage=$scope.myDealstages[1].name;
@@ -57,6 +60,7 @@ console.log('Current Step: ',$scope.step);
      					window.open(fileURL);
 
 			    }).then(function(){
+			    	$scope.spinny = false;
 
 			    	console.log('Ready to send Signed LOAs -- just type the damn code!');
 
