@@ -5,12 +5,110 @@ angular.module('campaigns').controller('CampaignsController', ['$scope', '$state
 	function($scope, $stateParams, $location, Authentication, Campaigns ) {
 		$scope.authentication = Authentication;
 
+		//States Array
+		$scope.statesCTL = [{
+			state: 'AZ'
+		},
+		{
+			state: 'CO'
+		},
+		{
+			state: 'IA'
+		},
+		{
+			state: 'ID'
+		},		
+		{
+			state: 'MN'
+		},		
+		{
+			state: 'MT'
+		},		
+		{
+			state: 'ND'
+		},		
+		{
+			state: 'NE'
+		},		
+		{
+			state: 'NM'
+		},		
+		{
+			state: 'OR'
+		},		
+		{
+			state: 'SD'
+		},		
+		{
+			state: 'UT'
+		},		
+		{
+			state: 'WA'
+		},		
+		{
+			state: 'WY'
+		}
+
+		];
+
+		$scope.carriers = [{
+
+			name: 'Charter'
+		},
+		{
+			name: 'McleodUSA'
+		},
+		{
+			name: 'Comcast'
+		},
+		{
+			name: 'Eschelon'
+		},
+		{
+			name: 'Electric Lightwave'
+		},
+		{
+			name: 'TW Telecom'
+		},
+		{
+			name: 'Cox'
+		}];
+
+
+
+
+
 		// Create new Campaign
 		$scope.create = function() {
 			// Create new Campaign object
-			var campaign = new Campaigns ({
-				name: this.name
+			console.log('this %o', this);
+			var campstates = [];
+
+
+			// Go through each state and if it is set to true add it to our array
+			for(var i in this.statesCTL) {
+				console.log('This bes: ',this.statesCTL[i]);
+				if(this.statesCTL[i].$index){
+					console.log('This state is true!');
+					campstates.push(this.statesCTL[i].state);
+					
+				}
+				}
+				console.log('These states are included:',campstates);
+				console.log('States length',campstates.length);
+				if(campstates.length>0){
+					//campstates = $scope.statesCTL;
+					var campaign = new Campaigns ({
+				name: this.name,
+				states: campstates
 			});
+				}else{
+						var campaign = new Campaigns ({
+				name: this.name
+				
+			});
+				}
+			
 
 			// Redirect after save
 			campaign.$save(function(response) {

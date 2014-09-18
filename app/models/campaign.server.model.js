@@ -23,6 +23,14 @@ var CampaignSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	states: {
+		type: Array,
+		default: ['AZ', 'CO', 'IA', 'ID', 'MN', 'MT', 'ND', 'NE', 'OR', 'SD', 'UT', 'WA', 'WY']
+	},
+	carrier: {
+		type: String,
+		default: null
 	}
 });
 

@@ -355,49 +355,22 @@ var nrrCost = parseInt(adlcostN)+parseFloat(modemCostN);
 };
 
 // //Test this -- find a Deal w/ NO AssignedRep in 
-// exports.oldestFirst = function(req, res) { 
-// 	//var mytemplate = "{assignedRep: null, state: {$in: ['MN', 'NM']}}";
-// 	var states = ['IA', 'CO', 'MN'];
-// 	var carriers = ['Comcast'];
-// 	var dispos = ['Proposed', 'Follow-Up', 'Call Back', 'Lead'];
-// 	// , state: {$in: states}, status: {$in: dispos}
-// 	Lead.findOne({assignedRep: null, state: {$in: states}}).sort('assigned').exec(function(err, lead) {
-// 			if (err) {
-// 			return res.status(400).send({
-// 				message: 'Error Getting Leads - exports.OldestFirst'
-// 			});
-// 		} else {
-// 			console.log('lead',lead);
-// 			console.log('req.user', req.user);
-// 			lead.user = req.user;
-// 			lead.assigned = Date.now();
-// 			lead.assignedRep = req.user.displayName;
-// 			lead.save(function(err) {
-// 		if (err) {
-// 			return res.status(400).send({
-// 				message: getErrorMessage(err)
-// 			});
-// 		} else {
-// 			//console.log('Lead to Be Sent %o', lead);
-// 			res.jsonp(lead);
-// 		}
-
-// 			});
-
-			
-			
-// 			}
-// 		});
-// };
-
-
-exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exec(function(err, lead) {
-			if (err) {
-			return res.status(400).send({
+exports.oldestFirst = function(req, res) { 
+	//var mytemplate = "{assignedRep: null, state: {$in: ['MN', 'NM']}}";
+	var states = ['IA', 'MN', 'AZ'];
+	var carrier = 'Integra';
+	var dispos = ['Proposed', 'Follow-Up', 'Call Back', 'Lead'];
+	// , state: {$in: states}, status: {$in: dispos}
+	var query = Lead.where({assignedRep: null, state: {$in: states}, currentCarrier: {$regex: '^'+carrier+'.*', $options: 'i'}});
+	query.findOne(function (err, lead) {
+		if (err) return res.status(400).send({
 				message: 'Error Getting Leads - exports.OldestFirst'
 			});
-		} else {
+		if (lead) {
+			console.log('lead',lead);
+			console.log('req.user', req.user);
 			lead.user = req.user;
+			lead.assigned = Date.now();
 			lead.assignedRep = req.user.displayName;
 			lead.save(function(err) {
 		if (err) {
@@ -410,9 +383,49 @@ exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exe
 		}
 
 			});
-			}
-		});
-};
+
+
+
+
+
+
+		}
+		// 	, state: {$in: states}}).sort('assigned').exec(function(err, lead) {
+		// 	if (err) {
+		// 	return res.status(400).send({
+		// 		message: 'Error Getting Leads - exports.OldestFirst'
+		// 	});
+		// } else {
+		
+			
+			
+			});
+		};
+
+
+
+// exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exec(function(err, lead) {
+// 			if (err) {
+// 			return res.status(400).send({
+// 				message: 'Error Getting Leads - exports.OldestFirst'
+// 			});
+// 		} else {
+// 			lead.user = req.user;
+// 			lead.assignedRep = req.user.displayName;
+// 			lead.save(function(err) {
+// 		if (err) {
+// 			return res.status(400).send({
+// 				message: getErrorMessage(err)
+// 			});
+// 		} else {
+// 			//console.log('Lead to Be Sent %o', lead);
+// 			res.jsonp(lead);
+// 		}
+
+// 			});
+// 			}
+// 		});
+// };
 
 
 exports.createDeal = function(req, res) {

@@ -91,18 +91,47 @@ var UserSchema = new Schema({
 /**
  * Hook a pre save method to hash the password
  */
+// UserSchema.pre('save', function(next) {
+
+// 		if(!this.reusePassword){
+// 			if (this.password && this.password.length > 6) {
+// 				this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+// 				this.password = this.hashPassword(this.password);
+
+// 			}
+// 		}
+
+// 	next();
+// });
 UserSchema.pre('save', function(next) {
 
-		if(!this.reusePassword){
+		if(!this.reusePassword ){
+			if(!this.resetPassword){
 			if (this.password && this.password.length > 6) {
 				this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 				this.password = this.hashPassword(this.password);
 
 			}
+		}else{
+			console.log('Resetting Password');
+			console.log('Current Salt', this.salt);
+			if (this.password && this.password.length > 6) {
+				//this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+				console.log('Password before hash',this.password);
+				this.password = this.hashPassword(this.password);
+				console.log('Password after hash',this.password);
+				console.log('Salt right now', this.salt);
+
+			}
+
 		}
 
+		
+
 	next();
+}
 });
+
 
 /**
  * Create instance method for hashing a password

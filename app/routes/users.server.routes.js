@@ -46,6 +46,11 @@ module.exports = function(app) {
 		.put(users.hasAuthorization(['admin']), users.updateUser2)
 		.get(users.showUser);
 
+	//FIX THIS -- REQUIRES LOGIN
+	app.route('/userspw/:userId/reset')
+		.post(users.hasAuthorization(['admin']), users.resetPassword);
+		
+
 	app.route('/users/edit')
 	.put(users.updateUser2)
 	.get(users.list);

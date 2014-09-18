@@ -682,23 +682,20 @@ doc.on('data', buffers.push.bind(buffers));
 doc.end();
 
 doc.on('end', function(){
-		console.log('Sending Email');
-		//console.log('Res',res);
-		
-	
-	
-
-		buffers = buffers.toString('base64');
-	//.toString('base64');
+		console.log('doc.on end');
 
 
+		fs.readFile(myfileName, function (err, data){
+			console.log('Sending Email');
+			var myPDF = data.toString('base64');
 
+			//console.log('myPDF',myPDF);
 
 
 		var message = {
-	'html': '<p>Centurylink Signed LOAs: ' + res.toString('base64') + '</p>',
+	'html': '<p>Centurylink Signed LOAs:</p>',
 	'text': 'Centurylink Return Email',
-	'subject': 'restoString(base64)',
+	'subject': 'Test 6',
 	'from_email': 'yourrep@centurylink.net',
 	'from_name': 'Using BUffers',
 	'to': [{
@@ -723,9 +720,9 @@ doc.on('end', function(){
 	'signing_domain': null,
 	'return_path_domain': null,
 	'attachments': [{
-		'type': 'application/pdf',
+		'type': 'application/pdf; name=mytestPDF.pdf',
 		'name': 'mytestPDF.pdf',
-		'content': buffers.toString('base64')
+		'content': myPDF
 	}]
 };
 
@@ -741,6 +738,22 @@ mandrill_client.messages.send({'message': message, 'async': async}, function(res
 function(e){
 	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
 });
+
+
+
+
+		});
+		
+		//console.log('Res',res);
+		
+	
+	
+
+		//buffers = buffers.toString('base64');
+	//.toString('base64');
+
+
+
 
 });
 

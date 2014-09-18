@@ -102,12 +102,12 @@
           //Pie Chart of Lead Breakdown by State
     // Upon our promise being fulfiled convert our data and re-rener the chart
       $scope.LeadStateTotals.$promise.then(function(){
-        console.log('like a boss!');
+        //console.log('like a boss!');
         var data = [];
         Object.keys($scope.LeadStateTotals).forEach(function(key) {
           if($scope.LeadStateTotals[key]._id && $scope.LeadStateTotals[key]._id !== 'total') {
             data.push({label: $scope.LeadStateTotals[key]._id, data: $scope.LeadStateTotals[key].total});
-            console.log('Total: ', $scope.LeadStateTotals[key]._id + ' ' + $scope.LeadStateTotals[key].total);
+            //console.log('Total: ', $scope.LeadStateTotals[key]._id + ' ' + $scope.LeadStateTotals[key].total);
           }
 
 
@@ -124,18 +124,18 @@
           //Pie Chart of Lead Breakdown by Current Status
       // Upon our promise being fulfiled convert our data and re-rener the chart
       $scope.LeadTotals.$promise.then(function(){
-        console.log('like a boss!');
+        //console.log('like a boss!');
         var data = [];
         Object.keys($scope.LeadTotals).forEach(function(key) {
           if($scope.LeadTotals[key]._id && $scope.LeadTotals[key]._id !== 'total') {
             data.push({label: $scope.LeadTotals[key]._id, data: $scope.LeadTotals[key].total});
-            console.log('Total: ', $scope.LeadTotals[key]._id + ' ' + $scope.LeadTotals[key].total);
+            //console.log('Total: ', $scope.LeadTotals[key]._id + ' ' + $scope.LeadTotals[key].total);
           }
           if($scope.LeadTotals[key]._id === 'total'){
             //Marin had double == JSLint suggested ===
           //Fill out box of Total Leads
                $scope.myleads = $scope.LeadTotals[key].total;
-               console.log('Chads tingy: ', $scope.LeadTotals[key].total);
+               //console.log('Chads tingy: ', $scope.LeadTotals[key].total);
           }
 
         });
@@ -151,17 +151,17 @@
         $scope.mrcTotal = Leads.getRevenueSold();
 
         $scope.mrcTotal.$promise.then(function(){
-        console.log('Get taht Deal TOtal!');
+        //console.log('Get taht Deal TOtal!');
         var data = [];
         Object.keys($scope.mrcTotal).forEach(function(key) {
           if($scope.mrcTotal[key]._id && $scope.mrcTotal[key]._id !== 'total') {
             data.push({label: $scope.mrcTotal[key]._id, data: $scope.mrcTotal[key].total});
-            //console.log('Total: ', $scope.mrcTotal[key]._id + ' ' + $scope.mrcTotal[key].total);
+            ////console.log('Total: ', $scope.mrcTotal[key]._id + ' ' + $scope.mrcTotal[key].total);
           }
           if($scope.mrcTotal[key]._id === 'total'){
           //Fill out box of Total Leads
                $scope.mrcTotal = $scope.mrcTotal[key].total;
-               //console.log('Chads tingy: ', $scope.mrcTotal[key].total);
+               ////console.log('Chads tingy: ', $scope.mrcTotal[key].total);
           }
 
 
@@ -176,16 +176,16 @@
 
         $scope.mycallDetails.$promise.then(function(results){
           $scope.mycallDetails = 0;
-        console.log('Get call Details %o', results);
+        //console.log('Get call Details %o', results);
         Object.keys(results).forEach(function(key) {
 
-          console.log('Results Key %o', results[key]);
-          console.log(Authentication.user.displayName);
+          //console.log('Results Key %o', results[key]);
+          //console.log(Authentication.user.displayName);
           //Converted == to === JSLint
           if(results[key]._id===Authentication.user.displayName)
           {
             $scope.mycallDetails = results[key].total;
-            console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
+            //console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
 
           }
 
@@ -197,19 +197,19 @@
          $scope.mydeals = Leads.getDealsTotal();
 
         $scope.mydeals.$promise.then(function(){
-        console.log('Get taht Deal TOtal!');
+        //console.log('Get taht Deal TOtal!');
         var data = [];
         Object.keys($scope.mydeals).forEach(function(key) {
           if($scope.mydeals[key]._id && $scope.mydeals[key]._id !== 'total') {
             data.push({label: $scope.mydeals[key]._id, data: $scope.mydeals[key].total});
-            //console.log('Total: ', $scope.mydeals[key]._id + ' ' + $scope.mydeals[key].total);
+            ////console.log('Total: ', $scope.mydeals[key]._id + ' ' + $scope.mydeals[key].total);
           }
           //JSLint convert == to ===
           if($scope.mydeals[key]._id === 'total'){
           //Fill out box of Total Leads
-          console.log('My Scope %o', $scope);
+          //console.log('My Scope %o', $scope);
                $scope.mydeals = $scope.mydeals[key].total;
-               //console.log('Chads tingy: ', $scope.mydeals[key]._id);
+               ////console.log('Chads tingy: ', $scope.mydeals[key]._id);
           }
 
 
@@ -259,13 +259,13 @@
           //Pie Chart of Lead Breakdown by Current Carrier
             // Upon our promise being fulfiled convert our data and re-rener the chart
       $scope.LeadCarrierTotals.$promise.then(function(){
-        console.log('like a boss!');
+        //console.log('like a boss!');
         var data2 = [];
         Object.keys($scope.LeadCarrierTotals).forEach(function(key) {
           if($scope.LeadCarrierTotals[key]._id && $scope.LeadCarrierTotals[key]._id !== 'total') {
             data2.push({label: $scope.LeadCarrierTotals[key]._id, data: $scope.LeadCarrierTotals[key].total});
-            //console.log('Carrier: ', $scope.LeadCarrierTotals[key]._id + ' ' + $scope.LeadCarrierTotals[key].total);
-        //console.log('Getting Carrier Info: ',data2);
+            ////console.log('Carrier: ', $scope.LeadCarrierTotals[key]._id + ' ' + $scope.LeadCarrierTotals[key].total);
+        ////console.log('Getting Carrier Info: ',data2);
         
           }
         });
@@ -288,7 +288,7 @@
 $scope.getLead = function(){
 $scope.myleads = 'working';
 
-  console.log('Myscope',$scope);
+  //console.log('Myscope',$scope);
 };
 
 

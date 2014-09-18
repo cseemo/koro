@@ -17,7 +17,7 @@ exports.create = function(req, res) {
 	campaign.save(function(err) {
 		if (err) {
 			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
+				message: 'error' + err
 			});
 		} else {
 			res.jsonp(campaign);

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('admin').controller('AdminusersController', ['$scope', '$stateParams', 'Users',  '$location', 'Authentication',
-	function($scope, $stateParams, Users, $location, Authentication) {
+angular.module('admin').controller('AdminusersController', ['$scope', '$stateParams', 'Users',  '$location', 'Authentication', '$http',
+	function($scope, $stateParams, Users, $location, Authentication, $http) {
 
 		// Storage for our "switches" role type current condition (true or false)
 		$scope.roles = {};
@@ -27,8 +27,17 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 		};
 
 		$scope.resetPW = function() {
+				console.log('Resetting PW',$scope.userB);
+				var user_id = $scope.userB._id;
+				var mydata = $scope.userB;
 
+				$http.post('userspw/' + user_id + '/reset', mydata).success(function (data, status, headers){
 
+					console.log('Success', data);
+					$location.path('/adminusers');
+				});
+		
+				
 		};
 
 $scope.notify = function() {

@@ -234,6 +234,7 @@ exports.update = function(req, res) {
 exports.changePassword = function(req, res, next) {
 	// Init Variables
 	var passwordDetails = req.body;
+	console.log('Password Details',req.body);
 	var message = null;
 
 	if (req.user) {
@@ -281,6 +282,117 @@ exports.changePassword = function(req, res, next) {
 			message: 'User is not signed in'
 		});
 	}
+};
+
+//Reset Password
+/**
+ * Change Password
+ */
+exports.resetPassword = function(req, res) {
+	// Init Variables
+	console.log('Reset Password');
+	//var passwordDetails = req.body;
+	console.log('Req',req);
+	var message = null;
+
+	User.findById(req.body._id, function(err, user) {
+	
+	if(user){
+		user.resetPassword = true;
+		user.password = 'test1234';
+
+		user.save(function(err) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		}else{
+
+			console.log('looks like the new password is updated',user.password);
+			return res.send(200, 'Yeah baby!!');
+
+}
+
+});
+		
+		
+
+
+
+
+
+}else{
+	return res.send(400, {
+				message: 'DId not find a user to update'
+			});
+}
+	});
+
+	//res.send(200, 'Getting There');
+
+	// user.save(function(err) {
+	// 						if (err) {
+	// 							return res.send(400, {
+	// 								message: getErrorMessage(err)
+	// 							});
+	// 						} else {
+	// 							req.login(user, function(err) {
+	// 								if (err) {
+	// 									res.send(400, err);
+	// 								} else {
+	// 									res.send({
+	// 										message: 'Password changed successfully'
+	// 									});
+	// 								}
+	// 							});
+	// 						}
+	// 					});
+
+	// if (req.user) {
+	// 	User.findById(req.user.id, function(err, user) {
+	// 		if (!err && user) {
+	// 			if (user.authenticate(passwordDetails.currentPassword)) {
+	// 				if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
+	// 					user.password = passwordDetails.newPassword;
+
+	// 					user.save(function(err) {
+	// 						if (err) {
+	// 							return res.send(400, {
+	// 								message: getErrorMessage(err)
+	// 							});
+	// 						} else {
+	// 							req.login(user, function(err) {
+	// 								if (err) {
+	// 									res.send(400, err);
+	// 								} else {
+	// 									res.send({
+	// 										message: 'Password changed successfully'
+	// 									});
+	// 								}
+	// 							});
+	// 						}
+	// 					});
+	// 				} else {
+	// 					res.send(400, {
+	// 						message: 'Passwords do not match'
+	// 					});
+	// 				}
+	// 			} else {
+	// 				res.send(400, {
+	// 					message: 'Current password is incorrect'
+	// 				});
+	// 			}
+	// 		} else {
+	// 			res.send(400, {
+	// 				message: 'User is not found'
+	// 			});
+	// 		}
+	// 	});
+	// } else {
+	// 	res.send(400, {
+	// 		message: 'User is not signed in'
+	// 	});
+	// }
 };
 
 /**

@@ -10,7 +10,16 @@
 				by
 				<span data-ng-bind="campaign.user.displayName"></span>
 			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="campaign.name"></h4>
+            <br>
+            <p>
+            <h4 class="list-group-item-heading pull-right" data-ng-bind="campaign.states"></h4>
+            </p>
+            <br>
+            <p>
+            <h4 class="list-group-item-heading pull-right" data-ng-bind="campaign.carrier"></h4>
+			</p>
+            <h4 class="list-group-item-heading" data-ng-bind="campaign.name"></h4>
+       
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!campaigns.$resolved || campaigns.length">

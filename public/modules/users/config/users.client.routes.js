@@ -32,6 +32,10 @@ angular.module('users').config(['$stateProvider',
 		state('editusers', {
 			url: '/adminusers',
 			templateUrl: 'modules/admin/views/useroverview.client.view.html'
+		}).
+		state('pwreset', {
+			url: 'userspw/:userId/reset',
+			templateUrl: 'modules/admin/views/useroverview.client.view.html'
 		});
 	}
 ]);
