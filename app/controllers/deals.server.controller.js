@@ -652,29 +652,8 @@ exports.makePDF = function(req, res){
 
 doc.pipe( res );
 
-//res.download('out.pdf');
 
 
-    // // Process image
-    // request({
-    //     url: 'http://adsoap.com/images/FCTicket.jpg',
-    //     encoding: null // Prevents Request from converting response to string
-    // }, function(err, response, body) {
-    //     if (err) throw err;
-
-    //     // Inject image
-    //     doc.image(body); // `body` is a Buffer because we told Request
-    //                      // to not make it a string
-
-    //     doc.end(); // Close document and, by extension, response
-    //     return;
-    // });
-
-
-
-// res.setHeader('Content-disposition', 'attachment; filename=test');
-
-// res.end(new Buffer(doc), 'binary');
 
 
 
@@ -683,19 +662,25 @@ doc.end();
 
 doc.on('end', function(){
 		console.log('doc.on end');
+		var test = res.toString('base64');
 
+		//var content = fs.readFileSync(myfileName, 'base64');
 
-		fs.readFile(myfileName, function (err, data){
-			console.log('Sending Email');
-			var myPDF = data.toString('base64');
+		// function (err, data){
+		// 	console.log('Sending Email');
+		// 	var myPDF = data.toString('base64');
 
-			//console.log('myPDF',myPDF);
+		// 	// res.setHeader('Content-disposition', 'attachment; filename=test');
+
+		// //var test = new Buffer(data, 'base64');
+		// var test = data.toString('base64');
+
 
 
 		var message = {
 	'html': '<p>Centurylink Signed LOAs:</p>',
 	'text': 'Centurylink Return Email',
-	'subject': 'Test 6',
+	'subject': 'Send Res toString',
 	'from_email': 'yourrep@centurylink.net',
 	'from_name': 'Using BUffers',
 	'to': [{
@@ -722,7 +707,7 @@ doc.on('end', function(){
 	'attachments': [{
 		'type': 'application/pdf; name=mytestPDF.pdf',
 		'name': 'mytestPDF.pdf',
-		'content': myPDF
+		'content': test
 	}]
 };
 
@@ -755,7 +740,7 @@ function(e){
 
 
 
-});
+// });
 
 //var myPDF 
 // stream.on('finish', function(){

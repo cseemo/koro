@@ -357,10 +357,21 @@
               </div>
                    <div class="clearfix"></div> 
         <center><br><br>
-                     <input type="button" value="Hide Company Info" ng-click="coInfo = 'false'" class="btn text-center submit-button"  />
+         <span data-ng-show="sending"><h4>
+             <i class="fa fa-circle-o-notch fa-spin fa-lg" style="vertical-align: middle;"></i>   Sending Email to {{lead.email}} </h4>
+             </span>
+
+             <span data-ng-show="results"><h3>{{myresults}}</h3>
+             </span>
+
+             <span data-ng-show="emailbuttons">
+                     <input type="button" value="Hide Company Info" ng-click="coInfo = 'false'" class="btn text-center submit-button" />
                 
 
               <input type="submit" id="price_it" value="Email Quote" class="btn text-center submit-button" ng-click="makeQuote()">
+              </span>
+
+              
 
 
                 </center>

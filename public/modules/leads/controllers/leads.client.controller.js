@@ -2,10 +2,12 @@
 
 
 // Leads controller
-angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals',
-	function($http, $scope, $stateParams, $location, Authentication, Leads, Deals ) {
+angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$timeout',
+	function($http, $scope, $stateParams, $location, Authentication, Leads, Deals, $timeout) {
 		$scope.authentication = Authentication;
-
+		$scope.sending = false;
+		$scope.emailbuttons = true;
+		$scope.results = false;
 		if( ! Authentication.user ) $location.path('/signin');
 
 		$scope.convertToDeal = function(){
@@ -385,10 +387,13 @@ $scope.dialLead = function() {
 
 
 $scope.makeQuote = function(){
+	$scope.emailbuttons = false;
+	$scope.sending = true;
 	// window.alert("MakingQuote");
 	//console.log('Test');
 	console.log('Myform: %o', this.myForm);
 var lead = $scope.lead;
+	console.log('Lead Info %o', lead);
 
 this.term = this.myForm.term.$viewValue;
 this.dsl = this.myForm.dsl_speed.$viewValue;
@@ -416,6 +421,10 @@ console.log('dmname: '+this.dmname);
 			lead.waivenrcs =this.nrcs.value;
 			lead.winbackcredits = this.credits.name;
 			lead.staticip =this.iptype.name;
+			// lead.address =this.address.value;
+			// lead.city =this.city.value;
+			// lead.state =this.state.value;
+			// lead.zipcode =this.zipcode.value;
 			
 
 			lead.$update(function() {
@@ -443,33 +452,47 @@ console.log('dmname: '+this.dmname);
 			nrc: this.nrcs.value,
 			credits: this.credits.name,
 			staticIP: this.iptype.name,
-			sendloas: this.sendloas.value
+			sendloas: this.sendloas.value,
+			address: lead.address,
+			city: lead.city,
+			state: lead.state,
+			zip: lead.zipcode
 		},
 		headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
-	})
-.success(function(data, status) {
+			})
+		.success(function(data, status) {
+		$scope.sending = false;
+		$scope.results = true;
+		$scope.myresults = data;
 		if(status === 200) {
 			//$scope.currentPrice = data.price;
 //console.log('Data Returned '+data);
 			//$scope.currentPrice = data.price;
 			//$scope.currentNRR = data.nrr;
-			window.alert(data);
+			//window.alert(data);
 
-
+			console.log('Got a 200 result sending the email');
 //Get Quote Details and Save to Lead Object
+			//window.alert(data);
+
+			}
+			$timeout(function(){
+			$scope.emailbuttons = true;
+			$scope.results = false;
+					console.log('buttons back');
+
+			}, 2500);
+					
 
 
-}
+				})
+			.error(function(data){
+				console.log('OOps...'+data);
+			});
 
+				
 
-	})
-.error(function(data){
-	console.log('OOps...'+data);
-});
-
-	
-
-};
+			};
 
 
 		// Remove existing Lead
