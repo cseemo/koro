@@ -7,7 +7,9 @@ angular.module('deals').controller('DealsController', ['$scope', '$stateParams',
 		
 $scope.step = 1;
 //$scope.myiframe = 'blob:http%3A//localhost%3A3000/d43e67f4-bab2-4778-b97c-6385c4b158a8';
-
+$scope.pending=false;
+$scope.sending=false;
+$scope.finished=false;
 $scope.nextStep = function(){
 var current = $scope.step-0+1;
 console.log('Current: ',current);
@@ -30,8 +32,8 @@ console.log('Current Step: ',$scope.step);
 		$scope.spinny = true;
 		var deal = $scope.deal;
 		console.log('My Deal: %o',deal);
-		deal.stage=$scope.myDealstages[1].name;
-		deal.stagenum=$scope.myDealstages[1].value;
+		deal.stage=$scope.myDealstages[2].name;
+		deal.stagenum=$scope.myDealstages[3].value;
 		var dealId = $scope.deal._id;
 		var signDate = new Date();
 		var month = signDate.getMonth();
@@ -126,13 +128,14 @@ $scope.buildDTW = function(){
 
 $scope.myDealstages = [
 {name: 'Pending Rep Review', value: '0', number: 0},
-{name: 'LOAs Signed', value: '5', number: 1},
-{name: 'Pending Review', value: '20', number: 2},
-{name: 'QC Approved', value: '40', number: 3},
-{name: 'Pending Order Number', value: '55', number: 4},
-{name: 'Pending Install', value: '70', number: 5},
-{name: 'Installed', value: '90', number: 6},
-{name: 'Paid', value: '100', number: 7},
+{name: 'LOAs Out for Signature', value: '5', number: 1},
+{name: 'LOAs Signed', value: '15', number: 2},
+{name: 'Pending Review', value: '20', number: 3},
+{name: 'QC Approved', value: '40', number: 4},
+{name: 'Pending Order Number', value: '55', number: 5},
+{name: 'Pending Install', value: '70', number: 6},
+{name: 'Installed', value: '90', number: 7},
+{name: 'Paid', value: '100', number: 8},
 
 
 ];
@@ -325,8 +328,8 @@ return $scope.deal.dslspeed;
 		//Reject Order
 		$scope.rejectDeal = function(){
 				var deal = $scope.deal;
-			deal.stage=$scope.myDealstages[2].name;
-			deal.stagenum=$scope.myDealstages[2].value;
+			deal.stage=$scope.myDealstages[0].name;
+			deal.stagenum=$scope.myDealstages[0].value;
 
 		};
 
@@ -335,10 +338,10 @@ return $scope.deal.dslspeed;
 
 			console.log('Find USer Info for PM Name %o', Authentication.user);
 			var deal = $scope.deal;
-			deal.stage=$scope.myDealstages[2].name;
-			deal.stagenum=$scope.myDealstages[2].value;
+			deal.stage=$scope.myDealstages[3].name;
+			deal.stagenum=$scope.myDealstages[3].value;
 			deal.projectmanager = Authentication.user.displayName;
-			$scope.mystage = $scope.myDealstages[2];
+			$scope.mystage = $scope.myDealstages[3];
 			
 			console.log('Dealcontroller Deal: %o',deal);
 			
@@ -354,11 +357,19 @@ return $scope.deal.dslspeed;
 
 		//Submit Order Packet
 			$scope.submitOrder = function() {
-			var deal = $scope.deal ;
+			$scope.pending=true;
+
+			
+			$scope.step=5;
+			var deal = $scope.deal;
+
 			console.log('Look for deal.stage and deal.stagenum %o', $scope);
 			if($scope.mystage){
 			deal.stage=$scope.mystage.name;
 			deal.stagenum=$scope.mystage.value;
+			}else{
+			deal.stage=$scope.myDealstages[1].name;
+			deal.stagenum=$scope.myDealstages[1].value;
 			}
 			console.log('Dealcontroller Deal: %o',deal);
 			deal.$update(function() {
@@ -367,6 +378,9 @@ return $scope.deal.dslspeed;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			}).then(function() {
+				$scope.pending=false;
+
+				$scope.sending=true;
 
 				$http({
 		method: 'post',
@@ -389,13 +403,15 @@ return $scope.deal.dslspeed;
 		headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 	})
 .success(function(data, status) {
-	$location.path('deals/' + deal._id);
+	//$location.path('deals/' + deal._id);
 		if(status === 200) {
 			//$scope.currentPrice = data.price;
 //console.log('Data Returned '+data);
 			//$scope.currentPrice = data.price;
 			//$scope.currentNRR = data.nrr;
-			window.alert(data);
+			$scope.sending = false;
+			$scope.finished = true;
+			$scope.myresponse = data;
 
 
 

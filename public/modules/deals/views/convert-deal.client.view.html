@@ -123,8 +123,29 @@
 
                     </div></div></div></div>
 
-    
-    
+     <div ng-switch-when="5">
+     <div class="col-lg-8 col-lg-offset-2 col-md-6">
+
+     <div class="panel panel-primary">
+        <div class="panel panel-heading">
+           Order Submitted
+            </div>
+            <div class="panel-body" >
+            <center>
+            <span data-ng-show="pending"><h2>
+             <i class="fa fa-cog fa-spin fa-3x"></i>Converting Order<i class="fa fa-cog fa-spin fa-3x"></i></h2>
+             </span>
+             <span data-ng-show="sending"><h2>
+             <i class="fa fa-cog fa-spin fa-3x"></i>Sending Order Packet to Customer<i class="fa fa-cog fa-spin fa-3x"></i></h2>
+             </span>
+              <span data-ng-show="finished">
+             <h2>Order Packet Sent</h2>
+             <h4>{{myresponse}}</h4>
+             </span>
+
+             </center>
+
+            </div></div></div></div>
 
 
   <div ng-switch-when="2">
@@ -140,6 +161,7 @@
             </p>
              <p class="centered"><b>These fields are editable, please make the proper corrections here.</b>
             </p>
+
             </center>
             <br>
            
@@ -286,7 +308,7 @@
         </div>
         </div></div>
 
-          <div class="col-lg-8 col-lg-offset-2 col-md-6">
+          <div class="col-lg-8 col-lg-offset-2 col-md-6" data-ng-hide="step===5">
 
              <div class="panel panel-primary">
                 <div class="panel panel-heading">
