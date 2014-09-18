@@ -110,7 +110,7 @@ UserSchema.pre('save', function(next) {
 			if (this.password && this.password.length > 6) {
 				this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 				this.password = this.hashPassword(this.password);
-
+				next();
 			}
 		}else{
 			console.log('Resetting Password');
@@ -121,8 +121,9 @@ UserSchema.pre('save', function(next) {
 				this.password = this.hashPassword(this.password);
 				console.log('Password after hash',this.password);
 				console.log('Salt right now', this.salt);
-
+				next();
 			}
+			next();
 
 		}
 
@@ -130,6 +131,7 @@ UserSchema.pre('save', function(next) {
 
 	next();
 }
+next();
 });
 
 
