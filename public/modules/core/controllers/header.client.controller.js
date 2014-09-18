@@ -6,6 +6,7 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
 
+		$scope.numNotifications = 5;
 		//if( ! Authentication.user ) $location.path('/signin');
 		if( Authentication.user ) {
 			console.log('Logged In ');

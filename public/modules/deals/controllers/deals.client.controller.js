@@ -63,6 +63,8 @@ console.log('Current Step: ',$scope.step);
 
 			    }).then(function(){
 			    	$scope.spinny = false;
+			    	console.log(deal.companyname+' signed their LOAS');
+			    	$scope.authentication.user.notifications.push({note: deal.companyname+' signed their LOAS'});
 
 			    	console.log('Ready to send Signed LOAs -- just type the damn code!');
 

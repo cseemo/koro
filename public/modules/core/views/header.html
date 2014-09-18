@@ -65,14 +65,14 @@
             <li class="dropdown">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-bell-o"></i>
-                    <span class="badge badge-info">3</span>
+                    <span class="badge badge-info">{{numNotifications}}</span>
                 </a>
                 <div class="dropdown-menu with-arrow panel panel-dark">
                     <div class="panel-heading">
-                        You have 3 notifications.
+                        You have {{numNotifications}} notifications.
                     </div>
                     <ul class="list-group">
-                        <li class="list-group-item">
+                        <!-- <li class="list-group-item">
                             <a href="javascript:;" class="media">
                                 <span class="pull-left media-icon">
                                     <span class="btn-icon-lined btn-icon-round btn-success"><i class="fa fa-bell-o"></i></span>
@@ -82,29 +82,18 @@
                                     <span class="text-muted block">2min ago</span>
                                 </div>
                             </a>
-                        </li>
-                        <li class="list-group-item">
+                        </li> -->
+                        <li class="list-group-item" data-ng-repeat="notification in authentication.user.notifications">
                             <a href="javascript:;" class="media">
                                 <span class="pull-left media-icon">
                                     <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-bell-o"></i></span>
                                 </span>
                                 <div class="media-body">
-                                    <span class="block">Change your password</span>
-                                    <span class="text-muted">3 hours ago</span>
+                                    <span class="block">{{notification.note}}</span>
+                                    <span class="text-muted">{{notification.date}}</span>
                                 </div>
                             </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="javascript:;" class="media">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-danger"><i class="fa fa-bell-o"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">New feature added</span>
-                                    <span class="text-muted">9 hours ago</span>
-                                </div>
-                            </a>
-                        </li>                       
+                        </li>                      
                     </ul>
                     <div class="panel-footer">
                         <a href="#/mail/inbox">Show all notifications.</a>

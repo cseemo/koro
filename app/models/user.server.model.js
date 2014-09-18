@@ -85,7 +85,17 @@ var UserSchema = new Schema({
 	created: {
 		type: Date,
 		default: Date.now
+	},
+	notifications: [{
+
+		note: String,
+		default: ''
+	},
+	{
+		date: Date,
+		default: Date.now
 	}
+	]
 });
 
 /**
