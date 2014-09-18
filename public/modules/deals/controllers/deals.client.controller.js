@@ -4,7 +4,7 @@
 angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter',
 	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter) {
 		$scope.authentication = Authentication;
-
+		
 $scope.step = 1;
 //$scope.myiframe = 'blob:http%3A//localhost%3A3000/d43e67f4-bab2-4778-b97c-6385c4b158a8';
 
@@ -23,11 +23,12 @@ console.log('Current Step: ',$scope.step);
 };
 
 
+
 	$scope.makePDF = function(){
 		var deal = $scope.deal;
 		console.log('My Deal: %o',deal);
-		deal.stage=$scope.myDealstages[8].name;
-		deal.stagenum=$scope.myDealstages[8].value;
+		deal.stage=$scope.myDealstages[1].name;
+		deal.stagenum=$scope.myDealstages[1].value;
 		var dealId = $scope.deal._id;
 		var signDate = new Date();
 		var month = signDate.getMonth();
@@ -441,6 +442,7 @@ return $scope.deal.dslspeed;
 			});
 			console.log('Deal Info: %o', $scope.deal);
 			$scope.mystage = $scope.deal.stage;
+
 			
 		};
 	}

@@ -1,8 +1,10 @@
 <section data-ng-controller="DealsController" data-ng-init="findOne()">
 <div class="page-header">
 
-
+	<form name="myform">
 	<div class="row">
+
+
 		<div class="col-lg-10 col-lg-offset-1 col-md-6">
 	 		<div class="panel panel-primary">
        			<div class="panel-body">
@@ -10,6 +12,8 @@
 			       <h2>Centurylink Online Order Overview</h2>
 			       <h4>This tool willl allow you to quickly fill out the appropriate forms to have your telephone numbers switched from your current provider to Centurylink.</h4>
 
+			<div ng-switch="step">
+     			<div ng-switch-when="1">
        				<div class="col-lg-10 col-lg-offset-1 col-md-6">
 	 					<div class="panel panel-primary">
        						<div class="panel-body">
@@ -31,23 +35,45 @@
 				                        <input type="text" data-ng-model="deal.contactname" class="form-control pull-right" style="width: 50%" >
 				                    </div>
 
-				                    <!-- <div class="form-group">
+				                    <div class="form-group">
 				                    	<label class="form-label" style="font-size: 24px;" for="contactname">Your Email Address</label>
-				                        <input type="text" data-ng-model="deal.contactemail" class="form-control pull-right" style="width: 50%" >
-				                    </div> -->
+				                        <input type="email" data-ng-model="deal.contactemail" name="contactemail" class="form-control pull-right" style="width: 50%" data-ng-disabled="true" >
+				                    </div>
 
 				                    <div class="form-group">
 				                    	<label class="form-label" style="font-size: 24px;" for="contactname">Your Title</label>
 				                        <input type="text" data-ng-model="deal.contacttitle" class="form-control pull-right" style="width: 50%" >
 				                    </div>
-				                    <button class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Next Step</button>
+				                    <button class="btn btn-w-md btn-gap btn-info" data-ng-click="nextStep()">Next Step</button>
 				                    <button class="btn btn-w-md btn-gap btn-info" data-ng-click="makePDF()">Sign PDF</button>
 
 				                </div>
        						</div>
        					</div>	
        				</div>
+       			</div>
+ 
+			     <div ng-switch-when="2">
+					<div class="col-lg-10 col-lg-offset-1 col-md-6">
+				 		<div class="panel panel-primary">
+			       			<div class="panel-body">
 
+			       			<h2>Telephone Line Details</h2>
+
+             
+             <div data-ng-repeat="line in deal.lineDetails" >
+             Line #{{$index+1}}<br/>
+              <label class="form-label" style="font-size: 18px;">Telephone Number</label>
+              <input ng-model="line.number" type="text" style="width: 50%;" class="form-control text-center pull-right" />
+              <br/>
+              </div>
+             
+
+			       			</div>
+			       		</div>
+			       	</div>
+			     </div>
+</form>
 
 
        				</center>
