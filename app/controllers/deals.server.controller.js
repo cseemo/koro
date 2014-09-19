@@ -660,74 +660,74 @@ doc.pipe( res );
 doc.on('data', buffers.push.bind(buffers));
 doc.end();
 
-doc.on('end', function(){
-		console.log('doc.on end');
-		var test = res.toString('base64');
+// doc.on('end', function(){
+// 		console.log('doc.on end');
+// 		var test = res.toString('base64');
 
-		//var content = fs.readFileSync(myfileName, 'base64');
+// 		//var content = fs.readFileSync(myfileName, 'base64');
 
-		// function (err, data){
-		// 	console.log('Sending Email');
-		// 	var myPDF = data.toString('base64');
+// 		// function (err, data){
+// 		// 	console.log('Sending Email');
+// 		// 	var myPDF = data.toString('base64');
 
-		// 	// res.setHeader('Content-disposition', 'attachment; filename=test');
+// 		// 	// res.setHeader('Content-disposition', 'attachment; filename=test');
 
-		// //var test = new Buffer(data, 'base64');
-		// var test = data.toString('base64');
-
-
-
-		var message = {
-	'html': '<p>Centurylink Signed LOAs:</p>',
-	'text': 'Centurylink Return Email',
-	'subject': 'Send Res toString',
-	'from_email': 'yourrep@centurylink.net',
-	'from_name': 'Using BUffers',
-	'to': [{
-		'email': req.deal.contactemail,
-		'name': req.deal.contactname,
-			'type': 'to'
-	}],
-	'headers': {
-		'Reply-To': 'cseemo@gmail.com'
-	},
-	'important': false,
-	'track_opens': null,
-	'track_clicks': null,
-	'auto_text': null,
-	'auto_html': null,
-	'inline_css': null,
-	'url_strip_qs': null,
-	'preserver_recipients': null,
-	'view_content_link': null,
-	'bcc_address': 'fivecsconsulting@gmail.com',
-	'tracking_domain': null,
-	'signing_domain': null,
-	'return_path_domain': null,
-	'attachments': [{
-		'type': 'application/pdf; name=mytestPDF.pdf',
-		'name': 'mytestPDF.pdf',
-		'content': test
-	}]
-};
+// 		// //var test = new Buffer(data, 'base64');
+// 		// var test = data.toString('base64');
 
 
 
-
-
-var async = false;
-
-mandrill_client.messages.send({'message': message, 'async': async}, function(result){
-	console.log('Results from Mandrill', result);
-},
-function(e){
-	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-});
+// 		var message = {
+// 	'html': '<p>Centurylink Signed LOAs:</p>',
+// 	'text': 'Centurylink Return Email',
+// 	'subject': 'Send Res toString',
+// 	'from_email': 'yourrep@centurylink.net',
+// 	'from_name': 'Using BUffers',
+// 	'to': [{
+// 		'email': req.deal.contactemail,
+// 		'name': req.deal.contactname,
+// 			'type': 'to'
+// 	}],
+// 	'headers': {
+// 		'Reply-To': 'cseemo@gmail.com'
+// 	},
+// 	'important': false,
+// 	'track_opens': null,
+// 	'track_clicks': null,
+// 	'auto_text': null,
+// 	'auto_html': null,
+// 	'inline_css': null,
+// 	'url_strip_qs': null,
+// 	'preserver_recipients': null,
+// 	'view_content_link': null,
+// 	'bcc_address': 'fivecsconsulting@gmail.com',
+// 	'tracking_domain': null,
+// 	'signing_domain': null,
+// 	'return_path_domain': null,
+// 	'attachments': [{
+// 		'type': 'application/pdf; name=mytestPDF.pdf',
+// 		'name': 'mytestPDF.pdf',
+// 		'content': test
+// 	}]
+// };
 
 
 
 
-		});
+
+// var async = false;
+
+// mandrill_client.messages.send({'message': message, 'async': async}, function(result){
+// 	console.log('Results from Mandrill', result);
+// },
+// function(e){
+// 	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+// });
+
+
+
+
+		// });
 		
 		//console.log('Res',res);
 		
