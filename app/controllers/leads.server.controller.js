@@ -717,7 +717,7 @@ exports.getLeadsByStatus = function(req, res) {
 
 
 //Get Deals
-exports.getDEALS = function(req, res) { Deal.find().where({assignedRep: req.user.displayName}).sort('stagenum').limit(50).exec(function(err, deals) {
+exports.getDEALS = function(req, res) { Deal.find().where({assignedRep: req.user.displayName}).sort('-updated').limit(50).exec(function(err, deals) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)

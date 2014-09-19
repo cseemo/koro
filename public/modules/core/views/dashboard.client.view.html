@@ -189,7 +189,7 @@
                     <th>Status</th>
                     <th>Project Manager</th>
                     <th>Progress</th>
-                    <th>Converted</th>
+                    <th>Last Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -203,7 +203,7 @@
                     <td>{{deal.projectmanager}}</td>
                     <td><progressbar class="progressbar-xs no-margin" value="deal.stagenum" type="success"></progressbar></td>
 
-                    <td>{{deal.converted | date:'medium'}}</td>
+                    <td>{{deal.updated | date:'medium'}}</td>
                     <td></td>
                     </a>
                 </tr>

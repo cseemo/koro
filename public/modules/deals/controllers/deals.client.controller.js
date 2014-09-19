@@ -31,6 +31,7 @@ console.log('Current Step: ',$scope.step);
 		$scope.step = 3;
 		$scope.spinny = true;
 		var deal = $scope.deal;
+		deal.updated = Date.now();
 		console.log('My Deal: %o',deal);
 		deal.stage=$scope.myDealstages[2].name;
 		deal.stagenum=$scope.myDealstages[3].value;
@@ -321,6 +322,7 @@ return $scope.deal.dslspeed;
 		//ASSIGN Centurylink Orer Number and update DEAL
 		$scope.assignOrderNumber = function() {
 			var deal = $scope.deal;
+			deal.updated = Date.now();
 			deal.stage=$scope.myDealstages[5].name;
 			deal.stagenum=$scope.myDealstages[5].value;
 
@@ -330,6 +332,7 @@ return $scope.deal.dslspeed;
 		//Reject Order
 		$scope.rejectDeal = function(){
 				var deal = $scope.deal;
+				deal.updated = Date.now();
 			deal.stage=$scope.myDealstages[0].name;
 			deal.stagenum=$scope.myDealstages[0].value;
 
@@ -340,6 +343,7 @@ return $scope.deal.dslspeed;
 
 			console.log('Find USer Info for PM Name %o', Authentication.user);
 			var deal = $scope.deal;
+			deal.updated = Date.now();
 			deal.stage=$scope.myDealstages[3].name;
 			deal.stagenum=$scope.myDealstages[3].value;
 			deal.projectmanager = Authentication.user.displayName;
@@ -444,6 +448,7 @@ return $scope.deal.dslspeed;
 		// Update existing Deal
 			$scope.update = function() {
 			var deal = $scope.deal ;
+			deal.updated = Date.now();
 			console.log('Look for deal.stage and deal.stagenum %o', $scope);
 			if($scope.mystage){
 			deal.stage=$scope.mystage.name;

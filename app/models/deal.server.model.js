@@ -254,6 +254,10 @@ var DealSchema = new Schema({
 	billingzipcode: {
 		type: String,
 		default: ''
+	},
+	updated: {
+		type: Date,
+		
 	}
 
 	});

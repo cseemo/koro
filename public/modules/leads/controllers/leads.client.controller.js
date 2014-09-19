@@ -60,6 +60,7 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 					winbackcredits:	winbackcredits,
 					staticip:		staticip,
 					converted:		converted,
+					updated: 		converted,
 					mrc: 			mrc,
 					nrc:            nrc, 
 				});
