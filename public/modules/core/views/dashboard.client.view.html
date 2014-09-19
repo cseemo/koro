@@ -198,8 +198,10 @@
                 
                     <td><a data-ng-href="#!/deals/{{deal._id}}/edit">{{deal.companyname}}</a></td>
                     <td>{{deal.telephone}}</td>
-                    <td data-ng-hide="deal.stagenum!=0"><span class="label label-danger">{{deal.stage}}</span></td>
-                    <td data-ng-show="deal.stagenum!=0"><span class="label label-primary">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum==0"><span class="label label-danger">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum==5"><span class="label label-warning">{{deal.stage}} </span></td>
+                    <td data-ng-show="deal.stagenum > 5 && deal.stagenum < 56"><span class="label label-primary">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum > 56"><span class="label label-info">{{deal.stage}}</span></td>
                     <td>{{deal.projectmanager}}</td>
                     <td><progressbar class="progressbar-xs no-margin" value="deal.stagenum" type="success"></progressbar></td>
 

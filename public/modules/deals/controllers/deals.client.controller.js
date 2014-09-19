@@ -299,8 +299,8 @@ return $scope.deal.dslspeed;
 			var deal = $scope.deal;
 			deal.stage=$scope.myDealstages[6].name;
 			deal.stagenum=$scope.myDealstages[6].value;
-
-
+			deal.updated = Date.now();
+			
 		};
 
 		//resubmit order after Rep Review
@@ -308,7 +308,7 @@ return $scope.deal.dslspeed;
 			var deal = $scope.deal;
 			deal.stage=$scope.myDealstages[4].name;
 			deal.stagenum=$scope.myDealstages[4].value;
-
+			deal.updated = Date.now();
 
 		};
 
@@ -316,7 +316,7 @@ return $scope.deal.dslspeed;
 			var deal = $scope.deal;
 			deal.stage=$scope.myDealstages[4].name;
 			deal.stagenum=$scope.myDealstages[4].value;
-
+			deal.updated = Date.now();
 
 		};
 		//ASSIGN Centurylink Orer Number and update DEAL
@@ -364,7 +364,7 @@ return $scope.deal.dslspeed;
 		//Submit Order Packet
 			$scope.submitOrder = function() {
 			$scope.pending=true;
-
+			deal.updated = Date.now();
 			
 			$scope.step=5;
 			var deal = $scope.deal;
