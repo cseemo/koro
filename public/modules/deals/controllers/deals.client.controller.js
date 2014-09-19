@@ -384,6 +384,8 @@ return $scope.deal.dslspeed;
 
 				$scope.sending=true;
 
+				console.log('Line Numbers', deal.lineDetails[0].number);
+
 				$http({
 		method: 'post',
 		url: 'http://adsoap.com/nodeEMAILPDF',
@@ -400,7 +402,13 @@ return $scope.deal.dslspeed;
 			nrc: deal.waivenrcs,
 			credits: deal.winbackcredits,
 			staticIP: deal.staticIP,
-			sendloas: 1
+			sendloas: 1,
+			address: deal.address,
+			city: deal.city,
+			state: deal.state,
+			zip: deal.zipcode,
+			numbers: deal.lineDetails[0].number,
+			adl_ani: deal.lineDetails
 		},
 		headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 	})

@@ -410,7 +410,7 @@ this.coname = this.myForm.companyname.$viewValue;
 this.dmname = this.myForm.dmname.$viewValue;
 this.tel = this.myForm.telephone.$viewValue;
 this.email = this.myForm.email.$viewValue;
-this.sendloas = this.myForm.sendloas.$viewValue;
+//this.sendloas = this.myForm.sendloas.$viewValue;
 console.log('coname: '+this.coname);
 console.log('dmname: '+this.dmname);
 
@@ -452,7 +452,7 @@ console.log('dmname: '+this.dmname);
 			nrc: this.nrcs.value,
 			credits: this.credits.name,
 			staticIP: this.iptype.name,
-			sendloas: this.sendloas.value,
+			sendloas: 0,
 			address: lead.address,
 			city: lead.city,
 			state: lead.state,
