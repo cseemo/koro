@@ -697,9 +697,9 @@ doc.on('end', function(){
 		var message = {
 	'html': '<p>Centurylink Signed LOAs:</p>',
 	'text': 'Centurylink Return Email',
-	'subject': 'On END -- content chunks to String base64',
+	'subject': 'Centurylink Signed LAOs',
 	'from_email': 'yourrep@centurylink.net',
-	'from_name': 'Using BUffers',
+	'from_name': 'Signed LOA on Behalf of Centurylink',
 	'to': [{
 		'email': req.deal.contactemail,
 		'name': req.deal.contactname,

@@ -25,18 +25,11 @@ $scope.step = current;
 console.log('Current Step: ',$scope.step);
 };
 
-
-
-
-
 	$scope.makePDF = function(){
 
 		$scope.step = 3;
 		$scope.spinny = true;
 		var deal = $scope.deal;
-
-
-
 		deal.updated = Date.now();
 		console.log('My Deal: %o',deal);
 		deal.stage=$scope.myDealstages[2].name;
@@ -83,7 +76,7 @@ console.log('Current Step: ',$scope.step);
 
 			    });
 	
-	});
+		});
 
 
 		// .success(function(data, status) {
