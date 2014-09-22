@@ -258,6 +258,10 @@ var DealSchema = new Schema({
 	updated: {
 		type: Date,
 		
+	},
+	user: {
+		type: Schema.ObjectId,
+		ref: 'User'
 	}
 
 	});

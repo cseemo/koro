@@ -28,7 +28,7 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 				var nrc = this.currentNRR;
 			
 			console.log('DSL Speed: ', dslspeed);
-		
+			console.log('Lead User %o', lead.user);
 			
 			lead.$update(function(response) {
 				console.log('Lead Info To Populate %o',lead);
@@ -51,7 +51,6 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 					currentCarrier: lead.currentCarrier,
 					created:		lead.created,
 					assignedRep:	lead.assignedRep,
-					user:			lead.user,
 					term:			term,
 					dslspeed:		dslspeed,
 					adl:			adl,
@@ -62,7 +61,7 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 					converted:		converted,
 					updated: 		converted,
 					mrc: 			mrc,
-					nrc:            nrc, 
+					nrc:            nrc
 				});
 
 				// Redirect after save

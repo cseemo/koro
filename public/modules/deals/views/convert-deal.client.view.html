@@ -233,6 +233,7 @@
     </div></div></div>
     </div>
 
+
     <div ng-switch-when="4">
      <div class="col-lg-8 col-lg-offset-2 col-md-6">
 
@@ -245,7 +246,7 @@
             <h2>Telephone Line Details</h2>
 
              <div class="field" ng-init="buildDTW()" >
-             <div data-ng-repeat="line in deal.lineDetails" class="panel panel-info">
+             <div data-ng-repeat="line in deal.lineDetails track by $index" class="panel panel-info">
              Line #{{$index+1}}<br/>
               <label class="form-label" style="font-size: 18px;">Telephone Number</label>
               <input ng-model="line.number" type="text" style="width: 50%;" class="form-control text-center pull-right" />
@@ -302,6 +303,12 @@
                              </center>
                         </div>
 
+                           <div class="panel panel-primary">
+                <div class="panel panel-heading">
+    <object data="{{mycontent}}" type="application/pdf" style="width:850px;height:1100px;"></object>
+
+    </div>  
+        </div>
 
             </div>
         </div>
@@ -330,7 +337,7 @@
 
 
                 <div class="form-group">
-                    <input type="submit" value="Update" class="btn btn-default">
+                    <input type="btn-primary" data-ng-click="update()" value="Update" class="btn btn-default">
                 </div>
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>

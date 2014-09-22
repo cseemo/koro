@@ -431,6 +431,7 @@ exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exe
 exports.createDeal = function(req, res) {
 	var deal = new Deal(req.body);
 	console.log('CreateDeal: %o', deal);
+	console.log('User Req', req.user);
 	deal.user = req.user;
 
 	deal.save(function(err, callback) {

@@ -1,8 +1,8 @@
 'use strict';
 
 // Deals controller
-angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter',
-	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter) {
+angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce',
+	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $sce) {
 		$scope.authentication = Authentication;
 		
 $scope.step = 1;
@@ -16,6 +16,7 @@ console.log('Current: ',current);
 $scope.step = current;
 console.log('Current Step: ',$scope.step);
 };
+$scope.mycontent = {};
 
 $scope.lastStep = function(){
 var current = $scope.step-1;
@@ -26,11 +27,16 @@ console.log('Current Step: ',$scope.step);
 
 
 
+
+
 	$scope.makePDF = function(){
 
 		$scope.step = 3;
 		$scope.spinny = true;
 		var deal = $scope.deal;
+
+
+
 		deal.updated = Date.now();
 		console.log('My Deal: %o',deal);
 		deal.stage=$scope.myDealstages[2].name;
@@ -45,7 +51,9 @@ console.log('Current Step: ',$scope.step);
 		var testdate = $filter('date')(signDate, 'MM/dd/yyyy');
 		console.log(testdate);
 		deal.signDate = testdate;
-
+		console.log('Deal.user %o',deal.user);
+		//deal.user.notifications.push({note: deal.companyname+' signed their LOAS'});
+			    	
 		deal.$update(function(data) {
 			console.log('Deal Updating',data);
 		
@@ -56,16 +64,20 @@ console.log('Current Step: ',$scope.step);
 				console.log('Deal Updated - SUCCESS: ',data);
 				//console.log('Data.Response: %o',data._id);
 					 $http({method: 'GET', url: '/pdf/'+dealId, responseType: 'arraybuffer'}).
-    					success(function(data, status, headers, config) {
+    					success(function(response) {
     
-     					var file = new Blob([data], {type: 'application/pdf'});
+     					var file = new Blob([response], {type: 'application/pdf'});
      					var fileURL = URL.createObjectURL(file);
-     					window.open(fileURL);
+     					//window.open(fileURL);
+
+
+     					$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+     					//window.open(fileURL);
 
 			    }).then(function(){
 			    	$scope.spinny = false;
 			    	console.log(deal.companyname+' signed their LOAS');
-			    	$scope.authentication.user.notifications.push({note: deal.companyname+' signed their LOAS'});
+
 
 			    	console.log('Ready to send Signed LOAs -- just type the damn code!');
 
@@ -108,32 +120,36 @@ console.log('Current Step: ',$scope.step);
 
 		};
 
-$scope.buildDTW = function(){
-	console.log('got here %',$scope);
-	console.log('Total Lines: ', $scope.deal);
-	$scope.deal.$promise.then(function(){
-		//$scope.deal.adl;
-	var totlines = parseInt($scope.deal.adl)+1;
-	console.log('Total Lines: %o', totlines);
-	if(totlines<2){
-		$scope.deal.lineDetails.push({});
-	}else{
-		for(var i = 0; i < totlines ; i++) {
-		$scope.deal.lineDetails.push({});
-	}
-
-	}
+	$scope.buildDTW = function(){
+		console.log('got here %',$scope);
+		console.log('Total Lines: ', $scope.deal);
+		$scope.deal.$promise.then(function(){
+			//$scope.deal.adl;
+		var totlines = parseInt($scope.deal.adl)+1;
+		console.log('Total Lines: %o', totlines);
+		console.log('Existing LineDetails: ', $scope.deal.lineDetails.length);
 		
-});
+		if($scope.deal.lineDetails.length==0){
+			if(totlines<2){
+				$scope.deal.lineDetails.push({});
+			}else{
+				for(var i = 0; i < totlines ; i++) {
+					$scope.deal.lineDetails.push({});
+				}
+
+			}
+		}
+			
+		});
 
 
-};
+	};
 
 $scope.myDealstages = [
 {name: 'Pending Rep Review', value: '0', number: 0},
-{name: 'LOAs Out for Signature', value: '5', number: 1},
-{name: 'LOAs Signed', value: '15', number: 2},
-{name: 'Pending Review', value: '20', number: 3},
+{name: 'LOAs Out for Signature', value: '10', number: 1},
+{name: 'LOAs Signed', value: '20', number: 2},
+{name: 'Pending Review', value: '25', number: 3},
 {name: 'QC Approved', value: '40', number: 4},
 {name: 'Pending Order Number', value: '55', number: 5},
 {name: 'Pending Install', value: '70', number: 6},
@@ -364,11 +380,9 @@ return $scope.deal.dslspeed;
 		//Submit Order Packet
 			$scope.submitOrder = function() {
 			$scope.pending=true;
-			deal.updated = Date.now();
-			
 			$scope.step=5;
 			var deal = $scope.deal;
-
+			deal.updated = Date.now();
 			console.log('Look for deal.stage and deal.stagenum %o', $scope);
 			if($scope.mystage){
 			deal.stage=$scope.mystage.name;
@@ -384,11 +398,12 @@ return $scope.deal.dslspeed;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			}).then(function() {
+				console.log('Deal Updated??');
 				$scope.pending=false;
 
 				$scope.sending=true;
 
-				console.log('Line Numbers', deal.lineDetails[0].number);
+				//console.log('Line Numbers', deal.lineDetails[0].number);
 
 				$http({
 		method: 'post',
@@ -454,6 +469,7 @@ return $scope.deal.dslspeed;
 			deal.stage=$scope.mystage.name;
 			deal.stagenum=$scope.mystage.value;
 			}
+			console.log('Linedetails?? %o',deal.lineDetails);
 			console.log('Dealcontroller Deal: %o',deal);
 			deal.$update(function() {
 				$location.path('deals/' + deal._id);
