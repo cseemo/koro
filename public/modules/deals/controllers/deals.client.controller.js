@@ -4,7 +4,7 @@
 angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce',
 	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $sce) {
 		$scope.authentication = Authentication;
-		
+$scope.pdf = false;
 $scope.step = 1;
 //$scope.myiframe = 'blob:http%3A//localhost%3A3000/d43e67f4-bab2-4778-b97c-6385c4b158a8';
 $scope.pending=false;
@@ -65,6 +65,7 @@ console.log('Current Step: ',$scope.step);
 
 
      					$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+     					$scope.pdf = true;
      					//window.open(fileURL);
 
 			    }).then(function(){

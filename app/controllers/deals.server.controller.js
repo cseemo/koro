@@ -722,8 +722,8 @@ doc.on('end', function(){
 	'signing_domain': null,
 	'return_path_domain': null,
 	'attachments': [{
-		'type': 'application/pdf; name=mytestPDF.pdf',
-		'name': 'mytestPDF.pdf',
+		'type': 'application/pdf; name=Centurylink_Signed_LOAs.pdf',
+		'name': 'Centurylink_Signed_LOAs.pdf',
 		'content': content
 	}]
 };
