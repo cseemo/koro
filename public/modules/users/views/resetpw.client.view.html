@@ -1,0 +1,45 @@
+
+<div class="page-forgot" data-ng-controller="AuthenticationController" data-ng-init="findOne()">
+
+    <div class="signin-header">
+        <section class="logo text-center">
+            <a href="#/">{{main.brand}}</a>
+        </section>
+    </div>
+
+    <div class="main-body">
+        <div class="container">
+            <div class="info text-center">
+                <p class="text-small">Please enter your new password. Then confirm it. </p>
+            </div>
+
+            <div class="form-container text-center">
+
+                <form class="form-horizontal" name="resetPasswordForm">
+                    <div class="form-group">
+                        <div class="btn-icon-lined btn-icon-round btn-icon-sm btn-default-light">
+                            <span class="glyphicon glyphicon-lock"></span>
+                        </div>
+                        <input type="password"
+                               class="form-control input-lg input-round text-center"
+                               placeholder="New Password" data-ng-model="newpw">
+                    </div>
+                      <div class="form-group">
+                        <div class="btn-icon-lined btn-icon-round btn-icon-sm btn-default-light">
+                            <span class="glyphicon glyphicon-lock"></span>
+                        </div>
+                        <input type="password"
+                               class="form-control input-lg input-round text-center"
+                               placeholder="Confirm Password" data-ng-model="confirmpw">
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <a class="btn btn-lg btn-block btn-primary btn-round" data-ng-click="setNewPW()">Confirm New Password</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
