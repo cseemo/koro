@@ -155,6 +155,18 @@ exports.getDEALS = function(req, res) { Deal.find().where({user: req.user.id}).s
 	});
 };
 
+//approve a deal
+exports.approveDeal = function(req, res) {
+		console.log('Deal Data: %o',req.deal);
+			if(req.deal.loa_signed!='YES'){
+				res.jsonp(req.deal);
+			}else{
+				res.send('505', 'LOAs Signed Already');
+			}
+
+			
+	
+};
 /**
  * Show the current Deal
  */
@@ -240,6 +252,8 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 exports.makePDF = function(req, res){
+
+
 	var timesrun = 0;
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 	console.log('REQ Deal', req.deal);
@@ -660,7 +674,7 @@ doc.pipe( res );
 
 doc.on('data', function(chunk){
 	chunks.push(chunk);
-	console.log('chunk:', chunk.length);
+	//console.log('chunk:', chunk.length);
 });
  
 
@@ -687,7 +701,7 @@ doc.end();
 
 doc.on('end', function(){
 	//console.log(callback);
-	console.log('DId you get a callback?');
+	//console.log('DId you get a callback?');
 	var mypdf = Buffer.concat(chunks);
 	//.concat(buffers);
 	var content = mypdf.toString('base64');
@@ -746,75 +760,9 @@ function(e){
 
 }
 
-
-
-
-
-	});
+});
 		
-		//console.log('Res',res);
-		
+	return;
 	
-	
-
-		//buffers = buffers.toString('base64');
-	//.toString('base64');
-
-
-
-
-// });
-
-//var myPDF 
-// stream.on('finish', function(){
-// 	iframe.src = stream.toBlobURL('application/pdf');
-// });
-
-	//console.log('What is the res???',res);
-// var message = {
-// 	'html': '<p>Centurylink Signed LOAs</p>',
-// 	'text': 'Centurylink Return Email',
-// 	'subject': 'Letter of Authorization (Centurylink)',
-// 	'from_email': 'yourrep@centurylink.net',
-// 	'from_name': 'Test Test',
-// 	'to': [{
-// 		'email': req.deal.contactemail,
-// 		'name': req.deal.contactname,
-// 			'type': 'to'
-// 	}],
-// 	'headers': {
-// 		'Reply-To': 'cseemo@gmail.com'
-// 	},
-// 	'important': false,
-// 	'track_opens': null,
-// 	'track_clicks': null,
-// 	'auto_text': null,
-// 	'auto_html': null,
-// 	'inline_css': null,
-// 	'url_strip_qs': null,
-// 	'preserver_recipients': null,
-// 	'view_content_link': null,
-// 	'bcc_address': 'fivecsconsulting@gmail.com',
-// 	'tracking_domain': null,
-// 	'signing_domain': null,
-// 	'return_path_domain': null,
-// 	'attachments': [{
-// 		'type': 'application/pdf',
-// 		'name': myfileName,
-// 		'content': new Buffer(doc).toString('base64')
-// 	}]
-// };
-
-// doc.end();
-
-// var async = false;
-
-// mandrill_client.messages.send({'message': message, 'async': async}, function(result){
-// 	console.log('Results from Mandrill', result);
-// },
-// function(e){
-// 	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-// });
-return;
 };
 

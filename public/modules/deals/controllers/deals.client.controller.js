@@ -30,6 +30,10 @@ console.log('Current Step: ',$scope.step);
 		$scope.step = 3;
 		$scope.spinny = true;
 		var deal = $scope.deal;
+		console.log('Loas Signed?', deal.loa_signed);
+
+		if(deal.loa_signed!='YES'){
+
 		deal.updated = Date.now();
 		console.log('My Deal: %o',deal);
 		deal.stage=$scope.myDealstages[2].name;
@@ -45,6 +49,7 @@ console.log('Current Step: ',$scope.step);
 		console.log(testdate);
 		deal.signDate = testdate;
 		console.log('Deal.user %o',deal.user);
+		deal.loa_signed='YES';
 		//deal.user.notifications.push({note: deal.companyname+' signed their LOAS'});
 			    	
 		deal.$update(function(data) {
@@ -107,7 +112,11 @@ console.log('Current Step: ',$scope.step);
 
 			// }	
 			//});
+				}else{
+					window.alert("What the fudge??");
 
+
+				}
 
 
 			

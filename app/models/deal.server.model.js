@@ -262,6 +262,10 @@ var DealSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	loa_signed: {
+		type: String,
+		default: 'NO'
 	}
 
 	});

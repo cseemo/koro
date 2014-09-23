@@ -14,7 +14,7 @@ module.exports = function(app) {
 		.get(leads.showDeal);
 
 		app.route('/approve/:dealId')
-		.get(leads.showDeal);
+		.get(deals.approveDeal);
 
 		app.route('/pdf/:dealId')
 		.get(deals.makePDF);
