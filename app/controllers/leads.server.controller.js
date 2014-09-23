@@ -151,8 +151,8 @@ doc.on('end', function(){
 				]
 	}],
 	'important': false,
-	'track_opens': null,
-	'track_clicks': null,
+	'track_opens': true,
+	'track_clicks': true,
 	'auto_text': null,
 	'auto_html': null,
 	'inline_css': null,
@@ -161,6 +161,7 @@ doc.on('end', function(){
 	'view_content_link': null,
 	'bcc_address': 'fivecsconsulting@gmail.com',
 	'tracking_domain': null,
+	'tags': ['new-quote'],
 	'signing_domain': null,
 	'return_path_domain': null,
 	'attachments': [{
@@ -227,6 +228,16 @@ exports.getLeadsByStatus = function(req, res) {
 	});	
 };
 
+
+/*
+	Check Email Stats
+*/
+exports.getEmailInfo = function(req, res){
+console.log('We got to get Email Details');
+res.send(200,'Got that stuff!!!');
+
+
+};
 /*
  * Qwest loop qualification check
  */

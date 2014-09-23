@@ -44,6 +44,11 @@ angular.module('leads').factory('Leads', ['$resource',
 				method: 'GET',
 				url: '/records/calldetails/rep',
 				isArray: true,
+			},
+				getEmailinfo: {
+				method: 'GET',
+				url: '/leads/:leadId/emailinfo',
+				isArray: true,
 			}			
 		});
 	}

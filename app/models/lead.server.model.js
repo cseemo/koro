@@ -27,6 +27,10 @@ var CallSchema = new Schema({
 		type: String,
 		default: ''
 	},
+	gatekeeper: {
+		type: String,
+		default: ''
+	},
 	disposition: {
 		type: String,
 		default: ''

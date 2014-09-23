@@ -64,8 +64,10 @@
           <div class="panel-heading">
             <span class="glyphicon glyphicon-th">
             </span>&nbsp;&nbsp;Lead Deatils   --- Assigned Rep: {{lead.user.displayName}}
-             
-               <input type="button" class="pull-right" value="Convert to Deal" ng-click="convertToDeal()" class="btn text-center button"/>
+             <a class="btn-sm btn-primary pull-right" data-ng-click="convertToDeal()">
+            <span class="glyphicon glyphicon-transfer"></span>&nbsp;&nbsp;Convert to Deal</a>
+
+
             </div>
           <div class="panel panel-primary">
               <div class="panel-body">
@@ -100,7 +102,7 @@
             <div class="panel-body ui-map" data-slim-scroll="" data-scroll-height="100px" style="overflow: scroll;  width: auto; height: 100px">
                 <div ng-repeat="callDetail in lead.callDetails">
                 <b>{{callDetail.calltime | datetime}}</b><br>
-                {{callDetail.rep}} spoke w/ {{callDetail.who}} - {{callDetail.disposition}} 
+                {{callDetail.rep}} spoke w/ {{callDetail.gatekeeper}} - {{callDetail.disposition}} 
 
                 
    
@@ -113,9 +115,9 @@
           <div calss="panel-default">
             <div class="panel-body">
               <center>
-                <a class="btn btn-primary center" data-ng-click="dialLead();">
+                <a class="btn btn-primary center" data-ng-click="dialLead()" data-ng-hide="makecall===false">
                 <span class="glyphicon glyphicon-earphone"></span>Call Customer</a>
-                <a class="btn btn-danger center" data-ng-click="dialLead();">
+                <a class="btn btn-danger center" data-ng-click="endCall()" data-ng-show="showend===true">
                 <span class="glyphicon glyphicon-earphone"></span>End Call</a>
               </center>
 
@@ -123,8 +125,8 @@
           </div>
        
 
-        <div calss="panel-default">
-          <div class="panel-body">
+        <div class="panel-default">
+          <div class="panel-body" data-ng-show="showdispo===true">
 
 
                <div class="form-inline form-group">

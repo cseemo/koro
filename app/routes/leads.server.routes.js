@@ -37,6 +37,10 @@ module.exports = function(app) {
 		.get(leads.getQwestLoop);
 		//.get(leads.qwestLoopQual);
 
+		
+		app.route('/leads/:leadId/emailinfo')
+		.get(leads.leadByID, leads.getEmailInfo);
+
 
 		app.route('/stats/leads/by/status')
 		.get(leads.getLeadsByStatus);

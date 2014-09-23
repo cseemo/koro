@@ -312,13 +312,26 @@ console.log('Error: ' + data);
 
 };
 
+$scope.makecall = true;
+$scope.showend = false;
+//End Call
+$scope.endCall = function(){
+	$scope.makecall = true;
+	$scope.showend = false;
+
+	console.log('Call Ended');
+
+	return;
+}
+
 			// Get Next Lead Lead
 		$scope.nextLead = function() {
 	var lead = $scope.lead;
 	var rep = lead.assignedRep;
 	var comms = this.myForm.comments.$modelValue;
 	var dispo = $scope.disposition;
-	var who = $scope.callDetailscontact;
+	var contact = $scope.callDetailscontact;
+	var who = $scope.gatekeepername;
 	var date = $scope.dt;
 	var time = $scope.mytime;
 	var datetime = new Date(date.getFullYear(), 
@@ -332,7 +345,7 @@ console.log('Error: ' + data);
 	lead.status = dispo;
 	var now = Date();
 	// window.alert(lead.user.displayName);
-	lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
+	lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: contact, gatekeeper: who, disposition: dispo});
 	lead.$update(function(data) {
 	console.log('dialLead',data);
 				//$location.path('/getnewlead');
@@ -371,13 +384,16 @@ lead.email = this.myForm.email.$viewValue;
 
 
 $scope.dialLead = function() {
-	console.log('http--: %o',Authentication);
+	//console.log('http--: %o',Authentication);
 	var lead = $scope.lead;
 
 
 	  lead.lastCalled = Date();
 	  $scope.leadstatus = $scope.lead.status;
-		return $scope.leadstatus;
+	 $scope.showdispo = true;
+	 $scope.makecall = false;
+	 $scope.showend = true;
+	return;
 		
 //window.open('http://admin:67028@192.168.0.114/servlet?number=' + lead.telephone + '&outgoing_uri=sip-67028.accounts.vocalos.com', 'Dialing', 'toolbar=no, scrollbars=no, resizable=no, top=800, left=10, width=100, height=10');	
 
@@ -518,6 +534,28 @@ console.log('dmname: '+this.dmname);
 			}
 		};
 
+		//Get Email Details for Lead
+
+         $scope.myEmailDetails = Leads.getEmailinfo();
+
+        $scope.myEmailDetails.$promise.then(function(results){
+          $scope.myEmailDetails = 0;
+          console.log('Getting Email Details');
+        //console.log('Get call Details %o', results);
+        Object.keys(results).forEach(function(key) {
+
+          console.log('Results Key %o', results[key]);
+          //console.log(Authentication.user.displayName);
+          //Converted == to === JSLint
+          if(results[key]._id===Authentication.user.displayName)
+          {
+            $scope.mycallDetails = results[key].total;
+            //console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
+
+          }
+
+        });
+      });
 		// Update existing Lead
 		$scope.updateLead = function() {
 			console.log('Got here');
@@ -596,12 +634,21 @@ console.log('dmname: '+this.dmname);
 					})
 					.error(function(data, status, headers, config) {
 
+
+							$timeout(function(){
+								$scope.qwestValidService = true;
+								$scope.qwestCheckingService = false;
+
+							}, 5000);
+									
+
 					});
 			}
 		};
 
 		$scope.addressSearch = function() {
 			$scope.qwestCheckingServiceA = true;
+
 			var addy = encodeURIComponent(
 				$scope.lead.address + ',' + $scope.lead.city + ',' + $scope.lead.state
 			);
@@ -671,6 +718,7 @@ console.log(data);
 	});
 
 };
+	$scope.showdispo = false;
 
  $scope.today = function() {
         return $scope.dt = new Date();
