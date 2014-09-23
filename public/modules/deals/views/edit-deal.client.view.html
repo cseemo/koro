@@ -8,7 +8,7 @@
      <div class="panel panel-primary">
         <div class="panel-body">
             <div class="field">
-            <h4>Deal Stage: {{deal.stage}}</h4>
+            <h4>Deal Stage: {{deal.stage}} - {{deal.stagenum}}</h4>
           <!--<select data-ng-model="mystage" class="form-control text-center" style="width: 50%; float:right;" ng-options="mystage.name for mystage in myDealstages"></select> -->
           <span data-ng-show="authentication.hasRole('typist') || authentication.hasRole('manager') || authentication.hasRole('admin') ">
           <br>
@@ -20,14 +20,16 @@
             </div></fieldset></div>
         <br>
             <button data-ng-show="deal.stagenum==0" class="btn btn-w-md btn-gap btn-info" data-ng-click="resubmit()">Submit Deal</button>
-          <button data-ng-show="deal.stagenum==5" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Assign Deal</button>
-          <button data-ng-show="deal.stagenum==20" class="btn btn-w-md btn-gap btn-info" data-ng-click="QCApproved()">QC Approve</button>
+          <button data-ng-show="deal.stagenum==20" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignDeal()">Assign Deal</button>
+          <button data-ng-show="deal.stagenum==25" class="btn btn-w-md btn-gap btn-info" data-ng-click="QCApproved()">QC Approve</button>
+
+          <button data-ng-show="deal.stagenum==40" class="btn btn-w-md btn-gap btn-info" data-ng-click="ctlTyped()">CTL Order Submitted</button>
 
           <button data-ng-show="deal.stagenum==55" class="btn btn-w-md btn-gap btn-info" data-ng-click="assignOrderNumber()">Assign CTL Order Number</button>
-      
 
           <button data-ng-show="deal.stagenum==70" class="btn btn-w-md btn-gap btn-info" data-ng-click="confirmInstall()">Confirm Installation</button>
 
+           <button data-ng-show="deal.stagenum==90" class="btn btn-w-md btn-gap btn-info" data-ng-click="confirmPayment()">Confirm Payment</button> 
 
           <button class="btn btn-w-md btn-gap btn-danger" data-ng-click="rejectDeal()">Reject Order</button>
            </span>

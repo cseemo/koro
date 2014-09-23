@@ -7,14 +7,17 @@ module.exports = function(app) {
 
 	// Leads Route
 		app.route('/deals/:dealId')
-		.put(users.requiresLogin, deals.update)
+		//Commetn out Requires Login foR APPROVAL w/o Login
+		// .put(users.requiresLogin, deals.update)
+		.put(deals.update)
 		.get(leads.showDeal);
 
 		app.route('/convertingdeals/:dealId')
 		.get(leads.showDeal);
 
 		app.route('/approve/:dealId')
-		.get(deals.approveDeal);
+		.get(deals.approveDeal)
+		.put(deals.update);
 
 		app.route('/pdf/:dealId')
 		.get(deals.makePDF);

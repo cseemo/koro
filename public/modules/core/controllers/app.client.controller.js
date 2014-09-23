@@ -60,7 +60,8 @@
             info: '#29B7D3',
             infoAlt: '#666699',
             warning: '#FAC552',
-            danger: '#E9422E'
+            danger: '#E9422E',
+            chad: '#666699'
           });
     }
   ]).controller('HeaderCtrl', ['$scope', function($scope) {}]).

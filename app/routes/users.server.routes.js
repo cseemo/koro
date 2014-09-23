@@ -50,6 +50,8 @@ module.exports = function(app) {
 	app.route('/userspw/:userId/reset')
 		.post(users.hasAuthorization(['admin']), users.resetPassword);
 		
+	app.route('/email/:userId/confirmation')
+	.post(users.sendRegistration);
 
 	app.route('/users/edit')
 	.put(users.updateUser2)
@@ -59,6 +61,19 @@ module.exports = function(app) {
 	//.put(users.requiresLogin, users.updateUser)
 	.get(users.list);
 
+	app.route('/setnewpw')
+	.post(users.setnewPW);
+
+	
+	app.route('/reset_password/:userId')
+	.get(users.userByID)
+	.post(users.setnewPW);
+
+
+	app.route('/forgot_password/:userName')
+	.get(users.forgotPW);
+
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);
+		app.param('userName', users.userByUsername);
 };

@@ -2401,6 +2401,11 @@ input.input-danger:focus {
   background-color: #e9422e;
 }
 
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_badges\.scss}line{font-family:\0000321}}
+.badge-chad {
+  background-color: #e92e78;
+}
+
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_breadcrumbs\.scss}line{font-family:\000032}}
 .breadcrumb a {
   color: #767676;

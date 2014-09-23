@@ -438,7 +438,7 @@ console.log('dmname: '+this.dmname);
  
 			$http({
 		method: 'post',
-		url: 'http://adsoap.com/nodeEMAILPDF',
+		url: '/email/' + myleadT,
 		data: {
 			mylead: myleadT,
 			term: this.term.value,
@@ -463,8 +463,9 @@ console.log('dmname: '+this.dmname);
 		.success(function(data, status) {
 		$scope.sending = false;
 		$scope.results = true;
-		$scope.myresults = data;
+		
 		if(status === 200) {
+			$scope.myresults = 'Email Sent!';
 			//$scope.currentPrice = data.price;
 //console.log('Data Returned '+data);
 			//$scope.currentPrice = data.price;
@@ -477,9 +478,15 @@ console.log('dmname: '+this.dmname);
 
 			}
 			$timeout(function(){
-			$scope.emailbuttons = true;
-			$scope.results = false;
+
+					console.log('EMail Sent');
+					$timeout(function(){
+					$scope.emailbuttons = true;
+					$scope.results = false;
 					console.log('buttons back');
+				}, 5000);
+
+			
 
 			}, 2500);
 					

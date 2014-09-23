@@ -16,6 +16,9 @@ module.exports = function(app) {
 		app.route('/quote')
 		.post(leads.createQuote);
 
+		app.route('/email/:leadId')
+		.post(leads.sendQuote);
+
 		 app.route('/leads/:leadId')
 		.get(users.requiresLogin, leads.read)
 		.put(users.requiresLogin, leads.update)

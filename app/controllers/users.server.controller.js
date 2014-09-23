@@ -6,7 +6,12 @@
 var mongoose = require('mongoose'),
 	passport = require('passport'),
 	User = mongoose.model('User'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	mandrill = require('mandrill-api/mandrill');
+
+var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
+	
+
 
 
 exports.list = function(req, res) { User.find().exec(function(err, users) {
@@ -20,6 +25,89 @@ exports.list = function(req, res) { User.find().exec(function(err, users) {
 	});
 };
 
+exports.sendRegistration = function(req, res){
+	console.log('Sending Registration');
+	console.log('Request',req);
+
+		var message = {
+	'html': 'Thank You for Registering',
+	'text': 'Plain Text Email Content',
+	'subject': 'Registration Confirmation',
+	'from_email': 'admin@adsoap.com',
+	'from_name': 'New Users',
+	'to': [{
+		'email': req.user.email,
+		'name': req.user.displayName,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': 'cseemo@gmail.com'
+	},
+	'merge': true,
+	'global_merge_vars': [{
+		'name': 'merge1',
+		'content': 'merge1 content'
+	}],
+	'merge_vars': [{
+			'rcpt': req.user.email,
+			'vars': [{
+					'name': 'userid',
+					'content': req.user._id
+				},
+				{
+					'name': 'username',
+					'content': req.user.username
+				}
+
+
+
+				]
+	}],
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': true,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null
+};
+
+
+
+var template_name='register';
+
+var async = false;
+
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
+
+	console.log('Results from Mandrill', result);
+},
+function(e){
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+});
+
+
+
+
+		
+	return;
+	
+
+
+
+
+};
 
 /**
  * Get the error message from error object
@@ -44,6 +132,89 @@ var getErrorMessage = function(err) {
 
 	return message;
 };
+
+//Forgot Password
+	exports.forgotPW = function(req, res){
+		console.log('Resetting Password');
+
+
+
+
+console.log('Request',req);
+
+		var message = {
+	// 'html': 'Thank You for Registering',
+	// 'text': 'Plain Text Email Content',
+	// 'subject': 'Registration Confirmation',
+	// 'from_email': 'admin@adsoap.com',
+	// 'from_name': 'New Users',
+	'to': [{
+		'email': req.profile.email,
+		'name': req.profile.displayName,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': 'cseemo@gmail.com'
+	},
+	'merge': true,
+	'global_merge_vars': [{
+		'name': 'merge1',
+		'content': 'merge1 content'
+	}],
+	'merge_vars': [{
+			'rcpt': req.profile.email,
+			'vars': [{
+					'name': 'userid',
+					'content': req.profile._id
+				},
+				{
+					'name': 'username',
+					'content': req.profile.username
+				}
+
+
+
+				]
+	}],
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': true,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null
+};
+
+
+
+var template_name='forgot-password';
+
+var async = false;
+
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
+
+	console.log('Results from Mandrill', result);
+},
+function(e){
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+});
+
+
+res.send('200', 'Password Reset for userid: '+req.profile._id);
+
+
+	};
 
 /**
  * Signup
@@ -227,6 +398,35 @@ exports.update = function(req, res) {
 		});
 	}
 };
+
+//Set New Password
+
+exports.setnewPW = function(req, res) {
+	// Init Variables
+	
+	console.log('Request',req);
+	//console.log('Request.user',req.user)
+	//console.log('Request.user',req.profile);
+	console.log('Data', req.body);
+	//res.send('200', 'Password Set')
+	var user = req.profile;
+	user.password = req.body.pw;
+	user.resetPassword = true;
+	user.save(function(err) {
+							if (err) {
+								return res.send(400, {
+									message: getErrorMessage(err)
+								});
+							} else {
+										res.send({
+											message: 'Password changed successfully'
+										});
+									}
+								});
+							};
+						
+
+
 
 /**
  * Change Password
@@ -429,6 +629,21 @@ exports.oauthCallback = function(strategy) {
 		})(req, res, next);
 	};
 };
+
+/**
+ * User by Username to send email 
+ */
+exports.userByUsername = function(req, res, next, id) {
+	User.findOne({
+		username: id
+	}).exec(function(err, user) {
+		if (err) return next(err);
+		if (!user) return next(new Error('Failed to load User ' + id));
+		req.profile = user;
+		next();
+	});
+};
+
 
 /**
  * User middleware

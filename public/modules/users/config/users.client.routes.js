@@ -13,6 +13,14 @@ angular.module('users').config(['$stateProvider',
 			url: '/settings/password',
 			templateUrl: 'modules/users/views/settings/change-password.client.view.html'
 		}).
+		state('forgotpassword', {
+			url: '/forgot_password',
+			templateUrl: 'modules/users/views/forgotpw.client.view.html'
+		}).
+		state('resetpassword', {
+			url: '/reset_password/:userId',
+			templateUrl: 'modules/users/views/resetpw.client.view.html'
+		}).
 		state('accounts', {
 			url: '/settings/accounts',
 			templateUrl: 'modules/users/views/settings/social-accounts.client.view.html'
@@ -36,6 +44,10 @@ angular.module('users').config(['$stateProvider',
 		state('pwreset', {
 			url: 'userspw/:userId/reset',
 			templateUrl: 'modules/admin/views/useroverview.client.view.html'
-		});
+		}).
+		state('confirm', {
+			url: 'email/:userId/confirmation',
+			templateUrl: 'modules/admin/views/useroverview.client.view.html'
+		});;
 	}
 ]);

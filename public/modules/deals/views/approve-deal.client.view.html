@@ -40,7 +40,7 @@
 
 				                    <div class="form-group">
 				                    	<label class="form-label" style="font-size: 24px;" for="contactname">Your Title</label>
-				                        <input type="text" data-ng-model="deal.contacttitle" class="form-control pull-right" style="width: 50%" >
+				                        <input type="text" data-ng-model="deal.contacttitle" class="form-control pull-right" style="width: 50%" maxlength="22">
 				                    </div>
 				                    <button class="btn btn-w-md btn-gap btn-info" data-ng-click="nextStep()">Next Step</button>
 				                  
@@ -61,7 +61,7 @@
 			       				<div data-ng-repeat="line in deal.lineDetails" >
 			       				<div class="form-group">
 				         		<label class="form-label" style="font-size: 18px;" for="contactname">Telephone Number {{$index+1}}</label>
-					              <input ng-model="line.number" type="text" style="width: 50%;" class="form-control text-center pull-right" />
+					              <input ng-model="line.number" type="text" style="width: 50%;" class="form-control text-center pull-right" required/>
 					              </div>
 				              	</div>
 				              	<br>

@@ -7,7 +7,12 @@ var mongoose = require('mongoose'),
 	Lead = mongoose.model('Lead'),
 	Call = mongoose.model('Call'),
 	Deal = mongoose.model('Deal'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	mandrill = require('mandrill-api/mandrill');
+
+
+var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
+	
 
 /**
  * Get the error message from error object
@@ -31,6 +36,169 @@ var getErrorMessage = function(err) {
 	}
 
 	return message;
+};
+
+exports.sendQuote = function(req, res){
+	//var deal = req.deal;
+	//console.log('Request::::::',req);
+	//console.log('Look above here for the email address and shit');
+	//console.log('Request EMail',req.email);
+	console.log('Request Lead Info',req.lead);
+	var PDFDocument = require('pdfkit');
+	var fs=require('fs');
+	var doc = new PDFDocument();
+	var timesrun = 0;
+	//var stream = doc.pipe(blobStream());
+	var buffers = [];
+	var myfileName = 'Quote'+req.lead._id+'.pdf';
+	//doc.pipe( fs.createWriteStream(myfileName) );
+	 
+	var chunks = [];
+	//FILL OUT LD LOA
+	doc.image('sigcert.png', 255, 660);  
+	//var bg = doc.image('LOCALLOA.png', 0, 0,{width: 600});
+	var bg2 = doc.image('Header.png', 0, 0,{width: 620});
+	//var bg = doc.image('FCTicket.jpg', 0, 0, 600, 800);
+
+	doc.pipe( res );
+
+	doc.on('data', function(chunk){
+	chunks.push(chunk);
+	//console.log('chunk:', chunk.length);
+});
+ 
+
+ 	// mylead: myleadT,
+		// 	term: this.term.value,
+		// 	dslspeed: this.dsl.svalue,
+		// 	adllines: this.adl,
+		// 	full_name: this.dmname,
+		// 	phone: this.tel,
+		// 	email: this.email, 
+		// 	companyname: this.coname, 
+		// 	modem: this.modem.value,
+		// 	nrc: this.nrcs.value,
+		// 	credits: this.credits.name,
+		// 	staticIP: this.iptype.name,
+		// 	sndloas: 0,
+		// 	address: lead.address,
+		// 	city: lead.city,
+		// 	state: lead.state,
+		// 	zip: lead.zipcode
+
+
+doc.end();
+
+
+doc.on('end', function(){
+	//console.log(callback);
+	//console.log('DId you get a callback?');
+	var mypdf = Buffer.concat(chunks);
+	//.concat(buffers);
+	var content = mypdf.toString('base64');
+
+	//var content = fs.readFileSync(myfileName, 'base64');
+
+		var message = {
+	'html': '<p>Centurylink Quote</p>',
+	'text': 'Centurylink Return Email',
+	'subject': 'Centurylink Quote',
+	'from_email': 'yourrep@centurylink.net',
+	'from_name': req.user.email,
+	'to': [{
+		'email': req.lead.email,
+		'name': req.lead.contactname,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': 'cseemo@gmail.com'
+	},
+	'merge': true,
+	'global_merge_vars': [{
+		'name': 'merge1',
+		'content': 'merge1 content'
+	}],
+	'merge_vars': [{
+			'rcpt': req.lead.email,
+			'vars': [{
+					'name': 'company',
+					'content': req.lead.companyname
+				},
+				{
+					'name': 'phone',
+					'content': req.lead.telephone
+				},
+				{
+					'name': 'credits',
+					'content': req.lead.winbackcredits
+				},
+				{
+					'name': 'salesrep',
+					'content': req.user.displayName
+				},
+				{
+					'name': 'salesrepemail',
+					'content': req.user.email
+				},
+				{
+					'name': 'salesreptel',
+					'content': '505-555-1111'
+				}
+
+
+
+
+				]
+	}],
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': null,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null,
+	'attachments': [{
+		'type': 'application/pdf; name=Centurylink_Signed_LOAs.pdf',
+		'name': 'Centurylink_Signed_LOAs.pdf',
+		'content': content
+	}]
+};
+
+
+
+var template_name='new_quote';
+
+var async = false;
+
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
+	timesrun++;
+	console.log('Results from Mandrill', result);
+},
+function(e){
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+});
+
+
+
+});
+		
+	return;
+	
+
+
+
+
 };
 
 exports.getLeadsByStatus = function(req, res) {

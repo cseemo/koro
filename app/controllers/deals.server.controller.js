@@ -161,7 +161,7 @@ exports.approveDeal = function(req, res) {
 			if(req.deal.loa_signed!='YES'){
 				res.jsonp(req.deal);
 			}else{
-				res.send('505', 'LOAs Signed Already');
+				res.send('200', 'LOAs Signed Already');
 			}
 
 			
@@ -285,26 +285,26 @@ exports.makePDF = function(req, res){
 	 
 	var chunks = [];
 	//FILL OUT LD LOA
-	doc.image('sigcert.png', 255, 655);  
+	doc.image('sigcert.png', 255, 660);  
 	//var bg = doc.image('LOCALLOA.png', 0, 0,{width: 600});
 	var bg2 = doc.image('LDLOA.png', 0, 0,{width: 600});
 	//var bg = doc.image('FCTicket.jpg', 0, 0, 600, 800);
 
 		//Set Email
-		doc.y = 640;
-		doc.x = 250;
+		doc.y = 644;
+		doc.x = 270;
 		doc.fontSize(9);
 		doc.font('Times-Roman');
 		doc.fillColor('black');
-		doc.text('User Email: '+req.deal.contactemail);
+		doc.text(req.deal.contactemail);
 
 		//Set IP Address
-		doc.y = 650;
-		doc.x = 250;
+		doc.y = 652;
+		doc.x = 270;
 		doc.fontSize(9);
 		doc.font('Times-Roman');
 		doc.fillColor('black');
-		doc.text('User IP: '+ip);
+		doc.text('@ '+ip);
 
 
 		//Set Company Name
@@ -343,12 +343,15 @@ exports.makePDF = function(req, res){
 		doc.font('Times-Roman');
 		doc.text(req.deal.zipcode);
 
+		if(req.deal.lineDetails.length > 0){
+
+
 		//Set BTN
 		doc.y = 325;
 		doc.x = 275;
 		doc.fontSize(14);
 		doc.font('Times-Roman');
-		doc.text(req.deal.telephone);
+		doc.text(req.deal.lineDetails[0].number);
 
 		//Set Additional Lines
 		//Set X Start & Y Start Values
@@ -358,7 +361,7 @@ exports.makePDF = function(req, res){
 
 
 		//console.log('LineDetails #:', req.deal.lineDetails.length);
-		if(req.deal.lineDetails.length > 0){
+		
 
 			//console.log('This account has numbers online');
 		
@@ -366,7 +369,7 @@ exports.makePDF = function(req, res){
 		//console.log('num.number',num.number);
 		// console.log(i);
 		// console.log('XS: '+xs+' and YS: '+ys);
-		if(num!=null){
+		if(num!=null && i>0){
 			//console.log('num.number is here: ',num.number);
 
 		doc.y = ys;
@@ -376,7 +379,7 @@ exports.makePDF = function(req, res){
 		doc.text(num.number);
 
 
-		i++;
+		
 		xs+=150;
 		if(i===3){
 			ys = 380;
@@ -406,7 +409,10 @@ exports.makePDF = function(req, res){
 			ys = 550;
 			xs=100;
 		}
-	}
+		i++;
+	}else{
+				i++;
+			}
 			
 		});
 	}else{
@@ -418,7 +424,7 @@ exports.makePDF = function(req, res){
 
 		//Set Signature
 		doc.y = 635;
-		doc.x = 130;
+		doc.x = 97;
 		doc.fontSize(24);
 		doc.font('SANTO.TTF');
 		doc.fillColor('black');
@@ -436,7 +442,7 @@ exports.makePDF = function(req, res){
 
 		//Set Printed Name
 		doc.y = 670;
-		doc.x = 160;
+		doc.x = 117;
 		doc.fontSize(14);
 		doc.font('Times-Roman');
 		doc.fillColor('black');
@@ -454,26 +460,26 @@ exports.makePDF = function(req, res){
 		doc.addPage();
 
 		//FILL OUT LOCAL LOA
-		doc.image('sigcert.png', 255, 685);  
+		doc.image('sigcert.png', 235, 685);  
 		var bg = doc.image('LOCALLOA.png', 0, 0,{width: 600});
 		//var bg = doc.image('LDLOA.png', 0, 0,{width: 600});
 		//var bg = doc.image('FCTicket.jpg', 0, 0, 600, 800);
 
 		//Set Email
-		doc.y = 670;
-		doc.x = 250;
+		doc.y = 667;
+		doc.x = 240;
 		doc.fontSize(9);
 		doc.font('Times-Roman');
 		doc.fillColor('black');
-		doc.text('User Email: '+req.deal.contactemail);
+		doc.text(req.deal.contactemail);
 
 		//Set IP Address
-		doc.y = 680;
-		doc.x = 250;
+		doc.y = 675;
+		doc.x = 240;
 		doc.fontSize(9);
 		doc.font('Times-Roman');
 		doc.fillColor('black');
-		doc.text('User IP: '+ip);
+		doc.text('from: '+ip);
 
 		//Set Company Name
 		doc.y = 220;
@@ -511,12 +517,13 @@ exports.makePDF = function(req, res){
 		doc.font('Times-Roman');
 		doc.text(req.deal.zipcode);
 
+		if(req.deal.lineDetails.length > 0){
 		//Set BTN
 		doc.y = 325;
 		doc.x = 275;
 		doc.fontSize(14);
 		doc.font('Times-Roman');
-		doc.text(req.deal.telephone);
+		doc.text(req.deal.lineDetails[0].number);
 
 		//Set Additional Lines
 		// doc.y = 365;
@@ -532,12 +539,12 @@ exports.makePDF = function(req, res){
 		var ys = 365;
 		var i =0;
 
-		if(req.deal.lineDetails.length > 0){
+		
 			console.log('Got numbers ', req.deal.lineDetails);
 
 			req.deal.lineDetails.forEach(function(num){
-
-			if(num!=null){
+				console.log('I: ',i);
+			if(num!=null && i > 0){
 
 
 				// console.log('hello',num.number);
@@ -551,7 +558,7 @@ exports.makePDF = function(req, res){
 				doc.text(num.number);
 
 
-				i++;
+				
 				xs+=150;
 				if(i===3){
 					ys = 390;
@@ -581,7 +588,10 @@ exports.makePDF = function(req, res){
 					ys = 550;
 					xs=100;
 				}
+				i++;
 
+			}else{
+				i++;
 			}
 			
 		});
@@ -624,7 +634,7 @@ exports.makePDF = function(req, res){
 
 		//Set Signature
 		doc.y = 655;
-		doc.x = 130;
+		doc.x = 95;
 		doc.fontSize(24);
 		doc.font('SANTO.TTF');
 		doc.fillColor('black');
@@ -640,7 +650,7 @@ exports.makePDF = function(req, res){
 
 		//Set Printed Name
 		doc.y = 690;
-		doc.x = 160;
+		doc.x = 115;
 		doc.fontSize(14);
 		doc.font('Times-Roman');
 		doc.fillColor('black');
@@ -649,7 +659,7 @@ exports.makePDF = function(req, res){
 
 		//Set Title
 		doc.y = 690;
-		doc.x = 410;
+		doc.x = 407;
 		doc.fontSize(14);
 		doc.font('Times-Roman');
 		doc.fillColor('black');
@@ -722,6 +732,31 @@ doc.on('end', function(){
 	'headers': {
 		'Reply-To': 'cseemo@gmail.com'
 	},
+	'merge': true,
+	'global_merge_vars': [{
+		'name': 'merge1',
+		'content': 'merge1 content'
+	}],
+	'merge_vars': [{
+			'rcpt': req.deal.contactemail,
+			'vars': [{
+					'name': 'company',
+					'content': req.deal.companyname
+				},
+				{
+					'name': 'signdate',
+					'content': req.deal.signDate
+				},
+				{
+					'name': 'ipaddress',
+					'content': req.deal.ip
+				}
+
+
+
+
+				]
+	}],
 	'important': false,
 	'track_opens': null,
 	'track_clicks': null,
@@ -744,12 +779,17 @@ doc.on('end', function(){
 
 
 
-
+var template_name='signed-loa';
 
 var async = false;
 if(timesrun < 2){
 
-mandrill_client.messages.send({'message': message, 'async': async}, function(result){
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
 	timesrun++;
 	console.log('Results from Mandrill', result);
 },

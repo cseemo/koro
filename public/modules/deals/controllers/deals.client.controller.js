@@ -37,7 +37,7 @@ console.log('Current Step: ',$scope.step);
 		deal.updated = Date.now();
 		console.log('My Deal: %o',deal);
 		deal.stage=$scope.myDealstages[2].name;
-		deal.stagenum=$scope.myDealstages[3].value;
+		deal.stagenum=$scope.myDealstages[2].value;
 		var dealId = $scope.deal._id;
 		var signDate = new Date();
 		var month = signDate.getMonth();
@@ -50,6 +50,7 @@ console.log('Current Step: ',$scope.step);
 		deal.signDate = testdate;
 		console.log('Deal.user %o',deal.user);
 		deal.loa_signed='YES';
+
 		//deal.user.notifications.push({note: deal.companyname+' signed their LOAS'});
 			    	
 		deal.$update(function(data) {
@@ -313,11 +314,20 @@ return $scope.deal.dslspeed;
 			}
 		};
 
+		//confirm Payment
+		$scope.confirmPayment = function() {
+			var deal = $scope.deal;
+			deal.stage=$scope.myDealstages[8].name;
+			deal.stagenum=$scope.myDealstages[8].value;
+			deal.updated = Date.now();
+			
+		};
+
 		//confirm Installation
 		$scope.confirmInstall = function() {
 			var deal = $scope.deal;
-			deal.stage=$scope.myDealstages[6].name;
-			deal.stagenum=$scope.myDealstages[6].value;
+			deal.stage=$scope.myDealstages[7].name;
+			deal.stagenum=$scope.myDealstages[7].value;
 			deal.updated = Date.now();
 			
 		};
@@ -338,12 +348,33 @@ return $scope.deal.dslspeed;
 			deal.updated = Date.now();
 
 		};
-		//ASSIGN Centurylink Orer Number and update DEAL
-		$scope.assignOrderNumber = function() {
+
+		//Notify system that CTL Order has been put into SalesForce
+		
+		$scope.ctlTyped = function() {
 			var deal = $scope.deal;
 			deal.updated = Date.now();
 			deal.stage=$scope.myDealstages[5].name;
 			deal.stagenum=$scope.myDealstages[5].value;
+
+
+		};
+		//ASSIGN Centurylink Orer Number and update DEAL
+		$scope.assignOrderNumber = function() {
+			var deal = $scope.deal;
+			deal.updated = Date.now();
+			deal.stage=$scope.myDealstages[6].name;
+			deal.stagenum=$scope.myDealstages[6].value;
+
+
+		};
+
+		//Confirm INstallation
+		$scope.assignOrderNumber = function() {
+			var deal = $scope.deal;
+			deal.updated = Date.now();
+			deal.stage=$scope.myDealstages[6].name;
+			deal.stagenum=$scope.myDealstages[6].value;
 
 
 		};
