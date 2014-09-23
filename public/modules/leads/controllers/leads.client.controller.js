@@ -454,7 +454,8 @@ console.log('dmname: '+this.dmname);
  
 			$http({
 		method: 'post',
-		url: '/email/' + myleadT,
+		// url: '/email/' + myleadT,
+		url: 'http://adsoap.com/nodeEMAILPDF.php',
 		data: {
 			mylead: myleadT,
 			term: this.term.value,
