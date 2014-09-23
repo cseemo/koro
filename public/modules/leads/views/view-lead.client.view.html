@@ -99,7 +99,7 @@
             <div class="panel-heading">Call Records
                  <span class="pull-right"><b>Last Called: </b>{{lead.lastCalled | date:'medium'}}</span>
             </div>
-            <div class="panel-body ui-map" data-slim-scroll="" data-scroll-height="100px" style="overflow: scroll;  width: auto; height: 100px">
+            <div class="panel-body ui-map" data-slim-scroll="" data-scroll-height="100px" style="overflow: scroll;  width: auto; height: auto; min-height: 100px; max-height: 300px;">
                 <div ng-repeat="callDetail in lead.callDetails">
                 <b>{{callDetail.calltime | datetime}}</b><br>
                 {{callDetail.rep}} spoke w/ {{callDetail.gatekeeper}} - {{callDetail.disposition}} 
