@@ -45,6 +45,12 @@
             <label class="switch" style="vertical-align: middle">Admin<input type="checkbox" style="vertical-align: middle" ng-model="roles.admin" class="pull-right"><i></i></label>
 
 
+                <div class="btn-group">
+                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'yes'" uncheckable><i class="fa fa-thumbs-o-up"></i></label>
+                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'maybe'" uncheckable>Maybe</label>
+                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'no'" uncheckable><i class="fa fa-thumbs-o-down"></i></label>
+                            </div>
+
 
             <!--  <p data-ng-repeat="role in userB.roles">
              Role: {{role}}

@@ -1,0 +1,412 @@
+<div class="page page-dashboard" data-ng-controller="DashboardCtrl">
+<form name="myForm" data-ng-submit="makeQuote()" >  
+    <!-- Stats -->
+    <div class="row">
+        <div class="col-lg-3 col-xsm-3">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-success">
+                    <i class="fa fa-crosshairs"></i>
+                </span>
+                <div class="box-info" ng-click="getLead()">
+                    <p class="size-h2">{{myleads}}</p>
+                    <p class="text-muted">Total Leads</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xsm-3">
+          <a href="#!/leads" style="text-decoration:none">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-info">
+                    <i class="fa fa-barcode"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2" >{{mydeals}}</p>
+                    <p class="text-muted">Deals</p>
+                </div>
+            </div></a>
+        </div>
+        <div class="col-lg-3 col-xsm-6">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-warning">
+                    <i class="fa fa-dollar"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">${{mrcTotal}}</p>
+                    <p class="text-muted">Revenue Sold</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xsm-6">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-danger">
+                    <i class="fa fa-phone"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">{{mycallDetails}}</p>
+                    <p class="text-muted">Calls</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div class="row">
+        <div class="col-lg-3 col-xsm-6" data-ng-repeat="leadTotal in LeadTotals">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-danger">
+                    <i class="fa fa-shopping-cart"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">{{leadTotal.total}}</p>
+                    <p class="text-muted">{{leadTotal._id}}</p>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Leads By Status</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="leadschart"
+                         data-data="pieChart.data"
+                         data-options="pieChart.options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Leads by State</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="leadsStatechart"
+                         data-data="pieChart.data"
+                         data-options="pieChart.options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </div>
+        </div>
+
+        <!--  <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Leads by Carrier</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="LeadCarrierTotals"
+                         data-data="pieChart.data"
+                         data-options="pieChart.options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </div>
+        </div>  -->
+
+        
+    </div>
+
+<div class="row">
+    <!--  <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Leads by Carrier</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="LeadCarrierTotals"
+                         data-data="pieChart.data"
+                         data-options="pieChart.options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </div>
+            </div> -->
+
+          
+                </div>
+                <div data-ng-controller="LeadsController" >
+            <div class="row">
+                
+<div class="col-lg-12">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                        <div class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> My Follow-Ups</strong></div>
+        <table class="table" data-ng-init="FLUPS()">
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Telephone</th>
+                    <th>Primary Contact</th>
+                    <th>Email</th>
+                    <th>Lead Status</th>
+                    <th>Next Contact Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="lead in myleads" >
+                
+                    <td><a data-ng-href="#!/leads/{{lead._id}}">{{lead.companyname}}</a></td>
+                    <td>{{lead.telephone}}</td>
+                    <td>{{lead.contactname}}</td>
+                    <td>{{lead.email}}</td>
+                    <td><span class="label label-primary">{{lead.status}}</span></td>
+                    <td>{{lead.FLUPDate | date:'medium'}}</td>
+                    <td></td>
+                    </a>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div></div></div>
+<br><br>
+</div>
+
+ <div class="col-lg-12" >
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                        <div class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> My Deals</strong></div>
+        <table class="table" data-ng-init="DEALS()"> 
+            <thead>
+                <tr>
+                   
+                    <th>Deal Name</th>
+                     <th>Telephone</th>
+                    <th>Status</th>
+                    <th>Project Manager</th>
+                    <th>Progress</th>
+                    <th>Last Update</th>
+                </tr>
+            </thead>
+            <tbody>
+             <tbody>
+                <tr data-ng-repeat="deal in mydeals" >
+                
+                    <td><a data-ng-href="#!/deals/{{deal._id}}/edit">{{deal.companyname}}</a></td>
+                    <td>{{deal.telephone}}</td>
+                    <td data-ng-show="deal.stagenum==0"><span class="label label-danger">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum > 0 && deal.stagenum < 20"><span class="label label-warning">{{deal.stage}} </span></td>
+                    <td data-ng-show="deal.stagenum > 19 && deal.stagenum < 40"><span class="label label-default">{{deal.stage}} </span></td>
+                      <td data-ng-show="deal.stagenum > 39 && deal.stagenum < 54"><span class="label label-primary">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum > 54 && deal.stagenum < 69"><span class="label badge-chad">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum > 69"><span class="label label-info">{{deal.stage}}</span></td>
+                    <td>{{deal.projectmanager}}</td>
+                    <td><progressbar class="progressbar-xs no-margin" value="deal.stagenum" type="success"></progressbar></td>
+
+                    <td>{{deal.updated | date:'medium'}}</td>
+                    <td></td>
+                    </a>
+                </tr>
+
+              
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</div></div></div>
+
+
+
+<!-- 
+<div class="page page-table">
+
+    <section class="panel panel-default table-dynamic">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Registrations</strong></div>
+
+            <div class="table-filters">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <input type="text"
+                               placeholder="Search..."
+                               class="form-control"
+                               data-ng-model="tableData.searchKeywords"
+                               data-ng-keyup="search()">
+                        {{tableData.searchKeywords}}
+                    </div>
+                    <div class="col-sm-3 col-xs-6 filter-result-info">
+                        <span>
+                            Showing {{filteredRegistrations.length}}/{{registrations.length}} registrations
+                        </span>              
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                First Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('firstName') "
+                                      data-ng-class="{active: row == 'firstName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-firstName') "
+                                      data-ng-class="{active: row == '-firstName'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Last Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('lastName') "
+                                      data-ng-class="{active: row == 'lastName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-lastName') "
+                                      data-ng-class="{active: row == '-lastName'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Email
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('contact.email') "
+                                      data-ng-class="{active: row == 'contact.email'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-contact.email') "
+                                      data-ng-class="{active: row == '-contact.email'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Cell
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('contact.phone') "
+                                      data-ng-class="{active: row == 'contact.phone'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-contact.phone') "
+                                      data-ng-class="{active: row == '-contact.phone'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Make
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('vehicle.make') "
+                                      data-ng-class="{active: row == 'vehicle.make'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-vehicle.make') "
+                                      data-ng-class="{active: row == '-vehicle.make'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Model
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('vehicle.model') "
+                                      data-ng-class="{active: row == 'vehicle.model'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-vehicle.model') "
+                                      data-ng-class="{active: row == '-vehicle.model'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                                <div class="th">
+                                Year
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('vehicle.year') "
+                                      data-ng-class="{active: row == 'vehicle.year'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-vehicle.year') "
+                                      data-ng-class="{active: row == '-vehicle.year'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                                <div class="th">
+                                Confirmation
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('confirmationCode') "
+                                      data-ng-class="{active: row == 'confirmationCode'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-confirmationCode') "
+                                      data-ng-class="{active: row == '-confirmationCode'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                                <div class="th">
+                                Vote
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('vote') "
+                                      data-ng-class="{active: row == 'vote'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-vote') "
+                                      data-ng-class="{active: row == '-vote'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                                <div class="th">
+                                Date Registered
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('created') "
+                                      data-ng-class="{active: row == 'created'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-created') "
+                                      data-ng-class="{active: row == '-created'}"></span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="registration in currentPageRegistrations">
+                        <td colspan="2"><a data-ng-click="setCurrentRegistration(registration)" href="#!/registrations/{{registration._id}}">{{registration.firstName}} {{registration.lastName}}</a></td>
+                        <td>{{registration.contact.email}}</td>
+                        <td>{{registration.contact.phone | tel}}</td>
+                        <td colspan="3">{{registration.vehicle.year}} {{registration.vehicle.make}} {{registration.vehicle.model}}</td>
+                        <td>{{registration.confirmationCode}}</td>
+                        <td>{{registration.vote || 'N/A'}}</td>
+                        <td>{{registration.created | date : 'MM/dd hh:mma'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                        <span>
+                            Show 
+                            <select data-ng-model="numPerPage"
+                                    data-ng-options="num for num in numPerPageOpt"
+                                    data-ng-change="onNumPerPageChange()">
+                            </select> 
+                            registrations per page
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredRegistrations.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </section>
+</div>
+
+  -->
+
+  </div>

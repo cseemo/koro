@@ -86,14 +86,39 @@ exports.create = function(req, res) {
 
 //Get Total MRC Sold by Rep
 exports.getDealMRCTotal = function(req, res){
-Deal.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
+	console.log('Getting MRC'); 
+
+	console.log('Request: ',req);
+	//console.log('N=?? :',req.body.n);
+var n = 2;
+	switch(n)
+	{
+		case 1:
+		var mytot = Deal.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
 		'$group': { 
 			_id: '$mrc',
 			total: {
 				'$sum': '$mrc'
-			}
-		}
-	}]).exec(function(err, results) {
+					}
+				}
+			}]);
+			break;
+
+		case 2:
+		var mytot = Deal.aggregate([ {
+		'$group': { 
+			_id: '$mrc',
+			total: {
+				'$sum': '$mrc'
+					}
+				}
+			}]);
+			break;
+	}
+
+
+
+	mytot.exec(function(err, results) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
@@ -117,7 +142,11 @@ exports.getDealsbyTotal = function(req, res) {
 	console.log('got to Count Deals FIND USER %o', req.user);
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
-	Deal.aggregate([  { $match: {assignedRep:req.user.displayName} }, 
+	var n = 2;
+	switch(n)
+	{
+		case 1:
+		var myQuery = Deal.aggregate([  { $match: {assignedRep:req.user.displayName} },
 	{
 		'$group': { 
 			_id: '$stage',
@@ -125,7 +154,24 @@ exports.getDealsbyTotal = function(req, res) {
 				'$sum': 1
 			}
 		}
-	}]).exec(function(err, results) {
+	}]);
+		break;
+
+		case 2:
+		var myQuery = Deal.aggregate([  
+	{
+		'$group': { 
+			_id: '$stage',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]);
+		break;
+	}
+
+
+	myQuery.exec(function(err, results) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
@@ -721,7 +767,7 @@ doc.on('end', function(){
 		var message = {
 	'html': '<p>Centurylink Signed LOAs:</p>',
 	'text': 'Centurylink Return Email',
-	'subject': 'Centurylink Signed LAOs',
+	'subject': 'Centurylink Signed LOAs',
 	'from_email': 'yourrep@centurylink.net',
 	'from_name': 'Signed LOA on Behalf of Centurylink',
 	'to': [{
@@ -762,7 +808,7 @@ doc.on('end', function(){
 	'track_clicks': null,
 	'auto_text': null,
 	'auto_html': null,
-	'inline_css': null,
+	'inline_css': true,
 	'url_strip_qs': null,
 	'preserver_recipients': null,
 	'view_content_link': null,

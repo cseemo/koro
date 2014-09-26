@@ -68,6 +68,59 @@
     controller('NavContainerCtrl', ['$scope', function($scope) {}]).
     controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', function($scope, Authentication, Leads) {
 
+
+    // $scope.tableData = {
+    //   searchKeywords: '',
+    // };
+    // $scope.authentication = Authentication;
+    // //$scope.searchKeywords = '';
+    // $scope.filteredRegistrations = [];
+    // $scope.row = '';
+    // $scope.numPerPageOpt = [3, 5, 10, 20];
+    // $scope.numPerPage = $scope.numPerPageOpt[2];
+    // $scope.currentPage = 1;
+    // $scope.currentPageRegistrations = [];
+    // $scope.select = function(page) {
+    //   var end, start;
+    //   start = (page - 1) * $scope.numPerPage;
+    //   end = start + $scope.numPerPage;
+    //   $scope.currentPage = page;
+    //   return $scope.currentPageRegistrations = $scope.filteredRegistrations.slice(start, end);
+    // };
+    // $scope.onFilterChange = function() {
+    //   $scope.select(1);
+    //   $scope.currentPage = 1;
+    //   return $scope.row = '';
+    // };
+    // $scope.onNumPerPageChange = function() {
+    //   $scope.select(1);
+    //   return $scope.currentPage = 1;
+    // };
+    // $scope.onOrderChange = function() {
+    //   $scope.select(1);
+    //   return $scope.currentPage = 1;
+    // };
+    // $scope.search = function() {
+    //   console.log('Keywords: ', $scope.tableData.searchKeywords);
+    //   $scope.filteredRegistrations = $filter('filter')($scope.registrations, $scope.tableData.searchKeywords);
+    //   /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
+    //     firstName: $scope.searchKeywords,
+    //     lastName: $scope.searchKeywords,
+    //     confirmationNumber: $scope.searchKeywords,
+    //   });*/
+    //   return $scope.onFilterChange();
+    // };
+    // $scope.order = function(rowName) {
+    //   if ($scope.row === rowName) {
+    //     return;
+    //   }
+    //   $scope.row = rowName;
+    //   $scope.filteredRegistrations = $filter('orderBy')($scope.filteredRegistrations, rowName);
+    //   return $scope.onOrderChange();
+    // };
+    // $scope.setCurrentRegistration = function(registration) {
+    //   $scope.currentRegistration = $scope.filteredRegistrations.indexOf(registration);
+    // };
        
 
   // Init our blank chart just to keep our settings in place
@@ -149,10 +202,12 @@
       });
 
         //Get Total MRC
-        $scope.mrcTotal = Leads.getRevenueSold();
+         $scope.mrcTotal = Leads.getRevenueSold();
+        //$scope.usermrcTotal = Leads.getRevenueSold();
+        //$scope.totmrcTotal = Leads.getRevenueSold();
 
         $scope.mrcTotal.$promise.then(function(){
-        //console.log('Get taht Deal TOtal!');
+        //console.log('This user has how many roles? ', $scope.user.roles.length);
         var data = [];
         Object.keys($scope.mrcTotal).forEach(function(key) {
           if($scope.mrcTotal[key]._id && $scope.mrcTotal[key]._id !== 'total') {
@@ -272,8 +327,8 @@
         });
         
         // Re-render the chart, we do this so that way we don't have to re-type in the options above. You can also do this by storing options in a variable
-        var plotChart3 = $.plot($('#LeadCarrierTotals'), data2, pieChartOptions);
-        var plotChart4 = $.plot($('#LeadCarrier2Totals'), data2, barChar2Options);
+        // var plotChart3 = $.plot($('#LeadCarrierTotals'), data2, pieChartOptions);
+        // var plotChart4 = $.plot($('#LeadCarrier2Totals'), data2, barChar2Options);
         // plotChart1.setData(data);
         // plotChart1.setupGrid();
         // plotChart1.draw();

@@ -15,6 +15,14 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 				console.log('stateparams: ', $stateParams.type);
 				return 'modules/core/views/dashboard.client.view.html';
 			}*/
+		}).
+		state('admin', {
+			url: '/admin',
+			templateUrl: 'modules/core/views/admin.client.view.html'
+			/*templateUrl: function($stateParams) {
+				console.log('stateparams: ', $stateParams.type);
+				return 'modules/core/views/dashboard.client.view.html';
+			}*/
 		});
 	}
 ]);

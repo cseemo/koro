@@ -872,14 +872,33 @@ exports.getLeadsByStatus = function(req, res) {
 	console.log('got to getLeadsByStatus');
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
-	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
+	var n = 2;
+	switch(n)
+	{
+		case 1:
+		var mytot = Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
 		'$group': { 
 			_id: '$status',
 			total: {
 				'$sum': 1
 			}
 		}
-	}]).exec(function(err, results) {
+	}]);
+		break;
+
+		case 2:
+		var mytot = Lead.aggregate([ {
+		'$group': { 
+			_id: '$status',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]);
+		break;
+
+	}
+	mytot.exec(function(err, results) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)

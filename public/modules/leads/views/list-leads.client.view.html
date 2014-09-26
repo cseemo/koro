@@ -34,7 +34,6 @@
             </thead>
             <tbody>
                 <tr data-ng-repeat="lead in myleads" >
-                
                     <td><a data-ng-href="#!/leads/{{lead._id}}">{{lead.companyname}}</a></td>
                     <td>{{lead.telephone}}</td>
                     <td>{{lead.contactname}}</td>
@@ -43,6 +42,7 @@
                     <td>{{lead.address}}</td>
                     <td></td>
                     </a>
+                   
                 </tr>
                 
             </tbody>
@@ -56,7 +56,7 @@
         <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Leads</strong></div>
         <div class="panel-body">
             <div class="list-group">
-                <a data-ng-repeat="lead in leads" data-ng-href="#!/leads/{{lead._id}}" class="list-group-item">
+                <a data-ng-repeat="lead in leads" data-ng-href="#!/leads/{{lead._id}}" class="list-group-item" data-ng-hide="lead.status==='Closed/Won' || lead.status==='Closed/Lost'">
                     <div class="pull-right"><small class="list-group-item-text">
                         Last Called 
                         <span data-ng-bind="lead.lastCalled | date:'medium'"></span>

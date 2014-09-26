@@ -537,26 +537,30 @@ console.log('dmname: '+this.dmname);
 
 		//Get Email Details for Lead
 
-         $scope.myEmailDetails = Leads.getEmailinfo();
+      //    $scope.myEmailDetails = Leads.getEmailinfo();
 
-        $scope.myEmailDetails.$promise.then(function(results){
-          $scope.myEmailDetails = 0;
-          console.log('Getting Email Details');
-        //console.log('Get call Details %o', results);
-        Object.keys(results).forEach(function(key) {
+      //   $scope.myEmailDetails.$promise.then(function(results){
+      //     $scope.myEmailDetails = 0;
+      //     console.log('Getting Email Details');
+      //   //console.log('Get call Details %o', results);
+      //   Object.keys(results).forEach(function(key) {
 
-          console.log('Results Key %o', results[key]);
-          //console.log(Authentication.user.displayName);
-          //Converted == to === JSLint
-          if(results[key]._id===Authentication.user.displayName)
-          {
-            $scope.mycallDetails = results[key].total;
-            //console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
+      //     console.log('Results Key %o', results[key]);
+      //     //console.log(Authentication.user.displayName);
+      //     //Converted == to === JSLint
+      //     if(results[key]._id===Authentication.user.displayName)
+      //     {
+      //       $scope.mycallDetails = results[key].total;
+      //       //console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
 
-          }
+      //     }
 
-        });
-      });
+      //   });
+      // });
+
+
+
+
 		// Update existing Lead
 		$scope.updateLead = function() {
 			console.log('Got here');
