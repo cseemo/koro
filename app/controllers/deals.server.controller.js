@@ -795,7 +795,7 @@ doc.on('end', function(){
 				},
 				{
 					'name': 'signip',
-					'content': req.deal.ip
+					'content': ip
 				}
 
 
