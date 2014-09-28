@@ -118,13 +118,24 @@
                         </th>
                         <th>
                             <div class="th">
-                                Contact Name
+                                Assigned To
                                 <span class="fa fa-angle-up"
                                       data-ng-click=" order('assignedRep') "
                                       data-ng-class="{active: row == 'assignedRep'}"></span>
                                 <span class="fa fa-angle-down"
                                       data-ng-click=" order('-assignedRep') "
                                       data-ng-class="{active: row == '-assignedRep'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Contact Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('contactname') "
+                                      data-ng-class="{active: row == 'contactname'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-contactname') "
+                                      data-ng-class="{active: row == '-contactname'}"></span>
                             </div>
                         </th>
                         <th>
@@ -177,9 +188,11 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr data-ng-repeat="lead in currentPageLeads" data-ng-show="authentication.user===lead.user || authentication.hasRole('admin') || authentication.hasRole('manager') || authentication.hasRole('typist')">
+                    <tr data-ng-repeat="lead in currentPageLeads">
                         <td><a data-ng-click="setCurrentLead()" href="#!/leads/{{lead._id}}/edit">{{lead.companyname}}</a></td>
+                         <td>{{lead.assignedRep}}</td>
                          <td>{{lead.contactname}} </td>
+
                         <td>{{lead.telephone | tel}}</td>
                         <td>{{lead.status}}</td>
                         <td>{{lead.currentCarrier}}</td>

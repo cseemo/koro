@@ -48,7 +48,7 @@ var TimecardSchema = new Schema({
 });
 
 TimecardSchema.methods.Difference = function() {
-	return this.end - this.start;
+	return this.end - 0 + this.start;
 };
 
 mongoose.model('Timecard', TimecardSchema, 'timecard');

@@ -2,8 +2,8 @@
 
 
 // Leads controller
-angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$filter', '$location', 'Authentication', 'Leads', 'Deals', '$timeout',
-	function($http, $scope, $stateParams, $filter, $location, Authentication, Leads, Deals, $timeout) {
+angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$filter', '$location', 'Authentication', 'Leads', 'Deals', 'Users', '$timeout',
+	function($http, $scope, $stateParams, $filter, $location, Authentication, Leads, Deals, Users, $timeout) {
 		$scope.authentication = Authentication;
 		$scope.sending = false;
 		$scope.emailbuttons = true;
@@ -13,7 +13,12 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 
 		//Leads Table Creation
 	var init;
+	$scope.users = Users.query();
+	$scope.users.$promise.then(function(){
+		return $scope.users;	
 
+
+	});
 	
   	$scope.tableData = {
       searchKeywords: '',
@@ -36,15 +41,15 @@ $scope.currentLead=0;
   
 
     $scope.select = function(page) {
-    	console.log('Variable page: ',page);
+    	//console.log('Variable page: ',page);
       var end, start;
       start = (page - 1) * $scope.numPerPage;
       end = start + $scope.numPerPage;
-      console.log('Start '+start+' and End '+end);
+      //console.log('Start '+start+' and End '+end);
       $scope.currentPage = page;
-      console.log('Filtered Leads %o', $scope.filteredLeads);
+      //console.log('Filtered Leads %o', $scope.filteredLeads);
       if($scope.filteredLeads.length<1){
-      	console.log('No deals have been filtered yet');
+      	//console.log('No deals have been filtered yet');
       	//return $scope.currentPageLeads = $scope.leads.slice(start, end);
       	return $scope.currentPageLeads= $scope.filteredLeads.slice(start, end);
 
@@ -68,7 +73,7 @@ $scope.currentLead=0;
       return $scope.currentPage = 1;
     };
     $scope.search = function() {
-      console.log('Keywords: ', $scope.tableData.searchKeywords);
+      //console.log('Keywords: ', $scope.tableData.searchKeywords);
       $scope.filteredLeads= $filter('filter')($scope.leads, $scope.tableData.searchKeywords);
 
       // {companyname: $scope.tableData.searchKeywords},
@@ -81,14 +86,14 @@ $scope.currentLead=0;
       return $scope.onFilterChange();
     };
     $scope.order = function(rowName) {
-    	console.log('Reordering by ',rowName);
-    	console.log('Scope.row ', $scope.row);
+    	//console.log('Reordering by ',rowName);
+    	//console.log('Scope.row ', $scope.row);
       if ($scope.row === rowName) {
         return;
       }
       $scope.row = rowName;
       $scope.filteredLeads= $filter('orderBy')($scope.filteredLeads, rowName);
-      console.log(rowName);
+      //console.log(rowName);
       return $scope.onOrderChange();
     };
     $scope.setCurrentLead = function(lead) {
@@ -105,8 +110,8 @@ $scope.currentLead=0;
 			
 		}();
 		$scope.convertToDeal = function(){
-			//console.log('Scope: %o',$scope);
-			console.log('This %o', this);
+			////console.log('Scope: %o',$scope);
+			//console.log('This %o', this);
 
 			var dslspeed = this.dslspeed.value,
 			 	lead = $scope.lead;
@@ -121,11 +126,11 @@ $scope.currentLead=0;
 				var mrc = this.currentPrice;
 				var nrc = this.currentNRR;
 			
-			console.log('DSL Speed: ', dslspeed);
-			console.log('Lead User %o', lead.user);
+			//console.log('DSL Speed: ', dslspeed);
+			//console.log('Lead User %o', lead.user);
 			
 			lead.$update(function(response) {
-				console.log('Lead Info To Populate %o',lead);
+				//console.log('Lead Info To Populate %o',lead);
 				
 			
 				var deal = new Deals ({
@@ -157,13 +162,13 @@ $scope.currentLead=0;
 					mrc: 			mrc,
 					nrc:            nrc
 				});
-				console.log('Lead User ID', lead.user._id);
-				console.log('Deal User ID', deal.user);
+				//console.log('Lead User ID', lead.user._id);
+				//console.log('Deal User ID', deal.user);
 
 				// Redirect after save
 				deal.$save(function(response) {
 					$location.path('convertingdeals/' + response._id);
-					//console.log('New Deal %o', deal);
+					////console.log('New Deal %o', deal);
 					
 					// Clear form fields
 					$scope.name = '';
@@ -321,7 +326,7 @@ $scope.loa= $scope.myLOA[0];
 				address: this.address,
 			});
 
-			console.log(lead);
+			//console.log(lead);
 
 			// Redirect after save
 			lead.$save(function(response) {
@@ -336,8 +341,8 @@ $scope.loa= $scope.myLOA[0];
 
 		// Save Lead
 			$scope.saveLead = function() {
-				//console.log('Follow-Up %o',$scope.dt);
-				//console.log('Time %o',$scope.mytime);
+				////console.log('Follow-Up %o',$scope.dt);
+				////console.log('Time %o',$scope.mytime);
 				var date = $scope.dt;
 				var time = $scope.mytime;
 				var datetime = new Date(date.getFullYear(), 
@@ -346,11 +351,11 @@ $scope.loa= $scope.myLOA[0];
 					time.getHours(), 
 					time.getMinutes(), 
 					time.getSeconds());
-				console.log('Follow-Up: ', datetime);
+				//console.log('Follow-Up: ', datetime);
 				// window.alert(datetime);
 
 
-				//console.log('This %o',this.$$childHead);
+				////console.log('This %o',this.$$childHead);
 				var lead = $scope.lead;
 				
 				var rep = lead.assignedRep;
@@ -362,8 +367,8 @@ $scope.loa= $scope.myLOA[0];
 						//window.alert("Follow-Up set for :" + lead.FLUPDate);
 						lead.FLUPDate = datetime;
 					}
-				console.log('saveLead Scope: %o',$scope);
-				//console.log('nicole %o',comms);
+				//console.log('saveLead Scope: %o',$scope);
+				////console.log('nicole %o',comms);
 				var now = Date();
 				// window.alert(lead.user.displayName);
 					lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
@@ -381,11 +386,11 @@ $scope.FLUPS = function() {
 
 $http.get('/flups').success(function(data) {
 	$scope.myleads = data;
-	//console.log('Response %o',data);
+	////console.log('Response %o',data);
 	// window.alert('Response');
 }).error(function(data) {
 
-console.log('Error: ' + data);
+//console.log('Error: ' + data);
 });
 
 
@@ -394,15 +399,15 @@ console.log('Error: ' + data);
 //Get Deals for Table Below
 
 $scope.DEALS = function() {
-	console.log('WTF');
+	//console.log('WTF');
 
 $http.get('/getDeals').success(function(data) {
 	$scope.mydeals = data;
-	console.log('Deal Response %o', data.responseData);
+	//console.log('Deal Response %o', data.responseData);
 	// window.alert('Response');
 }).error(function(data) {
 
-console.log('Error: ' + data);
+//console.log('Error: ' + data);
 });
 
 
@@ -415,7 +420,7 @@ $scope.endCall = function(){
 	$scope.makecall = true;
 	$scope.showend = false;
 
-	console.log('Call Ended');
+	//console.log('Call Ended');
 
 	return;
 }
@@ -437,13 +442,13 @@ $scope.endCall = function(){
 					time.getMinutes(), 
 					time.getSeconds());
 	lead.FLUPDate = datetime;
-	//console.log('nicole %o',comms);
+	////console.log('nicole %o',comms);
 	lead.status = dispo;
 	var now = Date();
 	// window.alert(lead.user.displayName);
 	lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: contact, gatekeeper: who, disposition: dispo});
 	lead.$update(function(data) {
-	console.log('dialLead',data);
+	//console.log('dialLead',data);
 				//$location.path('/getnewlead');
 						$http({
 		method: 'get',
@@ -452,8 +457,8 @@ $scope.endCall = function(){
 .success(function(data, status) {
 		if(status === 200) {
 			//$scope.currentPrice = data.price;
-console.log('Data: ',data);
-console.log('Data.Response: %o',data._id);
+//console.log('Data: ',data);
+//console.log('Data.Response: %o',data._id);
 	
 	$location.path('leads/' + data._id);
 		}
@@ -480,7 +485,7 @@ lead.email = this.myForm.email.$viewValue;
 
 
 $scope.dialLead = function() {
-	//console.log('http--: %o',Authentication);
+	////console.log('http--: %o',Authentication);
 	var lead = $scope.lead;
 
 
@@ -502,10 +507,10 @@ $scope.makeQuote = function(){
 	$scope.emailbuttons = false;
 	$scope.sending = true;
 	// window.alert("MakingQuote");
-	//console.log('Test');
-	console.log('Myform: %o', this.myForm);
+	////console.log('Test');
+	//console.log('Myform: %o', this.myForm);
 var lead = $scope.lead;
-	console.log('Lead Info %o', lead);
+	//console.log('Lead Info %o', lead);
 
 this.term = this.myForm.term.$viewValue;
 this.dsl = this.myForm.dsl_speed.$viewValue;
@@ -514,8 +519,8 @@ this.modem = this.myForm.modem.$viewValue;
 this.nrcs = this.myForm.nrcs.$viewValue;
 this.credits = this.myForm.credits.$viewValue;
 this.iptype = this.myForm.staticIP.$viewValue;
-console.log('coname: %o'+this.myForm);
-console.log('dmname: '+this.dmname);
+//console.log('coname: %o'+this.myForm);
+//console.log('dmname: '+this.dmname);
 
 this.coname = this.myForm.companyname.$viewValue;
 
@@ -523,8 +528,8 @@ this.dmname = this.myForm.dmname.$viewValue;
 this.tel = this.myForm.telephone.$viewValue;
 this.email = this.myForm.email.$viewValue;
 //this.sendloas = this.myForm.sendloas.$viewValue;
-console.log('coname: '+this.coname);
-console.log('dmname: '+this.dmname);
+//console.log('coname: '+this.coname);
+//console.log('dmname: '+this.dmname);
 
 			lead.term =this.term.value;
 			lead.dslspeed =this.dsl.svalue;
@@ -580,23 +585,23 @@ console.log('dmname: '+this.dmname);
 		if(status === 200) {
 			$scope.myresults = 'Email Sent!';
 			//$scope.currentPrice = data.price;
-//console.log('Data Returned '+data);
+////console.log('Data Returned '+data);
 			//$scope.currentPrice = data.price;
 			//$scope.currentNRR = data.nrr;
 			//window.alert(data);
 
-			console.log('Got a 200 result sending the email');
+			//console.log('Got a 200 result sending the email');
 //Get Quote Details and Save to Lead Object
 			//window.alert(data);
 
 			}
 			$timeout(function(){
 
-					console.log('EMail Sent');
+					//console.log('EMail Sent');
 					$timeout(function(){
 					$scope.emailbuttons = true;
 					$scope.results = false;
-					console.log('buttons back');
+					//console.log('buttons back');
 				}, 5000);
 
 			
@@ -607,7 +612,7 @@ console.log('dmname: '+this.dmname);
 
 				})
 			.error(function(data){
-				console.log('OOps...'+data);
+				//console.log('OOps...'+data);
 			});
 
 				
@@ -637,17 +642,17 @@ console.log('dmname: '+this.dmname);
 
       //   $scope.myEmailDetails.$promise.then(function(results){
       //     $scope.myEmailDetails = 0;
-      //     console.log('Getting Email Details');
-      //   //console.log('Get call Details %o', results);
+      //     //console.log('Getting Email Details');
+      //   ////console.log('Get call Details %o', results);
       //   Object.keys(results).forEach(function(key) {
 
-      //     console.log('Results Key %o', results[key]);
-      //     //console.log(Authentication.user.displayName);
+      //     //console.log('Results Key %o', results[key]);
+      //     ////console.log(Authentication.user.displayName);
       //     //Converted == to === JSLint
       //     if(results[key]._id===Authentication.user.displayName)
       //     {
       //       $scope.mycallDetails = results[key].total;
-      //       //console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
+      //       ////console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
 
       //     }
 
@@ -659,9 +664,10 @@ console.log('dmname: '+this.dmname);
 
 		// Update existing Lead
 		$scope.updateLead = function() {
-			console.log('Got here');
+			//console.log('Got here');
 			var lead = $scope.lead ;
 
+			lead.assignedRep=lead.user.displayName;
 			lead.$update(function() {
 				$location.path('leads/' + lead._id);
 			}, function(errorResponse) {
@@ -688,7 +694,7 @@ console.log('dmname: '+this.dmname);
 				leadId: $stateParams.leadId
 			});
 			//$scope.callDetails = $scope.lead.callDetails;
-			//console.log('callDetails %o',$scope.lead);
+			////console.log('callDetails %o',$scope.lead);
 		};
 
 	// Find existing Deal
@@ -699,7 +705,7 @@ console.log('dmname: '+this.dmname);
 
 
 			//$scope.callDetails = $scope.lead.callDetails;
-			console.log('Deal - Look for CallDetails %o',$scope.deal);
+			//console.log('Deal - Look for CallDetails %o',$scope.deal);
 		};
 
 
@@ -711,13 +717,16 @@ console.log('dmname: '+this.dmname);
 			$scope.qwestCheckingServiceA = false;
 			$scope.qwestCheckingService = true;
 			if(address_id) {
-				console.log('addressid: ', address_id);
+				//console.log('addressid: ', address_id);
 
 				$http.get('/qwest/check/' + address_id)
 					.success(function(data, status, headers, config) {
-						//console.log('status: ', status);
-						//console.log('response: ', data);
-						console.log('speedData: ', data);
+						////console.log('status: ', status);
+						console.log('response: ', data);
+						$scope.chadstest = data; 
+						var mystuff = window.open('http://responsefromCLINK.html', 'My Response');
+						mystuff.document.write(data);
+						//console.log('speedData: ', data);
 						//$scope.results = data.speeds;
 						//$scope.availableSpeeds = data.speeds;
 						$scope.qwestCheckingService = false;
@@ -755,9 +764,9 @@ console.log('dmname: '+this.dmname);
 			);
 			$http.jsonp('http://geoamsrv.centurylink.com/geoam/addressmatch/addresses?callback=JSON_CALLBACK&q='+addy+'&_=1409090948562')
 			.success(function(data, status, headers, config) {
-				//console.log('status: ', status);
-				console.log('response: ', data);
-				console.log('responseData: ', data.responseData.addresses)
+				////console.log('status: ', status);
+				//console.log('response: ', data);
+				//console.log('responseData: ', data.responseData.addresses)
 				$scope.addresses = data.responseData.addresses;
 
 				// New for chard!
@@ -773,7 +782,7 @@ console.log('dmname: '+this.dmname);
 		setTimeout(function() {
 			$scope.lead.$promise.then(function() {
 				$scope.addressSearch();
-				console.log('search complete');
+				//console.log('search complete');
 				
 			});	
 		}, 500);
@@ -784,7 +793,7 @@ console.log('dmname: '+this.dmname);
 $scope.getQuote = function() {
 	
 
-console.log('Form',this.myForm);
+//console.log('Form',this.myForm);
 
 this.term = this.myForm.term;
 this.dsl = this.myForm.dsl_speed;
@@ -793,7 +802,7 @@ this.modem = this.myForm.modem;
 this.nrcs = this.myForm.nrcs;
 this.credits = this.myForm.credits;
 this.iptype = this.myForm.staticIP;
-console.log('Scope',$scope);
+//console.log('Scope',$scope);
 
 
 			$http({
@@ -812,7 +821,7 @@ console.log('Scope',$scope);
 .success(function(data, status) {
 		if(status === 200) {
 			//$scope.currentPrice = data.price;
-console.log(data);
+//console.log(data);
 			$scope.currentPrice = data.price;
 			$scope.currentNRR = data.nrr;
 		}
@@ -876,7 +885,7 @@ $scope.mytime = $scope.dt;
         return $scope.mytime = d;
       };
       $scope.changed = function() {
-        return console.log('Time changed to: ' + $scope.mytime);
+        return //console.log('Time changed to: ' + $scope.mytime);
       };
       return $scope.clear = function() {
         return $scope.mytime = null;

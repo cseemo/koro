@@ -242,110 +242,111 @@ res.send(200,'Got that stuff!!!');
  * Qwest loop qualification check
  */
 exports.getQwestLoop = function(req, res) {
-			res.send(505,'Sorry Centurylink is Not Playing Nice');
+			//res.send(505,'Sorry Centurylink is Not Playing Nice');
 
-	// var request = require('request');
-	// var address = req.params.address;
-	// var findCookies = function(cookies) {
-	// 	var cookieBuffer = '';
-	// 	for(var cookie in cookies) {
+	var request = require('request');
+	var address = req.params.address;
+	var findCookies = function(cookies) {
+		var cookieBuffer = '';
+		for(var cookie in cookies) {
 			
-	// 		cookieBuffer += cookies[cookie].split(';')[0] +'; ';
-	// 	}
-	// 	return cookieBuffer;
-	// };
+			cookieBuffer += cookies[cookie].split(';')[0] +'; ';
+		}
+		return cookieBuffer;
+	};
 
 
 
-	// var checkAddress = function(id, cookies, callback) {
+	var checkAddress = function(id, cookies, callback) {
 
-	// 	request.post({
-	// 		url: 'https://shop.centurylink.com/MasterWebPortal/freeRange/smb/shopjumpin.action', 
-	// 		headers: {
-	// 			'Cookie': cookies + ' remember_me=addressID%7C'+id+'; profile_cookie=redirectTarget%7Chttps%3A%2F%2Fshop.centurylink.com%2Fsmall-business%2Fproducts%2Fbundles%2F~redirectTargetQ%7Chttps%3A%2F%2Fshop.centurylink.com%2FMasterWebPortal%2FfreeRange%2Fshop%2FSMBNCBundle.action%3FselectedProd%3Dcc~redirectTargetCTL%7Chttps%3A%2F%2Fshop.centurylink.com%2Fsmallbusiness%2Fproducts%2Fbundles%2Fcore-connect%2F; '
-	// 		}
+		request.post({
+			url: 'https://shop.centurylink.com/MasterWebPortal/freeRange/smb/shopjumpin.action', 
+			headers: {
+				'Cookie': cookies + ' remember_me=addressID%7C'+id+'; profile_cookie=redirectTarget%7Chttps%3A%2F%2Fshop.centurylink.com%2Fsmall-business%2Fproducts%2Fbundles%2F~redirectTargetQ%7Chttps%3A%2F%2Fshop.centurylink.com%2FMasterWebPortal%2FfreeRange%2Fshop%2FSMBNCBundle.action%3FselectedProd%3Dcc~redirectTargetCTL%7Chttps%3A%2F%2Fshop.centurylink.com%2Fsmallbusiness%2Fproducts%2Fbundles%2Fcore-connect%2F; '
+			}
 
-	// 	}, callback);
-	// }
+		}, callback);
+	}
 
-	// var b = request('https://shop.centurylink.com/small-business/', function(err, response, body) {
-	// 	if(err) {
-	// 		//console.log('err? ', err);
-	// 	}
+	var b = request('https://shop.centurylink.com/small-business/', function(err, response, body) {
+		if(err) {
+			console.log('err? ', err);
+		}
 
-	// 	for(var cookie in response.headers['set-cookie']) {
-	// 		if(response.headers['set-cookie'][cookie].match(/TCAT_JSESSIONID/g)) {
+		for(var cookie in response.headers['set-cookie']) {
+			if(response.headers['set-cookie'][cookie].match(/TCAT_JSESSIONID/g)) {
 				
-	// 			var currentCookie = response.headers['set-cookie'][cookie].split(';');
-	// 			for(var c in currentCookie) {
-	// 				if(currentCookie[c].match(/TCAT_JSESSIONID/g)) {
+				var currentCookie = response.headers['set-cookie'][cookie].split(';');
+				for(var c in currentCookie) {
+					if(currentCookie[c].match(/TCAT_JSESSIONID/g)) {
 						
-	// 					var tcat = currentCookie[c].split('=')[1];
+						var tcat = currentCookie[c].split('=')[1];
 
-	// 					//console.log('Session %s started\nAttempting to search for addressid: %s', tcat, address);
-	// 					checkAddress(address, findCookies(response.headers['set-cookie']), function(err, response, body) {
-	// 						var re = /addressid2.{9}(.*)' /g;
-	// 						var matches = re.exec(body);
-	// 						var awesome = function(cookies) {
-	// 							request({
-	// 								url: 'https://shop.centurylink.com/MasterWebPortal/freeRange/smb/SMBDisplay.action',
-	// 								headers: {
-	// 									'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-	// 									Referer: 'https://shop.centurylink.com/MasterWebPortal/freeRange/smb/shopjumpin.action',
-	// 									'Cookie': cookies
+						console.log('Session %s started\nAttempting to search for addressid: %s', tcat, address);
+						checkAddress(address, findCookies(response.headers['set-cookie']), function(err, response, body) {
+							var re = /addressid2.{9}(.*)' /g;
+							var matches = re.exec(body);
+							var awesome = function(cookies) {
+								request({
+									url: 'https://shop.centurylink.com/MasterWebPortal/freeRange/smb/SMBDisplay.action',
+									headers: {
+										'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+										Referer: 'https://shop.centurylink.com/MasterWebPortal/freeRange/smb/shopjumpin.action',
+										'Cookie': cookies
 										
-	// 								}
-	// 							}, function(err, response, body) {
-	// 								var results = [];
-	// 								var re = /DisplayProduct:.*Internet ([0-9\.]+)([a-zA-Z]).*[\/]([0-9]+)([a-zA-Z]).*ps/g;
-	// 								var m;
-	// 								//console.log('ResponseBody ', body);
-	// 								var index = body.search('End ProductConfiguration');
-	// 								if(index > -1) {
-	// 									//console.log('Found index at: %d original size is: %d', index, body.length);
-	// 									body = body.substring(0, index);
+									}
+								}, function(err, response, body) {
+									// var results = [];
+									// var re = /DisplayProduct:.*Internet ([0-9\.]+)([a-zA-Z]).*[\/]([0-9]+)([a-zA-Z]).*ps/g;
+									// var m;
+								//console.log('ResponseBody ', body);
+									// var index = body.search('End ProductConfiguration');
+									// if(index > -1) {
+									// 	//console.log('Found index at: %d original size is: %d', index, body.length);
+									// 	body = body.substring(0, index);
 										
-	// 								}
-	// 								while (m = re.exec(body)) {
+									// }
+									// while (m = re.exec(body)) {
 										
-	// 									if (m.index === re.lastIndex) {
-	// 										re.lastIndex++;
-	// 									}
+									// 	if (m.index === re.lastIndex) {
+									// 		re.lastIndex++;
+									// 	}
 										
-	// 									results.push({
-	// 										name: m[1] + '.' + m[3],
-	// 										value: m[1] + m[2] + 'bps/' + m[3] + m[4] + 'bps',
-	// 										svalue: m[1] + m[2] + '/' + m[3] + m[4],
-	// 										download: m[1],
-	// 										downloadRate: m[2],
-	// 										upload: m[3],
-	// 										uploadRate: m[4]
-	// 									});
-	// 								}
+									// 	results.push({
+									// 		name: m[1] + '.' + m[3],
+									// 		value: m[1] + m[2] + 'bps/' + m[3] + m[4] + 'bps',
+									// 		svalue: m[1] + m[2] + '/' + m[3] + m[4],
+									// 		download: m[1],
+									// 		downloadRate: m[2],
+									// 		upload: m[3],
+									// 		uploadRate: m[4]
+									// 	});
+									// }
 
-	// 								//console.log(results);
-	// 								res.send({speeds: results});
-	// 								return true;
-	// 							});
-	// 						};
+									// //console.log(results);
+									// res.send({speeds: results});
+									res.send(body);
+									return true;
+								});
+							};
 
-	// 						if(matches) {
+							if(matches) {
 
-	// 							//console.log('Found multi unit address re-quering server for primary unit number (%s)', matches[1].split('|')[2]);
-	// 							checkAddress(address+'~geoSecId%7C' + matches[1].split('|')[2], findCookies(response.headers['set-cookie']), function(err, response, body) {
-	// 								awesome(response.headers['set-cookie']);
-	// 							});
-	// 						} else {
-	// 							//console.log('no mismatch found, fetching bandwidth availability');
-	// 							awesome(findCookies(response.headers['set-cookie']) + ' TCAT_JSESSIONID='+tcat+'; ');
-	// 						}
-	// 					});
+								//console.log('Found multi unit address re-quering server for primary unit number (%s)', matches[1].split('|')[2]);
+								checkAddress(address+'~geoSecId%7C' + matches[1].split('|')[2], findCookies(response.headers['set-cookie']), function(err, response, body) {
+									awesome(response.headers['set-cookie']);
+								});
+							} else {
+								//console.log('no mismatch found, fetching bandwidth availability');
+								awesome(findCookies(response.headers['set-cookie']) + ' TCAT_JSESSIONID='+tcat+'; ');
+							}
+						});
 						
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// });
+					}
+				}
+			}
+		}
+	});
 };
 
 //Test Posting our Form Data to PHP File to render PDF
@@ -983,11 +984,13 @@ exports.getDEALS = function(req, res) { Deal.find().where({assignedRep: req.user
 /**
  * List of Leads
  */
-exports.list = function(req, res) { Lead.find({$or: [ 
-	{user: req.user.id},
-	{assignedRep: null}
+ //OLD Way where we want NEW leads/our leads ONLY
+// exports.list = function(req, res) { Lead.find({$or: [ 
+// 	{user: req.user.id},
+// 	{assignedRep: null}
 
-	]}).sort('-lastCalled').exec(function(err, leads) {
+//This way we get ALL Leads for our data
+	exports.list = function(req, res) { Lead.find().sort('-lastCalled').exec(function(err, leads) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)

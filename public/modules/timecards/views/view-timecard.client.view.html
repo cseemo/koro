@@ -16,7 +16,7 @@
             <div class="panel-body ui-map" data-slim-scroll="" data-scroll-height="100px" style="overflow: scroll;  width: auto; height: 100px">
             <b>{{timecard.user.displayName}} </b> 
             	Start-Time: {{timecard.start | date: 'short'}}  - End-Time: Start-Time: {{timecard.end | date: 'short'}}
-            	<br>Hours Worked: {{timecard.end - timecard.start}}
+            	<br>Hours Worked: {{timecard.end - timecard.start}} {{timecard.difference}}
              
 
 
