@@ -14,8 +14,8 @@ var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 
 //SEND Signed LOAs back to customer
 exports.sendSigned = function(req, res) {
-console.log('Sending Signed LOAs');
-console.log('Req.body %o', req.body);
+//console.log('Sending Signed LOAs');
+//console.log('Req.body %o', req.body);
 
 var message = {
 	'html': '<p>Centurylink Signed LOAs</p>',
@@ -54,10 +54,10 @@ var message = {
 var async = false;
 
 mandrill_client.messages.send({'message': message, 'async': async}, function(result){
-	console.log(result);
+	//console.log(result);
 },
 function(e){
-	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
 });
 
 };
@@ -71,7 +71,7 @@ function(e){
 exports.create = function(req, res) {
 	var deal = new Deal(req.body);
 	deal.user = req.user;
-	console.log('Chaddeal %o', deal);
+	//console.log('Chaddeal %o', deal);
 
 	deal.save(function(err) {
 		if (err) {
@@ -86,17 +86,20 @@ exports.create = function(req, res) {
 
 //Get Total MRC Sold by Rep
 exports.getDealMRCTotal = function(req, res){
-	console.log('Getting MRC'); 
+	//console.log('Getting MRC'); 
 
-	console.log('Request: ',req);
-	//console.log('N=?? :',req.body.n);
-var n = 2;
+	////console.log('Request: ',req);
+	////console.log('N=?? :',req.body.n);
+var n = 1;
 	switch(n)
 	{
 		case 1:
-		var mytot = Deal.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
+		//console.log('Assigned Rep: ', req.assignedRep);
+		console.log('Req.User.DisplayName: ', req.user.displayName);
+
+		var mytot = Deal.aggregate([ { $match: {assignedRep: req.user.displayName} }, {
 		'$group': { 
-			_id: '$mrc',
+			_id: '$user',
 			total: {
 				'$sum': '$mrc'
 					}
@@ -139,10 +142,10 @@ var n = 2;
 
 //Count Total Deals
 exports.getDealsbyTotal = function(req, res) {
-	console.log('got to Count Deals FIND USER %o', req.user);
+	//console.log('got to Count Deals FIND USER %o', req.user);
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
-	var n = 2;
+	var n = 1;
 	switch(n)
 	{
 		case 1:
@@ -195,7 +198,7 @@ exports.getDEALS = function(req, res) { Deal.find().where({user: req.user.id}).s
 				message: getErrorMessage(err)
 			});
 		} else {
-			//console.log('leads %o',leads);
+			////console.log('leads %o',leads);
 			res.jsonp(deals);
 		}
 	});
@@ -203,7 +206,7 @@ exports.getDEALS = function(req, res) { Deal.find().where({user: req.user.id}).s
 
 //approve a deal
 exports.approveDeal = function(req, res) {
-		console.log('Deal Data: %o',req.deal);
+		//console.log('Deal Data: %o',req.deal);
 			if(req.deal.loa_signed!='YES'){
 				res.jsonp(req.deal);
 			}else{
@@ -225,9 +228,9 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var deal = req.deal ;
-	console.log('Deal Start',deal);
+	//console.log('Deal Start',deal);
 	deal = _.extend(deal , req.body);
-	console.log('Deal Extended',deal);
+	//console.log('Deal Extended',deal);
 	deal.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -302,7 +305,7 @@ exports.makePDF = function(req, res){
 
 	var timesrun = 0;
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-	console.log('REQ Deal', req.deal);
+	//console.log('REQ Deal', req.deal);
 	var id = req.deal._id;
 	// Deal.findById(id).exec(function(err, deal) {
 	// 	if (err) return next(err);
@@ -314,8 +317,8 @@ exports.makePDF = function(req, res){
 
 
 
-	console.log('Making a PDF');
-	//console.log('Name: ',req.query.name);
+	//console.log('Making a PDF');
+	////console.log('Name: ',req.query.name);
 	//var blobStream = require('blob-stream');
 
 
@@ -406,17 +409,17 @@ exports.makePDF = function(req, res){
 		var i =0;
 
 
-		//console.log('LineDetails #:', req.deal.lineDetails.length);
+		////console.log('LineDetails #:', req.deal.lineDetails.length);
 		
 
-			//console.log('This account has numbers online');
+			////console.log('This account has numbers online');
 		
 		req.deal.lineDetails.forEach(function(num){
-		//console.log('num.number',num.number);
-		// console.log(i);
-		// console.log('XS: '+xs+' and YS: '+ys);
+		////console.log('num.number',num.number);
+		// //console.log(i);
+		// //console.log('XS: '+xs+' and YS: '+ys);
 		if(num!=null && i>0){
-			//console.log('num.number is here: ',num.number);
+			////console.log('num.number is here: ',num.number);
 
 		doc.y = ys;
 		doc.x = xs;
@@ -462,9 +465,9 @@ exports.makePDF = function(req, res){
 			
 		});
 	}else{
-		console.log('Sorry no numbers inputted');
-		console.log('Length',req.deal.lineDetails);
-		console.log('Length',req.deal.lineDetails.length);
+		//console.log('Sorry no numbers inputted');
+		//console.log('Length',req.deal.lineDetails);
+		//console.log('Length',req.deal.lineDetails.length);
 	}
 
 
@@ -586,16 +589,16 @@ exports.makePDF = function(req, res){
 		var i =0;
 
 		
-			console.log('Got numbers ', req.deal.lineDetails);
+			//console.log('Got numbers ', req.deal.lineDetails);
 
 			req.deal.lineDetails.forEach(function(num){
-				console.log('I: ',i);
+				//console.log('I: ',i);
 			if(num!=null && i > 0){
 
 
-				// console.log('hello',num.number);
-				// console.log(i);
-				// console.log('XS: '+xs+' and YS: '+ys);
+				// //console.log('hello',num.number);
+				// //console.log(i);
+				// //console.log('XS: '+xs+' and YS: '+ys);
 
 				doc.y = ys;
 				doc.x = xs;
@@ -730,7 +733,7 @@ doc.pipe( res );
 
 doc.on('data', function(chunk){
 	chunks.push(chunk);
-	//console.log('chunk:', chunk.length);
+	////console.log('chunk:', chunk.length);
 });
  
 
@@ -741,13 +744,13 @@ doc.end();
 
 
 // doc.on('end', function(){
-// 		console.log('doc.on end');
+// 		//console.log('doc.on end');
 // 		var test = res.toString('base64');
 
 		
 
 		// function (err, data){
-		// 	console.log('Sending Email');
+		// 	//console.log('Sending Email');
 		// 	var myPDF = data.toString('base64');
 
 		//res.setHeader('Content-disposition', 'attachment; filename=test');
@@ -756,8 +759,8 @@ doc.end();
 		// var test = data.toString('base64');
 
 doc.on('end', function(){
-	//console.log(callback);
-	//console.log('DId you get a callback?');
+	////console.log(callback);
+	////console.log('DId you get a callback?');
 	var mypdf = Buffer.concat(chunks);
 	//.concat(buffers);
 	var content = mypdf.toString('base64');
@@ -837,10 +840,10 @@ mandrill_client.messages.sendTemplate({
 	'async': async
 }, function(result){
 	timesrun++;
-	console.log('Results from Mandrill', result);
+	//console.log('Results from Mandrill', result);
 },
 function(e){
-	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
 });
 
 

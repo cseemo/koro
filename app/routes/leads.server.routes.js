@@ -38,6 +38,7 @@ module.exports = function(app) {
 		//.get(leads.qwestLoopQual);
 
 		
+
 		app.route('/leads/:leadId/emailinfo')
 		.get(leads.leadByID, leads.getEmailInfo);
 
@@ -51,6 +52,9 @@ module.exports = function(app) {
 
 		app.route('/stats/leads/by/state')
 		.get(leads.getLeadsByState);
+
+		app.route('/stats/leads/total')
+		.get(leads.getLeadsbyTotal);
 	
 		//Get Call Details by Rep
 		app.route('/records/calldetails/rep')

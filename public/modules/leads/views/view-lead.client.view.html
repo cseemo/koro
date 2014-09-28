@@ -1,49 +1,50 @@
 <div class="page page-dashboard" data-ng-controller="DashboardCtrl">
 
 <form name="myForm" data-ng-submit="makeQuote()" >  
-    <!-- Stats -->
+        <!-- Stats -->
     <div class="row">
-        <div class="col-lg-3 col-md-3 col-xsm-4">
-                       <div class="panel mini-box">
+        <div class="col-lg-3 col-xsm-3">
+            <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-success">
                     <i class="fa fa-crosshairs"></i>
                 </span>
                 <div class="box-info" ng-click="getLead()">
-                    <p class="size-h2">{{myleads}}</p>
+                    <p class="size-h2"><span stats="repLEADS">{{mystuff}}</span></p>
                     <p class="text-muted">Total Leads</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-3 col-xsm-4">
+        <div class="col-lg-3 col-xsm-3">
           <a href="#!/leads" style="text-decoration:none">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-info">
-                    <i class="fa fa-file-text"></i>
+                    <i class="fa fa-barcode"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2" >{{mydeals}}</p>
+                    <p class="size-h2" ><span stats="repDEALS">{{mystuff}}</span></p>
                     <p class="text-muted">Deals</p>
                 </div>
             </div></a>
         </div>
-        <div class="col-lg-3 col-md-3 col-xsm-4">
+        <div class="col-lg-3 col-xsm-6">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-warning">
                     <i class="fa fa-dollar"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">${{mrcTotal}}</p>
+                    <p class="size-h2">$<span stats="repMRC">{{mystuff}}</span></p>
                     <p class="text-muted">Revenue Sold</span></p>
                 </div>
+
             </div>
         </div>
-        <div class="col-lg-3 col-md-3 col-xsm-4">
+        <div class="col-lg-3 col-xsm-6">
             <div class="panel mini-box">
                 <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-danger">
                     <i class="fa fa-phone"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">{{mycallDetails}}</p>
+                    <p class="size-h2"><span stats="repCALLS">{{mystuff}}</span></p>
                     <p class="text-muted">Calls</p>
                 </div>
             </div>

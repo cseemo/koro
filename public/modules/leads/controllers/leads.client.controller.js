@@ -2,14 +2,108 @@
 
 
 // Leads controller
-angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$timeout',
-	function($http, $scope, $stateParams, $location, Authentication, Leads, Deals, $timeout) {
+angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$filter', '$location', 'Authentication', 'Leads', 'Deals', '$timeout',
+	function($http, $scope, $stateParams, $filter, $location, Authentication, Leads, Deals, $timeout) {
 		$scope.authentication = Authentication;
 		$scope.sending = false;
 		$scope.emailbuttons = true;
 		$scope.results = false;
 		if( ! Authentication.user ) $location.path('/signin');
 
+
+		//Leads Table Creation
+	var init;
+
+	
+  	$scope.tableData = {
+      searchKeywords: '',
+    };
+    $scope.filteredLeads= [];
+    $scope.row = '';
+    $scope.numPerPageOpt = [3, 5, 10, 20, 50, 100];
+    $scope.numPerPage = $scope.numPerPageOpt[2];
+    $scope.currentPage = 1;
+    $scope.currentPageDeals= $scope.stinit;
+    $scope.currentPageLeads= [];
+
+$scope.pdf = false;
+$scope.step = 1;
+$scope.currentLead=0;
+
+
+	$scope.leads = Leads.query();
+
+  
+
+    $scope.select = function(page) {
+    	console.log('Variable page: ',page);
+      var end, start;
+      start = (page - 1) * $scope.numPerPage;
+      end = start + $scope.numPerPage;
+      console.log('Start '+start+' and End '+end);
+      $scope.currentPage = page;
+      console.log('Filtered Leads %o', $scope.filteredLeads);
+      if($scope.filteredLeads.length<1){
+      	console.log('No deals have been filtered yet');
+      	//return $scope.currentPageLeads = $scope.leads.slice(start, end);
+      	return $scope.currentPageLeads= $scope.filteredLeads.slice(start, end);
+
+      }else{
+      	return $scope.currentPageLeads= $scope.filteredLeads.slice(start, end);
+
+      }
+      
+    };
+    $scope.onFilterChange = function() {
+      $scope.select(1);
+      $scope.currentPage = 1;
+      return $scope.row = '';
+    };
+    $scope.onNumPerPageChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.onOrderChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.search = function() {
+      console.log('Keywords: ', $scope.tableData.searchKeywords);
+      $scope.filteredLeads= $filter('filter')($scope.leads, $scope.tableData.searchKeywords);
+
+      // {companyname: $scope.tableData.searchKeywords},
+
+      /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
+        firstName: $scope.searchKeywords,
+        lastName: $scope.searchKeywords,
+        confirmationNumber: $scope.searchKeywords,
+      });*/
+      return $scope.onFilterChange();
+    };
+    $scope.order = function(rowName) {
+    	console.log('Reordering by ',rowName);
+    	console.log('Scope.row ', $scope.row);
+      if ($scope.row === rowName) {
+        return;
+      }
+      $scope.row = rowName;
+      $scope.filteredLeads= $filter('orderBy')($scope.filteredLeads, rowName);
+      console.log(rowName);
+      return $scope.onOrderChange();
+    };
+    $scope.setCurrentLead = function(lead) {
+      $scope.currentLead = $scope.filteredLeads.indexOf(lead);
+    };
+
+	$scope.stinit = function() {
+			//$scope.registrations = Registrations.query();
+			//$scope.find();
+			$scope.leads.$promise.then(function() {
+				$scope.search();
+				return $scope.select($scope.currentPage);	
+			});
+			
+		}();
 		$scope.convertToDeal = function(){
 			//console.log('Scope: %o',$scope);
 			console.log('This %o', this);
@@ -63,6 +157,8 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 					mrc: 			mrc,
 					nrc:            nrc
 				});
+				console.log('Lead User ID', lead.user._id);
+				console.log('Deal User ID', deal.user);
 
 				// Redirect after save
 				deal.$save(function(response) {

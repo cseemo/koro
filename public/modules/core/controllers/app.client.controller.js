@@ -66,61 +66,76 @@
     }
   ]).controller('HeaderCtrl', ['$scope', function($scope) {}]).
     controller('NavContainerCtrl', ['$scope', function($scope) {}]).
-    controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', function($scope, Authentication, Leads) {
+    controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', 'Deals', '$filter',  function($scope, Authentication, Leads, Deals, $filter) {
+
+    var init;
+    $scope.tableData = {
+      searchKeywords: '',
+    };
+    $scope.authentication = Authentication;
+    //$scope.searchKeywords = '';
+    $scope.filteredDeals= [];
+    $scope.row = '';
+    $scope.numPerPageOpt = [3, 5, 10, 20];
+    $scope.numPerPage = $scope.numPerPageOpt[2];
+    $scope.currentPage = 1;
+    $scope.currentPageDeals= [];
+    $scope.select = function(page) {
+      var end, start;
+      start = (page - 1) * $scope.numPerPage;
+      end = start + $scope.numPerPage;
+      $scope.currentPage = page;
+      return $scope.currentPageDeals = $scope.filteredDeals.slice(start, end);
+    };
+    $scope.onFilterChange = function() {
+      $scope.select(1);
+      $scope.currentPage = 1;
+      return $scope.row = '';
+    };
+    $scope.onNumPerPageChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.onOrderChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.search = function() {
+      console.log('Keywords: ', $scope.tableData.searchKeywords);
+      $scope.filteredDeals = $filter('filter')($scope.deals, $scope.tableData.searchKeywords);
+      /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
+        firstName: $scope.searchKeywords,
+        lastName: $scope.searchKeywords,
+        confirmationNumber: $scope.searchKeywords,
+      });*/
+      return $scope.onFilterChange();
+    };
+    $scope.order = function(rowName) {
+      if ($scope.row === rowName) {
+        return;
+      }
+      $scope.row = rowName;
+      $scope.filteredDeal = $filter('orderBy')($scope.filteredDeals, rowName);
+      return $scope.onOrderChange();
+    };
+    $scope.setCurrentDeal = function(registration) {
+      $scope.currentDeal = $scope.filteredDeals.indexOf(deal);
+    };
+
+       $scope.setCurrentDeal = function(registration) {
+      $scope.currentDeal = $scope.filteredDeals.indexOf(deal);
+    };
 
 
-    // $scope.tableData = {
-    //   searchKeywords: '',
-    // };
-    // $scope.authentication = Authentication;
-    // //$scope.searchKeywords = '';
-    // $scope.filteredRegistrations = [];
-    // $scope.row = '';
-    // $scope.numPerPageOpt = [3, 5, 10, 20];
-    // $scope.numPerPage = $scope.numPerPageOpt[2];
-    // $scope.currentPage = 1;
-    // $scope.currentPageRegistrations = [];
-    // $scope.select = function(page) {
-    //   var end, start;
-    //   start = (page - 1) * $scope.numPerPage;
-    //   end = start + $scope.numPerPage;
-    //   $scope.currentPage = page;
-    //   return $scope.currentPageRegistrations = $scope.filteredRegistrations.slice(start, end);
-    // };
-    // $scope.onFilterChange = function() {
-    //   $scope.select(1);
-    //   $scope.currentPage = 1;
-    //   return $scope.row = '';
-    // };
-    // $scope.onNumPerPageChange = function() {
-    //   $scope.select(1);
-    //   return $scope.currentPage = 1;
-    // };
-    // $scope.onOrderChange = function() {
-    //   $scope.select(1);
-    //   return $scope.currentPage = 1;
-    // };
-    // $scope.search = function() {
-    //   console.log('Keywords: ', $scope.tableData.searchKeywords);
-    //   $scope.filteredRegistrations = $filter('filter')($scope.registrations, $scope.tableData.searchKeywords);
-    //   /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
-    //     firstName: $scope.searchKeywords,
-    //     lastName: $scope.searchKeywords,
-    //     confirmationNumber: $scope.searchKeywords,
-    //   });*/
-    //   return $scope.onFilterChange();
-    // };
-    // $scope.order = function(rowName) {
-    //   if ($scope.row === rowName) {
-    //     return;
-    //   }
-    //   $scope.row = rowName;
-    //   $scope.filteredRegistrations = $filter('orderBy')($scope.filteredRegistrations, rowName);
-    //   return $scope.onOrderChange();
-    // };
-    // $scope.setCurrentRegistration = function(registration) {
-    //   $scope.currentRegistration = $scope.filteredRegistrations.indexOf(registration);
-    // };
+    init = function() {
+      //$scope.registrations = Registrations.query();
+      //$scope.find();
+      $scope.deals.$promise.then(function() {
+        $scope.search();
+        return $scope.select($scope.currentPage); 
+      });
+      
+    };
        
 
   // Init our blank chart just to keep our settings in place
@@ -202,29 +217,29 @@
       });
 
         //Get Total MRC
-         $scope.mrcTotal = Leads.getRevenueSold();
-        //$scope.usermrcTotal = Leads.getRevenueSold();
-        //$scope.totmrcTotal = Leads.getRevenueSold();
+      //    $scope.mrcTotal = Leads.getRevenueSold();
+      //   //$scope.usermrcTotal = Leads.getRevenueSold();
+      //   //$scope.totmrcTotal = Leads.getRevenueSold();
 
-        $scope.mrcTotal.$promise.then(function(){
-        //console.log('This user has how many roles? ', $scope.user.roles.length);
-        var data = [];
-        Object.keys($scope.mrcTotal).forEach(function(key) {
-          if($scope.mrcTotal[key]._id && $scope.mrcTotal[key]._id !== 'total') {
-            data.push({label: $scope.mrcTotal[key]._id, data: $scope.mrcTotal[key].total});
-            ////console.log('Total: ', $scope.mrcTotal[key]._id + ' ' + $scope.mrcTotal[key].total);
-          }
-          if($scope.mrcTotal[key]._id === 'total'){
-          //Fill out box of Total Leads
-               $scope.mrcTotal = $scope.mrcTotal[key].total;
-               ////console.log('Chads tingy: ', $scope.mrcTotal[key].total);
-          }
+      //   $scope.mrcTotal.$promise.then(function(){
+      //   //console.log('This user has how many roles? ', $scope.user.roles.length);
+      //   var data = [];
+      //   Object.keys($scope.mrcTotal).forEach(function(key) {
+      //     if($scope.mrcTotal[key]._id && $scope.mrcTotal[key]._id !== 'total') {
+      //       data.push({label: $scope.mrcTotal[key]._id, data: $scope.mrcTotal[key].total});
+      //       ////console.log('Total: ', $scope.mrcTotal[key]._id + ' ' + $scope.mrcTotal[key].total);
+      //     }
+      //     if($scope.mrcTotal[key]._id === 'total'){
+      //     //Fill out box of Total Leads
+      //          $scope.mrcTotal = $scope.mrcTotal[key].total;
+      //          ////console.log('Chads tingy: ', $scope.mrcTotal[key].total);
+      //     }
 
 
-        });
-        //Semi colon above suggested by JSLint marin didn't have one
+      //   });
+      //   //Semi colon above suggested by JSLint marin didn't have one
 
-      });
+      // });
 
 
 

@@ -3,19 +3,39 @@
 // Deals controller
 angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce',
 	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $sce) {
-		$scope.authentication = Authentication;
+
+var init;
+
+$scope.authentication = Authentication;
+  $scope.tableData = {
+      searchKeywords: '',
+    };
+    $scope.filteredDeals= [];
+    $scope.row = '';
+    $scope.numPerPageOpt = [3, 5, 10, 20];
+    $scope.numPerPage = $scope.numPerPageOpt[2];
+    $scope.currentPage = 1;
+    //$scope.currentPageDeals= $scope.getinit;
+    $scope.currentPageDeals= [];
+
 $scope.pdf = false;
 $scope.step = 1;
+$scope.currentDeal=0;
+
+
+
 //$scope.myiframe = 'blob:http%3A//localhost%3A3000/d43e67f4-bab2-4778-b97c-6385c4b158a8';
 $scope.pending=false;
 $scope.sending=false;
 $scope.finished=false;
+
 $scope.nextStep = function(){
 var current = $scope.step-0+1;
 console.log('Current: ',current);
 $scope.step = current;
 console.log('Current Step: ',$scope.step);
 };
+
 $scope.mycontent = {};
 
 $scope.lastStep = function(){
@@ -86,6 +106,9 @@ console.log('Current Step: ',$scope.step);
 		});
 
 
+
+
+
 		// .success(function(data, status) {
 		// 	console.log('Success!');
 		// });
@@ -123,6 +146,87 @@ console.log('Current Step: ',$scope.step);
 			
 
 		};
+
+
+
+
+//Deals Table Shit
+	$scope.deals = Deals.query();
+
+  
+
+    $scope.select = function(page) {
+    	console.log('Variable page: ',page);
+      var end, start;
+      start = (page - 1) * $scope.numPerPage;
+      end = start + $scope.numPerPage;
+      console.log('Start '+start+' and End '+end);
+      $scope.currentPage = page;
+      console.log('Filtered Deals %o', $scope.filteredDeals);
+      if($scope.filteredDeals.length<1){
+      	console.log('No deals have been filtered yet');
+      	return $scope.currentPageDeals = $scope.deals.slice(start, end);
+
+      }else{
+      	return $scope.currentPageDeals = $scope.filteredDeals.slice(start, end);
+
+      }
+      
+    };
+    $scope.onFilterChange = function() {
+      $scope.select(1);
+      $scope.currentPage = 1;
+      return $scope.row = '';
+    };
+    $scope.onNumPerPageChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.onOrderChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.search = function() {
+      console.log('Keywords: ', $scope.tableData.searchKeywords);
+      $scope.filteredDeals = $filter('filter')($scope.deals, $scope.tableData.searchKeywords);
+
+      // {companyname: $scope.tableData.searchKeywords},
+
+      /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
+        firstName: $scope.searchKeywords,
+        lastName: $scope.searchKeywords,
+        confirmationNumber: $scope.searchKeywords,
+      });*/
+      return $scope.onFilterChange();
+    };
+    $scope.order = function(rowName) {
+    	console.log('Reordering by ',rowName);
+    	console.log('Scope.row ', $scope.row);
+      if ($scope.row === rowName) {
+        return;
+      }
+      $scope.row = rowName;
+      $scope.filteredDeals = $filter('orderBy')($scope.filteredDeals, rowName);
+      console.log(rowName);
+      return $scope.onOrderChange();
+    };
+    $scope.setCurrentDeal = function(deal) {
+      $scope.currentDeal = $scope.filteredDeals.indexOf(deal);
+    };
+
+	init = function() {
+			//$scope.registrations = Registrations.query();
+			//$scope.find();
+			$scope.deals.$promise.then(function() {
+				$scope.search();
+				return $scope.select($scope.currentPage);	
+			});
+			
+		}();
+
+
+
+
 
 	$scope.buildDTW = function(){
 		console.log('got here %',$scope);
@@ -530,5 +634,99 @@ return $scope.deal.dslspeed;
 
 			
 		};
-	}
-]);
+
+}]).directive('stats', function($q, $http, Authentication){
+	return {
+		scope: {},
+		restrict: 'AE',
+		// replace: true,
+		// transclude: true,
+		template: '<span>{{mystuff}}</span',
+		link: function(scope, element, attrs){
+			console.log('Loading Data');
+			console.log(element);
+			console.log('My attrs', attrs);
+			var mytype = attrs.stats;
+
+			switch(mytype) {
+				case 'repMRC':
+				var statURL = '/stats/deals/mrctotal'
+				break;
+
+				case 'repLEADS':
+				var statURL = '/stats/leads/total'
+				break;
+
+				case 'repDEALS':
+				var statURL = '/stats/deals/total'
+				break;
+
+				case 'repCALLS':
+				var statURL = '/records/calldetails/rep'
+				break;
+			}
+
+			$http.get(statURL).then(function(result){
+				console.log('Result '+mytype+' :', result);
+				if(mytype==='repCALLS'){
+					console.log('Going thru Rep Array now', Authentication.user.displayName);
+		Object.keys(result.data).forEach(function(key) {
+			console.log('Actually in the array');
+          console.log('Results Key %o', result.data[key]);
+          //console.log(Authentication.user.displayName);
+          //Converted == to === JSLint
+          console.log('Result ID :', result.data[key]._id);
+          if(result.data[key]._id===Authentication.user.displayName)
+          {
+            scope.mystuff = result.data[key].total;
+            //console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
+
+          }
+
+        });
+
+
+				}else{
+					console.log('No Array to go thru');
+				scope.mystuff = result.data[0].total;	
+				}
+			
+
+				
+				
+			});
+			console.log('Getting scope in our directive', scope);
+
+			return scope.mystuff;
+	
+		}
+
+
+};
+});
+
+
+// 			]).directive('clock', function($http){
+// 	return{
+// 		restrict: 'E',
+// 		replace: true,
+// 		//transclude: true,
+// 		scope: {
+// 			timezone: '@'
+// 			},
+// 		controller: function($scope, $element){
+// 			console.log('Element: ',$element);
+// 			//console.log('Attrs: ',attrs);
+// 			$http.get(url: '/stats/deals/mrctotal',
+// 				isArray: true,
+
+// 			$scope.callHandler = function(){
+
+			
+// 			}
+// 		},
+// 		template: '<div ng-click="callHandler()">1pm{{timezone}}</div>'
+			
+// }});
+
+

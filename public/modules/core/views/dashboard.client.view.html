@@ -8,7 +8,7 @@
                     <i class="fa fa-crosshairs"></i>
                 </span>
                 <div class="box-info" ng-click="getLead()">
-                    <p class="size-h2">{{myleads}}</p>
+                    <p class="size-h2"><span stats="repLEADS">{{mystuff}}</span></p>
                     <p class="text-muted">Total Leads</p>
                 </div>
             </div>
@@ -20,7 +20,7 @@
                     <i class="fa fa-barcode"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2" >{{mydeals}}</p>
+                    <p class="size-h2" ><span stats="repDEALS">{{mystuff}}</span></p>
                     <p class="text-muted">Deals</p>
                 </div>
             </div></a>
@@ -31,9 +31,10 @@
                     <i class="fa fa-dollar"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">${{mrcTotal}}</p>
+                    <p class="size-h2">$<span stats="repMRC">{{mystuff}}</span></p>
                     <p class="text-muted">Revenue Sold</span></p>
                 </div>
+
             </div>
         </div>
         <div class="col-lg-3 col-xsm-6">
@@ -42,7 +43,7 @@
                     <i class="fa fa-phone"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">{{mycallDetails}}</p>
+                    <p class="size-h2"><span stats="repCALLS">{{mystuff}}</span></p>
                     <p class="text-muted">Calls</p>
                 </div>
             </div>

@@ -40,10 +40,10 @@ var getErrorMessage = function(err) {
 
 exports.sendQuote = function(req, res){
 	//var deal = req.deal;
-	//console.log('Request::::::',req);
-	//console.log('Look above here for the email address and shit');
-	//console.log('Request EMail',req.email);
-	console.log('Request Lead Info',req.lead);
+	////console.log('Request::::::',req);
+	////console.log('Look above here for the email address and shit');
+	////console.log('Request EMail',req.email);
+	//console.log('Request Lead Info',req.lead);
 	var PDFDocument = require('pdfkit');
 	var fs=require('fs');
 	var doc = new PDFDocument();
@@ -64,7 +64,7 @@ exports.sendQuote = function(req, res){
 
 	doc.on('data', function(chunk){
 	chunks.push(chunk);
-	//console.log('chunk:', chunk.length);
+	////console.log('chunk:', chunk.length);
 });
  
 
@@ -91,8 +91,8 @@ doc.end();
 
 
 doc.on('end', function(){
-	//console.log(callback);
-	//console.log('DId you get a callback?');
+	////console.log(callback);
+	////console.log('DId you get a callback?');
 	var mypdf = Buffer.concat(chunks);
 	//.concat(buffers);
 	var content = mypdf.toString('base64');
@@ -184,10 +184,10 @@ mandrill_client.messages.sendTemplate({
 	'async': async
 }, function(result){
 	timesrun++;
-	console.log('Results from Mandrill', result);
+	//console.log('Results from Mandrill', result);
 },
 function(e){
-	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
 });
 
 
@@ -233,7 +233,7 @@ exports.getLeadsByStatus = function(req, res) {
 	Check Email Stats
 */
 exports.getEmailInfo = function(req, res){
-console.log('We got to get Email Details');
+//console.log('We got to get Email Details');
 res.send(200,'Got that stuff!!!');
 
 
@@ -270,7 +270,7 @@ exports.getQwestLoop = function(req, res) {
 
 	// var b = request('https://shop.centurylink.com/small-business/', function(err, response, body) {
 	// 	if(err) {
-	// 		console.log('err? ', err);
+	// 		//console.log('err? ', err);
 	// 	}
 
 	// 	for(var cookie in response.headers['set-cookie']) {
@@ -282,7 +282,7 @@ exports.getQwestLoop = function(req, res) {
 						
 	// 					var tcat = currentCookie[c].split('=')[1];
 
-	// 					console.log('Session %s started\nAttempting to search for addressid: %s', tcat, address);
+	// 					//console.log('Session %s started\nAttempting to search for addressid: %s', tcat, address);
 	// 					checkAddress(address, findCookies(response.headers['set-cookie']), function(err, response, body) {
 	// 						var re = /addressid2.{9}(.*)' /g;
 	// 						var matches = re.exec(body);
@@ -299,10 +299,10 @@ exports.getQwestLoop = function(req, res) {
 	// 								var results = [];
 	// 								var re = /DisplayProduct:.*Internet ([0-9\.]+)([a-zA-Z]).*[\/]([0-9]+)([a-zA-Z]).*ps/g;
 	// 								var m;
-	// 								console.log('ResponseBody ', body);
+	// 								//console.log('ResponseBody ', body);
 	// 								var index = body.search('End ProductConfiguration');
 	// 								if(index > -1) {
-	// 									console.log('Found index at: %d original size is: %d', index, body.length);
+	// 									//console.log('Found index at: %d original size is: %d', index, body.length);
 	// 									body = body.substring(0, index);
 										
 	// 								}
@@ -323,7 +323,7 @@ exports.getQwestLoop = function(req, res) {
 	// 									});
 	// 								}
 
-	// 								console.log(results);
+	// 								//console.log(results);
 	// 								res.send({speeds: results});
 	// 								return true;
 	// 							});
@@ -331,12 +331,12 @@ exports.getQwestLoop = function(req, res) {
 
 	// 						if(matches) {
 
-	// 							console.log('Found multi unit address re-quering server for primary unit number (%s)', matches[1].split('|')[2]);
+	// 							//console.log('Found multi unit address re-quering server for primary unit number (%s)', matches[1].split('|')[2]);
 	// 							checkAddress(address+'~geoSecId%7C' + matches[1].split('|')[2], findCookies(response.headers['set-cookie']), function(err, response, body) {
 	// 								awesome(response.headers['set-cookie']);
 	// 							});
 	// 						} else {
-	// 							console.log('no mismatch found, fetching bandwidth availability');
+	// 							//console.log('no mismatch found, fetching bandwidth availability');
 	// 							awesome(findCookies(response.headers['set-cookie']) + ' TCAT_JSESSIONID='+tcat+'; ');
 	// 						}
 	// 					});
@@ -350,7 +350,7 @@ exports.getQwestLoop = function(req, res) {
 
 //Test Posting our Form Data to PHP File to render PDF
 exports.gogetQuote = function(req, res) {
-console.log('Coming from gogetQuote: '+req.body);
+//console.log('Coming from gogetQuote: '+req.body);
 res.send({Response: 'Good'});
 	};
 
@@ -360,9 +360,9 @@ exports.createQuote = function(req, res) {
 
 	/* Do logic here */
     //$log.info('Params: ', req.body);
-	//console.log('Params: ', req);
-	console.log(req.body.term);
-	//console.log(req.params.dsl_speed);
+	////console.log('Params: ', req);
+	//console.log(req.body.term);
+	////console.log(req.params.dsl_speed);
 	
 	/* I'm sure there is a better way to do this like foreach or whatever  but we'll grab our variables here */
 	var dsl = req.body.dsl;
@@ -376,11 +376,11 @@ exports.createQuote = function(req, res) {
 
 var adlcostN;
 
-console.log(dsl);
+//console.log(dsl);
 //Figure out Adl Lines 
 if(isNaN(adl)){
 adlPrice = 0;
-console.log('isNan :(');
+//console.log('isNan :(');
 }else{
 
 
@@ -397,7 +397,7 @@ adlPrice = parseInt(adl)*25;
 }
 
 
-console.log('term: '+term + ' '+'DSl.Name: '+dsl.name);
+//console.log('term: '+term + ' '+'DSl.Name: '+dsl.name);
 var dslPrice;
 
 if(term.value==='1'){
@@ -492,7 +492,7 @@ if(staticip.name==='StaticBlock'){
 staticIP=14.95;
 }
 
-console.log('Static'+staticIP);
+//console.log('Static'+staticIP);
 
 
 
@@ -506,7 +506,7 @@ if(modem.name==='Purchase'){
 modemCostN = parseInt(99);
 }
 
-console.log('Modem'+modem.name);
+//console.log('Modem'+modem.name);
 
 if(nrcs.name==='Yes'){
 	adlcostN=0;
@@ -517,18 +517,18 @@ adlcostN = parseFloat(adlcostN, 2);
 }
 
 
-console.log('DSL '+dslPrice);
+//console.log('DSL '+dslPrice);
 
 var staticIPcost = staticIP.toFixed(2);
 var currentPrice = parseInt(dslPrice)+parseInt(adlPrice)+parseFloat(staticIPcost)+modemCostM;
 
-//console.log('NRR Stuff: '+adlcostN+' -- Modem: '+modemCostN);
+////console.log('NRR Stuff: '+adlcostN+' -- Modem: '+modemCostN);
 
 
 var nrrCost = parseInt(adlcostN)+parseFloat(modemCostN);
 
-//console.log('NRR Cost: '+nrrCost);
-//console.log('Current Price'+currentPrice);
+////console.log('NRR Cost: '+nrrCost);
+////console.log('Current Price'+currentPrice);
 	// Return our object to the front end
 	res.send({ price: currentPrice, nrr: nrrCost });
 };
@@ -546,8 +546,8 @@ var nrrCost = parseInt(adlcostN)+parseFloat(modemCostN);
 // 				message: 'Error Getting Leads - exports.OldestFirst'
 // 			});
 // 		if (lead) {
-// 			console.log('lead',lead);
-// 			console.log('req.user', req.user);
+// 			//console.log('lead',lead);
+// 			//console.log('req.user', req.user);
 // 			lead.user = req.user;
 // 			lead.assigned = Date.now();
 // 			lead.assignedRep = req.user.displayName;
@@ -557,7 +557,7 @@ var nrrCost = parseInt(adlcostN)+parseFloat(modemCostN);
 // 				message: getErrorMessage(err)
 // 			});
 // 		} else {
-// 			//console.log('Lead to Be Sent %o', lead);
+// 			////console.log('Lead to Be Sent %o', lead);
 // 			res.jsonp(lead);
 // 		}
 
@@ -597,7 +597,7 @@ exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exe
 				message: getErrorMessage(err)
 			});
 		} else {
-			//console.log('Lead to Be Sent %o', lead);
+			////console.log('Lead to Be Sent %o', lead);
 			res.jsonp(lead);
 		}
 
@@ -609,18 +609,18 @@ exports.oldestFirst = function(req, res) { Lead.findOne({assignedRep: null}).exe
 
 exports.createDeal = function(req, res) {
 	var deal = new Deal(req.body);
-	console.log('CreateDeal: %o', deal);
-	console.log('User Req', req.user);
+	//console.log('CreateDeal: %o', deal);
+	//console.log('User Req', req.user);
 	deal.user = req.user;
 
 	deal.save(function(err, callback) {
 		if (err) {
-			console.log('Error!! %o', err);
+			//console.log('Error!! %o', err);
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
-			console.log('createDeal Passing: %o',callback);
+			//console.log('createDeal Passing: %o',callback);
 			res.jsonp(deal);
 		}
 	});
@@ -630,7 +630,7 @@ exports.createDeal = function(req, res) {
 
 exports.create = function(req, res) {
 	var lead = new Lead(req.body);
-	console.log(lead);
+	//console.log(lead);
 	lead.user = req.user;
 
 	lead.save(function(err) {
@@ -648,7 +648,7 @@ exports.create = function(req, res) {
 exports.getLeadData = function(req, res) {
 
 var mystuff = ['15','23','30'];
-console.log('mystuff %o',mystuff);
+//console.log('mystuff %o',mystuff);
 	res.jsonp(mystuff);
 
 
@@ -656,7 +656,7 @@ console.log('mystuff %o',mystuff);
 
 
 exports.showDeal = function(req, res) {
-		console.log('Deal Data: %o',req.deal);
+		//console.log('Deal Data: %o',req.deal);
 
 			res.jsonp(req.deal);
 	
@@ -666,23 +666,23 @@ exports.showDeal = function(req, res) {
  * Show the current Lead
  */
 exports.read = function(req, res) {
-		//console.log('Lead Data: %o',req.lead);
-//console.log('User Data: %o',req.user);
+		////console.log('Lead Data: %o',req.lead);
+////console.log('User Data: %o',req.user);
 
 	if(req.lead.user===null){
-		//console.log('USER NULL !!!!  %o',req.user);
+		////console.log('USER NULL !!!!  %o',req.user);
 
 	req.lead.user = req.user;
 	req.lead.assignedRep = req.user.displayName;
 	}
-	//console.log('Lead Data: %o',lead);
+	////console.log('Lead Data: %o',lead);
 	req.lead.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
-			//console.log('Lead Data: %o',req.lead);
+			////console.log('Lead Data: %o',req.lead);
 			res.jsonp(req.lead);
 		}
 	});
@@ -697,8 +697,8 @@ exports.update = function(req, res) {
 
 
 	var lead = req.lead ;
-//console.log('Lead %o',lead);
-//console.log('REQ',req);
+////console.log('Lead %o',lead);
+////console.log('REQ',req);
 lead = _.extend(lead , req.body);
 
 	lead.save(function(err) {
@@ -716,11 +716,11 @@ lead = _.extend(lead , req.body);
  * Update a Deal
  */
 exports.updateDeal = function(req, res) {
-console.log('REQ.deal %o',req.deal);
+//console.log('REQ.deal %o',req.deal);
 
 	var deal = req.deal ;
-//console.log('Lead %o',lead);
-//console.log('REQ',req);
+////console.log('Lead %o',lead);
+////console.log('REQ',req);
 deal = _.extend(deal , req.body);
 
 	deal.save(function(err) {
@@ -764,7 +764,7 @@ exports.getFLUP = function(req, res) { Lead.find({$or: [
 				message: getErrorMessage(err)
 			});
 		} else {
-			//console.log('leads %o',leads);
+			////console.log('leads %o',leads);
 			res.jsonp(leads);
 		}
 	});
@@ -773,7 +773,7 @@ exports.getFLUP = function(req, res) { Lead.find({$or: [
 //Get Leads by Carrier
 //getLeadsByState
 exports.getLeadsByCarrier = function(req, res) {
-	console.log('got to getLeadsByCarrier');
+	//console.log('got to getLeadsByCarrier');
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
@@ -801,8 +801,9 @@ exports.getLeadsByCarrier = function(req, res) {
 
 //get telephone calls
 exports.getCallsbyRep = function(req, res) {
-	console.log('got to Cals By Rep');
-	console.log('Req.USer',req.user.displayName);
+	//console.log('got to Cals By Rep');
+	//console.log('Req.USer',req.user.displayName);
+		//console.log('What is n? req.body: ',req)
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Lead.aggregate([ 
@@ -826,10 +827,10 @@ exports.getCallsbyRep = function(req, res) {
 				message: getErrorMessage(err)
 			});
 		} else {
-			console.log('Rresuls????????? %o',results);
+			//console.log('Rresuls????????? %o',results);
 			// var total = 0;
 			// Object.keys(results).forEach(function(key) {
-			// 	console.log(results[key]);
+			// 	//console.log(results[key]);
 			// 	calltime = results[key].calltime;
 			// 	results.push({_id: 'Call', 'calltime': calltime});
 			// });
@@ -841,7 +842,7 @@ exports.getCallsbyRep = function(req, res) {
 
 //getLeadsByState
 exports.getLeadsByState = function(req, res) {
-	console.log('got to getLeadsByState');
+	//console.log('got to getLeadsByState');
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
@@ -869,7 +870,7 @@ exports.getLeadsByState = function(req, res) {
 
 //getLeadsByStatus
 exports.getLeadsByStatus = function(req, res) {
-	console.log('got to getLeadsByStatus');
+	//console.log('got to getLeadsByStatus');
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	var n = 2;
@@ -914,6 +915,55 @@ exports.getLeadsByStatus = function(req, res) {
 	});	
 };
 
+//Count Total Leads
+exports.getLeadsbyTotal = function(req, res) {
+	//console.log('got to Count Deals FIND USER %o', req.user);
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	var n = 1;
+	switch(n)
+	{
+		case 1:
+		var myQuery = Lead.aggregate([  { $match: {assignedRep:req.user.displayName} },
+	{
+		'$group': { 
+			_id: '$stage',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]);
+		break;
+
+		case 2:
+		var myQuery = Lead.aggregate([  
+	{
+		'$group': { 
+			_id: '$stage',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]);
+		break;
+	}
+
+
+	myQuery.exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
 
 //Get Deals
 exports.getDEALS = function(req, res) { Deal.find().where({assignedRep: req.user.displayName}).sort('-updated').limit(50).exec(function(err, deals) {
@@ -922,8 +972,8 @@ exports.getDEALS = function(req, res) { Deal.find().where({assignedRep: req.user
 				message: getErrorMessage(err)
 			});
 		} else {
-			console.log('getDeals: ', deals);
-			//console.log('leads %o',leads);
+			//console.log('getDeals: ', deals);
+			////console.log('leads %o',leads);
 			res.jsonp(deals);
 		}
 	});
@@ -937,13 +987,13 @@ exports.list = function(req, res) { Lead.find({$or: [
 	{user: req.user.id},
 	{assignedRep: null}
 
-	]}).sort('-lastCalled').limit(50).exec(function(err, leads) {
+	]}).sort('-lastCalled').exec(function(err, leads) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
-			//console.log('leads %o',leads);
+			////console.log('leads %o',leads);
 			res.jsonp(leads);
 		}
 	});
@@ -955,7 +1005,7 @@ exports.listdeals = function(req, res) { Deal.find().sort('-converted').limit(50
 				message: getErrorMessage(err)
 			});
 		} else {
-			//console.log('leads %o',leads);
+			////console.log('leads %o',leads);
 			res.jsonp(deals);
 		}
 	});

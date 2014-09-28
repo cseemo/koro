@@ -26,6 +26,9 @@ module.exports = function(app) {
 		.get(leads.listdeals)
 		.post(users.requiresLogin, leads.createDeal);
 		
+		app.route('/admin')
+		.get(leads.listdeals);
+
 		app.route('/stats/deals/total')
 		.get(deals.getDealsbyTotal);
 		
