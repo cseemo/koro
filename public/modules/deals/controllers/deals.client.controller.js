@@ -445,11 +445,7 @@ return $scope.deal.dslspeed;
 			deal.stage=$scope.myDealstages[4].name;
 			deal.stagenum=$scope.myDealstages[4].value;
 			deal.updated = Date.now();
-			$scope.authentication.user.notifications.push({
-					note: deal.companyname + ' has been QC Approved!!',
-					date: deal.updated
-
-		});
+			
 			$scope.userB = Users.get({ 
 				userId: deal.user._id
 			}, function() {
@@ -460,6 +456,11 @@ return $scope.deal.dslspeed;
 			$scope.userB.$promise.then(function(){
 				console.log('User to update %o', $scope.userB);
 				console.log('moving on...');
+				$scope.authentication.userB.notifications.push({
+					note: deal.companyname + ' has been QC Approved!!',
+					date: deal.updated
+
+		});
 
 				$scope.userB.$update(function() {
 				//console.log('Updating Deal before sending Order Packet');
