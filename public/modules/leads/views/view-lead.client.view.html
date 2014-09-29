@@ -1,5 +1,6 @@
 <div class="page page-dashboard" data-ng-controller="DashboardCtrl">
-
+<link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
+ <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <form name="myForm" data-ng-submit="makeQuote()" >  
         <!-- Stats -->
     <div class="row">
@@ -72,8 +73,8 @@
             </div>
           <div class="panel panel-primary">
               <div class="panel-body">
-               <p><h1 class="pull-left">{{lead.companyname}}</h1></p>
-                <p><h2 class="pull-right">{{lead.telephone}}</h2></p>
+               <p><h3 class="pull-left">{{lead.companyname}}</h3></p>
+                <p><h2 class="pull-right">{{lead.telephone | tel}}</h2></p>
                   
                   <div class="clearfix"></div>
 
@@ -360,18 +361,18 @@
               </div> -->
                    <div class="clearfix"></div> 
         <center><br><br>
-         <span data-ng-show="sending"><h4>
+         <!-- <span data-ng-show="sending"><h4>
              <i class="fa fa-circle-o-notch fa-spin fa-lg" style="vertical-align: middle;"></i>   Sending Email to {{lead.email}} </h4>
              </span>
 
              <span data-ng-show="results"><h3>{{myresults}}</h3>
-             </span>
+             </span> -->
 
-             <span data-ng-show="emailbuttons">
+             <span>
                      <input type="button" value="Hide Company Info" ng-click="coInfo = 'false'" class="btn text-center submit-button" />
                 
 
-              <input type="submit" id="price_it" value="Email Quote" class="btn text-center submit-button" ng-click="makeQuote()">
+              <input data-ng-disabled="emailbuttons" type="submit" id="price_it" value="Email Quote" class="btn text-center submit-button" ng-click="emailbuttons || makeQuote()">
               </span>
 
               
@@ -387,6 +388,8 @@
 </form>
 
 </div></div>
+
+
 <!-- <div class="col-lg-12">
 
                     <div class="panel panel-default">

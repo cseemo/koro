@@ -12,8 +12,12 @@ module.exports = function(app) {
 		.put(deals.update)
 		.get(leads.showDeal);
 
+		// app.route('/convertingdeals')
+		// .post(deals.sendOrderPacket);
+
 		app.route('/convertingdeals/:dealId')
-		.get(leads.showDeal);
+		.get(leads.showDeal)
+		.post(deals.sendOrderPacket);
 
 		app.route('/approve/:dealId')
 		.get(deals.approveDeal)

@@ -6,7 +6,7 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 	function($http, $scope, $stateParams, $filter, $location, Authentication, Leads, Deals, Users, $timeout) {
 		$scope.authentication = Authentication;
 		$scope.sending = false;
-		$scope.emailbuttons = true;
+		$scope.emailbuttons = false;
 		$scope.results = false;
 		if( ! Authentication.user ) $location.path('/signin');
 
@@ -15,6 +15,9 @@ angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stat
 	var init;
 	$scope.users = Users.query();
 	$scope.users.$promise.then(function(){
+// $scope.notificationFactory.success('Good job Chad');
+		
+
 		return $scope.users;	
 
 
@@ -112,6 +115,7 @@ $scope.currentLead=0;
 		$scope.convertToDeal = function(){
 			////console.log('Scope: %o',$scope);
 			//console.log('This %o', this);
+			toastr.info($scope.lead.companyname+' was converted to a deal.');
 
 			var dslspeed = this.dslspeed.value,
 			 	lead = $scope.lead;
@@ -372,7 +376,10 @@ $scope.loa= $scope.myLOA[0];
 				var now = Date();
 				// window.alert(lead.user.displayName);
 					lead.callDetails.push({comments: comms, calltime: now, rep: rep, who: who, disposition: dispo});
-					lead.$update(function(data){},
+					lead.$update(function(data){
+						toastr.success($scope.lead.companyname+' was saved successfully!');
+
+					},
 					 function(errorResponse) {
 						$scope.error = errorResponse.data.message;
 						});
@@ -450,12 +457,15 @@ $scope.endCall = function(){
 	lead.$update(function(data) {
 	//console.log('dialLead',data);
 				//$location.path('/getnewlead');
+	toastr.success($scope.lead.companyname+' was updated!');
+
 						$http({
 		method: 'get',
 		url: '/getnewlead',
 	})
 .success(function(data, status) {
 		if(status === 200) {
+			//toastr.info('We found you a new lead...');
 			//$scope.currentPrice = data.price;
 //console.log('Data: ',data);
 //console.log('Data.Response: %o',data._id);
@@ -504,7 +514,7 @@ $scope.dialLead = function() {
 
 
 $scope.makeQuote = function(){
-	$scope.emailbuttons = false;
+	$scope.emailbuttons = true;
 	$scope.sending = true;
 	// window.alert("MakingQuote");
 	////console.log('Test');
@@ -551,7 +561,7 @@ this.email = this.myForm.email.$viewValue;
 			});
 
 			var myleadT = lead._id;
-
+			toastr.info('Sending Email');
  
 			$http({
 		method: 'post',
@@ -584,6 +594,7 @@ this.email = this.myForm.email.$viewValue;
 		
 		if(status === 200) {
 			$scope.myresults = 'Email Sent!';
+			toastr.success('Success! Email was sent to '+$scope.lead.email);
 			//$scope.currentPrice = data.price;
 ////console.log('Data Returned '+data);
 			//$scope.currentPrice = data.price;
@@ -599,7 +610,7 @@ this.email = this.myForm.email.$viewValue;
 
 					//console.log('EMail Sent');
 					$timeout(function(){
-					$scope.emailbuttons = true;
+					$scope.emailbuttons = false;
 					$scope.results = false;
 					//console.log('buttons back');
 				}, 5000);

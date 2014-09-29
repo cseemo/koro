@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  angular.module('core').controller('AppController', ['$scope', '$rootScope', 
+  angular.module('core').controller('AppController', ['$scope', '$rootScope',
     function($scope, $rootScope) {
 
           $scope.main = {
@@ -64,79 +64,97 @@
             chad: '#666699'
           });
     }
-  ]).controller('HeaderCtrl', ['$scope', function($scope) {}]).
-    controller('NavContainerCtrl', ['$scope', function($scope) {}]).
+  ])
+        
+        
+        
+        
+        
+        
+        
+// app.factory('notificationFactory', function () {
+//     return {
+//         success: function (text) {
+//             toastr.success(text,"Success");
+//         },
+//         error: function (text) {
+//             toastr.error(text, "Error");
+//         }
+//     };
+// })
+  .controller('HeaderCtrl', ['$scope', function($scope) {}])
+// .directive('idle', function($idle, $timeout, $interval){
+//   return {
+//     restrict: 'A',
+//     link: function(scope, elem, attrs) {
+//       var timeout;
+//       var timestamp = localStorage.lastEventTime;
+
+//       // Watch for the events set in ng-idle's options
+//       // If any of them fire (considering 500ms debounce), update localStorage.lastEventTime with a current timestamp
+//       elem.on($idle._options().events, function(){
+//         if (timeout) { $timeout.cancel(timeout); }
+//         timeout = $timeout(function(){
+//           localStorage.setItem('lastEventTime', new Date().getTime());
+//         }, 500);
+//       });
+
+//       // Every 5s, poll localStorage.lastEventTime to see if its value is greater than the timestamp set for the last known event
+//       // If it is, reset the ng-idle timer and update the last known event timestamp to the value found in localStorage
+//       $interval(function() {
+//         if (localStorage.lastEventTime > timestamp) {
+//           $idle.watch();
+//           timestamp = localStorage.lastEventTime;
+//         } 
+//       }, 5000);
+//     }
+//   }
+// })
+  //       .controller('EventsCtrl', ['ngIdle', function($scope, $idle, ngIdle) {
+  //         var app = angular.module('demo', ['ngIdle']);
+  //           $scope.events = [];
+
+  //           $scope.$on('$idleStart', function() {
+  //               // the user appears to have gone idle  
+  //               window.alert('gone idle');                 
+  //           });
+
+  //           $scope.$on('$idleWarn', function(e, countdown) {
+  //               // follows after the $idleStart event, but includes a countdown until the user is considered timed out
+  //               // the countdown arg is the number of seconds remaining until then.
+  //               // you can change the title or display a warning dialog from here.
+  //               // you can let them resume their session by calling $idle.watch()
+  //           });
+
+  //           $scope.$on('$idleTimeout', function() {
+  //               // the user has timed out (meaning idleDuration + warningDuration has passed without any activity)
+  //               // this is where you'd log them
+  //           })
+
+  //           $scope.$on('$idleEnd', function() {
+  //               // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog 
+  //           });
+
+  //           $scope.$on('$keepalive', function() {
+  //               // do something to keep the user's session alive
+  //           })
+
+  //       }])
+  //       .config(function($idleProvider, $keepaliveProvider) {
+  //           // configure $idle settings
+  //           $idleProvider.idleDuration(5); // in seconds
+  //           $idleProvider.warningDuration(5); // in seconds
+  //           $keepaliveProvider.interval(2); // in seconds
+  //       })
+  //       .run(function($idle){
+  //           // start watching when the app runs. also starts the $keepalive service by default.
+  //           $idle.watch();
+  //       })
+
+
+        .controller('NavContainerCtrl', ['$scope', function($scope) {}]).
     controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', 'Deals', '$filter',  function($scope, Authentication, Leads, Deals, $filter) {
 
-    var init;
-    $scope.tableData = {
-      searchKeywords: '',
-    };
-    $scope.authentication = Authentication;
-    //$scope.searchKeywords = '';
-    $scope.filteredDeals= [];
-    $scope.row = '';
-    $scope.numPerPageOpt = [3, 5, 10, 20];
-    $scope.numPerPage = $scope.numPerPageOpt[2];
-    $scope.currentPage = 1;
-    $scope.currentPageDeals= [];
-    $scope.select = function(page) {
-      var end, start;
-      start = (page - 1) * $scope.numPerPage;
-      end = start + $scope.numPerPage;
-      $scope.currentPage = page;
-      return $scope.currentPageDeals = $scope.filteredDeals.slice(start, end);
-    };
-    $scope.onFilterChange = function() {
-      $scope.select(1);
-      $scope.currentPage = 1;
-      return $scope.row = '';
-    };
-    $scope.onNumPerPageChange = function() {
-      $scope.select(1);
-      return $scope.currentPage = 1;
-    };
-    $scope.onOrderChange = function() {
-      $scope.select(1);
-      return $scope.currentPage = 1;
-    };
-    $scope.search = function() {
-      console.log('Keywords: ', $scope.tableData.searchKeywords);
-      $scope.filteredDeals = $filter('filter')($scope.deals, $scope.tableData.searchKeywords);
-      /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
-        firstName: $scope.searchKeywords,
-        lastName: $scope.searchKeywords,
-        confirmationNumber: $scope.searchKeywords,
-      });*/
-      return $scope.onFilterChange();
-    };
-    $scope.order = function(rowName) {
-      if ($scope.row === rowName) {
-        return;
-      }
-      $scope.row = rowName;
-      $scope.filteredDeal = $filter('orderBy')($scope.filteredDeals, rowName);
-      return $scope.onOrderChange();
-    };
-    $scope.setCurrentDeal = function(registration) {
-      $scope.currentDeal = $scope.filteredDeals.indexOf(deal);
-    };
-
-       $scope.setCurrentDeal = function(registration) {
-      $scope.currentDeal = $scope.filteredDeals.indexOf(deal);
-    };
-
-
-    init = function() {
-      //$scope.registrations = Registrations.query();
-      //$scope.find();
-      $scope.deals.$promise.then(function() {
-        $scope.search();
-        return $scope.select($scope.currentPage); 
-      });
-      
-    };
-       
 
   // Init our blank chart just to keep our settings in place
     //var plotChart1 = $.plot($('#leadschart'), [{}], {

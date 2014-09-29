@@ -305,21 +305,7 @@ exports.makePDF = function(req, res){
 
 	var timesrun = 0;
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-	//console.log('REQ Deal', req.deal);
 	var id = req.deal._id;
-	// Deal.findById(id).exec(function(err, deal) {
-	// 	if (err) return next(err);
-	// 	if (! deal) return ('Failed to load Deal ' + id);
-	// 	req.deal = deal ;
-	// });
-	//var signDate = Date.now('EEE MMM d @ hh:mm a');
-	var signDate = req.deal.signDate;
-
-
-
-	//console.log('Making a PDF');
-	////console.log('Name: ',req.query.name);
-	//var blobStream = require('blob-stream');
 
 
 	//var name = req.query.name;
@@ -854,4 +840,390 @@ function(e){
 	return;
 	
 };
+
+
+//Send Order Packet
+
+exports.sendOrderPacket = function(req, res){
+
+	console.log('Sending Order Packet');
+	var timesrun = 0;
+	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+	//console.log('REQ Deal', req.deal);
+	var id = req.deal._id;
+	var PDFDocument = require('pdfkit');
+	var fs=require('fs');
+	var doc = new PDFDocument();
+	var buffers = [];
+	var myfileName = 'OrderPacket'+req.deal._id+'.pdf';
+	//doc.pipe( fs.createWriteStream(myfileName) ); 
+	var chunks = [];
+	//FILL OUT LD LOA
+	var bg2 = doc.image('LDLOA.png', 0, 0,{width: 600});
+	//var bg = doc.image('FCTicket.jpg', 0, 0, 600, 800);
+
+		//Set Company Name
+		doc.y = 220;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.companyname);
+
+		//Set Address
+		doc.y = 251;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.address);
+
+
+		//Set City
+		doc.y = 285;
+		doc.x = 150;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.city);
+
+		//Set State
+		doc.y = 285;
+		doc.x = 420;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.state);
+
+		//Set Zip
+		doc.y = 285;
+		doc.x = 485;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.zipcode);
+
+		if(req.deal.lineDetails.length > 0){
+
+
+		//Set BTN
+		doc.y = 325;
+		doc.x = 275;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.lineDetails[0].number);
+
+		//Set Additional Lines
+		//Set X Start & Y Start Values
+		var xs = 100;
+		var ys = 355;
+		var i =0;
+
+
+		////console.log('LineDetails #:', req.deal.lineDetails.length);
+		
+
+			////console.log('This account has numbers online');
+		
+		req.deal.lineDetails.forEach(function(num){
+		////console.log('num.number',num.number);
+		// //console.log(i);
+		// //console.log('XS: '+xs+' and YS: '+ys);
+		if(num!=null && i>0){
+			////console.log('num.number is here: ',num.number);
+
+		doc.y = ys;
+		doc.x = xs;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(num.number);
+
+
+		
+		xs+=150;
+		if(i===3){
+			ys = 380;
+			xs=100;
+		}
+		if(i===6){
+			ys = 400;
+			xs=100;
+		}
+		if(i===9){
+			ys = 420;
+			xs=100;
+		}
+		if(i===12){
+			ys = 440;
+			xs=100;
+		}
+		if(i===15){
+			ys = 465;
+			xs=100;
+		}
+		if(i===18){
+			ys = 530;
+			xs=100;
+		}
+		if(i===21){
+			ys = 550;
+			xs=100;
+		}
+		i++;
+	}else{
+				i++;
+			}
+			
+		});
+	}else{
+		//console.log('Sorry no numbers inputted');
+		//console.log('Length',req.deal.lineDetails);
+		//console.log('Length',req.deal.lineDetails.length);
+	}
+
+
+
+		doc.addPage();
+
+		//FILL OUT LOCAL LOA
+		
+		var bg = doc.image('LOCALLOA.png', 0, 0,{width: 600});
+		
+		//Set Company Name
+		doc.y = 220;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.companyname);
+
+		//Set Address
+		doc.y = 251;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.address);
+
+
+		//Set City
+		doc.y = 285;
+		doc.x = 150;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.city);
+
+		//Set State
+		doc.y = 285;
+		doc.x = 420;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.state);
+
+		//Set Zip
+		doc.y = 285;
+		doc.x = 485;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.zipcode);
+
+		if(req.deal.lineDetails.length > 0){
+		//Set BTN
+		doc.y = 325;
+		doc.x = 275;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.deal.lineDetails[0].number);
+
+		//Set Additional Lines
+		// doc.y = 365;
+		// doc.x = 100;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.text('602 555-1322');
+
+
+
+		//Set X Start & Y Start Values
+		var xs = 100;
+		var ys = 365;
+		var i =0;
+
+		
+			//console.log('Got numbers ', req.deal.lineDetails);
+
+			req.deal.lineDetails.forEach(function(num){
+				//console.log('I: ',i);
+			if(num!=null && i > 0){
+
+
+				// //console.log('hello',num.number);
+				// //console.log(i);
+				// //console.log('XS: '+xs+' and YS: '+ys);
+
+				doc.y = ys;
+				doc.x = xs;
+				doc.fontSize(14);
+				doc.font('Times-Roman');
+				doc.text(num.number);
+
+
+				
+				xs+=150;
+				if(i===3){
+					ys = 390;
+					xs=100;
+				}
+				if(i===6){
+					ys = 410;
+					xs=100;
+				}
+				if(i===9){
+					ys = 430;
+					xs=100;
+				}
+				if(i===12){
+					ys = 450;
+					xs=100;
+				}
+				if(i===15){
+					ys = 470;
+					xs=100;
+				}
+				if(i===18){
+					ys = 530;
+					xs=100;
+				}
+				if(i===21){
+					ys = 550;
+					xs=100;
+				}
+				i++;
+
+			}else{
+				i++;
+			}
+			
+		});
+	}
+
+
+
+   // Write headers
+//     res.writeHead(200, {
+//         'Content-Type': 'application/pdf',
+//         'Access-Control-Allow-Origin': '*',
+//          'X-Frame-Options': 'SAMEORIGIN',
+//         'Content-Disposition': 'inline; filename=Centurylink_Signed_LOAs.pdf'
+//     });
+
+
+doc.pipe( res );
+
+
+
+
+
+
+doc.on('data', function(chunk){
+	chunks.push(chunk);
+	////console.log('chunk:', chunk.length);
+});
+ 
+
+// buffers.push.bind(buffers));
+
+doc.end();
+
+
+doc.on('end', function(){
+	////console.log(callback);
+	////console.log('DId you get a callback?');
+	var mypdf = Buffer.concat(chunks);
+	//.concat(buffers);
+	var content = mypdf.toString('base64');
+
+	//var content = fs.readFileSync(myfileName, 'base64');
+
+		var message = {
+	'html': '<p>Centurylink Order Packet</p>',
+	'text': 'Centurylink Return Email',
+	'subject': 'Centurylink Order Packet',
+	'from_email': 'yourrep@centurylink.net',
+	'from_name': 'New Order Packet on Behalf of Centurylink',
+	'to': [{
+		'email': req.deal.contactemail,
+		'name': req.deal.contactname,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': 'cseemo@gmail.com'
+	},
+	'merge': true,
+	'global_merge_vars': [{
+		'name': 'merge1',
+		'content': 'merge1 content'
+	}],
+	'merge_vars': [{
+			'rcpt': req.deal.contactemail,
+			'vars': [{
+					'name': 'company',
+					'content': req.deal.companyname
+				},
+				{
+					'name': 'repname',
+					'content': req.deal.assignedRep
+				},
+				{
+					'name': 'signip',
+					'content': ip
+				}
+
+
+
+
+				]
+	}],
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': true,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null,
+	'attachments': [{
+		'type': 'application/pdf; name=Centurylink_Signed_LOAs.pdf',
+		'name': 'Centurylink_Signed_LOAs.pdf',
+		'content': content
+	}]
+};
+
+
+
+var template_name='order-packet';
+
+var async = false;
+if(timesrun < 2){
+
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
+	timesrun++;
+	console.log('Results from Mandrill', result);
+},
+function(e){
+	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+});
+
+
+}
+
+});
+		
+	return;
+	
+};
+
 

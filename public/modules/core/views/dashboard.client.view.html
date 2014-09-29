@@ -200,7 +200,7 @@
                 <tr data-ng-repeat="deal in mydeals" >
                 
                     <td><a data-ng-href="#!/deals/{{deal._id}}/edit">{{deal.companyname}}</a></td>
-                    <td>{{deal.telephone}}</td>
+                    <td>{{deal.telephone | tel}}</td>
                     <td data-ng-show="deal.stagenum==0"><span class="label label-danger">{{deal.stage}}</span></td>
                     <td data-ng-show="deal.stagenum > 0 && deal.stagenum < 20"><span class="label label-warning">{{deal.stage}} </span></td>
                     <td data-ng-show="deal.stagenum > 19 && deal.stagenum < 40"><span class="label label-default">{{deal.stage}} </span></td>

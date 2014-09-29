@@ -517,8 +517,10 @@ return $scope.deal.dslspeed;
 
 		//Submit Order Packet
 			$scope.submitOrder = function() {
+			toastr.info('Submitting Order and Sending Order Packet...');
+
 			$scope.pending=true;
-			$scope.step=5;
+			//$scope.step=5;
 			var deal = $scope.deal;
 			deal.updated = Date.now();
 			//console.log('Look for deal.stage and deal.stagenum %o', $scope);
@@ -537,15 +539,17 @@ return $scope.deal.dslspeed;
 				$scope.error = errorResponse.data.message;
 			}).then(function() {
 				//console.log('Deal Updated??');
+				toastr.success('Order submitted successfully for '+$scope.deal.companyname+'.');
+
 				$scope.pending=false;
 
 				$scope.sending=true;
 
-				////console.log('Line Numbers', deal.lineDetails[0].number);
+				console.log('URL to Post to: ', '/convertingdeals/'+deal._id);
 
-				$http({
+		$http({
 		method: 'post',
-		url: 'http://adsoap.com/nodeEMAILPDF',
+		url: '/convertingdeals/'+deal._id,
 		data: {
 			mylead: deal._id,
 			term: deal.term,
@@ -579,7 +583,8 @@ return $scope.deal.dslspeed;
 			$scope.sending = false;
 			$scope.finished = true;
 			$scope.myresponse = data;
-
+			toastr.success('Order packet sent to '+$scope.deal.contactemail+' at '+$scope.deal.companyname+'!');
+			$location.path('#!/deals');
 
 
 //Get Quote Details and Save to Lead Object
