@@ -329,7 +329,7 @@ exports.updateUser = function(req, res) {
 exports.updateUser2 = function(req, res) {
 	// Init Variables
 	var user = req.profile;
-	//console.log('Should be user being updated', req.profile);
+	console.log('Should be user being updated', req.profile);
 	var message = null;
 
 	//Marin Drunken fix to deal with preSave webhook

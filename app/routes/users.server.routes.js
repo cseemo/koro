@@ -57,6 +57,10 @@ module.exports = function(app) {
 	.put(users.updateUser2)
 	.get(users.list);
 
+	app.route('/users/:userId')
+	.post(users.updateUser2);
+	
+
 	app.route('/adminusers')
 	//.put(users.requiresLogin, users.updateUser)
 	.get(users.list);

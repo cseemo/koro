@@ -1,8 +1,9 @@
 'use strict';
 
 // Deals controller
-angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce', 'Users', 
-	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $scem, Users) {
+
+angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout',  
+	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $scem, Users, updateNotifications, $timeout) {
 
 var init;
 
@@ -456,22 +457,33 @@ return $scope.deal.dslspeed;
 			$scope.userB.$promise.then(function(){
 				console.log('User to update %o', $scope.userB);
 				console.log('moving on...');
-				$scope.authentication.userB.notifications.push({
+				$scope.userB.notifications.push({
 					note: deal.companyname + ' has been QC Approved!!',
 					date: deal.updated
 
 		});
+				$scope.userB.$update();
 
-				$scope.userB.$update(function() {
-				//console.log('Updating Deal before sending Order Packet');
-				//$location.path('deals/' + deal._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			}).then(function() {
-			toastr.info(deal.companyname+' has been approved by Quality Control.');
+				console.log('Notifications: %o', $scope.userB.notifications);
+				console.log('about to go to factory');
+			// 	$timeout(function(){
+			// 	console.log('UserB before we update: %o', $scope.userB);
+			// 	$scope.myreturn = updateNotifications.getPhotos($scope.userB._id).success(function(data){
+   // 				$scope.photos=data;
+   // 				console.log('Photos %o',$scope.photos);
+					
+
+			
+
+			// }, 5000);
+
+				
+   			// });
+
 		});
+				
 
-			});
+			
 		
 			
 	};
@@ -663,7 +675,22 @@ return $scope.deal.dslspeed;
 			
 		};
 
-}]).directive('stats', function($q, $http, Authentication){
+}])
+.factory('updateNotifications', function($http, $resource) {
+	console.log('got to factory');
+	//console.log('Scope: %o', $resource);
+ return{
+
+    getPhotos : function(myparam) {
+        return $http({
+            url: '/users/'+myparam,
+            method: 'POST'
+        })
+    }
+ }
+})
+
+.directive('stats', function($q, $http, Authentication){
 	return {
 		scope: {},
 		restrict: 'AE',
