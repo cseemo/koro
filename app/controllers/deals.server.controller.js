@@ -306,7 +306,7 @@ exports.makePDF = function(req, res){
 	var timesrun = 0;
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 	var id = req.deal._id;
-
+	var signDate = req.deal.signDate;
 
 	//var name = req.query.name;
 	var PDFDocument = require('pdfkit');
