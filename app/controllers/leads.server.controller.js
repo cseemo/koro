@@ -54,11 +54,9 @@ exports.sendQuote = function(req, res){
 	//doc.pipe( fs.createWriteStream(myfileName) );
 	 
 	var chunks = [];
-	//FILL OUT LD LOA
-	doc.image('sigcert.png', 255, 660);  
-	//var bg = doc.image('LOCALLOA.png', 0, 0,{width: 600});
+	
 	var bg2 = doc.image('Header.png', 0, 0,{width: 620});
-	//var bg = doc.image('FCTicket.jpg', 0, 0, 600, 800);
+	
 
 	doc.pipe( res );
 
@@ -66,7 +64,9 @@ exports.sendQuote = function(req, res){
 	chunks.push(chunk);
 	////console.log('chunk:', chunk.length);
 });
- 
+
+	
+
 
  	// mylead: myleadT,
 		// 	term: this.term.value,

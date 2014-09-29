@@ -566,7 +566,7 @@ this.email = this.myForm.email.$viewValue;
 			$http({
 		method: 'post',
 		// url: '/email/' + myleadT,
-		url: 'http://adsoap.com/nodeEMAILPDF.php',
+		url: '/email/'+lead._id,
 		data: {
 			mylead: myleadT,
 			term: this.term.value,

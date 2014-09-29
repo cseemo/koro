@@ -1,8 +1,8 @@
 'use strict';
 
 // Deals controller
-angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce',
-	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $sce) {
+angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce', 'Users', 
+	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $scem, Users) {
 
 var init;
 
@@ -448,10 +448,32 @@ return $scope.deal.dslspeed;
 			$scope.authentication.user.notifications.push({
 					note: deal.companyname + ' has been QC Approved!!',
 					date: deal.updated
-				});
-			
 
-		};
+		});
+			$scope.userB = Users.get({ 
+				userId: deal.user._id
+			}, function() {
+				console.log('got userb');
+						
+
+			});
+			$scope.userB.$promise.then(function(){
+				console.log('User to update %o', $scope.userB);
+				console.log('moving on...');
+
+				$scope.userB.$update(function() {
+				//console.log('Updating Deal before sending Order Packet');
+				//$location.path('deals/' + deal._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			}).then(function() {
+			toastr.info(deal.companyname+' has been approved by Quality Control.');
+		});
+
+			});
+		
+			
+	};
 
 		//Notify system that CTL Order has been put into SalesForce
 		
