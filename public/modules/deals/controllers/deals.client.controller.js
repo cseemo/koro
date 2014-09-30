@@ -3,7 +3,7 @@
 // Deals controller
 
 angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout',  
-	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $scem, Users, updateNotifications, $timeout) {
+	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $sce, Users, updateNotifications, $timeout) {
 
 var init;
 
