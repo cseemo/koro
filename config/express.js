@@ -4,8 +4,6 @@
  * Module dependencies.
  */
 var express = require('express'),
-	http = require('http'),
-	socketio = require('socket.io'),
 	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
@@ -21,10 +19,33 @@ var express = require('express'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
 	path = require('path');
+	
+
+
+	
 
 module.exports = function(db) {
 	// Initialize express app
 	var app = express();
+	// var http = require('http'),
+	// server = http.createServer(app).listen(5000),
+	// io = require('socket.io').listen(server);
+
+	// var app = express();
+	// var http = require('http'),
+	// server = http.Server(app),
+	// io = require('socket.io')(server);
+
+
+
+	// 	io.on('connection', function(socket){
+	// 		console.log('What up!!!!!');
+		
+
+
+	
+	// });
+
 
 	// Globbing model files
 	config.getGlobbedFiles('./app/models/**/*.js').forEach(function(modelPath) {
@@ -138,10 +159,12 @@ module.exports = function(db) {
 		});
 	});
 
-	var server = http.createServer(app);
-	var io = socketio.listen(server);
-	app.set('socketio', io);
-	app.set('server', server);
+	// var server = http.createServer(app);
+	// var io = socketio.listen(server);
+	// app.set('socketio', io);
+	// app.set('server', server);
+
+	// app.listen(5000);
 
 	return app;
 };

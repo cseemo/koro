@@ -20,16 +20,16 @@ var app = require('./config/express')(db);
 // Bootstrap passport config
 require('./config/passport')();
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-io.on('connection', function(){
 
-console.log('What up bitches!!');
-io.sockets.emit('Done');
-});
-server.listen(5000);
-// Start the app by listening on <port>
-//app.get('server').listen(config.port);
+// app.listen(config.port);
+// // Start the app by listening on <port>
+// app.listen(config.port);
+	
+	var http = require('http'),
+	server = http.Server(app),
+	io = require('socket.io')(server);
+require('./app/controllers/io')(io);
+server.listen(config.port);
 
 // Expose app
 exports = module.exports = app;

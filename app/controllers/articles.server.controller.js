@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	Article = mongoose.model('Article'),
 	_ = require('lodash');
+	
 
 /**
  * Get the error message from error object
@@ -44,8 +45,7 @@ exports.create = function(req, res) {
 				message: getErrorMessage(err)
 			});
 		} else {
-			var socketio = req.app.get('socketio');
-			socketio.sockets.emit('article.created', article);
+	
 			res.jsonp(article);
 		}
 	});
