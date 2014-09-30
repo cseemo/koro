@@ -2,8 +2,9 @@
 
 // Deals controller
 
-angular.module('deals').controller('DealsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout',  
-	function($scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $sce, Users, updateNotifications, $timeout) {
+angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout',  
+	function($rootScope, $scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $sce, Users, updateNotifications, $timeout) {
+
 
 var init;
 
@@ -23,6 +24,8 @@ $scope.pdf = false;
 $scope.step = 1;
 $scope.currentDeal=0;
 
+//Header NOtifications
+$scope.numNotifications = $scope.authentication.user.notifications.length;
 
 
 //$scope.myiframe = 'blob:http%3A//localhost%3A3000/d43e67f4-bab2-4778-b97c-6385c4b158a8';
@@ -462,23 +465,26 @@ return $scope.deal.dslspeed;
 					date: deal.updated
 
 		});
+				
+
+
 				$scope.userB.$update();
 
 				console.log('Notifications: %o', $scope.userB.notifications);
 				console.log('about to go to factory');
-			// 	$timeout(function(){
-			// 	console.log('UserB before we update: %o', $scope.userB);
-			// 	$scope.myreturn = updateNotifications.getPhotos($scope.userB._id).success(function(data){
-   // 				$scope.photos=data;
-   // 				console.log('Photos %o',$scope.photos);
-					
+				$timeout(function(){
+				console.log('UserB before we update: %o', $scope.userB);
+				$scope.myreturn = updateNotifications.getPhotos($scope.userB._id).success(function(data){
+   				$scope.photos=data;
+   				console.log('Photos %o',$scope.photos);
+					//$rootScope.$apply();
 
 			
 
-			// }, 5000);
+			}, 500);
 
 				
-   			// });
+   			});
 
 		});
 				
@@ -487,6 +493,47 @@ return $scope.deal.dslspeed;
 		
 			
 	};
+
+	//Clear NOtifications
+	$scope.clearNotifications = function(){
+		console.log('Clearing Notifications');
+		$scope.authentication.user.notifications = [];
+		toastr.info('Notifications Cleared');
+
+
+				$scope.user = Users.get({ 
+				userId: $scope.authentication.user._id
+			}, function() {
+				console.log('got user');
+						
+
+			});
+			$scope.user.$promise.then(function(){
+				console.log('User to update %o', $scope.user);
+				console.log('moving on...');
+				$scope.user.notifications = []; 
+
+				console.log('Notifications: %o', $scope.user.notifications);
+			
+				
+				$timeout(function(){
+				console.log('User before we update: %o', $scope.user);
+				$scope.user.$update(function() {
+				console.log('Updating Deal before sending Order Packet');
+				//$location.path('deals/' + deal._id);
+			
+
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+			}, 200);
+				console.log('Done w/ that function...');
+			});
+
+				
+   			};
+			
+
 
 		//Notify system that CTL Order has been put into SalesForce
 		
@@ -520,10 +567,61 @@ return $scope.deal.dslspeed;
 
 		//Reject Order
 		$scope.rejectDeal = function(){
+		// 		$scope.authentication.user.notifications.push({
+		// 			note: 'has been Rejected!!!!'
+
+		// });
+			
 				var deal = $scope.deal;
 				deal.updated = Date.now();
 			deal.stage=$scope.myDealstages[0].name;
 			deal.stagenum=$scope.myDealstages[0].value;
+
+			$scope.userB = Users.get({ 
+				userId: deal.user._id
+			}, function() {
+				console.log('got userb');
+						
+
+			});
+			$scope.userB.$promise.then(function(){
+				console.log('User to update %o', $scope.userB);
+				console.log('moving on...');
+			
+						$scope.userB.notifications.push({
+					note: deal.companyname + ' has been Rejected!!!!',
+					date: deal.updated
+
+		});	
+
+					
+
+				
+				
+
+				console.log('Notifications: %o', $scope.userB.notifications);
+				console.log('about to go to factory');
+				toastr.success('Order Rejected!! '+$scope.deal.companyname+'.');
+				
+			
+
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			}).then(function(){
+				$timeout(function(){
+				console.log('UserB before we update: %o', $scope.userB);
+				$scope.userB.$update(function() {
+				console.log('Updating Deal before sending Order Packet');
+			}).success(function(){
+				console.log('We did it!!');
+			});
+					}, 240);
+
+
+			});
+
+	
+				
 
 		};
 

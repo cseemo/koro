@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$location', '$cookieStore', '$http',
-	function($scope, Authentication, Menus, $location, $cookieStore, $http) {
+	function( $scope, Authentication, Menus, $location, $cookieStore, $http) {
 		$scope.authentication = Authentication;
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
 
-		$scope.numNotifications = 5;
+
+
+		$scope.numNotifications = $scope.authentication.user.notifications.length;
 		//if( ! Authentication.user ) $location.path('/signin');
 		if( Authentication.user ) {
 			console.log('Logged In ');

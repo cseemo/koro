@@ -41,6 +41,8 @@ module.exports = {
 				'public/lib/flot/jquery.flot.js',
 				'public/lib/flot/jquery.flot.*.js',
 				'public/lib/flot.tooltip/js/jquery.flot.tooltip.min.js',
+				'public/lib/angular-socket-io/socket.js',
+				'public/lib/socket.io-client/socket.io.js'
 				//'public/lib/flot/*.js'
 			]
 		},

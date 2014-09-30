@@ -7,6 +7,15 @@ angular.module('core').controller('NavController', ['$scope', 'Authentication', 
 		$scope.menu = Menus.getMenu('topbar');
 		$scope.isAdmin = false;
 
+// 				console.log('Where am I? %o', $location.$$path);
+var myurl = $location.$$path.slice(0,9);
+console.log('Myr URL', myurl);
+if(myurl==='/approve/'){
+	console.log('Approving!!!');
+	$scope.customerSee = true;
+}else{
+	$scope.customerSee = false;
+}
 
 
 		//console.log('Menu items: ', $scope.menu);
