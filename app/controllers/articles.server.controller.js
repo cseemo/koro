@@ -45,7 +45,7 @@ exports.create = function(req, res) {
 			});
 		} else {
 			var socketio = req.app.get('socketio');
-			socketio.sockets.emit('article.created', 'Hey there');
+			socketio.sockets.emit('article.created', article);
 			res.jsonp(article);
 		}
 	});

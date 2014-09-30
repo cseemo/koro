@@ -5,7 +5,7 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$statePa
 		$scope.authentication = Authentication;
 
 		Socket.on('article.created', function(article) {
-				console.log('Article made');
+				console.log('Article made %o', article);
 		});
 
 		$scope.create = function() {
