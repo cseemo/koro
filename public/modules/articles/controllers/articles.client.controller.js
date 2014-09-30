@@ -1,19 +1,16 @@
 'use strict';
 
-angular.module('articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Articles', 'Socket', 
-	function($scope, $stateParams, $location, Authentication, Articles, Socket) {
+angular.module('articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Articles', 'socket', 
+	function($scope, $stateParams, $location, Authentication, Articles, socket) {
 		$scope.authentication = Authentication;
 
-		Socket.on('test', function(article) {
+		socket.on('test', function(article) {
 				console.log('Article made', article);
+				$scope.myObject = article;
 				//window.alert('What up -- some one conected');
 		});
 
-		Socket.on('article', function(article) {
-				console.log('Article made', article);
-				//window.alert('What up -- some one conected');
-		});
-
+		
 		$scope.create = function() {
 			var article = new Articles({
 				title: this.title,

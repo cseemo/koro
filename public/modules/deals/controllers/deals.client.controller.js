@@ -2,9 +2,14 @@
 
 // Deals controller
 
-angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout',  
-	function($rootScope, $scope, $stateParams, $location, Authentication, Leads, Deals, $http, $filter, $sce, Users, updateNotifications, $timeout) {
+angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', 'socket', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout',  
+	function($rootScope, $scope, $stateParams, $location, Authentication, Leads, Deals, socket, $http, $filter, $sce, Users, updateNotifications, $timeout) {
 
+      socket.on('test', function(data) {
+        console.log('Socket On Event', data);
+        $scope.numNotifications = data;
+        //window.alert('What up -- some one conected');
+        });
 
 var init;
 
