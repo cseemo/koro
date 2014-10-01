@@ -156,17 +156,32 @@
     controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', 'Deals', '$filter', 'socket', function($scope, Authentication, Leads, Deals, $filter, socket) {
 
 
-          socket.on('test', function(data) {
-        console.log('Socket On Event', data);
-        $scope.myObject = data;
-        //window.alert('What up -- some one conected');
-        });
+        //   socket.on('test', function(data) {
+        // console.log('Socket On Event', data);
+        // $scope.myObject = data;
+        // //window.alert('What up -- some one conected');
+        // });
 
-        socket.on('connection', function(data) {
+         socket.on('test', function(data) {
+          if(data.type==='connection'){
+             $scope.myObject = data;
+        toastr.info('New User Connected ...'+data.count+' current users.');
+
+          }else{
+
+             $scope.myObject = data;
+        toastr.info('Some other event happened... ...'+data.count+' :'+data.message);
+
+          }
         console.log('Connected', data);
-        $scope.myObject = data;
-        //window.alert('What up -- some one conected');
+        // $scope.myObject = data;
+        // toastr.info('New User Connected ...'+data.count+' current users.');
         });
+        // socket.on('connection', function(data) {
+        // console.log('Connected', data);
+        // $scope.myObject = data;
+        // //window.alert('What up -- some one conected');
+        // });
   // Init our blank chart just to keep our settings in place
     //var plotChart1 = $.plot($('#leadschart'), [{}], {
     var pieChartOptions = {
