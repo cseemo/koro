@@ -36,6 +36,11 @@ module.exports = function(io){
 			//io.emit('test',  {type: 'event', message: 'Making a new quote!!', user: $scope.authentication.user});	
 			break;
 
+			case 'approve': 
+			io.emit(data.userid,  {date: Date.now(), deal: data.deal, message: 'LOAs Approved for: '+data.deal+'. $'+data.mrc+' deal for '+data.user+'!!'});	
+			//io.emit('test',  {type: 'event', message: 'Making a new quote!!', user: $scope.authentication.user});	
+			break;
+
 			case 'convert':
 			console.log('Deal converted');
 			io.emit('test',  {date: Date.now(), message: data.user+' just converted '+data.deal+' from a Lead to a Deal!'});	

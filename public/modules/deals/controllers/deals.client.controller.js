@@ -10,7 +10,7 @@ angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '
       //   $scope.numNotifications = data;
       //   //window.alert('What up -- some one conected');
       //   });
-	
+	 	
 
 
 
@@ -18,6 +18,15 @@ angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '
 var init;
 
 $scope.authentication = Authentication;
+
+		//If a socket call comes for this user Fire off a toastr event
+		socket.on($scope.authentication.user._id, function(data) {
+        console.log('Socket Data for specific user : %o', $scope.authentication.user);
+        toastr.info(data.deal+' just signed their LOAs!!');
+       
+        });
+
+
   $scope.tableData = {
       searchKeywords: '',
     };
@@ -85,7 +94,8 @@ $scope.step = current;
 		deal.loa_signed='YES';
 
 		//deal.user.notifications.push({note: deal.companyname+' signed their LOAS'});
-			    	
+		
+		socket.emit('message',  {type: 'approve', mrc: deal.mrc, deal: deal.companyname, userid: deal.user._id, user: deal.assignedRep});
 		deal.$update(function(data) {
 			//console.log('Deal Updating',data);
 		
