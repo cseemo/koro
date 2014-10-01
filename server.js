@@ -25,11 +25,11 @@ require('./config/passport')();
 // // Start the app by listening on <port>
 // app.listen(config.port);
 	
-	var http = require('http'),
-	server = http.Server(app),
-	io = require('socket.io')(server);
-require('./app/controllers/io')(io);
-server.listen(config.port);
+// 	var http = require('http'),
+// 	server = http.Server(app),
+// 	io = require('socket.io')(server);
+// require('./app/controllers/io')(io);
+//server.listen(config.port);
 
 // Expose app
 exports = module.exports = app;

@@ -27,9 +27,10 @@ var express = require('express'),
 module.exports = function(db) {
 	// Initialize express app
 	var app = express();
-	// var http = require('http'),
-	// server = http.createServer(app).listen(5000),
-	// io = require('socket.io').listen(server);
+	var http = require('http'),
+	server = http.createServer(app).listen(5000),
+	io = require('socket.io').listen(server);
+	require('../app/controllers/io')(io);
 
 	// var app = express();
 	// var http = require('http'),
@@ -164,7 +165,7 @@ module.exports = function(db) {
 	// app.set('socketio', io);
 	// app.set('server', server);
 
-	// app.listen(5000);
+
 
 	return app;
 };
