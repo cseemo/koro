@@ -4,11 +4,11 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$statePa
 	function($scope, $stateParams, $location, Authentication, Articles, socket) {
 		$scope.authentication = Authentication;
 
-		socket.on('test', function(article) {
-				console.log('Article made', article);
-				$scope.myObject = article;
-				//window.alert('What up -- some one conected');
-		});
+		// socket.on('test', function(article) {
+		// 		console.log('Article made', article);
+		// 		$scope.myObject = article;
+		// 		//window.alert('What up -- some one conected');
+		// });
 
 		
 		$scope.create = function() {

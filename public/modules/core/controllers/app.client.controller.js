@@ -155,7 +155,11 @@
         .controller('NavContainerCtrl', ['$scope', function($scope) {}]).
     controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', 'Deals', '$filter', 'socket', '$timeout', function($scope, Authentication, Leads, Deals, $filter, socket, $timeout) {
       $scope.notifys=[];
-      
+      $scope.$on('$destroy', function(){
+        console.log('Destroying $scope');
+        socket.removeListener('test');
+
+      });
         //   socket.on('test', function(data) {
         // console.log('Socket On Event', data);
         // $scope.myObject = data;

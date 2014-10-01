@@ -676,6 +676,7 @@ return $scope.deal.dslspeed;
 			var deal = $scope.deal;
 			socket.emit('message', {type: 'submit', deal: $scope.deal.companyname, user: $scope.authentication.user.displayName});	
 			deal.updated = Date.now();
+			deal.telephone = $filter('tel')(deal.telephone);
 			//console.log('Look for deal.stage and deal.stagenum %o', $scope);
 			if($scope.mystage){
 			deal.stage=$scope.mystage.name;
@@ -699,7 +700,14 @@ return $scope.deal.dslspeed;
 				$scope.sending=true;
 
 				console.log('URL to Post to: ', '/convertingdeals/'+deal._id);
+				angular.forEach(deal.lineDetails, function(item){
+				console.log('Pre:',item);
+				item.number = $filter('tel')(item.number);
+				console.log('Post:',item);
 
+			});
+
+			
 		$http({
 		method: 'post',
 		url: '/convertingdeals/'+deal._id,
@@ -787,6 +795,7 @@ return $scope.deal.dslspeed;
 				dealId: $stateParams.dealId
 
 			});
+			$scope.deal.telephone = $filter('tel')($scope.deal.telephone);
 			//console.log('Deal Info: %o', $scope.deal);
 			$scope.mystage = $scope.deal.stage;
 

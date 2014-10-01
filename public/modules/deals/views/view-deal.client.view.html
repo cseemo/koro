@@ -38,7 +38,7 @@
      <h2>Company Info</h2>
     Address: {{deal.address}} {{deal.city}}, {{deal.state}} {{deal.zipcode}}<br>
 	Contact Name: {{deal.contactname}}<br>
-	Telephone: {{deal.telephone}}<br>
+	Telephone: {{deal.telephone|tel}}<br>
 	Contact Email: {{deal.contactemail}}<br>
 	Converted Date: {{deal.converted}}<br>
 	Sales Rep: {{deal.assignedRep}}<br>
@@ -82,7 +82,7 @@
 
 			<h2>Line Details</h2>
 			<div data-ng-repeat="line in deal.lineDetails track by $index">
-			  <b>Line {{$index+1}}: ({{line.number}})</b>:
+			  <b>Line {{$index+1}}: {{line.number|tel}}</b>:
               <span ng-show="line.vm==true">
              Voicemail</span>
               <span ng-show="line.hunting==true">

@@ -133,7 +133,8 @@ $scope.currentLead=0;
 			
 			//console.log('DSL Speed: ', dslspeed);
 			//console.log('Lead User %o', lead.user);
-			
+			lead.telephone = $filter('tel')(lead.telephone);
+			console.log(lead.telephone);
 			lead.$update(function(response) {
 				//console.log('Lead Info To Populate %o',lead);
 				
@@ -524,7 +525,8 @@ $scope.makeQuote = function(){
 	//console.log('Myform: %o', this.myForm);
 var lead = $scope.lead;
 	//console.log('Lead Info %o', lead);
-
+var formatphone = $filter('tel')(this.myForm.telephone.$viewValue);
+console.log('phone ',formatphone);
 this.term = this.myForm.term.$viewValue;
 this.dsl = this.myForm.dsl_speed.$viewValue;
 this.adl = this.myForm.adl.$viewValue;
@@ -539,7 +541,7 @@ this.iptype = this.myForm.staticIP.$viewValue;
 this.coname = this.myForm.companyname.$viewValue;
 
 this.dmname = this.myForm.dmname.$viewValue;
-this.tel = this.myForm.telephone.$viewValue;
+this.tel = formatphone;
 this.email = this.myForm.email.$viewValue;
 //this.sendloas = this.myForm.sendloas.$viewValue;
 //console.log('coname: '+this.coname);
@@ -708,6 +710,7 @@ this.email = this.myForm.email.$viewValue;
 			$scope.lead = Leads.get({ 
 				leadId: $stateParams.leadId
 			});
+			$scope.lead.telephone = $filter('tel')($scope.lead.telephone);
 			//$scope.callDetails = $scope.lead.callDetails;
 			////console.log('callDetails %o',$scope.lead);
 		};
