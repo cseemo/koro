@@ -32,7 +32,7 @@ module.exports = function(io){
 		switch(n){
 
 			case 'quote': 
-			io.emit('test',  {date: Date.now(), message: data.user.displayName+' just sent out a quote!'});	
+			io.emit('test',  {date: Date.now(), message: data.user.displayName+' just sent a quote to '+data.deal+' for $'+data.mrc+'! # of Adl Lines ('+data.lines+')'});	
 			//io.emit('test',  {type: 'event', message: 'Making a new quote!!', user: $scope.authentication.user});	
 			break;
 

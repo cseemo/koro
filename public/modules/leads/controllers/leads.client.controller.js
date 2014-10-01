@@ -515,7 +515,7 @@ $scope.dialLead = function() {
 
 
 $scope.makeQuote = function(){
-	socket.emit('message',  {type: 'quote', message: 'Making a new quote!!', user: $scope.authentication.user});	
+	socket.emit('message',  {type: 'quote', mrc: $scope.currentPrice, deal: $scope.lead.companyname, lines: this.myForm.adl.$viewValue, message: 'Making a new quote!!', user: $scope.authentication.user});	
 
 	$scope.emailbuttons = true;
 	$scope.sending = true;
@@ -530,6 +530,7 @@ this.dsl = this.myForm.dsl_speed.$viewValue;
 this.adl = this.myForm.adl.$viewValue;
 this.modem = this.myForm.modem.$viewValue;
 this.nrcs = this.myForm.nrcs.$viewValue;
+
 this.credits = this.myForm.credits.$viewValue;
 this.iptype = this.myForm.staticIP.$viewValue;
 //console.log('coname: %o'+this.myForm);
