@@ -515,7 +515,7 @@ $scope.dialLead = function() {
 
 
 $scope.makeQuote = function(){
-	socket.emit('test',  {type: 'quote', message: 'Making a new quote!!', user: $scope.authentication.user});	
+	socket.emit('message',  {type: 'quote', message: 'Making a new quote!!', user: $scope.authentication.user});	
 
 	$scope.emailbuttons = true;
 	$scope.sending = true;

@@ -664,7 +664,7 @@ return $scope.deal.dslspeed;
 			$scope.pending=true;
 			//$scope.step=5;
 			var deal = $scope.deal;
-			socket.emit('test', {type: 'convert', deal: deal.companyname, user: $scope.authentication.user.displayName});	
+			socket.emit('message', {type: 'submit', deal: deal.companyname, user: $scope.authentication.user.displayName});	
 			deal.updated = Date.now();
 			//console.log('Look for deal.stage and deal.stagenum %o', $scope);
 			if($scope.mystage){
