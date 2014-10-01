@@ -9,8 +9,8 @@ module.exports = function(io){
 		console.log('IO EVENT: Connect', socket);
 		//console.log('Req??', req);
 		var clients = io.eio.clientsCount;
-		io.emit('test',  {type: 'connection', message: 'Hooray! Someone new connected '+clients+' now connected.', count: clients});	
-
+		io.emit('test',  {type: 'connection',date: Date.now(), message: 'Hooray! Someone new connected '+clients+' now connected.', count: clients});	
+		
 
 			socket.on('disconnect', function(){
 			console.log('IO EVENT: Disconnect');
@@ -27,7 +27,6 @@ module.exports = function(io){
 	});
 		socket.on('message', function(data){
 		console.log('IO EVENT: %o', data);
-		//var clients = socket.eio.clientsCount;
 		var n = data.type;
 		console.log('n=',n);
 		switch(n){
@@ -45,6 +44,10 @@ module.exports = function(io){
 			case 'submit':
 			console.log('Deal Submitted');
 			io.emit('test',  {date: Date.now(), message: data.user+' just sent out an order packet for  '+data.deal+'!'});	
+			break;
+
+			case 'newconnect':
+			io.emit('newconnect',  {type: 'connection',date: Date.now(), message: 'Hooray! Someone new connected '+clients+' now connected.', count: clients});	
 			break;
 
 			default:

@@ -161,20 +161,16 @@
         // $scope.myObject = data;
         // //window.alert('What up -- some one conected');
         // });
+        socket.on('newconnect', function(data) {
+        console.log('Socket Data: %o', data);
+        $scope.myObject = data;
+      });
 
          socket.on('test', function(data) {
-          console.log('Socket Data: %o', data);
-          if(data.type==='connection'){
-             $scope.myObject = data;
-        toastr.info('New User Connected ...'+data.count+' current users.');
-
-
-          }else{
+        console.log('Socket Data: %o', data);
         $scope.myObject = data;
         toastr.info(data.message);
         $scope.notifys.push(data);
-
-          }
         console.log('Other Event %o', data);
         // $scope.myObject = data;
         // toastr.info('New User Connected ...'+data.count+' current users.');
