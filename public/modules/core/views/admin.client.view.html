@@ -2,8 +2,68 @@
 <div class="page page-dashboard" data-ng-controller="DashboardCtrl">
 
     <div class="row">
-    Users Online: {{myObject.count}}
+      <div class="col-lg-3 col-xsm-3">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-success">
+                    <i class="fa fa-crosshairs"></i>
+                </span>
+                <div class="box-info" ng-click="getLead()">
+                    <p class="size-h2"><span stats="repLEADS">{{mystuff}}</span></p>
+                    <p class="text-muted">Total Leads</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xsm-3">
+          <a href="#!/leads" style="text-decoration:none">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-info">
+                    <i class="fa fa-barcode"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2" ><span stats="repDEALS">{{mystuff}}</span></p>
+                    <p class="text-muted">Deals</p>
+                </div>
+            </div></a>
+        </div>
+        <div class="col-lg-3 col-xsm-6">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-warning">
+                    <i class="fa fa-dollar"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">$<span stats="repMRC">{{mystuff}}</span></p>
+                    <p class="text-muted">Revenue Sold</span></p>
+                </div>
 
+            </div>
+        </div>
+        <div class="col-lg-3 col-xsm-6">
+            <div class="panel mini-box">
+                <span class="btn-icon-lined btn-icon-round btn-icon-lg-alt btn-danger">
+                    <i class="fa fa-phone"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">{{myObject.count}}</p>
+                    <p class="text-muted">Active Users</p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- end stats -->
+   
+    <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Recent Rep Activity</h3>
+                </div>
+                <div class="panel-body">
+    <span data-ng-repeat="notify in notifys">
+      <strong><i>{{notify.date | date: 'medium'}}</i></strong> - {{notify.message}}<br>
+    </span>
+    </div>
+    </div>
+    </div>
+          </div>         
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">

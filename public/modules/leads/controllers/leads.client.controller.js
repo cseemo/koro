@@ -116,7 +116,6 @@ $scope.currentLead=0;
 			////console.log('Scope: %o',$scope);
 			//console.log('This %o', this);
 			toastr.info($scope.lead.companyname+' was converted to a deal.');
-
 			var dslspeed = this.dslspeed.value,
 			 	lead = $scope.lead;
 				lead.status = 'Closed/Won';
@@ -129,6 +128,8 @@ $scope.currentLead=0;
 				var 	converted = 	Date.now();
 				var mrc = this.currentPrice;
 				var nrc = this.currentNRR;
+			console.log('Username for Convert: ',$scope.authentication.user.displayName);
+			socket.emit('test', {type: 'convert', deal: $scope.lead.companyname, user: $scope.authentication.user.displayName});	
 			
 			//console.log('DSL Speed: ', dslspeed);
 			//console.log('Lead User %o', lead.user);
@@ -514,7 +515,7 @@ $scope.dialLead = function() {
 
 
 $scope.makeQuote = function(){
-	socket.emit('test',  {type: 'event', message: 'Making a new quote!!', user: $scope.authentication.user});	
+	socket.emit('test',  {type: 'quote', message: 'Making a new quote!!', user: $scope.authentication.user});	
 
 	$scope.emailbuttons = true;
 	$scope.sending = true;

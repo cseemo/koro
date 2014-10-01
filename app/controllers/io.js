@@ -28,7 +28,31 @@ module.exports = function(io){
 		socket.on('test', function(data){
 		console.log('IO EVENT: %o', data);
 		//var clients = socket.eio.clientsCount;
-		io.emit('test',  {message: data.user.displayName+' just sent out a quote!'});	
+		var n = data.type;
+		console.log('n=',n);
+		switch(n){
+
+			case 'quote': 
+			io.emit('test',  {date: Date.now(), message: data.user.displayName+' just sent out a quote!'});	
+			//io.emit('test',  {type: 'event', message: 'Making a new quote!!', user: $scope.authentication.user});	
+			break;
+
+			case 'convert':
+			console.log('Deal converted');
+			io.emit('test',  {date: Date.now(), message: data.user+' just converted '+data.deal+' from a Lead to a Deal!'});	
+			break;
+
+			case 'submit':
+			console.log('Deal Submitted');
+			io.emit('test',  {date: Date.now(), message: data.user+' just sent out an order packet for  '+data.deal+'!'});	
+			break;
+
+			default:
+			io.emit('test',  {date: Date.now(), message: 'Something else'});	
+			break;
+
+		}
+		
 
 	});
 
