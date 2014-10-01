@@ -2,7 +2,7 @@
 
 // Deals controller
 
-angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', 'socket', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout',  
+angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', 'socket', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout', 
 	function($rootScope, $scope, $stateParams, $location, Authentication, Leads, Deals, socket, $http, $filter, $sce, Users, updateNotifications, $timeout) {
 
       // socket.on('test', function(data) {

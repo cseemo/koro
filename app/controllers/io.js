@@ -25,10 +25,10 @@ module.exports = function(io){
 		io.emit('test',  {message: 'We have lost a comrade! We still have '+clients+' connected.', count: clients});	
 
 	});
-					socket.on('event', function(data){
-		console.log('IO EVENT: Leave', data);
-		var clients = socket.eio.clientsCount;
-		io.emit('test',  {message: 'We have lost a comrade! We still have '+clients+' connected.', count: clients});	
+		socket.on('test', function(data){
+		console.log('IO EVENT: %o', data);
+		//var clients = socket.eio.clientsCount;
+		io.emit('test',  {message: data.user.displayName+' just sent out a quote!'});	
 
 	});
 

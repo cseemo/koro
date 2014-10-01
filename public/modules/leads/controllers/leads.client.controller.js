@@ -2,8 +2,8 @@
 
 
 // Leads controller
-angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$filter', '$location', 'Authentication', 'Leads', 'Deals', 'Users', '$timeout',
-	function($http, $scope, $stateParams, $filter, $location, Authentication, Leads, Deals, Users, $timeout) {
+angular.module('leads').controller('LeadsController', ['$http', '$scope', '$stateParams', '$filter', '$location', 'Authentication', 'Leads', 'Deals', 'Users', '$timeout', 'socket',
+	function($http, $scope, $stateParams, $filter, $location, Authentication, Leads, Deals, Users, $timeout, socket) {
 		$scope.authentication = Authentication;
 		$scope.sending = false;
 		$scope.emailbuttons = false;
@@ -514,6 +514,8 @@ $scope.dialLead = function() {
 
 
 $scope.makeQuote = function(){
+	socket.emit('test',  {type: 'event', message: 'Making a new quote!!', user: $scope.authentication.user});	
+
 	$scope.emailbuttons = true;
 	$scope.sending = true;
 	// window.alert("MakingQuote");
