@@ -129,7 +129,7 @@ $scope.currentLead=0;
 				var mrc = this.currentPrice;
 				var nrc = this.currentNRR;
 			console.log('Username for Convert: ',$scope.authentication.user.displayName);
-			socket.emit('test', {type: 'convert', deal: $scope.lead.companyname, user: $scope.authentication.user.displayName});	
+			socket.emit('message', {type: 'convert', deal: $scope.lead.companyname, user: $scope.authentication.user.displayName});	
 			
 			//console.log('DSL Speed: ', dslspeed);
 			//console.log('Lead User %o', lead.user);

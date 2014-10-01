@@ -25,7 +25,7 @@ module.exports = function(io){
 		io.emit('test',  {message: 'We have lost a comrade! We still have '+clients+' connected.', count: clients});	
 
 	});
-		socket.on('test', function(data){
+		socket.on('message', function(data){
 		console.log('IO EVENT: %o', data);
 		//var clients = socket.eio.clientsCount;
 		var n = data.type;
