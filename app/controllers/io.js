@@ -3,9 +3,9 @@
 
 module.exports = function(io){
 	
-	
+		var ss = 0;
 
-		io.on('connection', function(socket){
+		io.sockets.on('connection', function(socket){
 		console.log('IO EVENT: Connect', socket);
 		//console.log('Req??', req);
 		var clients = io.eio.clientsCount;
@@ -26,9 +26,15 @@ module.exports = function(io){
 
 	});
 		socket.on('message', function(data){
+			
+			console.log('SS =',ss);
 		console.log('IO EVENT: %o', data);
 		var n = data.type;
 		console.log('n=',n);
+	
+
+
+		
 		switch(n){
 
 			case 'quote': 
@@ -60,8 +66,8 @@ module.exports = function(io){
 			break;
 
 		}
-		
-
+		ss++;
+	
 	});
 
 	});

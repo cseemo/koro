@@ -153,9 +153,9 @@
 
 
         .controller('NavContainerCtrl', ['$scope', function($scope) {}]).
-    controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', 'Deals', '$filter', 'socket', function($scope, Authentication, Leads, Deals, $filter, socket) {
+    controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', 'Deals', '$filter', 'socket', '$timeout', function($scope, Authentication, Leads, Deals, $filter, socket, $timeout) {
       $scope.notifys=[];
-
+      
         //   socket.on('test', function(data) {
         // console.log('Socket On Event', data);
         // $scope.myObject = data;
@@ -168,10 +168,18 @@
 
          socket.on('test', function(data) {
         console.log('Socket Data: %o', data);
+       
         $scope.myObject = data;
         toastr.info(data.message);
+        console.log(data.message);
         $scope.notifys.push(data);
         console.log('Other Event %o', data);
+
+
+       
+        // $timeout(function(){
+        //   toastr.info(data.message);
+        // }, 1000);
         // $scope.myObject = data;
         // toastr.info('New User Connected ...'+data.count+' current users.');
         });

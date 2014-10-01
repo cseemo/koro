@@ -18,6 +18,7 @@ on: function (eventName, callback) {
 		console.log('looks like some shit was on');
 socket.on(eventName, function () { 
 var args = arguments;
+
 $rootScope.$apply(function () {
 callback.apply(socket, args);
 });
@@ -36,3 +37,14 @@ callback.apply(socket, args);
 }
 };
 });
+
+   // socket.on('test', function(data) {
+   //      console.log('Socket Data: %o', data);
+        
+   //      $scope.myObject = data;
+   //      toastr.info(data.message);
+   //      $scope.notifys.push(data);
+   //      console.log('Other Event %o', data);
+   //      // $scope.myObject = data;
+   //      // toastr.info('New User Connected ...'+data.count+' current users.');
+   //      });
