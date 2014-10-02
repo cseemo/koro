@@ -153,8 +153,24 @@ var LeadSchema = new Schema({
 	},
 	winbackcredits: {
 		type: String
+	},
+	quoteDate: {
+		type: Date,
+		default: null
+	},
+	mrc: {
+		type: String,
+		default: null
+	},
+	nrc: {
+		type: String,
+		default: null
+	},
+	dsl: {
+		type: String,
+		default: null,
+		trim: true
 	}
-	
 
 
 });

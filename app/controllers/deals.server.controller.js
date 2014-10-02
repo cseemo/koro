@@ -849,7 +849,7 @@ exports.sendOrderPacket = function(req, res){
 	console.log('Sending Order Packet');
 	var timesrun = 0;
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-	//console.log('REQ Deal', req.deal);
+	console.log('REQ Deal', req.deal);
 	var id = req.deal._id;
 	var PDFDocument = require('pdfkit');
 	var fs=require('fs');
@@ -861,6 +861,7 @@ exports.sendOrderPacket = function(req, res){
 	//FILL OUT LD LOA
 	var bg2 = doc.image('LDLOA.png', 0, 0,{width: 600});
 	//var bg = doc.image('FCTicket.jpg', 0, 0, 600, 800);
+
 
 		//Set Company Name
 		doc.y = 220;

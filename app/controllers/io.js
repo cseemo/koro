@@ -9,13 +9,14 @@ module.exports = function(io){
 		console.log('IO EVENT: Connect', socket);
 		//console.log('Req??', req);
 		var clients = io.eio.clientsCount;
-		io.emit('test',  {type: 'connection',date: Date.now(), message: 'Hooray! Someone new connected '+clients+' now connected.', count: clients});	
+		io.emit('newconnect',  {type: 'connection',date: Date.now(), message: 'Hooray! Someone new connected '+clients+' now connected.', count: clients});	
 		
 
 			socket.on('disconnect', function(){
 			console.log('IO EVENT: Disconnect');
 			var clients = io.eio.clientsCount;
-			io.emit('test',  {message: 'User Disconnected...'+clients+' connected.', count: clients});	
+			io.emit('newconnect',  {type: 'connection',date: Date.now(), message: 'Hooray! Someone new connected '+clients+' now connected.', count: clients});	
+		
 
 	});
 

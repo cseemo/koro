@@ -43,7 +43,8 @@ var UserSchema = new Schema({
 	},
 	telephone: {
 		type: String,
-		trim: true
+		trim: true,
+		default: '480 689-4838'
 	},
 	email: {
 		type: String,

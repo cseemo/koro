@@ -118,6 +118,8 @@ $scope.currentLead=0;
 			toastr.info($scope.lead.companyname+' was converted to a deal.');
 			var dslspeed = this.dslspeed.value,
 			 	lead = $scope.lead;
+			 		lead.telephone = $filter('tel')(lead.telephone);
+			console.log(lead.telephone);
 				lead.status = 'Closed/Won';
 				var term = this.myterm.name;
 				var 	adl = 		this.myadl;
@@ -133,8 +135,8 @@ $scope.currentLead=0;
 			
 			//console.log('DSL Speed: ', dslspeed);
 			//console.log('Lead User %o', lead.user);
-			lead.telephone = $filter('tel')(lead.telephone);
-			console.log(lead.telephone);
+
+		
 			lead.$update(function(response) {
 				//console.log('Lead Info To Populate %o',lead);
 				
@@ -526,6 +528,18 @@ $scope.makeQuote = function(){
 var lead = $scope.lead;
 	//console.log('Lead Info %o', lead);
 var formatphone = $filter('tel')(this.myForm.telephone.$viewValue);
+	lead.mrc = $scope.currentPrice.toFixed(2);
+	lead.nrc = $scope.currentNRR.toFixed(2);	
+			// mrc = $filter('currency')(mrc);
+			// nrc = $filter('currency')(nrc);
+
+			// lead.mrc = mrc;
+			// lead.nrc = nrc;
+			// lead.address =this.address.value;
+			// lead.city =this.city.value;
+			// lead.state =this.state.value;
+			// lead.zipcode =this.zipcode.value;
+			console.log(lead.mrc+' @ '+lead.nrc);
 console.log('phone ',formatphone);
 this.term = this.myForm.term.$viewValue;
 this.dsl = this.myForm.dsl_speed.$viewValue;
@@ -541,66 +555,85 @@ this.iptype = this.myForm.staticIP.$viewValue;
 this.coname = this.myForm.companyname.$viewValue;
 
 this.dmname = this.myForm.dmname.$viewValue;
-this.tel = formatphone;
+lead.telephone = formatphone;
 this.email = this.myForm.email.$viewValue;
 //this.sendloas = this.myForm.sendloas.$viewValue;
 //console.log('coname: '+this.coname);
 //console.log('dmname: '+this.dmname);
 
 			lead.term =this.term.value;
-			lead.dslspeed =this.dsl.svalue;
+			lead.dslspeed =this.dsl.value;
+			lead.dsl =this.dsl.name;
 			lead.adl =this.adl;
 			lead.modem =this.modem.value;
 			lead.waivenrcs =this.nrcs.value;
 			lead.winbackcredits = this.credits.name;
 			lead.staticip =this.iptype.name;
-			// lead.address =this.address.value;
-			// lead.city =this.city.value;
-			// lead.state =this.state.value;
-			// lead.zipcode =this.zipcode.value;
 			
 
 			lead.$update(function() {
+				toastr.info('Saving Lead...');
 				$location.path('leads/' + lead._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
-			});
+			}).then(function(){
+ 				var myleadT = lead._id;
+			toastr.info('Generating Quote...');
 
-			var myleadT = lead._id;
-			toastr.info('Sending Email');
- 
+ 		
 			$http({
 		method: 'post',
+		responseType: 'arraybuffer',
 		// url: '/email/' + myleadT,
 		url: '/email/'+lead._id,
-		data: {
-			mylead: myleadT,
-			term: this.term.value,
-			dslspeed: this.dsl.svalue,
-			adllines: this.adl,
-			full_name: this.dmname,
-			phone: this.tel,
-			email: this.email, 
-			companyname: this.coname, 
-			modem: this.modem.value,
-			nrc: this.nrcs.value,
-			credits: this.credits.name,
-			staticIP: this.iptype.name,
-			sendloas: 0,
-			address: lead.address,
-			city: lead.city,
-			state: lead.state,
-			zip: lead.zipcode
-		},
+		// data: {
+		// 	mylead: myleadT,
+		// 	term: this.term.value,
+		// 	dslspeed: this.dsl.svalue,
+		// 	adllines: this.adl,
+		// 	full_name: this.dmname,
+		// 	phone: lead.telephone,
+		// 	email: this.email, 
+		// 	companyname: this.coname, 
+		// 	modem: this.modem.value,
+		// 	nrc: this.nrcs.value,
+		// 	credits: this.credits.name,
+		// 	staticIP: this.iptype.name,
+		// 	sendloas: 0,
+		// 	address: lead.address,
+		// 	city: lead.city,
+		// 	state: lead.state,
+		// 	zip: lead.zipcode,
+		// 	repname: $scope.authentication.user.displayName,
+		// 	repemail: $scope.authentication.user.email,
+		// 	repphone: '602 555-1222'
+		// },
 		headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 			})
 		.success(function(data, status) {
+		toastr.success('Success! Email was sent to '+$scope.lead.email);
 		$scope.sending = false;
 		$scope.results = true;
+		//console.log('Data from LOA?? %o',data);
 		
-		if(status === 200) {
 			$scope.myresults = 'Email Sent!';
-			toastr.success('Success! Email was sent to '+$scope.lead.email);
+			
+			
+
+			var file = new Blob([data], {type: 'application/pdf'});
+     		var fileURL = URL.createObjectURL(file);
+
+     		$timeout(function(){
+				toastr.info('Generating PDF for your viewing pleasure');
+					$timeout(function(){
+
+						window.open(fileURL);
+					}, 1000);
+			}, 500);
+     		
+
+
+
 			//$scope.currentPrice = data.price;
 ////console.log('Data Returned '+data);
 			//$scope.currentPrice = data.price;
@@ -611,7 +644,7 @@ this.email = this.myForm.email.$viewValue;
 //Get Quote Details and Save to Lead Object
 			//window.alert(data);
 
-			}
+			
 			$timeout(function(){
 
 					//console.log('EMail Sent');
@@ -632,7 +665,8 @@ this.email = this.myForm.email.$viewValue;
 				//console.log('OOps...'+data);
 			});
 
-				
+				});
+
 
 			};
 

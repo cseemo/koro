@@ -155,11 +155,15 @@
         .controller('NavContainerCtrl', ['$scope', function($scope) {}]).
     controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', 'Deals', '$filter', 'socket', '$timeout', function($scope, Authentication, Leads, Deals, $filter, socket, $timeout) {
       $scope.notifys=[];
-      $scope.$on('$destroy', function(){
-        console.log('Destroying $scope');
-        socket.removeListener('test');
+      
+      // $scope.$on('$destroy', function(){
+      //   console.log('Destroying $scope');
+      //   socket.removeListener('test');
 
-      });
+      // });
+
+
+
         //   socket.on('test', function(data) {
         // console.log('Socket On Event', data);
         // $scope.myObject = data;
@@ -173,8 +177,7 @@
          socket.on('test', function(data) {
         console.log('Socket Data: %o', data);
        
-        $scope.myObject = data;
-        toastr.info(data.message);
+        
         console.log(data.message);
         $scope.notifys.push(data);
         console.log('Other Event %o', data);
