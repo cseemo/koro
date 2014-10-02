@@ -15,7 +15,7 @@ module.exports = function(io){
 			socket.on('disconnect', function(){
 			console.log('IO EVENT: Disconnect');
 			var clients = io.eio.clientsCount;
-			io.emit('newconnect',  {type: 'connection',date: Date.now(), message: 'Hooray! Someone new connected '+clients+' now connected.', count: clients});	
+			io.emit('message',  {type: 'connection',date: Date.now(), message: 'Someone just left... '+clients+' now connected.', count: clients});	
 		
 
 	});
@@ -28,7 +28,7 @@ module.exports = function(io){
 	});
 		socket.on('message', function(data){
 			
-			console.log('SS =',ss);
+		console.log('SS =',ss);
 		console.log('IO EVENT: %o', data);
 		var n = data.type;
 		console.log('n=',n);
@@ -39,7 +39,7 @@ module.exports = function(io){
 		switch(n){
 
 			case 'quote': 
-			io.emit('test',  {date: Date.now(), message: data.user.displayName+' just sent a quote to '+data.deal+' for $'+data.mrc+'! # of Adl Lines ('+data.lines+')'});	
+			io.emit('test',  {date: Date.now(), message: data.user.displayName+' just sent a quote to '+data.deal+' for $'+data.mrc+'. ('+data.dsl+' - '+data.lines+' adl)'});	
 			//io.emit('test',  {type: 'event', message: 'Making a new quote!!', user: $scope.authentication.user});	
 			break;
 

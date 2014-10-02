@@ -41,8 +41,8 @@ var getErrorMessage = function(err) {
 exports.sendQuote = function(req, res){
 
 		/* I'm sure there is a better way to do this like foreach or whatever  but we'll grab our variables here */
-	var dsl = req.lead.dslspeed;
-	var dslspeed = req.lead.dsl;
+	var dslspeed = req.lead.dslspeed;
+	var dsl = req.lead.dsl;
 	var adl = req.lead.adl;
 	var nrcs = req.lead.waivenrcs; 
 	var credits = req.lead.winbackcredits;
@@ -78,7 +78,7 @@ console.log('Each Additional Line is '+adlEach+' because you have '+adl+' adl li
 }
 
 
-console.log('term: '+term + ' '+'DSl.Name: '+dsl);
+console.log('term: '+term + ' '+'DSl.Name: '+dsl+' or the other '+dslspeed);
 var dslPrice;
 
 if(term==='1'){
@@ -306,6 +306,7 @@ var nrrCost = parseInt(adlcostN)+parseFloat(modemCostN);
 		doc.text(req.user.email);
 
 			//Set Company Name
+		// if(req.lead.companyname.length<)
 		doc.y = 80;
 		doc.x = 70;
 		doc.fontSize(26);
@@ -1174,6 +1175,8 @@ if(term.value==='3' && dsl.name==='100.12'){
 	dslPrice = parseInt(395);
 
 }
+
+
 
 var staticIP = 0;
 

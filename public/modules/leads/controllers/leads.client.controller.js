@@ -518,8 +518,9 @@ $scope.dialLead = function() {
 
 
 $scope.makeQuote = function(){
-	socket.emit('message',  {type: 'quote', mrc: $scope.currentPrice, deal: $scope.lead.companyname, lines: this.myForm.adl.$viewValue, message: 'Making a new quote!!', user: $scope.authentication.user});	
-
+	console.log('Scope - find DSL SPeed for Notification')
+	socket.emit('message',  {type: 'quote', dsl: this.myForm.dsl_speed.$viewValue.value, mrc: $scope.currentPrice, deal: $scope.lead.companyname, lines: this.myForm.adl.$viewValue, message: 'Making a new quote!!', user: $scope.authentication.user});	
+	console.log('Data we need %o', this.myForm.dsl_speed.$viewValue.value);
 	$scope.emailbuttons = true;
 	$scope.sending = true;
 	// window.alert("MakingQuote");

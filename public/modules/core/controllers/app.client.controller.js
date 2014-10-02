@@ -164,11 +164,10 @@
 
 
 
-        //   socket.on('test', function(data) {
-        // console.log('Socket On Event', data);
-        // $scope.myObject = data;
-        // //window.alert('What up -- some one conected');
-        // });
+          socket.on('test', function(data) {
+        console.log('Socket On Test', data);
+        
+        });
         socket.on('newconnect', function(data) {
         console.log('Socket Data: %o', data);
         $scope.myObject = data;
@@ -176,8 +175,7 @@
 
          socket.on('test', function(data) {
         console.log('Socket Data: %o', data);
-       
-        
+
         console.log(data.message);
         $scope.notifys.push(data);
         console.log('Other Event %o', data);
