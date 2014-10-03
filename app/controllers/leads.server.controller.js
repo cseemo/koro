@@ -44,6 +44,7 @@ exports.sendQuote = function(req, res){
 	var dslspeed = req.lead.dslspeed;
 	var dsl = req.lead.dsl;
 	var adl = req.lead.adl;
+	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 	var nrcs = req.lead.waivenrcs; 
 	var credits = req.lead.winbackcredits;
 	var term = req.lead.term;
@@ -832,6 +833,10 @@ doc.on('end', function(){
 				{
 					'name': 'salesreptel',
 					'content': req.user.telephone
+				},
+				{
+					'name': 'signip',
+					'content': ip
 				}
 
 
