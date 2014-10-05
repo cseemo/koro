@@ -839,7 +839,7 @@ return $scope.deal.dslspeed;
  }
 })
 
-.directive('stats', function($q, $http, Authentication){
+.directive('stats', function($q, $http, Authentication, $filter){
 	return {
 		scope: {},
 		restrict: 'AE',
@@ -889,7 +889,9 @@ return $scope.deal.dslspeed;
 					Object.keys(result.data).forEach(function(key) {
 						console.log('repMRC', result.data[key]);
 						
-						scope.mystuff = result.data[key].total;
+						var test = result.data[key].total;
+						scope.mystuff = $filter('currency')(test);
+						
 
 					});
 
@@ -897,8 +899,8 @@ return $scope.deal.dslspeed;
 				if(mytype==='totalMRC'){
 					Object.keys(result.data).forEach(function(key) {
 						console.log('totalMRC');
-
-						scope.mystuff = result.data[key].total;
+						var test = result.data[key].total;
+						scope.mystuff = $filter('currency')(test);
 
 					});
 

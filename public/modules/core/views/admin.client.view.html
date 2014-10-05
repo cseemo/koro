@@ -31,7 +31,7 @@
                     <i class="fa fa-dollar"></i>
                 </span>
                 <div class="box-info">
-                    <p class="size-h2">$<span stats="totalMRC">{{mystuff}}</span></p>
+                    <p class="size-h2"><span stats="totalMRC">{{mystuff}}</span></p>
                     <p class="text-muted">Revenue Sold</span></p>
                 </div>
 
@@ -62,7 +62,7 @@
       <span class="btn-icon-lined btn-icon-round btn-small btn-success">
                     <i class="fa fa-{{notify.icon}}"></i>
                 </span> <strong><i>{{notify.head}} </i></strong>
-               {{notify.date | date: 'medium'}} - {{notify.user}} {{notify.message1}} <a href="/#!/deals/{{notify.dealid}}">{{notify.deal}}</a> {{notify.message2}}
+               {{notify.date | date: 'medium'}} - {{notify.user}} {{notify.message1}} <a href="/#!/deals/{{notify.dealid}}">{{notify.deal}}</a> {{notify.message2}}<br>
     </span>
     </div>
     </div>
