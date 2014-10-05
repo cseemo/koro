@@ -599,6 +599,8 @@ exports.resetPassword = function(req, res) {
  * Signout
  */
 exports.signout = function(req, res) {
+	io.emit('message', {type: 'signin', user: req.user.displayName});	
+			
 	req.logout();
 	res.redirect('/');
 };

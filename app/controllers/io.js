@@ -63,6 +63,11 @@ module.exports = function(io){
 			io.emit('test',  {date: Date.now(), message: data.user+' just signed in.'});	
 			break;
 
+			case 'signout':
+			console.log('Signed In');
+			io.emit('test',  {date: Date.now(), message: data.user+' just signed out.'});	
+			break;
+
 			case 'newconnect':
 			io.emit('newconnect',  {type: 'connection',date: Date.now(), message: 'Hooray! Someone new connected '+clients+' now connected.', count: clients});	
 			break;

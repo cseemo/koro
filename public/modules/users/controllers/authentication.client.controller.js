@@ -79,7 +79,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 				$scope.authentication.user = response;
 				// socket.emit('signin')
 				// socket.emit('message', {type: 'convert', deal: $scope.lead.companyname, user: $scope.authentication.user.displayName});	
-				socket.emit('message', {type: 'signin', user: $scope.authentication.user.displayName});	
+				socket.emit('message', {type: 'signout', user: $scope.authentication.user.displayName});	
 			
 				//And redirect to the index page
 				$location.path('/');
