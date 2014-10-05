@@ -854,7 +854,11 @@ return $scope.deal.dslspeed;
 
 			switch(mytype) {
 				case 'repMRC':
-				var statURL = '/stats/deals/mrctotal'
+				var statURL = '/stats/deals/mrcrep'
+				break;
+
+				case 'totalMRC':
+				var statURL = '/stats/deals/mrctotal';
 				break;
 
 				case 'repLEADS':
@@ -871,7 +875,26 @@ return $scope.deal.dslspeed;
 			}
 
 			$http.get(statURL).then(function(result){
-				////console.log('Result '+mytype+' :', result);
+				console.log('Result '+mytype+' :', result);
+				if(mytype==='repMRC'){
+					// window.alert('REpMRC bitches!!');
+					Object.keys(result.data).forEach(function(key) {
+						console.log('repMRC', result.data[key]);
+						
+						scope.mystuff = result.data[key].total;
+
+					});
+
+				}else
+				if(mytype==='totalMRC'){
+					Object.keys(result.data).forEach(function(key) {
+						console.log('totalMRC');
+
+						scope.mystuff = result.data[key].total;
+
+					});
+
+				}else
 				if(mytype==='repCALLS'){
 					////console.log('Going thru Rep Array now', Authentication.user.displayName);
 		Object.keys(result.data).forEach(function(key) {

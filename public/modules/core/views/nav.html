@@ -46,8 +46,35 @@
                 <span>Deals</span>
              </a>
           </li>
-         
-          <div data-ng-show="authentication.hasRole('admin')===true">
+          <li data-ng-show="authentication.hasRole('admin')===true">
+             <a href="#!/admin">
+                <i class="fa fa-bar-chart-o"></i>
+                <span>Admin</span>
+             </a>
+
+             </li>
+          <li data-ng-show="authentication.hasRole('admin')===true">
+               <a href="#!/adminusers">
+                <i class="fa fa-users"></i>
+                <span>Users</span>
+             </a>
+          </li>
+          <li data-ng-show="authentication.hasRole('admin')===true">
+               <a href="#!/reports">
+                <i class="fa fa-barcode"></i>
+                <span>Reports</span>
+             </a>
+          </li>
+          <li data-ng-show="authentication.hasRole('admin')===true">
+              
+                  <a href="#!/timecards">
+                <i class="fa fa-clock-o"></i>
+                <span>Timecards</span>
+             </a>
+          </li>
+          </li>
+    <!--      
+        <span >
         <li>
              <a href="#!/adminusers">
                 <i class="fa fa-users"></i>
@@ -66,7 +93,7 @@
                 <span>Reports</span>
              </a>
           </li>
-          </div>
+          </span> -->
             
     </ul>
 </div>

@@ -84,8 +84,35 @@ exports.create = function(req, res) {
 	});
 };
 
-//Get Total MRC Sold by Rep
+//Get TOTAL MRC Sold by OFfice
 exports.getDealMRCTotal = function(req, res){
+		Deal.aggregate([ {
+		'$group': { 
+			_id: '$mrc',
+			total: {
+				'$sum': '$mrc'
+					}
+				}
+			}]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+
+
+};
+
+//Get Total MRC Sold by Rep
+exports.getDealMRCRep = function(req, res){
 	//console.log('Getting MRC'); 
 
 	////console.log('Request: ',req);
@@ -95,9 +122,9 @@ var n = 1;
 	{
 		case 1:
 		//console.log('Assigned Rep: ', req.assignedRep);
-		console.log('Req.User.DisplayName: ', req.user.displayName);
+		console.log('Req.User.DisplayName: ', req.user._id);
 
-		var mytot = Deal.aggregate([ { $match: {assignedRep: req.user.displayName} }, {
+		var mytot = Deal.aggregate([ { $match: {user: req.user._id} }, {
 		'$group': { 
 			_id: '$user',
 			total: {

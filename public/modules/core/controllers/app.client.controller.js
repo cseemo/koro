@@ -250,9 +250,10 @@
       
       // Grab our dataset from the RESTful API
       $scope.LeadTotals = Leads.getLeadTotalsByStatus();
-        $scope.LeadStateTotals = Leads.getLeadTotalsByState();
+      $scope.AllLeadTotals = Leads.getAllLeadTotalsByStatus();
+        $scope.LeadStateTotals = Leads.getLeadsByState();
         $scope.LeadCarrierTotals = Leads.getLeadTotalsByCarrier();
-
+        $scope.AllLeadsbyState = Leads.getLeadTotalsByState();
 
 
           //Pie Chart of Lead Breakdown by State
@@ -276,9 +277,27 @@
         // plotChart1.draw();
       });
 
+       $scope.AllLeadsbyState.$promise.then(function(){
+        console.log('like a boss!');
+        var data = [];
+        Object.keys($scope.LeadStateTotals).forEach(function(key) {
+          if($scope.LeadStateTotals[key]._id && $scope.LeadStateTotals[key]._id !== 'total') {
+            data.push({label: $scope.LeadStateTotals[key]._id, data: $scope.LeadStateTotals[key].total});
+            console.log('Total: ', $scope.LeadStateTotals[key]._id + ' ' + $scope.LeadStateTotals[key].total);
+          }
 
-          //Pie Chart of Lead Breakdown by Current Status
-      // Upon our promise being fulfiled convert our data and re-rener the chart
+
+        });
+        
+        // Re-render the chart, we do this so that way we don't have to re-type in the options above. You can also do this by storing options in a variable
+        var plotChart2 = $.plot($('#ALLleadsStatechart'), data, pieChartOptions);
+        // plotChart1.setData(data);
+        // plotChart1.setupGrid();
+        // plotChart1.draw();
+      });
+
+
+       //Leads By Status for REP
       $scope.LeadTotals.$promise.then(function(){
         //console.log('like a boss!');
         var data = [];
@@ -298,6 +317,31 @@
         
         // Re-render the chart, we do this so that way we don't have to re-type in the options above. You can also do this by storing options in a variable
         var plotChart1 = $.plot($('#leadschart'), data, pieChartOptions);
+        // plotChart1.setData(data);
+        // plotChart1.setupGrid();
+        // plotChart1.draw();
+      });
+
+
+      //LEADS by Status for ADMIND
+      $scope.AllLeadTotals.$promise.then(function(){
+        console.log('like a boss! -- ALL LEAD TOTALS');
+        var data = [];
+        Object.keys($scope.AllLeadTotals).forEach(function(key) {
+          if($scope.AllLeadTotals[key]._id && $scope.AllLeadTotals[key]._id !== 'total') {
+            data.push({label: $scope.AllLeadTotals[key]._id, data: $scope.AllLeadTotals[key].total});
+            console.log('Total: ', $scope.AllLeadTotals[key]._id + ' ' + $scope.AllLeadTotals[key].total);
+          }
+          if($scope.AllLeadTotals[key]._id === 'total'){
+            //Marin had double == JSLint suggested ===
+          //Fill out box of Total Leads
+               $scope.myleads = $scope.AllLeadTotals[key].total;
+               //console.log('Chads tingy: ', $scope.LeadTotals[key].total);
+          }
+
+        });
+            // Re-render the chart, we do this so that way we don't have to re-type in the options above. You can also do this by storing options in a variable
+        var plotChart1 = $.plot($('#ALLleadschart'), data, pieChartOptions);
         // plotChart1.setData(data);
         // plotChart1.setupGrid();
         // plotChart1.draw();

@@ -33,6 +33,7 @@ module.exports = function(app) {
 		app.route('/getleadData')
 		.get(leads.getLeadData);
 
+
 		app.route('/qwest/check/:address')
 		.get(leads.getQwestLoop);
 		//.get(leads.qwestLoopQual);
@@ -42,6 +43,8 @@ module.exports = function(app) {
 		app.route('/leads/:leadId/emailinfo')
 		.get(leads.leadByID, leads.getEmailInfo);
 
+		app.route('/stats/leads/all/status')
+		.get(leads.getAllLeadsByStatus);
 
 		app.route('/stats/leads/by/status')
 		.get(leads.getLeadsByStatus);
@@ -52,6 +55,10 @@ module.exports = function(app) {
 
 		app.route('/stats/leads/by/state')
 		.get(leads.getLeadsByState);
+
+		app.route('/stats/leads/all/state')
+		.get(leads.getAllLeadsByState);
+		
 
 		app.route('/stats/leads/total')
 		.get(leads.getLeadsbyTotal);

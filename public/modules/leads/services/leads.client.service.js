@@ -17,9 +17,19 @@ angular.module('leads').factory('Leads', ['$resource',
 				url: '/stats/leads/by/status',
 				isArray: true,
 			},
-				getLeadTotalsByState: {
+			getAllLeadTotalsByStatus: {
+				method: 'GET',
+				url: '/stats/leads/all/status',
+				isArray: true,
+			},
+				getLeadsByState: {
 				method: 'GET',
 				url: '/stats/leads/by/state',
+				isArray: true,
+			},
+				getLeadTotalsByState: {
+				method: 'GET',
+				url: '/stats/leads/all/state',
 				isArray: true,
 			},
 

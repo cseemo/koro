@@ -530,6 +530,8 @@ $scope.makeQuote = function(){
 	//console.log('Myform: %o', this.myForm);
 var lead = $scope.lead;
 	//console.log('Lead Info %o', lead);
+	$scope.leadstatus= $scope.statuses[3];
+	lead.status = $scope.statuses[3];
 var formatphone = $filter('tel')(this.myForm.telephone.$viewValue);
 	lead.mrc = $scope.currentPrice.toFixed(2);
 	lead.nrc = $scope.currentNRR.toFixed(2);	

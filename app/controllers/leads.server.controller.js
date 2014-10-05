@@ -1544,7 +1544,7 @@ exports.getCallsbyRep = function(req, res) {
 	});	
 };
 
-//getLeadsByState
+//getLeadsByState REP LEVEL
 exports.getLeadsByState = function(req, res) {
 	//console.log('got to getLeadsByState');
 
@@ -1572,38 +1572,19 @@ exports.getLeadsByState = function(req, res) {
 	});	
 };
 
-//getLeadsByStatus
-exports.getLeadsByStatus = function(req, res) {
-	//console.log('got to getLeadsByStatus');
+//getLeadsByState ADMIN LEVEL
+exports.getAllLeadsByState = function(req, res) {
+	//console.log('got to getLeadsByState');
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
-	var n = 2;
-	switch(n)
-	{
-		case 1:
-		var mytot = Lead.aggregate([ { $match: {assignedRep:req.user.displayName} }, {
+	Lead.aggregate([{
 		'$group': { 
-			_id: '$status',
+			_id: '$state',
 			total: {
 				'$sum': 1
 			}
 		}
-	}]);
-		break;
-
-		case 2:
-		var mytot = Lead.aggregate([ {
-		'$group': { 
-			_id: '$status',
-			total: {
-				'$sum': 1
-			}
-		}
-	}]);
-		break;
-
-	}
-	mytot.exec(function(err, results) {
+	}]).exec(function(err, results) {
 		if (err) {
 			return res.status(400).send({
 				message: getErrorMessage(err)
@@ -1615,6 +1596,64 @@ exports.getLeadsByStatus = function(req, res) {
 			});
 			results.push({_id: 'total', 'total': total});
 			res.jsonp(results);
+		}
+	});	
+};
+
+//Get ALL LEADS by STATUS
+exports.getAllLeadsByStatus = function(req, res) {
+	//console.log('got to getLeadsByStatus');
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	Lead.aggregate([{
+		'$group': { 
+			_id: '$status',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+			console.log('ALL Leads BY STATUS',results);
+		}
+	});	
+};
+
+//getLeadsByStatus for REP
+exports.getLeadsByStatus = function(req, res) {
+	//console.log('got to getLeadsByStatus');
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	Lead.aggregate([ { $match: {user :req.user._id} }, {
+		'$group': { 
+			_id: '$status',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]).exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+			console.log('Rep Leads BY STATUS',results);
 		}
 	});	
 };
