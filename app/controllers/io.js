@@ -15,7 +15,7 @@ module.exports = function(io){
 			socket.on('disconnect', function(){
 			console.log('IO EVENT: Disconnect');
 			var clients = io.eio.clientsCount;
-			io.emit('message',  {type: 'connection',date: Date.now(), message: 'Someone just left... '+clients+' now connected.', count: clients});	
+			io.emit('newconnect',  {type: 'connection',date: Date.now(), message: 'Someone just left... '+clients+' now connected.', count: clients});	
 		
 
 	});
@@ -56,6 +56,11 @@ module.exports = function(io){
 			case 'submit':
 			console.log('Deal Submitted');
 			io.emit('test',  {date: Date.now(), message: data.user+' just sent out an order packet for  '+data.deal+'!'});	
+			break;
+
+			case 'signin':
+			console.log('Signed In');
+			io.emit('test',  {date: Date.now(), message: data.user+' just signed in.'});	
 			break;
 
 			case 'newconnect':
