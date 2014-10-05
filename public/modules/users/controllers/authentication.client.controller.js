@@ -77,10 +77,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 			$http.post('/auth/signin', $scope.credentials).success(function(response) {
 				//If successful we assign the response to the global user model
 				$scope.authentication.user = response;
-				// socket.emit('signin')
-				// socket.emit('message', {type: 'convert', deal: $scope.lead.companyname, user: $scope.authentication.user.displayName});	
-				// socket.emit('message', {type: 'signout', user: $scope.authentication.user.displayName});	
-			
+				socket.emit('signin', {type: 'signing', user: $scope.authentication.user.displayName});
+				
 				//And redirect to the index page
 				$location.path('/');
 			}).error(function(response) {

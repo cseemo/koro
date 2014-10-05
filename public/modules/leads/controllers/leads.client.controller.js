@@ -573,14 +573,16 @@ this.email = this.myForm.email.$viewValue;
 			lead.winbackcredits = this.credits.name;
 			lead.staticip =this.iptype.name;
 			
-
+			toastr.info('Saving Lead...');
 			lead.$update(function() {
-				toastr.info('Saving Lead...');
+				
 				$location.path('leads/' + lead._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			}).then(function(){
  				var myleadT = lead._id;
+			
+
 			toastr.info('Generating Quote...');
 
  		
@@ -614,11 +616,11 @@ this.email = this.myForm.email.$viewValue;
 		headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 			})
 		.success(function(data, status) {
-		toastr.success('Success! Email was sent to '+$scope.lead.email);
+		
 		$scope.sending = false;
 		$scope.results = true;
 		//console.log('Data from LOA?? %o',data);
-		
+		toastr.success('Success! Email was sent to '+$scope.lead.email);
 			$scope.myresults = 'Email Sent!';
 			
 			
@@ -664,8 +666,13 @@ this.email = this.myForm.email.$viewValue;
 
 
 				})
-			.error(function(data){
-				//console.log('OOps...'+data);
+			.error(function(data, status, headers, config){
+				// console.log('OOps...%o'+status+data+headers+config);
+				// console.log('OOps...%o'+status.text);
+				toastr.error('Oops...got an error sending, please try again.');
+				
+				$scope.emailbuttons = false;
+					$scope.results = false;
 			});
 
 				});

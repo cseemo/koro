@@ -261,8 +261,7 @@ var nrrCost = parseInt(adlcostN)+parseFloat(modemCostN);
 	var header = doc.image('Header.png', 0, 0,{width: 620});
 	
 
-	doc.pipe( res );
-
+	
 	doc.on('data', function(chunk){
 	chunks.push(chunk);
 	////console.log('chunk:', chunk.length);
@@ -881,10 +880,13 @@ mandrill_client.messages.sendTemplate({
 }, function(result){
 	timesrun++;
 	console.log('Results from Mandrill', result);
+	res.message = result;
+	// doc.pipe( res );
+	res.send('200', mypdf);
 },
 function(e){
 	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-
+	res.send('303 - Error Sending Email', 'Sorry an error occurred: '+ e.name + ' - ' + e.message);
 });
 
 
