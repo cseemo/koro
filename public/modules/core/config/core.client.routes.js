@@ -23,6 +23,14 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 				console.log('stateparams: ', $stateParams.type);
 				return 'modules/core/views/dashboard.client.view.html';
 			}*/
-		});
+		}).
+		state('lock', {
+			url: '/lock',
+			templateUrl: 'lock-screen.html'
+			/*templateUrl: function($stateParams) {
+				console.log('stateparams: ', $stateParams.type);
+				return 'modules/core/views/dashboard.client.view.html';
+			}*/
+		});;
 	}
 ]);

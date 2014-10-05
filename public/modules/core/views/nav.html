@@ -1,11 +1,12 @@
-        
-<div class="nav-wrapper">
+
+<div class="nav-wrapper" name="nav-wrapper" >
     <ul id="nav"
         class="nav"
         data-ng-controller="NavController"
         data-slim-scroll
         data-collapse-nav
         data-highlight-active
+    
         >
 
         <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);">

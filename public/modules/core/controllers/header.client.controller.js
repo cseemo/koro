@@ -6,23 +6,22 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
 
+	
 
 
 		$scope.numNotifications = $scope.authentication.user.notifications.length;
 		//if( ! Authentication.user ) $location.path('/signin');
 		if( Authentication.user ) {
-			console.log('Logged In ');
+			//console.log('Logged In ');
 			$scope.canSee=true;
 		}
 
 		if( ! Authentication.user ) {
-			console.log('not logged in');
+			//console.log('not logged in');
 			$scope.canSee=false;
 
 		}
 
-
-	
 
 $scope.clockedIn = false;
 
@@ -32,13 +31,13 @@ $scope.clockedInVal = 'Clocked-Out';
 
 
 $scope.clockIn= function(type) {
-	console.log('Got Here');
+	//console.log('Got Here');
 	$scope.clockedIn = true;
 	
 	var date = Date.now();
 	var time = $filter('date')(new Date(date), 'h:mma');
 
-	//console.log('timecard %o',$scope);
+	////console.log('timecard %o',$scope);
 		$scope.clockedInVal = 'Clocked-In';
 			switch(type){
 				case 'break': 
@@ -60,11 +59,11 @@ $scope.clockIn= function(type) {
 			
 	$http.get('/awesome/clock').success(function(data) {
 	
-	console.log('Response %o',data);
+	//console.log('Response %o',data);
 	//window.alert('Response');
 }).error(function(data) {
 
-console.log('Error: ' + data);
+//console.log('Error: ' + data);
 });
 
 		};
@@ -97,11 +96,11 @@ console.log('Error: ' + data);
 
 				$http.get('/awesome/clock').success(function(data) {
 	
-	console.log('Response %o',data);
+	//console.log('Response %o',data);
 	//window.alert('Response');
 }).error(function(data) {
 
-console.log('Error: ' + data);
+//console.log('Error: ' + data);
 });
 
 };

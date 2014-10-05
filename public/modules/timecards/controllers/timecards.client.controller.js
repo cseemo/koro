@@ -301,9 +301,9 @@ console.log('Error: ' + data);
     //local: compared to what time? default: now
     //raw: wheter you want in a format of "5 minutes ago', or '5 minutes'
     return function (time, local, raw) {
-    	console.log('Time',time);
-    	console.log('Local',local);
-    	console.log('Raw',raw);
+    	// console.log('Time',time);
+    	// console.log('Local',local);
+    	// console.log('Raw',raw);
         if (!time) return 'never';
  
         if (!local) {

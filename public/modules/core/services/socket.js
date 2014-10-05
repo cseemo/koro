@@ -11,11 +11,11 @@
 
 angular.module('core')
 .factory('socket', function ($rootScope) {
-	console.log('socket factory');
+	//console.log('socket factory');
 var socket = io.connect();
 return {
 on: function (eventName, callback) {
-		console.log('looks like some shit was on');
+		//console.log('looks like some shit was on');
 socket.on(eventName, function () { 
 var args = arguments;
 
@@ -25,7 +25,7 @@ callback.apply(socket, args);
 });
 },
 emit: function (eventName, data, callback) {
-	console.log('looks like some shit was emitted');
+	//console.log('looks like some shit was emitted');
 socket.emit(eventName, data, function () {
 var args = arguments;
 $rootScope.$apply(function () {
@@ -39,12 +39,12 @@ callback.apply(socket, args);
 });
 
    // socket.on('test', function(data) {
-   //      console.log('Socket Data: %o', data);
+   //      //console.log('Socket Data: %o', data);
         
    //      $scope.myObject = data;
    //      toastr.info(data.message);
    //      $scope.notifys.push(data);
-   //      console.log('Other Event %o', data);
+   //      //console.log('Other Event %o', data);
    //      // $scope.myObject = data;
    //      // toastr.info('New User Connected ...'+data.count+' current users.');
    //      });

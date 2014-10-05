@@ -7,18 +7,21 @@ angular.module('core').controller('NavController', ['$scope', 'Authentication', 
 		$scope.menu = Menus.getMenu('topbar');
 		$scope.isAdmin = false;
 
-// 				console.log('Where am I? %o', $location.$$path);
+
+$scope.hideHeader=true;
+// 				//console.log('Where am I? %o', $location.$$path);
 var myurl = $location.$$path.slice(0,9);
-console.log('Myr URL', myurl);
+//console.log('Myr URL', myurl);
 if(myurl==='/approve/'){
-	console.log('Approving!!!');
+	//console.log('Approving!!!');
 	$scope.customerSee = true;
 }else{
 	$scope.customerSee = false;
 }
 
 
-		//console.log('Menu items: ', $scope.menu);
+
+		////console.log('Menu items: ', $scope.menu);
 		$scope.getLead = function() {
 			//window.alert('gettinglead');
 						$http({
@@ -28,8 +31,8 @@ if(myurl==='/approve/'){
 .success(function(data, status) {
 		if(status === 200) {
 			//$scope.currentPrice = data.price;
-console.log('Data: ',data);
-console.log('Data.Response: %o',data._id);
+//console.log('Data: ',data);
+//console.log('Data.Response: %o',data._id);
 	
 	$location.path('leads/' + data._id);
 		}

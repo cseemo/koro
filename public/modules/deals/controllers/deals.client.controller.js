@@ -6,7 +6,7 @@ angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '
 	function($rootScope, $scope, $stateParams, $location, Authentication, Leads, Deals, socket, $http, $filter, $sce, Users, updateNotifications, $timeout, $q) {
 
       // socket.on('test', function(data) {
-      //   //console.log('Socket On Event', data);
+      //   ////console.log('Socket On Event', data);
       //   $scope.numNotifications = data;
       //   //window.alert('What up -- some one conected');
       //   });
@@ -20,7 +20,7 @@ var init;
 		$scope.authentication = Authentication;
 		//If a socket call comes for this user Fire off a toastr event
 		socket.on($scope.authentication.user._id, function(data) {
-        //console.log('Socket Data for specific user : %o', $scope.authentication.user);
+        ////console.log('Socket Data for specific user : %o', $scope.authentication.user);
         toastr.info(data.deal+' just signed their LOAs!!');     
         });
 
@@ -51,9 +51,9 @@ $scope.finished=false;
 
 $scope.nextStep = function(){
 var current = $scope.step-0+1;
-////console.log('Current: ',current);
+//////console.log('Current: ',current);
 $scope.step = current;
-////console.log('Current Step: ',$scope.step);
+//////console.log('Current Step: ',$scope.step);
 };
 
 $scope.mycontent = {};
@@ -62,7 +62,7 @@ $scope.lastStep = function(){
 var current = $scope.step-1;
 
 $scope.step = current;
-////console.log('Current Step: ',$scope.step);
+//////console.log('Current Step: ',$scope.step);
 };
 
 	$scope.makePDF = function(){
@@ -70,12 +70,12 @@ $scope.step = current;
 		$scope.step = 3;
 		$scope.spinny = true;
 		var deal = $scope.deal;
-		////console.log('Loas Signed?', deal.loa_signed);
+		//////console.log('Loas Signed?', deal.loa_signed);
 
 		if(deal.loa_signed!='YES'){
 
 		deal.updated = Date.now();
-		////console.log('My Deal: %o',deal);
+		//////console.log('My Deal: %o',deal);
 		deal.stage=$scope.myDealstages[2].name;
 		deal.stagenum=$scope.myDealstages[2].value;
 		var dealId = $scope.deal._id;
@@ -83,26 +83,26 @@ $scope.step = current;
 		var month = signDate.getMonth();
 		var year = signDate.getYear();
 		var day = signDate.getDay();
-		////console.log('signdate: %o',signDate);
-		////console.log('mydate: '+month+'/'+day+'/'+year);
+		//////console.log('signdate: %o',signDate);
+		//////console.log('mydate: '+month+'/'+day+'/'+year);
 		var testdate = $filter('date')(signDate, 'MM/dd/yyyy');
-		////console.log(testdate);
+		//////console.log(testdate);
 		deal.signDate = testdate;
-		////console.log('Deal.user %o',deal.user);
+		//////console.log('Deal.user %o',deal.user);
 		deal.loa_signed='YES';
 
 		//deal.user.notifications.push({note: deal.companyname+' signed their LOAS'});
 		
 		socket.emit('message',  {type: 'approve', mrc: deal.mrc, deal: deal.companyname, userid: deal.user._id, user: deal.assignedRep});
 		deal.$update(function(data) {
-			////console.log('Deal Updating',data);
+			//////console.log('Deal Updating',data);
 		
 		// }).$promise(function() {
-		// 	////console.log('Promising');
+		// 	//////console.log('Promising');
 		}).then(function(data, response, status, headers) {
-			////console.log('done');
-				////console.log('Deal Updated - SUCCESS: ',data);
-				//////console.log('Data.Response: %o',data._id);
+			//////console.log('done');
+				//////console.log('Deal Updated - SUCCESS: ',data);
+				////////console.log('Data.Response: %o',data._id);
 					 $http({method: 'GET', url: '/pdf/'+dealId, responseType: 'arraybuffer'}).
     					success(function(response) {
     
@@ -117,10 +117,10 @@ $scope.step = current;
 
 			    }).then(function(){
 			    	$scope.spinny = false;
-			    	////console.log(deal.companyname+' signed their LOAS');
+			    	//////console.log(deal.companyname+' signed their LOAS');
 
 
-			    	////console.log('Ready to send Signed LOAs -- just type the damn code!');
+			    	//////console.log('Ready to send Signed LOAs -- just type the damn code!');
 
 			    });
 	
@@ -131,13 +131,13 @@ $scope.step = current;
 
 
 		// .success(function(data, status) {
-		// 	////console.log('Success!');
+		// 	//////console.log('Success!');
 		// });
 
 			// if(status === 200) {
 			// 	//$scope.currentPrice = data.price;
-			// 	////console.log('Deal Updated - SUCCESS: ',data);
-			// 	////console.log('Data.Response: %o',data._id);
+			// 	//////console.log('Deal Updated - SUCCESS: ',data);
+			// 	//////console.log('Data.Response: %o',data._id);
 			// 		 $http({method: 'GET', url: '/pdf/'+dealId+'?name='+name, responseType: 'arraybuffer'}).
    //  					success(function(data, status, headers, config) {
     
@@ -149,7 +149,7 @@ $scope.step = current;
 			//     error(function(data, status, headers, config) {
 			//       // called asynchronously if an error occurs
 			//       // or server returns response with an error status.
-			//       ////console.log('error');
+			//       //////console.log('error');
 			//     });
 	
 
@@ -177,13 +177,13 @@ $scope.step = current;
   
 
     $scope.select = function(page) {
-    	////console.log('Variable page: ',page);
+    	//////console.log('Variable page: ',page);
       var end, start;
       start = (page - 1) * $scope.numPerPage;
       end = start + $scope.numPerPage;
-      ////console.log('Start '+start+' and End '+end);
+      //////console.log('Start '+start+' and End '+end);
       $scope.currentPage = page;
-      ////console.log('Filtered Deals %o', $scope.filteredDeals);
+      //////console.log('Filtered Deals %o', $scope.filteredDeals);
       return $scope.currentPageDeals = $scope.filteredDeals.slice(start, end);
 
     };
@@ -201,7 +201,7 @@ $scope.step = current;
       return $scope.currentPage = 1;
     };
     $scope.search = function() {
-      ////console.log('Keywords: ', $scope.tableData.searchKeywords);
+      //////console.log('Keywords: ', $scope.tableData.searchKeywords);
       $scope.filteredDeals = $filter('filter')($scope.deals, $scope.tableData.searchKeywords);
 
       // {companyname: $scope.tableData.searchKeywords},
@@ -214,14 +214,14 @@ $scope.step = current;
       return $scope.onFilterChange();
     };
     $scope.order = function(rowName) {
-    	////console.log('Reordering by ',rowName);
-    	////console.log('Scope.row ', $scope.row);
+    	//////console.log('Reordering by ',rowName);
+    	//////console.log('Scope.row ', $scope.row);
       if ($scope.row === rowName) {
         return;
       }
       $scope.row = rowName;
       $scope.filteredDeals = $filter('orderBy')($scope.filteredDeals, rowName);
-      ////console.log(rowName);
+      //////console.log(rowName);
       return $scope.onOrderChange();
     };
     $scope.setCurrentDeal = function(deal) {
@@ -243,13 +243,13 @@ $scope.step = current;
 
 
 	$scope.buildDTW = function(){
-		////console.log('got here %',$scope);
-		////console.log('Total Lines: ', $scope.deal);
+		//////console.log('got here %',$scope);
+		//////console.log('Total Lines: ', $scope.deal);
 		$scope.deal.$promise.then(function(){
 			//$scope.deal.adl;
 		var totlines = parseInt($scope.deal.adl)+1;
-		////console.log('Total Lines: %o', totlines);
-		////console.log('Existing LineDetails: ', $scope.deal.lineDetails.length);
+		//////console.log('Total Lines: %o', totlines);
+		//////console.log('Existing LineDetails: ', $scope.deal.lineDetails.length);
 		
 		if($scope.deal.lineDetails.length==0){
 			if(totlines<2){
@@ -288,9 +288,9 @@ $scope.mystage = 'Please Choose';
  $scope.getDays = function() {
  	//window.alert("Hi");
 	var date = new Date();
-	////console.log('Date: ', date);
+	//////console.log('Date: ', date);
 	//var converted = $scope.deal.converted;
-//////console.log('date' + date+ ' converted' + converted);
+////////console.log('date' + date+ ' converted' + converted);
 $scope.dayssince = 7;
 };
 
@@ -369,7 +369,7 @@ $scope.loa= $scope.myLOA[0];
 
 
 $scope.dslspeed = function(){
-////console.log('This : %o',this);
+//////console.log('This : %o',this);
 
 return $scope.deal.dslspeed;
 };
@@ -378,7 +378,7 @@ return $scope.deal.dslspeed;
 		// Create new Deal
 		$scope.testme = function(){
 //window.alert(this.name);
-	////console.log('Testing %', $scope);
+	//////console.log('Testing %', $scope);
 	var deal = new Deals ({
 				name: this.name,
 				user: this.user,
@@ -393,7 +393,7 @@ return $scope.deal.dslspeed;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
-			////console.log(deal);
+			//////console.log(deal);
 
 		};
 
@@ -413,7 +413,7 @@ return $scope.deal.dslspeed;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
-			////console.log(deal);
+			//////console.log(deal);
 };
 
 		// Remove existing Deal
@@ -470,13 +470,13 @@ return $scope.deal.dslspeed;
 			$scope.userB = Users.get({ 
 				userId: deal.user._id
 			}, function() {
-				//console.log('got userb');
+				////console.log('got userb');
 						
 
 			});
 			$scope.userB.$promise.then(function(){
-				//console.log('User to update %o', $scope.userB);
-				//console.log('moving on...');
+				////console.log('User to update %o', $scope.userB);
+				////console.log('moving on...');
 				$scope.userB.notifications.push({
 					note: deal.companyname + ' has been QC Approved!!',
 					date: deal.updated
@@ -487,13 +487,13 @@ return $scope.deal.dslspeed;
 
 				$scope.userB.$update();
 
-				//console.log('Notifications: %o', $scope.userB.notifications);
-				//console.log('about to go to factory');
+				////console.log('Notifications: %o', $scope.userB.notifications);
+				////console.log('about to go to factory');
 				$timeout(function(){
-				//console.log('UserB before we update: %o', $scope.userB);
+				////console.log('UserB before we update: %o', $scope.userB);
 				$scope.myreturn = updateNotifications.getPhotos($scope.userB._id).success(function(data){
    				$scope.photos=data;
-   				//console.log('Photos %o',$scope.photos);
+   				////console.log('Photos %o',$scope.photos);
 					//$rootScope.$apply();
 
 			
@@ -513,7 +513,7 @@ return $scope.deal.dslspeed;
 
 	//Clear NOtifications
 	$scope.clearNotifications = function(){
-		//console.log('Clearing Notifications');
+		////console.log('Clearing Notifications');
 		$scope.authentication.user.notifications = [];
 		toastr.info('Notifications Cleared');
 
@@ -521,22 +521,22 @@ return $scope.deal.dslspeed;
 				$scope.user = Users.get({ 
 				userId: $scope.authentication.user._id
 			}, function() {
-				//console.log('got user');
+				////console.log('got user');
 						
 
 			});
 			$scope.user.$promise.then(function(){
-				//console.log('User to update %o', $scope.user);
-				//console.log('moving on...');
+				////console.log('User to update %o', $scope.user);
+				////console.log('moving on...');
 				$scope.user.notifications = []; 
 
-				//console.log('Notifications: %o', $scope.user.notifications);
+				////console.log('Notifications: %o', $scope.user.notifications);
 			
 				
 				$timeout(function(){
-				//console.log('User before we update: %o', $scope.user);
+				////console.log('User before we update: %o', $scope.user);
 				$scope.user.$update(function() {
-				//console.log('Updating Deal before sending Order Packet');
+				////console.log('Updating Deal before sending Order Packet');
 				//$location.path('deals/' + deal._id);
 			
 
@@ -544,7 +544,7 @@ return $scope.deal.dslspeed;
 				$scope.error = errorResponse.data.message;
 			});
 			}, 200);
-				//console.log('Done w/ that function...');
+				////console.log('Done w/ that function...');
 			});
 
 				
@@ -597,13 +597,13 @@ return $scope.deal.dslspeed;
 			$scope.userB = Users.get({ 
 				userId: deal.user._id
 			}, function() {
-				//console.log('got userb');
+				////console.log('got userb');
 						
 
 			});
 			$scope.userB.$promise.then(function(){
-				//console.log('User to update %o', $scope.userB);
-				//console.log('moving on...');
+				////console.log('User to update %o', $scope.userB);
+				////console.log('moving on...');
 			
 						$scope.userB.notifications.push({
 					note: deal.companyname + ' has been Rejected!!!!',
@@ -616,8 +616,8 @@ return $scope.deal.dslspeed;
 				
 				
 
-				//console.log('Notifications: %o', $scope.userB.notifications);
-				//console.log('about to go to factory');
+				////console.log('Notifications: %o', $scope.userB.notifications);
+				////console.log('about to go to factory');
 				toastr.success('Order Rejected!! '+$scope.deal.companyname+'.');
 				
 			
@@ -626,11 +626,11 @@ return $scope.deal.dslspeed;
 				$scope.error = errorResponse.data.message;
 			}).then(function(){
 				$timeout(function(){
-				//console.log('UserB before we update: %o', $scope.userB);
+				////console.log('UserB before we update: %o', $scope.userB);
 				$scope.userB.$update(function() {
-				//console.log('Updating Deal before sending Order Packet');
+				////console.log('Updating Deal before sending Order Packet');
 			}).success(function(){
-				//console.log('We did it!!');
+				////console.log('We did it!!');
 			});
 					}, 240);
 
@@ -642,10 +642,57 @@ return $scope.deal.dslspeed;
 
 		};
 
+		//Re-Send LOAs to Customer
+		$scope.resendLOA = function(){
+
+
+		var deal = $scope.deal;
+
+
+			
+		$http({
+		method: 'post',
+		url: '/convertingdeals/'+deal._id,
+		headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+	})
+.success(function(data, status) {
+	//$location.path('deals/' + deal._id);
+		if(status === 200) {
+			//$scope.currentPrice = data.price;
+////////console.log('Data Returned '+data);
+			//$scope.currentPrice = data.price;
+			//$scope.currentNRR = data.nrr;
+			$scope.sending = false;
+			$scope.finished = true;
+			$scope.myresponse = data;
+			toastr.success('Order packet sent to '+$scope.deal.contactemail+' at '+$scope.deal.companyname+'!');
+			$location.path('#!/deals');
+
+
+//Get Quote Details and Save to Lead Object
+
+
+}
+
+
+	})
+.error(function(data){
+	//////console.log('OOps...'+data);
+});
+
+			
+		
+
+
+
+
+
+		};
+
 		//Assign Deal to a Project Manager - update Mongo
 		$scope.assignDeal = function(){
 
-			////console.log('Find USer Info for PM Name %o', Authentication.user);
+			//////console.log('Find USer Info for PM Name %o', Authentication.user);
 			var deal = $scope.deal;
 			deal.updated = Date.now();
 			deal.stage=$scope.myDealstages[3].name;
@@ -653,7 +700,7 @@ return $scope.deal.dslspeed;
 			deal.projectmanager = Authentication.user.displayName;
 			$scope.mystage = $scope.myDealstages[3];
 			
-			////console.log('Dealcontroller Deal: %o',deal);
+			//////console.log('Dealcontroller Deal: %o',deal);
 			
 
 			deal.$update();
@@ -676,15 +723,15 @@ return $scope.deal.dslspeed;
 			var deal = $scope.deal;
 
 			
-				//console.log('promise fired');
+				////console.log('promise fired');
 				
 				angular.forEach(deal.lineDetails, function(item){
-					//console.log('foreach');
-				//console.log('Pre:',item);
+					////console.log('foreach');
+				////console.log('Pre:',item);
 				newitem.number = $filter('tel')(item.number);
-				//console.log('Post:',newitem.number);
+				////console.log('Post:',newitem.number);
 				newnumbers.push({number: newitem.number, test: 'yep'});
-				//console.log('Our Numbers Array %o',newnumbers);
+				////console.log('Our Numbers Array %o',newnumbers);
 				
 			});
 
@@ -693,11 +740,11 @@ return $scope.deal.dslspeed;
 
 
 			$q.all(newnumbers).then(function(){
-				//console.log('.then fired');
+				////console.log('.then fired');
 			deal.updated = Date.now();
 			deal.telephone = $filter('tel')(deal.telephone);
 			deal.lineDetails=newnumbers;
-			//console.log('Look for phone numbers %o', $scope.deal);
+			////console.log('Look for phone numbers %o', $scope.deal);
 			if($scope.mystage){
 			deal.stage=$scope.mystage.name;
 			deal.stagenum=$scope.mystage.value;
@@ -705,21 +752,21 @@ return $scope.deal.dslspeed;
 			deal.stage=$scope.myDealstages[1].name;
 			deal.stagenum=$scope.myDealstages[1].value;
 			}
-			////console.log('Dealcontroller Deal: %o',deal);
+			//////console.log('Dealcontroller Deal: %o',deal);
 			deal.$update(function() {
-				//console.log('Updating Deal before sending Order Packet');
+				////console.log('Updating Deal before sending Order Packet');
 				//$location.path('deals/' + deal._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			}).then(function() {
-				////console.log('Deal Updated??');
+				//////console.log('Deal Updated??');
 				socket.emit('message', {type: 'submit', deal: $scope.deal.companyname, user: $scope.authentication.user.displayName});	
 			
 				$scope.pending=false;
 				
 				$scope.sending=true;
 				$scope.goodTns = [];
-				//console.log('URL to Post to: ', '/convertingdeals/'+deal._id);
+				////console.log('URL to Post to: ', '/convertingdeals/'+deal._id);
 			
 				toastr.success('Order submitted successfully for '+$scope.deal.companyname+'.');
 
@@ -758,7 +805,7 @@ return $scope.deal.dslspeed;
 	//$location.path('deals/' + deal._id);
 		if(status === 200) {
 			//$scope.currentPrice = data.price;
-//////console.log('Data Returned '+data);
+////////console.log('Data Returned '+data);
 			//$scope.currentPrice = data.price;
 			//$scope.currentNRR = data.nrr;
 			$scope.sending = false;
@@ -776,7 +823,7 @@ return $scope.deal.dslspeed;
 
 	})
 .error(function(data){
-	////console.log('OOps...'+data);
+	//////console.log('OOps...'+data);
 });
 
 			
@@ -790,13 +837,13 @@ return $scope.deal.dslspeed;
 			$scope.update = function() {
 			var deal = $scope.deal ;
 			deal.updated = Date.now();
-			////console.log('Look for deal.stage and deal.stagenum %o', $scope);
+			//////console.log('Look for deal.stage and deal.stagenum %o', $scope);
 			if($scope.mystage){
 			deal.stage=$scope.mystage.name;
 			deal.stagenum=$scope.mystage.value;
 			}
-			////console.log('Linedetails?? %o',deal.lineDetails);
-			////console.log('Dealcontroller Deal: %o',deal);
+			//////console.log('Linedetails?? %o',deal.lineDetails);
+			//////console.log('Dealcontroller Deal: %o',deal);
 			deal.$update(function() {
 				$location.path('deals/' + deal._id);
 			}, function(errorResponse) {
@@ -818,7 +865,7 @@ return $scope.deal.dslspeed;
 
 			});
 			$scope.deal.telephone = $filter('tel')($scope.deal.telephone);
-			////console.log('Deal Info: %o', $scope.deal);
+			//////console.log('Deal Info: %o', $scope.deal);
 			$scope.mystage = $scope.deal.stage;
 
 			
@@ -826,8 +873,8 @@ return $scope.deal.dslspeed;
 
 }])
 .factory('updateNotifications', function($http, $resource) {
-	//console.log('got to factory');
-	////console.log('Scope: %o', $resource);
+	////console.log('got to factory');
+	//////console.log('Scope: %o', $resource);
  return{
 
     getPhotos : function(myparam) {
@@ -847,9 +894,9 @@ return $scope.deal.dslspeed;
 		// transclude: true,
 		template: '<span>{{mystuff}}</span',
 		link: function(scope, element, attrs){
-			////console.log('Loading Data');
-			////console.log(element);
-			////console.log('My attrs', attrs);
+			//////console.log('Loading Data');
+			//////console.log(element);
+			//////console.log('My attrs', attrs);
 			var mytype = attrs.stats;
 
 			switch(mytype) {
@@ -883,11 +930,11 @@ return $scope.deal.dslspeed;
 			}
 
 			$http.get(statURL).then(function(result){
-				console.log('Result '+mytype+' :', result);
+				//console.log('Result '+mytype+' :', result);
 				if(mytype==='repMRC'){
 					// window.alert('REpMRC bitches!!');
 					Object.keys(result.data).forEach(function(key) {
-						console.log('repMRC', result.data[key]);
+						//console.log('repMRC', result.data[key]);
 						
 						var test = result.data[key].total;
 						scope.mystuff = $filter('currency')(test);
@@ -898,7 +945,7 @@ return $scope.deal.dslspeed;
 				}else
 				if(mytype==='totalMRC'){
 					Object.keys(result.data).forEach(function(key) {
-						console.log('totalMRC');
+						//console.log('totalMRC');
 						var test = result.data[key].total;
 						scope.mystuff = $filter('currency')(test);
 
@@ -906,17 +953,17 @@ return $scope.deal.dslspeed;
 
 				}else
 				if(mytype==='repCALLS'){
-					////console.log('Going thru Rep Array now', Authentication.user.displayName);
+					//////console.log('Going thru Rep Array now', Authentication.user.displayName);
 		Object.keys(result.data).forEach(function(key) {
-			////console.log('Actually in the array');
-          ////console.log('Results Key %o', result.data[key]);
-          //////console.log(Authentication.user.displayName);
+			//////console.log('Actually in the array');
+          //////console.log('Results Key %o', result.data[key]);
+          ////////console.log(Authentication.user.displayName);
           //Converted == to === JSLint
-          ////console.log('Result ID :', result.data[key]._id);
+          //////console.log('Result ID :', result.data[key]._id);
           if(result.data[key]._id===Authentication.user.displayName)
           {
             scope.mystuff = result.data[key].total;
-            //////console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
+            ////////console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
 
           }
 
@@ -924,7 +971,7 @@ return $scope.deal.dslspeed;
 
 
 				}else{
-					////console.log('No Array to go thru');
+					//////console.log('No Array to go thru');
 				scope.mystuff = result.data[0].total;	
 				}
 			
@@ -932,7 +979,7 @@ return $scope.deal.dslspeed;
 				
 				
 			});
-			////console.log('Getting scope in our directive', scope);
+			//////console.log('Getting scope in our directive', scope);
 
 			return scope.mystuff;
 	
@@ -952,8 +999,8 @@ return $scope.deal.dslspeed;
 // 			timezone: '@'
 // 			},
 // 		controller: function($scope, $element){
-// 			////console.log('Element: ',$element);
-// 			//////console.log('Attrs: ',attrs);
+// 			//////console.log('Element: ',$element);
+// 			////////console.log('Attrs: ',attrs);
 // 			$http.get(url: '/stats/deals/mrctotal',
 // 				isArray: true,
 
