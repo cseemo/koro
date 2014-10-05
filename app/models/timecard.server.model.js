@@ -44,11 +44,13 @@ var TimecardSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	secondsworked: {
+		type: Number,
+		default: 0
 	}
 });
 
-TimecardSchema.methods.Difference = function() {
-	return this.end - 0 + this.start;
-};
+
 
 mongoose.model('Timecard', TimecardSchema, 'timecard');

@@ -10,7 +10,7 @@
 				by
 				<span data-ng-bind="timecard.user.displayName"></span>
                 <span>{{timecard.start | date:'medium'}} -- {{timecard.end | date:'medium'}}</span>
-                <span>- - - {{timecard.Difference}}seconds</span>
+                <span>Hours Worked: {{(timecard.secondsworked/60)/60}} - Minutes Worked: {{timecard.secondsworked/60}} - Seconds Worked: {{timecard.secondsworked}} </span>
 			</small>
 			<h4 class="list-group-item-heading" data-ng-bind="timecard.name"></h4>
         </a>

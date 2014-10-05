@@ -9,13 +9,21 @@ module.exports = function(app) {
 		.get(timecards.list)
 		.post(users.requiresLogin, timecards.create);
 
-	app.route('/timecards/:timecardId')
-		.get(timecards.read)
-		.put(users.requiresLogin, timecards.hasAuthorization, timecards.update)
-		.delete(users.requiresLogin, timecards.hasAuthorization, timecards.delete);
+		app.route('/timecards/byday')
+		.get(timecards.getByDay);
+
+	app.route('/timecards/:userId')
+		.get(timecards.getByDay);
+		// .get(timecards.read)
+		// .put(users.requiresLogin, timecards.hasAuthorization, timecards.update)
+		// .delete(users.requiresLogin, timecards.hasAuthorization, timecards.delete);
 
 	app.route('/awesome/sauce')
 		.get(timecards.sauce);
+		app.route('/awesome/hours')
+		.get(timecards.getHours);
+	
+		
 
 	app.route('/awesome/clock')
 		.get(timecards.clock);
@@ -27,5 +35,6 @@ module.exports = function(app) {
 		.get(timecards.lastShift);
 
 	// Finish by binding the Timecard middleware
+	app.param('userId', users.userByID);
 	app.param('timecardId', timecards.timecardByID);
 };

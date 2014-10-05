@@ -24,6 +24,17 @@ angular.module('timecards').config(['$stateProvider',
 		state('editTimecard', {
 			url: '/timecards/:timecardId/edit',
 			templateUrl: 'modules/timecards/views/edit-timecard.client.view.html'
+		}).
+		state('dayTimecard', {
+			url: '/timecards/byday',
+			templateUrl: 'modules/timecards/views/view-timecard.client.view.html'
+		}).
+		state('lastShift', {
+			url: '/awesome/lastshift',
+			templateUrl: 'modules/timecards/views/view-timecard.client.view.html'
 		});
+
+
+		
 	}
 ]);

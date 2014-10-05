@@ -10,7 +10,8 @@ angular.module('timecards').factory('Timecards', ['$resource',
 			},
 			getDaily: {
 				method: 'GET',
-				url: '/timecards/byday'
+				url: '/timecards/byday',
+				isArray: true
 			}
 		});
 	}

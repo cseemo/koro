@@ -1,4 +1,4 @@
-<section data-ng-controller="TimecardsController" data-ng-init="findOne()">
+<section data-ng-controller="TimecardsController" data-ng-init="getByDay()">
 	<div class="page-header">
 		<h1 data-ng-bind="timecard.user.displayName"></h1>
 		<h1 data-ng-bind="timecard.date | date"></h1>
@@ -14,16 +14,20 @@
                  <span class="pull-right"><b>Hours Worked: </b>33</span>
             </div>
             <div class="panel-body ui-map" data-slim-scroll="" data-scroll-height="100px" style="overflow: scroll;  width: auto; height: 100px">
+            <p data-ng-repeat="timecard in timecards">
             <b>{{timecard.user.displayName}} </b> 
             	Start-Time: {{timecard.start | date: 'short'}}  - End-Time: Start-Time: {{timecard.end | date: 'short'}}
             	<br>Hours Worked: {{timecard.end - timecard.start}} {{timecard.difference}}
-             
-
+             </p>
+            	Minutes Wokred {{myminutes/60}}
 
                   <br>
-               
+               <a data-ng-click="getHours()">Click Here to get Hours</a>
 
                 
+                	<p data-ng-repeat="card in mydata">
+            <b>{{card._id}} </b>  - {{card.timeworked}}
+             </p>
    
                   <span data-ng-bind="callDetail.comments" class="pull-right"></span>
                 </div>
