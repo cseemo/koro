@@ -203,9 +203,9 @@
           data.icon = 'dollar';
         }
         if(data.type==='signin'){
-          data.message1 = 'just converted';
-          data.message2 = 'from a lead to a deal!';
-          data.head = 'Deal Converted';
+          data.message1 = 'signed in.';
+         // data.message2 = 'from a lead to a deal!';
+          data.head = 'Sign-In';
           data.icon = 'user';
         }
         console.log(data.message);
