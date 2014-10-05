@@ -131,7 +131,6 @@ $scope.currentLead=0;
 				var mrc = this.currentPrice;
 				var nrc = this.currentNRR;
 			console.log('Username for Convert: ',$scope.authentication.user.displayName);
-			socket.emit('message', {type: 'convert', deal: $scope.lead.companyname, user: $scope.authentication.user.displayName});	
 			
 			//console.log('DSL Speed: ', dslspeed);
 			//console.log('Lead User %o', lead.user);
@@ -175,6 +174,9 @@ $scope.currentLead=0;
 
 				// Redirect after save
 				deal.$save(function(response) {
+
+					socket.emit('message', {type: 'convert', dealid: response._id, deal: $scope.lead.companyname, user: $scope.authentication.user.displayName});	
+			
 					$location.path('convertingdeals/' + response._id);
 					////console.log('New Deal %o', deal);
 					
