@@ -72,12 +72,19 @@ console.log('Date: '+month+'-'+day+'-'+year);
 				message: getErrorMessage(err)
 			});
 		} else {
-			var total = 0;
-			Object.keys(results).forEach(function(key) {
-				total += results[key].total;
-			});
-			results.push({_id: 'total', 'total': total});
-			res.jsonp(results);
+			console.log('Rsults are in: ',results);
+			// var total = 0;
+			// Object.keys(results).forEach(function(key) {
+			// 	total += results[key].total;
+			// });
+			// results.push({_id: 'total', 'total': total});
+			var mypackage = {data: results};
+			
+				console.log('Mypackage: ',mypackage);
+
+
+				res.jsonp(mypackage);
+
 		}
 });
 
@@ -282,7 +289,7 @@ exports.delete = function(req, res) {
 /**
  * List of Timecards
  */
-exports.list = function(req, res) { Timecard.find().sort('-created').populate('user', 'displayName').exec(function(err, timecards) {
+exports.list = function(req, res) { Timecard.find().sort('-start').populate('user', 'displayName').exec(function(err, timecards) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -301,13 +308,13 @@ Timecard.aggregate([{$group:{_id: '$name', timeworked: {$sum: '$secondsworked'}}
 			});
 		} else {
 			console.log('Resutls ',results);
-			var total = 0;
-			Object.keys(results).forEach(function(key) {
-				var test = results[key];
-				var userid = results[key]._id;
-				console.log('My test shit ',test);
-			});
-			results.push({_id: 'total', 'total': total});
+			// var total = 0;
+			// Object.keys(results).forEach(function(key) {
+			// 	var test = results[key];
+			// 	var userid = results[key]._id;
+			// 	console.log('My test shit ',test);
+			// });
+			// results.push({_id: 'total', 'total': total});
 			res.jsonp(results);
 		}
 	});	

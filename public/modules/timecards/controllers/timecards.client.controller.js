@@ -4,7 +4,7 @@
 angular.module('timecards').controller('TimecardsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Timecards', '$http', '$filter', '$cookieStore',  
 	function($scope, $stateParams, $location, Authentication, Timecards, $http, $filter, $cookieStore ) {
 		$scope.authentication = Authentication;
-console.log('scope %o', $scope);
+//console.log('scope %o', $scope);
 
 // $scope.clockIn = function (){
 
@@ -169,20 +169,21 @@ $scope.getShift = function(){
 
 $scope.myminutes = '0:00';
 		$scope.getByDay = function() {
+			console.log('Scope at getbyDat %o', $scope);
 				var difference;
 		var seconds;
 		var minutes;
 			// $scope.myminutes = Timecards.getDaily();
-			$http.get('/timecards/byday').success(function(data) {
+			$http.get('/todays/timecards').success(function(data) {
 	
-	$scope.timecards = data.data;
+	console.log('Got our data back');
 
 	console.log('Response %o',data);
 	// window.alert('Response');
 	console.log('length',data.length);
 		$scope.secondsworked = data[0].total;
 		var minutesworked = 0;
-
+		$scope.timecards = data.data;
 // 		if(data.length>0){
 // 			Object.keys(data).forEach(function(key){
 // 				var val = data[key];
@@ -273,6 +274,7 @@ console.log('Error: ' + data);
 				$http.get('/awesome/hours').success(function(data) {
 	
 	console.log('Hours Response %o',data);
+
 	$scope.mydata = data;
 	
 }).error(function(data) {

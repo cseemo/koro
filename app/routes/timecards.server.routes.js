@@ -9,10 +9,15 @@ module.exports = function(app) {
 		.get(timecards.list)
 		.post(users.requiresLogin, timecards.create);
 
-		app.route('/timecards/byday')
+		app.route('/todays/timecards')
 		.get(timecards.getByDay);
 
-	app.route('/timecards/:userId')
+		app.route('/timecards/:timecardId')
+		.get(timecards.read)
+		.put(users.requiresLogin, timecards.hasAuthorization, timecards.update)
+		.delete(users.requiresLogin, timecards.hasAuthorization, timecards.delete);
+
+	app.route('/currenttimecards/:userId')
 		.get(timecards.getByDay);
 		// .get(timecards.read)
 		// .put(users.requiresLogin, timecards.hasAuthorization, timecards.update)

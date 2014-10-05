@@ -1,20 +1,24 @@
-<section data-ng-controller="TimecardsController" data-ng-init="getByDay()">
+<section data-ng-controller="TimecardsController" data-ng-init="findOne()">
 	<div class="page-header">
-		<h1 data-ng-bind="timecard.user.displayName"></h1>
+		<h1 data-ng-bind="timecard.name"></h1>
 		<h1 data-ng-bind="timecard.date | date"></h1>
 	</div>
 
-	  <a ng-click="clockIn()">Clock-In</a>
+	 <!--  <a ng-click="clockIn()">Clock-In</a>
                <br>
                <a ng-click="clockOut()">Clock-OUt</a>
-
+ -->
 
 	<div class="panel panel-info">
             <div class="panel-heading">Shift Details
-                 <span class="pull-right"><b>Hours Worked: </b>33</span>
+                 <span class="pull-right"><b>Hours Worked: </b>{{(timecard.secondsworked/60)/60 | number:2}}</span>
             </div>
             <div class="panel-body ui-map" data-slim-scroll="" data-scroll-height="100px" style="overflow: scroll;  width: auto; height: 100px">
-            <p data-ng-repeat="timecard in timecards">
+
+            Clock-In: {{timecard.start| date: 'medium'}}
+            <br>
+            Clock-Out: {{timecard.end| date: 'medium'}}
+           <!--  <p data-ng-repeat="timecard in timecards">
             <b>{{timecard.user.displayName}} </b> 
             	Start-Time: {{timecard.start | date: 'short'}}  - End-Time: Start-Time: {{timecard.end | date: 'short'}}
             	<br>Hours Worked: {{timecard.end - timecard.start}} {{timecard.difference}}
@@ -28,18 +32,13 @@
                 	<p data-ng-repeat="card in mydata">
             <b>{{card._id}} </b>  - {{card.timeworked}}
              </p>
-   
-                  <span data-ng-bind="callDetail.comments" class="pull-right"></span>
+    -->
+                
                 </div>
             </div>
           </div>
 
-          <!-- user role example -->
-          <div data-ng-show="authentication.hasRole('awesome')">Awesome Role can see this</div>
-          <div data-ng-show="authentication.hasRole('admin')">Admin role can see this</div>
-          <div data-ng-show="authentication.hasRole('user')">User role can see this</div>
-
-	<div class="pull-right" data-ng-show="authentication.user._id == timecard.user._id">
+    	<div class="pull-right" data-ng-show="authentication.user._id == timecard.user._id">
 		<a class="btn btn-primary" href="/#!/timecards/{{timecard._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
@@ -48,12 +47,12 @@
 		</a>
 	</div>
 	<small>
-		<em class="text-muted">
+	<!-- 	<em class="text-muted">
 			Posted on
 			<span data-ng-bind="timecard.created | date:'mediumDate'"></span>
 			by
 			<span data-ng-bind="timecard.user.displayName"></span>
-		</em>
+		</em> -->
 	</small>
 </section>
 
