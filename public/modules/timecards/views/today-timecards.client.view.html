@@ -1,0 +1,65 @@
+<section data-ng-controller="TimecardsController" data-ng-init="getHours()">
+	<div class="page-header">
+		<h1 data-ng-bind="timecard.name"></h1>
+		<h1 data-ng-bind="timecard.date | date"></h1>
+	</div>
+
+	 <!--  <a ng-click="clockIn()">Clock-In</a>
+               <br>
+               <a ng-click="clockOut()">Clock-OUt</a>
+ -->
+
+	<div class="panel panel-info">
+            <div class="panel-heading">Hours Worked Today
+                
+            </div>
+            <div class="panel-body ui-map" data-slim-scroll="" data-scroll-height="100px" style="overflow: scroll;  width: auto; height: 300px;">
+
+    <!-- 
+            <p data-ng-repeat="timecard in timecards">
+            <b>{{timecard.user.displayName}} </b> 
+            	Start-Time: {{timecard.start | date: 'short'}}  - End-Time: Start-Time: {{timecard.end | date: 'short'}}
+            	<br>Hours Worked: {{timecard.end - timecard.start}} {{timecard.difference}}
+             </p>
+            	Minutes Wokred {{myminutes/60}}
+
+                  <br>
+                          Clock-In: {{timecard.start| date: 'medium'}}
+            <br>
+            Clock-Out: {{timecard.end| date: 'medium'}}
+               <a data-ng-click="getHours()">Click Here to get Hours</a>
+ -->
+                
+                	<p data-ng-repeat="card in mydata">
+            <b>{{card._id}} </b>  - {{((card.timeworked/60)/60 | number:2)}} Hours Worked Today
+
+             </p>
+   
+                
+                </div>
+            </div>
+          </div>
+
+          <!-- user role example -->
+        <!--   <div data-ng-show="authentication.hasRole('awesome')">Awesome Role can see this</div>
+          <div data-ng-show="authentication.hasRole('admin')">Admin role can see this</div>
+          <div data-ng-show="authentication.hasRole('user')">User role can see this</div>
+ -->
+	<div class="pull-right" data-ng-show="authentication.user._id == timecard.user._id">
+		<a class="btn btn-primary" href="/#!/timecards/{{timecard._id}}/edit">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a class="btn btn-primary" data-ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+	</div>
+	<small>
+		<em class="text-muted">
+			Posted on
+			<span data-ng-bind="timecard.created | date:'mediumDate'"></span>
+			by
+			<span data-ng-bind="timecard.user.displayName"></span>
+		</em>
+	</small>
+</section>
+
