@@ -176,7 +176,7 @@
 <br><br>
 </div>
 
- <div class="col-lg-12" >
+<!--  <div class="col-lg-12" >
 
                     <div class="panel panel-default">
                         <div class="panel-body">
@@ -223,6 +223,156 @@
 </div>
 
 </div></div></div>
+
+ -->
+
+<div class="page page-table" data-ng-controller="DealsController" data-ng-init="stinit()">
+
+    <section class="panel panel-default table-dynamic">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Deals</strong></div>
+        
+            <div class="table-filters">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <input type="text"
+                               placeholder="Search..."
+                               class="form-control"
+                               data-ng-model="tableData.searchKeywords"
+                               data-ng-keyup="search()">
+                        {{tableData.searchKeywords}}
+                    </div>
+                    <div class="col-sm-3 col-xs-6 filter-result-info">
+                        <span>
+                            Showing {{currentPageDeals.length}}/{{filteredDeals.length}} Matches
+                        </span>              
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                Company Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('companyname') "
+                                      data-ng-class="{active: row == 'companyname'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-companyname') "
+                                      data-ng-class="{active: row == '-companyname'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Rep Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('assignedRep') "
+                                      data-ng-class="{active: row == 'assignedRep'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-assignedRep') "
+                                      data-ng-class="{active: row == '-assignedRep'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Stage
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('stagenum') "
+                                      data-ng-class="{active: row == 'stagenum'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-stagenum') "
+                                      data-ng-class="{active: row == '-stagenum'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Progress
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('stagenum') "
+                                      data-ng-class="{active: row == 'stagenum'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-stagenum') "
+                                      data-ng-class="{active: row == '-stagenum'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Telephone
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('telephone') "
+                                      data-ng-class="{active: row == 'telephone'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-telephone') "
+                                      data-ng-class="{active: row == '-telephone'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Last Update
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('update') "
+                                      data-ng-class="{active: row == 'update'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-update') "
+                                      data-ng-class="{active: row == '-update'}"></span>
+                            </div>
+                        </th>
+
+
+                    </tr> 
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="deal in currentPageDeals" data-ng-show="authentication.user.displayName===deal.assignedRep || authentication.hasRole('admin') || authentication.hasRole('manager') || authentication.hasRole('typist')">
+                        <td><a data-ng-click="setCurrentDeal()" href="#!/deals/{{deal._id}}">{{deal.companyname}} {{registration.lastName}}</a></td>
+                         <td>{{deal.assignedRep}} </td>
+
+
+                  
+                        <td data-ng-show="deal.stagenum==0"><span class="label label-danger">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum > 0 && deal.stagenum < 20"><span class="label label-warning">{{deal.stage}} </span></td>
+                    <td data-ng-show="deal.stagenum > 19 && deal.stagenum < 40"><span class="label label-default">{{deal.stage}} </span></td>
+                      <td data-ng-show="deal.stagenum > 39 && deal.stagenum < 54"><span class="label label-primary">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum > 54 && deal.stagenum < 69"><span class="label badge-chad">{{deal.stage}}</span></td>
+                    <td data-ng-show="deal.stagenum > 69"><span class="label label-info">{{deal.stage}}</span></td>
+          
+                    <td><progressbar class="progressbar-xs no-margin" value="deal.stagenum" type="success"></progressbar></td>
+                        <td>{{deal.telephone | tel}}</td>
+                        <td>{{deal.updated | timeago}}</td>
+                   
+                    </tr>
+                </tbody>
+            </table>
+
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                        <span>
+                            Show 
+                            <select data-ng-model="numPerPage"
+                                    data-ng-options="num for num in numPerPageOpt"
+                                    data-ng-change="onNumPerPageChange()">
+                            </select> 
+                            deals per page
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredDeals.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </section>
+</div>
 
 
 

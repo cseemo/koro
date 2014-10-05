@@ -172,11 +172,62 @@ exports.getDealsbyTotal = function(req, res) {
 	//console.log('got to Count Deals FIND USER %o', req.user);
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
-	var n = 1;
+	var n = 2;
 	switch(n)
 	{
 		case 1:
 		var myQuery = Deal.aggregate([  { $match: {assignedRep:req.user.displayName} },
+	{
+		'$group': { 
+			_id: '$stage',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]);
+		break;
+
+		case 2:
+		var myQuery = Deal.aggregate([  
+	{
+		'$group': { 
+			_id: '$stage',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]);
+		break;
+	}
+
+
+	myQuery.exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
+
+//Count Deals by Rep
+//Count Total Deals
+exports.getDealsbyRep = function(req, res) {
+	//console.log('got to Count Deals FIND USER %o', req.user);
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	var n = 1;
+	switch(n)
+	{
+		case 1:
+		var myQuery = Deal.aggregate([  { $match: {user:req.user._id} },
 	{
 		'$group': { 
 			_id: '$stage',

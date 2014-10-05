@@ -1660,14 +1660,69 @@ exports.getLeadsByStatus = function(req, res) {
 
 //Count Total Leads
 exports.getLeadsbyTotal = function(req, res) {
-	//console.log('got to Count Deals FIND USER %o', req.user);
+	console.log('got to Count Deals FIND USER %o', req.user);
+
+	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	var n = 2;
+	switch(n)
+	{
+		case 1:
+		var myQuery = Lead.aggregate([  { $match: {assignedRep:req.user.displayName} },
+	{
+		'$group': { 
+			_id: '$stage',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]);
+		break;
+
+		case 2:
+		var myQuery = Lead.aggregate([  
+		{
+			'$match': {
+				assignedRep: null
+			}
+		},
+	{
+		'$group': { 
+			_id: '$stage',
+			total: {
+				'$sum': 1
+			}
+		}
+	}]);
+		break;
+	}
+
+
+	myQuery.exec(function(err, results) {
+		if (err) {
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			var total = 0;
+			Object.keys(results).forEach(function(key) {
+				total += results[key].total;
+			});
+			results.push({_id: 'total', 'total': total});
+			res.jsonp(results);
+		}
+	});	
+};
+
+//Count Leads by REP
+exports.getLeadsbyRep= function(req, res) {
+	console.log('got to Count Deals FIND USER %o', req.user);
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
 	var n = 1;
 	switch(n)
 	{
 		case 1:
-		var myQuery = Lead.aggregate([  { $match: {assignedRep:req.user.displayName} },
+		var myQuery = Lead.aggregate([  { $match: {user:req.user._id} },
 	{
 		'$group': { 
 			_id: '$stage',

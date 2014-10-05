@@ -59,6 +59,8 @@ module.exports = function(app) {
 		app.route('/stats/leads/all/state')
 		.get(leads.getAllLeadsByState);
 		
+		app.route('/stats/leads/rep')
+		.get(leads.getLeadsbyRep);
 
 		app.route('/stats/leads/total')
 		.get(leads.getLeadsbyTotal);

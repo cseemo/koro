@@ -35,6 +35,10 @@ module.exports = function(app) {
 
 		app.route('/stats/deals/total')
 		.get(deals.getDealsbyTotal);
+
+		app.route('/stats/deals/rep')
+		.get(deals.getDealsbyRep);
+		
 		
 		app.route('/stats/deals/mrctotal')
 		.get(deals.getDealMRCTotal);

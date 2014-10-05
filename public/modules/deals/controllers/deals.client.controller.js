@@ -862,10 +862,18 @@ return $scope.deal.dslspeed;
 				break;
 
 				case 'repLEADS':
+				var statURL = '/stats/leads/rep'
+				break;
+
+				case 'totalLEADS':
 				var statURL = '/stats/leads/total'
 				break;
 
 				case 'repDEALS':
+				var statURL = '/stats/deals/rep'
+				break;
+
+				case 'totalDEALS':
 				var statURL = '/stats/deals/total'
 				break;
 
