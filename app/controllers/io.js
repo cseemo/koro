@@ -60,7 +60,7 @@ module.exports = function(io){
 
 			case 'signin':
 			console.log('Signed In');
-			io.emit('test',  {type: 'signin',date: Date.now(), message: data.user+' just signed in.'});	
+			io.emit('test', {type: 'signin',date: Date.now(), message: data.user+' just signed in.'});	
 			break;
 
 			case 'signout':
