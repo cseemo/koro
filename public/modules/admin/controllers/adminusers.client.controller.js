@@ -8,9 +8,9 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 
 		// Find existing Deal
 		$scope.findOne = function() {
-			console.log('MyScope at beginning %o', $scope);
+			//console.log('MyScope at beginning %o', $scope);
 
-			console.log('StateParam %o', $stateParams.userId);
+			//console.log('StateParam %o', $stateParams.userId);
 			$scope.userB = Users.get({ 
 				userId: $stateParams.userId
 			}, function() {
@@ -22,18 +22,18 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 			});
 
 			$scope.userB = this.userB;
-			console.log('User Info: %o', $scope);
-			console.log('This %o ', this);
+			//console.log('User Info: %o', $scope);
+			//console.log('This %o ', this);
 		};
 
 		$scope.resetPW = function() {
-				console.log('Resetting PW',$scope.userB);
+				//console.log('Resetting PW',$scope.userB);
 				var user_id = $scope.userB._id;
 				var mydata = $scope.userB;
 
 				$http.post('userspw/' + user_id + '/reset', mydata).success(function (data, status, headers){
 
-					console.log('Success', data);
+					//console.log('Success', data);
 					$location.path('/adminusers');
 				});
 		
@@ -41,15 +41,15 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 		};
 
 $scope.notify = function() {
-console.log('notify');
+//console.log('notify');
 };
 	
 
 		// Find a list of Leads
 		$scope.find = function() {
-			console.log('Finding');
+			//console.log('Finding');
 			$scope.users = Users.query();
-			console.log('Scope %o', $scope);
+			//console.log('Scope %o', $scope);
 		};
 
 
@@ -66,10 +66,10 @@ console.log('notify');
 				}
 			});
 
-			console.log('Scope %o', $scope);
+			//console.log('Scope %o', $scope);
 			//var userB = $scope.userB ;
 			//var user = $scope.user;
-			console.log('Scope %o', $scope);
+			//console.log('Scope %o', $scope);
 			$scope.userB.$update(function() {
 				//$location.path('users/' + user._id + '/edit');
 			}, function(errorResponse) {

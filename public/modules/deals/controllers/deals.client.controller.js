@@ -1199,8 +1199,8 @@ var i = 0;
 
 }
 if($scope.step===3){
-	console.log('this.term',this.myForm.term);
-	console.log('DSL SPeed: ',this.myForm.dsl_speed);
+	// console.log('this.term',this.myForm.term);
+	// console.log('DSL SPeed: ',this.myForm.dsl_speed);
 // this.term = this.myForm.term;
 // this.dsl = this.myForm.dsl_speed;
 // this.adl = this.myForm.adl;
@@ -1318,7 +1318,7 @@ $scope.step = current;
 			// }	
 			//});
 				}else{
-					window.alert("What the fudge??");
+					window.alert("Uh oh...something went wrong - not expected. Line 1321 - DealsClientCont - tell someone, QUICKLY!!!!");
 
 
 				}
@@ -1380,11 +1380,28 @@ $scope.step = current;
 			}
 
 			$http.get(statURL).then(function(result){
-				//console.log('Result '+mytype+' :', result);
-				if(mytype==='repMRC'){
+				// console.log('Result '+mytype+' ('+result.length+'):'+ result);
+
+				if(mytype==='repDEALS' || mytype==='totalDEALS'){
+						Object.keys(result.data).forEach(function(key) {
+					
+						// console.log('Deals ('+mytype+'): '+result.data[key]._id);
+						if(result.data[key]._id==='total'){
+							scope.mystuff  = result.data[key].total;
+							// console.log('THisone!!,', result.data[key].total);
+						}
+						
+					
+						
+
+					});
+
+				}else
+
+				if(mytype==='repMRC' || mytype==='totalMRC'){
 					// window.alert('REpMRC bitches!!');
 					Object.keys(result.data).forEach(function(key) {
-						//console.log('repMRC', result.data[key]);
+						// console.log('repMRC', result.data[key]);
 						
 						var test = result.data[key].total;
 						scope.mystuff = $filter('currency')(test);
@@ -1392,36 +1409,41 @@ $scope.step = current;
 
 					});
 
-				}else
-				if(mytype==='totalMRC'){
-					Object.keys(result.data).forEach(function(key) {
-						//console.log('totalMRC');
-						var test = result.data[key].total;
-						scope.mystuff = $filter('currency')(test);
+				// }
+				// else
+				// if(mytype==='totalMRC'){
+				// 	Object.keys(result.data).forEach(function(key) {
+				// 		//console.log('totalMRC');
+				// 		var test = result.data[key].total;
+				// 		scope.mystuff = $filter('currency')(test);
 
-					});
+				// 	});
 
 				}else
+
 				if(mytype==='repCALLS'){
 					//////console.log('Going thru Rep Array now', Authentication.user.displayName);
 		Object.keys(result.data).forEach(function(key) {
 			//////console.log('Actually in the array');
-          //////console.log('Results Key %o', result.data[key]);
+       // console.log('Results Key %o', result.data[key]);
           ////////console.log(Authentication.user.displayName);
           //Converted == to === JSLint
           //////console.log('Result ID :', result.data[key]._id);
           if(result.data[key]._id===Authentication.user.displayName)
           {
             scope.mystuff = result.data[key].total;
-            ////////console.log('WE WON, JOHNNY WE WON!!!!',results[key].total);
+           // console.log('WE WON, JOHNNY WE WON!!!!',results.data[key].total);
 
           }
 
         });
 
 
-				}else{
-					//////console.log('No Array to go thru');
+				}
+
+				else{
+					// console.log('No Array to go thru', result);
+					// console.log('Result.data.length', result.data.length);
 				scope.mystuff = result.data[0].total;	
 				}
 			
