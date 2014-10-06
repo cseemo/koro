@@ -1,0 +1,23 @@
+<header class="top-header clearfix" data-ng-controller="AppController" data-ng-init="hideheader()" >
+<div class="page page-lock" data-ng-controller="HeaderController">
+    <div class="lock-centered clearfix">
+        <div class="lock-container">
+            <!-- <div ui-time class="lock-time"></div> -->
+            
+            <section class="lock-box">
+                <div class="lock-user">{{authentication.user.displayName}}</div>
+                <div class="lock-img"><img src="https://lh5.googleusercontent.com/-TBfvm9fXIW0/AAAAAAAAAAI/AAAAAAAAAAA/7yGd1dvIPvE/photo.jpg?sz=120" alt=""></div>
+                <div class="lock-pwd">
+                    <form>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" class="form-control">
+                            <a href="#/" class="btn-submit">
+                                <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </form>
+                </div>            
+            </section>
+        </div>
+    </div>
+</div>

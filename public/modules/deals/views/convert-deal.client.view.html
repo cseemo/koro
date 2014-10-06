@@ -155,7 +155,7 @@
         <div class="panel panel-heading">
             <h4>Services Review</h4>
             </div>
-            <div class="panel-body" ng-init="dslspeed()">
+            <div class="panel-body" >
             <center>
             <p class="centered">Please ensure the services here match the customer's request, this is the official order form which will be sent to Centurylink.
             </p>
@@ -169,7 +169,7 @@
     <h4>Quoted Monthly Cost: {{deal.mrc | currency}}<br>
      Quoted One-Time Cost: {{deal.nrc | currency}}</h4>
      </div> -->
-    <div class="field">
+   <!--  <div class="field">
     <label class="form-text">DSL Speed:</label>
      
     <input   ng-model="deal.dslspeed" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
@@ -216,7 +216,70 @@
                   <label class="form-text" for="telephone">Credits Issued:</label>
                   <input   ng-model="deal.winbackcredits" type="text" name="adl" style="width: 50%; float:right;" class="form-control text-center" />
               </div>
-                 
+                  -->
+
+
+
+  <div class="field">
+    <label class="form-text">DSL Speed:</label>
+
+    <select ng-model="dslspeed" class="form-control text-center" style="width: 50%; float:right;" name="dsl_speed" id="dsl_speed" ng-options="speed.value for speed in mySpeeds"></select>
+
+    </div>
+
+              
+    <div class="clearfix"></div> 
+
+
+            <div class="field">
+            <label class="form-text">Additional Lines:</label>
+            <input  ng-model="deal.adl" type="text" name="adl" style="width: 50%; float:right;" class="form-control text" />
+          </div>
+                              <div class="clearfix"></div> 
+
+
+                <div class="field">
+            <label class="form-text">Term:<span id='myphoneError' style='display: none; color: red'>How Long of a Term?</span></label>
+          <select ng-model="myterm" class="form-control text-center" style="width: 50%; float:right;" name='term' id='term' ng-options="myterm.name for myterm in myTerms"></select>
+             </div>
+              <div class="clearfix"></div>   
+                  
+                        <div class="field">
+
+            <label class="form-text">DSL Modem:<span id='myphoneError' style='display: none; color: red'>What about the modem?</span></label>
+
+           <select  ng-model="mymodem" class="form-control text-center" style="width: 50%; float:right;" name='modem' id='modem' ng-options="optA.value for optA in myModem"></select></div>
+                  
+                     <div class="clearfix"></div>
+                  
+                  <div class="field">
+            <label class="form-text">Static IP:<span id='myphoneError' style='display: none; color: red'>What about Static IPs?</span></label>
+           <select  ng-model="myip" class="form-control text-center" style="width: 50%; float:right;" name='staticIP' id='staticIP' ng-options="ipopts.value for ipopts in myIP">
+            
+               </select></div>
+                  
+                     <div class="clearfix"></div>
+                  
+                  
+                        <div class="field">
+                  <label class="form-text" for="telephone">Waive NRCs:</label>
+                  <select  ng-model="nrc" class="form-control text-center" style="width: 50%; float:right;" name="nrcs" id="nrcs" ng-options="nrcopt.value for nrcopt in myNRC"></select>
+              </div>
+                  
+                   <div class="clearfix"></div> 
+                        <div class="field">
+                  <label class="form-text" for="telephone">Credits Issued:</label>
+                  <select  ng-model="mycredits" class="form-control text-center" style="width: 50%; float:right;" name="credits" id="credits" ng-options="creditopt.value for creditopt in myCredits">
+                  </select>
+              </div>
+
+
+
+
+
+
+
+
                   <div class="clearfix"></div> 
     
 

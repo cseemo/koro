@@ -19,7 +19,20 @@ var express = require('express'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
 	path = require('path');
-	
+// 	var memwatch = require('memwatch');
+
+// memwatch.on('leak', function(info) {
+
+// 	console.log('Memory leak issue!!!');
+// 	console.log('Data',info);
+
+//   });
+// memwatch.on('stats', function(stats) { 
+
+// 	console.log('Got some stats');
+// 	console.log('Stats: ',stats);
+
+//  });
 
 
 	

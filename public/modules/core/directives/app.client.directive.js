@@ -17,10 +17,24 @@ angular.module('core').directive('imgHolder', [
     controller: [
       '$scope', '$element', '$location', function($scope, $element, $location) {
         var addBg, path;
-        path = function() {
+
+         path = function() {
+          var test = $location.path();
+          test = test.substring(0,8);
+          // console.log('Test Path',test);
+
+          if(test==='/approve'){
+            // console.log('We got it approved');
+            path = '/approve';
+             return $element.addClass('body-wide');
+          }else{
+
           return $location.path();
+          }
+         
         };
         addBg = function(path) {
+          // console.log('Path -- ',path);
           $element.removeClass('body-wide body-lock');
           switch (path) {
             case '/404':
@@ -28,9 +42,10 @@ angular.module('core').directive('imgHolder', [
             case '/pages/500':
             case '/signin':
             case '/signup':
+            case '/approve':
             case '/pages/forgot-password':
               return $element.addClass('body-wide');
-            case '/pages/lock-screen':
+            case '/lock':
               return $element.addClass('body-wide body-lock');
           }
         };
