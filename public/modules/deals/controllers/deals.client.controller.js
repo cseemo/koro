@@ -242,108 +242,108 @@ $scope.step = current;
 //////console.log('Current Step: ',$scope.step);
 };
 
-	$scope.makePDF = function(){
+	// $scope.makePDF = function(){
 
-		$scope.step = 3;
-		$scope.spinny = true;
-		var deal = $scope.deal;
-		//////console.log('Loas Signed?', deal.loa_signed);
+	// 	$scope.step = 3;
+	// 	$scope.spinny = true;
+	// 	var deal = $scope.deal;
+	// 	//////console.log('Loas Signed?', deal.loa_signed);
 
-		if(deal.loa_signed!='YES'){
+	// 	if(deal.loa_signed!='YES'){
 
-		deal.updated = Date.now();
-		//////console.log('My Deal: %o',deal);
-		deal.stage=$scope.myDealstages[2].name;
-		deal.stagenum=$scope.myDealstages[2].value;
-		var dealId = $scope.deal._id;
-		var signDate = new Date();
-		var month = signDate.getMonth();
-		var year = signDate.getYear();
-		var day = signDate.getDay();
-		//////console.log('signdate: %o',signDate);
-		//////console.log('mydate: '+month+'/'+day+'/'+year);
-		var testdate = $filter('date')(signDate, 'MM/dd/yyyy');
-		//////console.log(testdate);
-		deal.signDate = testdate;
-		//////console.log('Deal.user %o',deal.user);
-		deal.loa_signed='YES';
+	// 	deal.updated = Date.now();
+	// 	//////console.log('My Deal: %o',deal);
+	// 	deal.stage=$scope.myDealstages[2].name;
+	// 	deal.stagenum=$scope.myDealstages[2].value;
+	// 	var dealId = $scope.deal._id;
+	// 	var signDate = new Date();
+	// 	var month = signDate.getMonth();
+	// 	var year = signDate.getYear();
+	// 	var day = signDate.getDay();
+	// 	//////console.log('signdate: %o',signDate);
+	// 	//////console.log('mydate: '+month+'/'+day+'/'+year);
+	// 	var testdate = $filter('date')(signDate, 'MM/dd/yyyy');
+	// 	//////console.log(testdate);
+	// 	deal.signDate = testdate;
+	// 	//////console.log('Deal.user %o',deal.user);
+	// 	deal.loa_signed='YES';
 
-		//deal.user.notifications.push({note: deal.companyname+' signed their LOAS'});
+	// 	//deal.user.notifications.push({note: deal.companyname+' signed their LOAS'});
 		
-		socket.emit('message',  {type: 'approve', mrc: deal.mrc, deal: deal.companyname, userid: deal.user._id, user: deal.assignedRep});
-		deal.$update(function(data) {
-			//////console.log('Deal Updating',data);
+	// 	socket.emit('message',  {type: 'approve', mrc: deal.mrc, deal: deal.companyname, userid: deal.user._id, user: deal.assignedRep});
+	// 	deal.$update(function(data) {
+	// 		//////console.log('Deal Updating',data);
 		
-		// }).$promise(function() {
-		// 	//////console.log('Promising');
-		}).then(function(data, response, status, headers) {
-			//////console.log('done');
-				//////console.log('Deal Updated - SUCCESS: ',data);
-				////////console.log('Data.Response: %o',data._id);
-					 $http({method: 'GET', url: '/pdf/'+dealId, responseType: 'arraybuffer'}).
-    					success(function(response) {
+	// 	// }).$promise(function() {
+	// 	// 	//////console.log('Promising');
+	// 	}).then(function(data, response, status, headers) {
+	// 		//////console.log('done');
+	// 			//////console.log('Deal Updated - SUCCESS: ',data);
+	// 			////////console.log('Data.Response: %o',data._id);
+	// 				 $http({method: 'GET', url: '/pdf/'+dealId, responseType: 'arraybuffer'}).
+ //    					success(function(response) {
     
-     					var file = new Blob([response], {type: 'application/pdf'});
-     					var fileURL = URL.createObjectURL(file);
-     					//window.open(fileURL);
+ //     					var file = new Blob([response], {type: 'application/pdf'});
+ //     					var fileURL = URL.createObjectURL(file);
+ //     					//window.open(fileURL);
 
 
-     					$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
-     					$scope.pdf = true;
-     					//window.open(fileURL);
+ //     					$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+ //     					$scope.pdf = true;
+ //     					//window.open(fileURL);
 
-			    }).then(function(){
-			    	$scope.spinny = false;
-			    	//////console.log(deal.companyname+' signed their LOAS');
+	// 		    }).then(function(){
+	// 		    	$scope.spinny = false;
+	// 		    	//////console.log(deal.companyname+' signed their LOAS');
 
 
-			    	//////console.log('Ready to send Signed LOAs -- just type the damn code!');
+	// 		    	//////console.log('Ready to send Signed LOAs -- just type the damn code!');
 
-			    });
+	// 		    });
 	
-		});
+	// 	});
 
 
 
 
 
-		// .success(function(data, status) {
-		// 	//////console.log('Success!');
-		// });
+	// 	// .success(function(data, status) {
+	// 	// 	//////console.log('Success!');
+	// 	// });
 
-			// if(status === 200) {
-			// 	//$scope.currentPrice = data.price;
-			// 	//////console.log('Deal Updated - SUCCESS: ',data);
-			// 	//////console.log('Data.Response: %o',data._id);
-			// 		 $http({method: 'GET', url: '/pdf/'+dealId+'?name='+name, responseType: 'arraybuffer'}).
-   //  					success(function(data, status, headers, config) {
+	// 		// if(status === 200) {
+	// 		// 	//$scope.currentPrice = data.price;
+	// 		// 	//////console.log('Deal Updated - SUCCESS: ',data);
+	// 		// 	//////console.log('Data.Response: %o',data._id);
+	// 		// 		 $http({method: 'GET', url: '/pdf/'+dealId+'?name='+name, responseType: 'arraybuffer'}).
+ //   //  					success(function(data, status, headers, config) {
     
-   //   					var file = new Blob([data], {type: 'application/pdf'});
-   //   					var fileURL = URL.createObjectURL(file);
-   //   					window.open(fileURL);
+ //   //   					var file = new Blob([data], {type: 'application/pdf'});
+ //   //   					var fileURL = URL.createObjectURL(file);
+ //   //   					window.open(fileURL);
 
-			//     }).
-			//     error(function(data, status, headers, config) {
-			//       // called asynchronously if an error occurs
-			//       // or server returns response with an error status.
-			//       //////console.log('error');
-			//     });
+	// 		//     }).
+	// 		//     error(function(data, status, headers, config) {
+	// 		//       // called asynchronously if an error occurs
+	// 		//       // or server returns response with an error status.
+	// 		//       //////console.log('error');
+	// 		//     });
 	
 
 
 
-			// }	
-			//});
-				}else{
-					window.alert("What the fudge??");
+	// 		// }	
+	// 		//});
+	// 			}else{
+	// 				window.alert("What the fudge??");
 
 
-				}
+	// 			}
 
 
 			
 
-		};
+	// 	};
 
 
 
@@ -1064,7 +1064,277 @@ return $scope.deal.dslspeed;
         })
     }
  }
-})
+}).controller('ApprovalController', ['$rootScope', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', 'socket', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout', '$q', 
+	function($rootScope, $scope, $stateParams, $location, Authentication, Leads, Deals, socket, $http, $filter, $sce, Users, updateNotifications, $timeout, $q) {
+
+$scope.myDealstages = [
+{name: 'Pending Rep Review', value: '0', number: 0},
+{name: 'LOAs Out for Signature', value: '10', number: 1},
+{name: 'LOAs Signed', value: '20', number: 2},
+{name: 'Pending Review', value: '25', number: 3},
+{name: 'QC Approved', value: '40', number: 4},
+{name: 'Pending Order Number', value: '55', number: 5},
+{name: 'Pending Install', value: '70', number: 6},
+{name: 'Installed', value: '90', number: 7},
+{name: 'Paid', value: '100', number: 8},
+
+
+];
+
+$scope.pdf = false;
+$scope.step = 1;
+$scope.currentDeal=0;
+
+
+$scope.findOne = function() {
+			$scope.deal = Deals.get({ 
+				dealId: $stateParams.dealId
+
+			});
+
+
+
+				$scope.deal.telephone = $filter('tel')($scope.deal.telephone);
+			//////console.log('Deal Info: %o', $scope.deal);
+			$scope.mystage = $scope.deal.stage;
+
+		
+		};
+
+$scope.nextStep = function(){
+var current = $scope.step-0+1;
+//////console.log('Current: ',current);
+$scope.step = current;
+
+if($scope.step===2){
+
+// console.log('BUilding Services');
+var i = 0;
+			// console.log('Got to myterm');
+			angular.forEach($scope.myTerms, function(item){
+				// console.log('Item: %o',item);
+				// console.log('$scope: %o',$scope);
+				// console.log('item.name'+item.name+' and deal.term '+$scope.deal.term);
+				if(item.name===$scope.deal.term){
+				$scope.myterm = $scope.myTerms[i];
+					
+				}
+				i++;
+				
+			});
+
+			var xs = 0;
+
+			angular.forEach($scope.mySpeeds, function(item){
+			// console.log('Item: %o',item);
+			// console.log('$scope: %o',$scope);
+			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+			if(item.value===$scope.deal.dslspeed){
+			$scope.dslspeed = $scope.mySpeeds[xs];
+			
+			}
+				xs++;
+		
+			});
+
+			var t=0;
+
+			angular.forEach($scope.myNRC, function(item){
+			// console.log('Item: %o',item);
+			// console.log('$scope: %o',$scope);
+			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+			if(item.name===$scope.deal.waivenrcs){
+			$scope.nrc = $scope.myNRC[t];
+			
+			}
+				t++;
+		
+			});
+
+			var r=0;
+
+			angular.forEach($scope.myIP, function(item){
+			// console.log('Item: %o',item);
+			// console.log('$scope: %o',$scope);
+			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+			if(item.value===$scope.deal.staticip){
+			$scope.myip = $scope.myIP[r];
+			
+			}
+				r++;
+		
+			});
+
+			var r=0;
+
+			angular.forEach($scope.myModem, function(item){
+			// console.log('Item: %o',item);
+			// console.log('$scope: %o',$scope);
+			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+			if(item.name===$scope.deal.modem){
+			$scope.mymodem = $scope.myModem[r];
+			
+			}
+				r++;
+		
+			});
+
+			var i=0;
+
+			angular.forEach($scope.myCredits, function(item){
+			// console.log('Item: %o',item);
+			// console.log('$scope: %o',$scope);
+			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+			if(item.value===$scope.deal.winbackcredits){
+			$scope.mycredits = $scope.myCredits[i];
+			
+			}
+				i++;
+		
+			});
+
+
+
+
+
+}
+if($scope.step===3){
+	console.log('this.term',this.myForm.term);
+	console.log('DSL SPeed: ',this.myForm.dsl_speed);
+// this.term = this.myForm.term;
+// this.dsl = this.myForm.dsl_speed;
+// this.adl = this.myForm.adl;
+// this.modem = this.myForm.modem;
+// this.nrcs = this.myForm.nrcs;
+// this.credits = this.myForm.credits;
+// this.iptype = this.myForm.staticIP;
+
+}
+
+			
+//////console.log('Current Step: ',$scope.step);
+};
+
+$scope.mycontent = {};
+
+$scope.lastStep = function(){
+var current = $scope.step-1;
+
+$scope.step = current;
+//////console.log('Current Step: ',$scope.step);
+};
+
+
+	$scope.makePDF = function(){
+
+		$scope.step = 3;
+		$scope.spinny = true;
+		var deal = $scope.deal;
+		//////console.log('Loas Signed?', deal.loa_signed);
+
+		if(deal.loa_signed!='YES'){
+
+		deal.updated = Date.now();
+		//////console.log('My Deal: %o',deal);
+		deal.stage=$scope.myDealstages[2].name;
+		deal.stagenum=$scope.myDealstages[2].value;
+		var dealId = $scope.deal._id;
+		var signDate = new Date();
+		var month = signDate.getMonth();
+		var year = signDate.getYear();
+		var day = signDate.getDay();
+		//////console.log('signdate: %o',signDate);
+		//////console.log('mydate: '+month+'/'+day+'/'+year);
+		var testdate = $filter('date')(signDate, 'MM/dd/yyyy');
+		//////console.log(testdate);
+		deal.signDate = testdate;
+		//////console.log('Deal.user %o',deal.user);
+		deal.loa_signed='YES';
+
+		//deal.user.notifications.push({note: deal.companyname+' signed their LOAS'});
+		
+		socket.emit('message',  {type: 'approve', mrc: deal.mrc, deal: deal.companyname, userid: deal.user._id, user: deal.assignedRep});
+		deal.$update(function(data) {
+			//////console.log('Deal Updating',data);
+		
+		// }).$promise(function() {
+		// 	//////console.log('Promising');
+		}).then(function(data, response, status, headers) {
+			//////console.log('done');
+				//////console.log('Deal Updated - SUCCESS: ',data);
+				////////console.log('Data.Response: %o',data._id);
+					 $http({method: 'GET', url: '/pdf/'+dealId, responseType: 'arraybuffer'}).
+    					success(function(response) {
+    
+     					var file = new Blob([response], {type: 'application/pdf'});
+     					var fileURL = URL.createObjectURL(file);
+     					//window.open(fileURL);
+
+
+     					$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+     					$scope.pdf = true;
+     					//window.open(fileURL);
+
+			    }).then(function(){
+			    	$scope.spinny = false;
+			    	//////console.log(deal.companyname+' signed their LOAS');
+
+
+			    	//////console.log('Ready to send Signed LOAs -- just type the damn code!');
+
+			    });
+	
+		});
+
+
+
+
+
+		// .success(function(data, status) {
+		// 	//////console.log('Success!');
+		// });
+
+			// if(status === 200) {
+			// 	//$scope.currentPrice = data.price;
+			// 	//////console.log('Deal Updated - SUCCESS: ',data);
+			// 	//////console.log('Data.Response: %o',data._id);
+			// 		 $http({method: 'GET', url: '/pdf/'+dealId+'?name='+name, responseType: 'arraybuffer'}).
+   //  					success(function(data, status, headers, config) {
+    
+   //   					var file = new Blob([data], {type: 'application/pdf'});
+   //   					var fileURL = URL.createObjectURL(file);
+   //   					window.open(fileURL);
+
+			//     }).
+			//     error(function(data, status, headers, config) {
+			//       // called asynchronously if an error occurs
+			//       // or server returns response with an error status.
+			//       //////console.log('error');
+			//     });
+	
+
+
+
+			// }	
+			//});
+				}else{
+					window.alert("What the fudge??");
+
+
+				}
+
+
+			
+
+		};
+
+
+
+
+
+
+
+   }])
 
 .directive('stats', function($q, $http, Authentication, $filter){
 	return {
