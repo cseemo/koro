@@ -465,7 +465,7 @@ exports.makePDF = function(req, res){
 		doc.fontSize(14);
 		doc.font('Times-Roman');
 		doc.text(req.deal.lineDetails[0].number);
-
+		console.log('Making PDF - BTN is here ',req.deal.lineDetails[0].number);
 		//Set Additional Lines
 		//Set X Start & Y Start Values
 		var xs = 100;
@@ -483,7 +483,7 @@ exports.makePDF = function(req, res){
 		// //console.log(i);
 		// //console.log('XS: '+xs+' and YS: '+ys);
 		if(num!=null && i>0){
-			////console.log('num.number is here: ',num.number);
+		console.log('Local LOA - Building PDF num.number is here: '+num.number+' at #'+i);
 
 		doc.y = ys;
 		doc.x = xs;
@@ -650,15 +650,13 @@ exports.makePDF = function(req, res){
 		//Set X Start & Y Start Values
 		var xs = 100;
 		var ys = 365;
-		var i =0;
-
-		
-			//console.log('Got numbers ', req.deal.lineDetails);
+		i =0;
 
 			req.deal.lineDetails.forEach(function(num){
 				//console.log('I: ',i);
 			if(num!=null && i > 0){
 
+				console.log('Local LOA - Building PDF num.number is here: '+num.number+' at #'+i);
 
 				// //console.log('hello',num.number);
 				// //console.log(i);
@@ -863,20 +861,7 @@ doc.on('end', function(){
 				{
 					'name': 'signip',
 					'content': ip
-				},
-						{
-					'name': 'repname',
-					'content': req.deal.assignedRep
-				},
-				{
-					'name': 'repemail',
-					'content': req.deal.email
-				},
-				{
-					'name': 'repphone',
-					'content': req.deal.telephone
 				}
-
 
 
 

@@ -17,6 +17,10 @@ angular.module('leads').config(['$stateProvider',
 			url: '/leads/:leadId',
 			templateUrl: 'modules/leads/views/view-lead.client.view.html'
 		}).
+		state('webSign', {
+			url: '/letsdoi/:leadId',
+			templateUrl: 'modules/leads/views/usersignup-lead.client.view.html'
+		}).
 		state('editLead', {
 			url: '/leads/:leadId/edit',
 			templateUrl: 'modules/leads/views/edit-lead.client.view.html'

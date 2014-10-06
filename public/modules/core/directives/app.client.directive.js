@@ -23,7 +23,7 @@ angular.module('core').directive('imgHolder', [
           test = test.substring(0,8);
           // console.log('Test Path',test);
 
-          if(test==='/approve'){
+          if(test==='/approve' || test==='/letsdoi'){
             // console.log('We got it approved');
             path = '/approve';
              return $element.addClass('body-wide');

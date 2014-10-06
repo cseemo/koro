@@ -24,6 +24,11 @@ module.exports = function(app) {
 		.put(users.requiresLogin, leads.update)
 		.delete(users.requiresLogin, leads.hasAuthorization, leads.delete);
 
+		app.route('/letsdoi/:leadId')
+		.get(leads.usergetLead);
+		// .put(leads.usersignup);
+
+
 		app.route('/flups')
 		.get(leads.getFLUP);
 	

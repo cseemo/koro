@@ -1366,6 +1366,11 @@ exports.showDeal = function(req, res) {
 	
 };
 
+exports.usergetLead = function(req, res){
+		console.log('User Sign-Up!!! Lead Data: %o',req.lead);
+			res.jsonp(req.lead);
+		
+};
 /**
  * Show the current Lead
  */

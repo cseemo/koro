@@ -5,6 +5,63 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
+var leadLineDetailSchema = new Schema({
+
+	number: {
+		type: String,
+		default: ''
+	},
+	type: {
+		type: String,
+		default: ''
+	},
+	hunting: {
+		type: String,
+		default: ''
+	},
+	huntgroup: {
+		type: String,
+		default: ''
+	},
+	huntorder: {
+		type: String,
+		default: ''
+	},
+	vm: {
+		type: String,
+		default: ''
+	},
+	esm: {
+		type: String,
+		default: ''
+	},
+	nnk: {
+		type: String,
+		default: ''
+	},
+	cw: {
+		type: String,
+		default: ''
+	},
+	cwid: {
+		type: String,
+		default: ''
+	},
+	da6: {
+		type: String,
+		default: ''
+	},
+	eo3: {
+		type: String,
+		default: ''
+	}
+
+
+});
+
+mongoose.model('leadLineDetail', leadLineDetailSchema, 'leads');
+
+
 
 /**
  * Calls Schema
@@ -51,6 +108,8 @@ var LeadSchema = new Schema({
 		required: 'Please fill in Company Name',
 		trim: true
 	},
+	lineDetails: [leadLineDetailSchema.schema],
+	
 	callDetails: [CallSchema.schema],
 	email: {
 		type: String,

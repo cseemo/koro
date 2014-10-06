@@ -112,6 +112,7 @@ $scope.currentLead=0;
 			});
 			
 		}();
+
 		$scope.convertToDeal = function(){
 			////console.log('Scope: %o',$scope);
 			//console.log('This %o', this);
@@ -972,7 +973,176 @@ return function(input){
 
 	return _date;
 };
-});
+}).controller('UserSignUpController', ['$http', '$scope', '$stateParams', '$filter', '$location', 'Authentication', 'Leads', 'Deals', 'Users', '$timeout', 'socket',
+	function($http, $scope, $stateParams, $filter, $location, Authentication, Leads, Deals, Users, $timeout, socket) {
+	
+	$scope.step = 1;
+	$scope.lead = Leads.query();
+
+	$scope.buildDTW = function(){
+		//////console.log('got here %',$scope);
+		//////console.log('Total Lines: ', $scope.deal);
+		$scope.lead.$promise.then(function(){
+			//$scope.deal.adl;
+		var totlines = parseInt($scope.lead.adl)+1;
+		console.log('Total Lines: %o', totlines);
+		console.log('Existing LineDetails: ', $scope.lead.lineDetails.length);
+		
+		if($scope.lead.lineDetails.length==0){
+			if(totlines<2){
+				$scope.lead.lineDetails.push({});
+			}else{
+				for(var i = 0; i < totlines ; i++) {
+					$scope.lead.lineDetails.push({});
+				}
+
+			}
+		}
+			
+		});
+
+
+	};
+
+$scope.nextStep = function(){
+var current = $scope.step-0+1;
+//////console.log('Current: ',current);
+$scope.step = current;
+
+// if($scope.step===2){
+
+// // console.log('BUilding Services');
+// var i = 0;
+// 			// console.log('Got to myterm');
+// 			angular.forEach($scope.myTerms, function(item){
+// 				// console.log('Item: %o',item);
+// 				// console.log('$scope: %o',$scope);
+// 				// console.log('item.name'+item.name+' and deal.term '+$scope.deal.term);
+// 				if(item.name===$scope.deal.term){
+// 				$scope.myterm = $scope.myTerms[i];
+					
+// 				}
+// 				i++;
+				
+// 			});
+
+// 			var xs = 0;
+
+// 			angular.forEach($scope.mySpeeds, function(item){
+// 			// console.log('Item: %o',item);
+// 			// console.log('$scope: %o',$scope);
+// 			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+// 			if(item.value===$scope.deal.dslspeed){
+// 			$scope.dslspeed = $scope.mySpeeds[xs];
+			
+// 			}
+// 				xs++;
+		
+// 			});
+
+// 			var t=0;
+
+// 			angular.forEach($scope.myNRC, function(item){
+// 			// console.log('Item: %o',item);
+// 			// console.log('$scope: %o',$scope);
+// 			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+// 			if(item.name===$scope.deal.waivenrcs){
+// 			$scope.nrc = $scope.myNRC[t];
+			
+// 			}
+// 				t++;
+		
+// 			});
+
+// 			var r=0;
+
+// 			angular.forEach($scope.myIP, function(item){
+// 			// console.log('Item: %o',item);
+// 			// console.log('$scope: %o',$scope);
+// 			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+// 			if(item.value===$scope.deal.staticip){
+// 			$scope.myip = $scope.myIP[r];
+			
+// 			}
+// 				r++;
+		
+// 			});
+
+// 			var r=0;
+
+// 			angular.forEach($scope.myModem, function(item){
+// 			// console.log('Item: %o',item);
+// 			// console.log('$scope: %o',$scope);
+// 			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+// 			if(item.name===$scope.deal.modem){
+// 			$scope.mymodem = $scope.myModem[r];
+			
+// 			}
+// 				r++;
+		
+// 			});
+
+// 			var i=0;
+
+// 			angular.forEach($scope.myCredits, function(item){
+// 			// console.log('Item: %o',item);
+// 			// console.log('$scope: %o',$scope);
+// 			// console.log('item.value'+item.value+' and deal.dslspeed'+$scope.deal.dslspeed);
+// 			if(item.value===$scope.deal.winbackcredits){
+// 			$scope.mycredits = $scope.myCredits[i];
+			
+// 			}
+// 				i++;
+		
+// 			});
+
+
+
+
+
+// }
+
+if($scope.step===3){
+	console.log('this.term',this.myForm.term);
+	console.log('DSL SPeed: ',this.myForm.dsl_speed);
+// this.term = this.myForm.term;
+// this.dsl = this.myForm.dsl_speed;
+// this.adl = this.myForm.adl;
+// this.modem = this.myForm.modem;
+// this.nrcs = this.myForm.nrcs;
+// this.credits = this.myForm.credits;
+// this.iptype = this.myForm.staticIP;
+
+}
+
+			
+//////console.log('Current Step: ',$scope.step);
+};
+
+$scope.mycontent = {};
+
+$scope.lastStep = function(){
+var current = $scope.step-1;
+
+$scope.step = current;
+//////console.log('Current Step: ',$scope.step);
+};
+
+
+
+	// Find lead to get
+		$scope.findOne = function() {
+			$scope.lead = Leads.get({ 
+				leadId: $stateParams.leadId
+			});
+			$scope.lead.telephone = $filter('tel')($scope.lead.telephone);
+
+			console.log('Here is the lead we got!',$scope.lead);
+			//$scope.callDetails = $scope.lead.callDetails;
+			////console.log('callDetails %o',$scope.lead);
+		};
+
+	}]);
 
 
 

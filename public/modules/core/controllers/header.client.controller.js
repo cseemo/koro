@@ -6,7 +6,18 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
 
-	
+		$scope.signin = function() {
+			$http.post('/auth/signin', $scope.credentials).success(function(response) {
+				//If successful we assign the response to the global user model
+				$scope.authentication.user = response;
+				socket.emit('message', {type: 'signing', user: $scope.authentication.user.displayName});
+				
+				//And redirect to the index page
+				$location.path('/');
+			}).error(function(response) {
+				$scope.error = response.message;
+			});
+		};
 
 
 		$scope.numNotifications = $scope.authentication.user.notifications.length;
