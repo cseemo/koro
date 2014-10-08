@@ -4,12 +4,7 @@
   angular.module('core').controller('IoCtrl', ['Authentication', '$scope', 'socket', 
     function(Authentication, $scope, socket) {
 
-      $scope.authentication = Authentication;
-  //If a socket call comes for this user Fire off a toastr event
-    socket.on($scope.authentication.user._id, function(data) {
-        console.log('Socket Data for specific user : %o', $scope.authentication.user);
-        toastr.info(data.deal+' just signed their LOAs!!');     
-        });
+   
 
            $scope.notifys=[];
 
