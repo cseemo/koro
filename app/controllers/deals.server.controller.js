@@ -223,6 +223,7 @@ exports.getDealsbyRep = function(req, res) {
 	//console.log('got to Count Deals FIND USER %o', req.user);
 
 	//'No Answer','Not Available', 'Follow-Up', 'Proposed', 'Closed/Won', 'Not Interested', 'Disconnected', 'Wrong Number', 'Do Not Call List'
+	
 	var n = 1;
 	switch(n)
 	{

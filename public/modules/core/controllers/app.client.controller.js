@@ -68,101 +68,17 @@
     }
   ])
         
-        
-        
-        
-        
-        
-        
-// app.factory('notificationFactory', function () {
-//     return {
-//         success: function (text) {
-//             toastr.success(text,"Success");
-//         },
-//         error: function (text) {
-//             toastr.error(text, "Error");
-//         }
-//     };
-// })
-  .controller('HeaderCtrl', ['$scope', function($scope) {}])
-// .directive('idle', function($idle, $timeout, $interval){
-//   return {
-//     restrict: 'A',
-//     link: function(scope, elem, attrs) {
-//       var timeout;
-//       var timestamp = localStorage.lastEventTime;
-
-//       // Watch for the events set in ng-idle's options
-//       // If any of them fire (considering 500ms debounce), update localStorage.lastEventTime with a current timestamp
-//       elem.on($idle._options().events, function(){
-//         if (timeout) { $timeout.cancel(timeout); }
-//         timeout = $timeout(function(){
-//           localStorage.setItem('lastEventTime', new Date().getTime());
-//         }, 500);
-//       });
-
-//       // Every 5s, poll localStorage.lastEventTime to see if its value is greater than the timestamp set for the last known event
-//       // If it is, reset the ng-idle timer and update the last known event timestamp to the value found in localStorage
-//       $interval(function() {
-//         if (localStorage.lastEventTime > timestamp) {
-//           $idle.watch();
-//           timestamp = localStorage.lastEventTime;
-//         } 
-//       }, 5000);
-//     }
-//   }
-// })
-  //       .controller('EventsCtrl', ['ngIdle', function($scope, $idle, ngIdle) {
-  //         var app = angular.module('demo', ['ngIdle']);
-  //           $scope.events = [];
-
-  //           $scope.$on('$idleStart', function() {
-  //               // the user appears to have gone idle  
-  //               window.alert('gone idle');                 
-  //           });
-
-  //           $scope.$on('$idleWarn', function(e, countdown) {
-  //               // follows after the $idleStart event, but includes a countdown until the user is considered timed out
-  //               // the countdown arg is the number of seconds remaining until then.
-  //               // you can change the title or display a warning dialog from here.
-  //               // you can let them resume their session by calling $idle.watch()
-  //           });
-
-  //           $scope.$on('$idleTimeout', function() {
-  //               // the user has timed out (meaning idleDuration + warningDuration has passed without any activity)
-  //               // this is where you'd log them
-  //           })
-
-  //           $scope.$on('$idleEnd', function() {
-  //               // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog 
-  //           });
-
-  //           $scope.$on('$keepalive', function() {
-  //               // do something to keep the user's session alive
-  //           })
-
-  //       }])
-  //       .config(function($idleProvider, $keepaliveProvider) {
-  //           // configure $idle settings
-  //           $idleProvider.idleDuration(5); // in seconds
-  //           $idleProvider.warningDuration(5); // in seconds
-  //           $keepaliveProvider.interval(2); // in seconds
-  //       })
-  //       .run(function($idle){
-  //           // start watching when the app runs. also starts the $keepalive service by default.
-  //           $idle.watch();
-  //       })
+    
 
 
         .controller('NavContainerCtrl', ['$scope', function($scope) {}]).
     controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', 'Deals', '$filter', 'socket', '$timeout', function($scope, Authentication, Leads, Deals, $filter, socket, $timeout) {
-      $scope.notifys=[];
+   
       
-      // $scope.$on('$destroy', function(){
-      //   //console.log('Destroying $scope');
-      //   socket.removeListener('test');
-
-      // });
+             socket.on('newconnect', function(data) {
+        //console.log('Socket Data: %o', data);
+        $scope.myObject = data;
+      });
 
       var newdata;
 
@@ -170,58 +86,7 @@
         // //console.log('Socket On Test', data);
         
         // });
-        socket.on('newconnect', function(data) {
-        //console.log('Socket Data: %o', data);
-        $scope.myObject = data;
-      });
 
-         socket.on('test', function(data) {
-        ////console.log('Socket Data: %o', data);
-
-
-      
-        if(data.type==='convert'){
-          data.message1 = 'just converted';
-          data.message2 = 'from a lead to a deal!';
-          data.head = 'Deal Converted';
-          data.icon = 'check';
-        }
-        if(data.type==='submit'){
-          data.message1 = 'just sent ';
-          data.message2 = 'an order packet';
-          data.head = 'Order Packet Sent';
-          data.icon = 'share';
-        }
-        if(data.type==='quote'){
-          data.message1 = 'just sent';
-          data.message2 = 'a quote for $'+data.mrc+'. ('+data.dsl+' - '+data.lines+' additional lines)';
-          data.head = 'Proposal Sent';
-          data.icon = 'paper-plane';
-        }
-        if(data.type==='approve'){
-          data.message1 = 'just converted';
-          data.message2 = 'from a lead to a deal!';
-          data.head = 'Deal Converted';
-          data.icon = 'dollar';
-        }
-        if(data.type==='signin'){
-          data.message1 = 'signed in.';
-         // data.message2 = 'from a lead to a deal!';
-          data.head = 'Sign-In';
-          data.icon = 'user';
-        }
-        ////console.log(data.message);
-        $scope.notifys.push(data);
-        ////console.log('Other Event %o', data);
-
-
-       
-        // $timeout(function(){
-        //   toastr.info(data.message);
-        // }, 1000);
-        // $scope.myObject = data;
-        // toastr.info('New User Connected ...'+data.count+' current users.');
-        });
         // // socket.on('connection', function(data) {
         // // ////console.log('Connected', data);
         // // $scope.myObject = data;
