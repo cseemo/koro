@@ -11,7 +11,7 @@
 
 angular.module('core')
 .factory('socket', function ($rootScope) {
-	//console.log('socket factory');
+console.log('Got to the socket factory',Date.now());
 var socket = io.connect();
 return {
 on: function (eventName, callback) {

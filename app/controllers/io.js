@@ -1,9 +1,9 @@
 
 'use strict';
-
+var ss = 0;
 module.exports = function(io){
 	
-		var ss = 0;
+		
 
 		io.sockets.on('connection', function(socket){
 		//console.log('IO EVENT: Connect', socket);
@@ -28,8 +28,8 @@ module.exports = function(io){
 	});
 		socket.on('message', function(data){
 			
-		//console.log('SS =',ss);
-		//console.log('IO EVENT: %o', data);
+		console.log('SS =',ss);
+		console.log('IO EVENT: %o', data);
 		var n = data.type;
 		//console.log('n=',n);
 	
