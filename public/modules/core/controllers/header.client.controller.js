@@ -20,11 +20,13 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		};
 
 
-		$scope.numNotifications = $scope.authentication.user.notifications.length;
+		
 		//if( ! Authentication.user ) $location.path('/signin');
 		if( Authentication.user ) {
 			//console.log('Logged In ');
 			$scope.canSee=true;
+
+			$scope.numNotifications = $scope.authentication.user.notifications.length;
 		}
 
 		if( ! Authentication.user ) {
@@ -49,24 +51,23 @@ $scope.clockIn= function(type) {
 	var time = $filter('date')(new Date(date), 'h:mma');
 
 	////console.log('timecard %o',$scope);
-		$scope.clockedInVal = 'Clocked-In';
-			switch(type){
-				case 'break': 
+	$scope.clockedInVal = 'Clocked-In';
+	switch(type){
+		case 'break': 
 			toastr.info('You have been clocked-in for break at '+time);
 			$cookieStore.put('breakEnd', Date.now());
-			
 			break;
 
-			case 'lunch': 
+		case 'lunch': 
 			toastr.info('You have been clocked-in for lunch at '+time);
 			$cookieStore.put('lunchEnd', Date.now());
 			break;
 
-			case 'shift': 
+		case 'shift': 
 			toastr.info('You have been clocked-in at '+time);
 			$cookieStore.put('shiftStart', Date.now());
 			break;
-			}
+	}
 			
 	$http.get('/awesome/clock').success(function(data) {
 	

@@ -234,6 +234,30 @@ var LeadSchema = new Schema({
 
 });
 
+LeadSchema.static.getCarriers = function() {
+	return {
+		'INTEGRA': 'INTEGRA.*',
+		'SOMETHING': 'SOMETHING.*',
+	}
+}
+
+LeadSchema.static.findByCarrier = function(carrier) {
+	var a = this.getCarriers()[carrier];
+	// if carrier = INTEGRA a = 'INTEGRA.*'
+
+	this.find({
+		'currentCarrier': { 
+			$regex: { 'currentCarrier': a } 
+		}
+	}).exec(function(err, results) {
+		if(err) {
+			console.log('error: ', err);
+		}
+		console.log('results: ', results);
+		return results;
+	})
+}
+
 
 mongoose.model('Lead', LeadSchema, 'leads');
 

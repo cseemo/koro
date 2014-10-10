@@ -2,8 +2,8 @@
 
 // Deals controller
 
-angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', 'socket', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout', '$q', 
-	function($rootScope, $scope, $stateParams, $location, Authentication, Leads, Deals, socket, $http, $filter, $sce, Users, updateNotifications, $timeout, $q) {
+angular.module('deals').controller('DealsController', ['$rootScope', '$scope', '$stateParams', '$location', 'Authentication', 'Leads', 'Deals', 'socket', '$http', '$filter', '$sce', 'Users', 'updateNotifications', '$timeout', '$q', 'notfication_test',  
+	function($rootScope, $scope, $stateParams, $location, Authentication, Leads, Deals, socket, $http, $filter, $sce, Users, updateNotifications, $timeout, $q, notification_test) {
 
       // socket.on('test', function(data) {
       //   ////console.log('Socket On Event', data);
@@ -19,7 +19,11 @@ var init;
 
 		$scope.authentication = Authentication;
 
-
+	//If a socket call comes for this user Fire off a toastr event
+    /*socket.on($scope.authentication.user._id, function(data) {
+        console.log('Socket Data for specific user : %o', $scope.authentication.user);
+        toastr.info(data.deal+' just signed their LOAs!!');     
+    });*/
 
 		$scope.mySpeeds = [
 {name: '1.5', value: '1.5Mbps/896Kbps',svalue: '1.5M/896K'},
@@ -94,10 +98,6 @@ $scope.myLOA = [
 $scope.pdf = false;
 $scope.step = 1;
 $scope.currentDeal=0;
-
-//Header NOtifications
-$scope.numNotifications = $scope.authentication.user.notifications.length;
-
 
 //$scope.myiframe = 'blob:http%3A//localhost%3A3000/d43e67f4-bab2-4778-b97c-6385c4b158a8';
 $scope.pending=false;
@@ -875,7 +875,7 @@ return $scope.deal.dslspeed;
 		};
 
 		//Submit Order Packet
-			$scope.submitOrder = function() {
+		$scope.submitOrder = function() {
 			toastr.info('Submitting Order and Sending Order Packet...');
 
 			$scope.pending=true;
@@ -883,116 +883,91 @@ return $scope.deal.dslspeed;
 			var newnumbers = [];
 			var newitem = {};
 			var deal = $scope.deal;
-
-			
 				////console.log('promise fired');
-				
 				angular.forEach(deal.lineDetails, function(item){
-					////console.log('foreach');
+				////console.log('foreach');
 				////console.log('Pre:',item);
 				newitem.number = $filter('tel')(item.number);
 				////console.log('Post:',newitem.number);
 				newnumbers.push({number: newitem.number, test: 'yep'});
 				////console.log('Our Numbers Array %o',newnumbers);
-				
 			});
-
-	
-
-
 
 			$q.all(newnumbers).then(function(){
 				////console.log('.then fired');
-			deal.updated = Date.now();
-			deal.telephone = $filter('tel')(deal.telephone);
-			deal.lineDetails=newnumbers;
-			////console.log('Look for phone numbers %o', $scope.deal);
-			if($scope.mystage){
-			deal.stage=$scope.mystage.name;
-			deal.stagenum=$scope.mystage.value;
-			}else{
-			deal.stage=$scope.myDealstages[1].name;
-			deal.stagenum=$scope.myDealstages[1].value;
-			}
-			//////console.log('Dealcontroller Deal: %o',deal);
-			deal.$update(function() {
-				////console.log('Updating Deal before sending Order Packet');
-				//$location.path('deals/' + deal._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			}).then(function() {
-				//////console.log('Deal Updated??');
-				socket.emit('message', {type: 'submit', deal: $scope.deal.companyname, user: $scope.authentication.user.displayName});	
-			
-				$scope.pending=false;
+				deal.updated = Date.now();
+				deal.telephone = $filter('tel')(deal.telephone);
+				deal.lineDetails=newnumbers;
+				////console.log('Look for phone numbers %o', $scope.deal);
+				if($scope.mystage) {
+					deal.stage=$scope.mystage.name;
+					deal.stagenum=$scope.mystage.value;
+				} else {
+					deal.stage=$scope.myDealstages[1].name;
+					deal.stagenum=$scope.myDealstages[1].value;
+				}
+				//////console.log('Dealcontroller Deal: %o',deal);
+				deal.$update(function() {
+					////console.log('Updating Deal before sending Order Packet');
+					//$location.path('deals/' + deal._id);
+				}, function(errorResponse) {
+					$scope.error = errorResponse.data.message;
+				}).then(function() {
+					//////console.log('Deal Updated??');
+					socket.emit('message', {type: 'submit', deal: $scope.deal.companyname, user: $scope.authentication.user.displayName});	
 				
-				$scope.sending=true;
-				$scope.goodTns = [];
-				////console.log('URL to Post to: ', '/convertingdeals/'+deal._id);
-			
-				toastr.success('Order submitted successfully for '+$scope.deal.companyname+'.');
+					$scope.pending = false;
+					$scope.sending = true;
+					$scope.goodTns = [];
+					////console.log('URL to Post to: ', '/convertingdeals/'+deal._id);
 
-		
+					toastr.success('Order submitted successfully for '+$scope.deal.companyname+'.');
+				
+					$http({
+						method: 'post',
+						url: '/convertingdeals/'+deal._id,
+						// data: {
+						// 	mylead: deal._id,
+						// 	term: deal.term,
+						// 	dslspeed: deal.dslspeed,
+						// 	adllines: deal.adl,
+						// 	full_name: deal.contactname,
+						// 	phone: deal.telephone,
+						// 	email: deal.contactemail, 
+						// 	companyname: deal.companyname, 
+						// 	modem: deal.modem,
+						// 	nrc: deal.waivenrcs,
+						// 	credits: deal.winbackcredits,
+						// 	staticIP: deal.staticIP,
+						// 	sendloas: 1,
+						// 	address: deal.address,
+						// 	city: deal.city,
+						// 	state: deal.state,
+						// 	zip: deal.zipcode,
+						// 	numbers: deal.lineDetails[0].number,
+						// 	adl_ani: deal.lineDetails
+						// },
+						headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+					}).success(function(data, status) {
+						//$location.path('deals/' + deal._id);
+						if(status === 200) {
+							//$scope.currentPrice = data.price;
+							////////console.log('Data Returned '+data);
+							//$scope.currentPrice = data.price;
+							//$scope.currentNRR = data.nrr;
+							$scope.sending = false;
+							$scope.finished = true;
+							$scope.myresponse = data;
+							toastr.success('Order packet sent to '+$scope.deal.contactemail+' at '+$scope.deal.companyname+'!');
+							$location.path('#!/deals');
 
-
-
-			
-		$http({
-		method: 'post',
-		url: '/convertingdeals/'+deal._id,
-		// data: {
-		// 	mylead: deal._id,
-		// 	term: deal.term,
-		// 	dslspeed: deal.dslspeed,
-		// 	adllines: deal.adl,
-		// 	full_name: deal.contactname,
-		// 	phone: deal.telephone,
-		// 	email: deal.contactemail, 
-		// 	companyname: deal.companyname, 
-		// 	modem: deal.modem,
-		// 	nrc: deal.waivenrcs,
-		// 	credits: deal.winbackcredits,
-		// 	staticIP: deal.staticIP,
-		// 	sendloas: 1,
-		// 	address: deal.address,
-		// 	city: deal.city,
-		// 	state: deal.state,
-		// 	zip: deal.zipcode,
-		// 	numbers: deal.lineDetails[0].number,
-		// 	adl_ani: deal.lineDetails
-		// },
-		headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
-	})
-.success(function(data, status) {
-	//$location.path('deals/' + deal._id);
-		if(status === 200) {
-			//$scope.currentPrice = data.price;
-////////console.log('Data Returned '+data);
-			//$scope.currentPrice = data.price;
-			//$scope.currentNRR = data.nrr;
-			$scope.sending = false;
-			$scope.finished = true;
-			$scope.myresponse = data;
-			toastr.success('Order packet sent to '+$scope.deal.contactemail+' at '+$scope.deal.companyname+'!');
-			$location.path('#!/deals');
-
-
-//Get Quote Details and Save to Lead Object
-
-
-}
-
-
-	})
-.error(function(data){
-	//////console.log('OOps...'+data);
-});
-
-			
+							//Get Quote Details and Save to Lead Object
+						}
+					}).error(function(data){
+						//////console.log('OOps...'+data);
+					});
+				});
 			});
-
-	});
-			
 		};
 
 		// Update existing Deal
@@ -1317,10 +1292,52 @@ $scope.step = current;
 
 
 
+		$scope.notifys=[];
+		$scope.chadtest = 'It works bro';
 
+		socket.on('test', function(data) {
+	        ////console.log('Socket Data: %o', data);
+	      
+	        if(data.type==='convert'){
+	          data.message1 = 'just converted';
+	          data.message2 = 'from a lead to a deal!';
+	          data.head = 'Deal Converted';
+	          data.icon = 'check';
+	        }
+	        if(data.type==='submit'){
+	          data.message1 = 'just sent ';
+	          data.message2 = 'an order packet';
+	          data.head = 'Order Packet Sent';
+	          data.icon = 'share';
+	        }
+	        if(data.type==='quote'){
+	          data.message1 = 'just sent';
+	          data.message2 = 'a quote for $'+data.mrc+'. ('+data.dsl+' - '+data.lines+' additional lines)';
+	          data.head = 'Proposal Sent';
+	          data.icon = 'paper-plane';
+	        }
+	        if(data.type==='approve'){
+	          data.message1 = 'just converted';
+	          data.message2 = 'from a lead to a deal!';
+	          data.head = 'Deal Converted';
+	          data.icon = 'dollar';
+	        }
+	        if(data.type==='signin'){
+	          data.message1 = 'signed in.';
+			  // data.message2 = 'from a lead to a deal!';
+	          data.head = 'Sign-In';
+	          data.icon = 'user';
+	        }
+	        ////console.log(data.message);
+	        $scope.notifys.push(data);
+	        ////console.log('Other Event %o', data);
 
-
-
+	        // $timeout(function(){
+	        //   toastr.info(data.message);
+	        // }, 1000);
+	        // $scope.myObject = data;
+	        // toastr.info('New User Connected ...'+data.count+' current users.');
+        });
    }])
 
 .directive('stats', function($q, $http, Authentication, $filter){

@@ -215,7 +215,11 @@
 
         });
             // Re-render the chart, we do this so that way we don't have to re-type in the options above. You can also do this by storing options in a variable
-        var plotChart1 = $.plot($('#ALLleadschart'), data, pieChartOptions);
+        //#####var plotChart1 = $.plot($('#ALLleadschart'), data, pieChartOptions);
+        $scope.leadsChart = {
+          data: data,
+          options: pieChartOptions
+        };
         // plotChart1.setData(data);
         // plotChart1.setupGrid();
         // plotChart1.draw();
@@ -275,21 +279,29 @@
         $scope.mydeals.$promise.then(function(){
         ////console.log('Get taht Deal TOtal!');
         var data = [];
-        Object.keys($scope.mydeals).forEach(function(key) {
-          if($scope.mydeals[key]._id && $scope.mydeals[key]._id !== 'total') {
-            data.push({label: $scope.mydeals[key]._id, data: $scope.mydeals[key].total});
-            //////console.log('Total: ', $scope.mydeals[key]._id + ' ' + $scope.mydeals[key].total);
-          }
-          //JSLint convert == to ===
-          if($scope.mydeals[key]._id === 'total'){
-          //Fill out box of Total Leads
-          ////console.log('My Scope %o', $scope);
-               $scope.mydeals = $scope.mydeals[key].total;
-               //////console.log('Chads tingy: ', $scope.mydeals[key]._id);
+
+        // Verify we acutally have a response?
+        if($scope.mydeals) {
+          Object.keys($scope.mydeals).forEach(function(key) {
+
+          // Verify we hvae usable data first
+          if($scope.mydeals[key]._id) {
+            if($scope.mydeals[key]._id && $scope.mydeals[key]._id !== 'total') {
+              data.push({label: $scope.mydeals[key]._id, data: $scope.mydeals[key].total});
+              //////console.log('Total: ', $scope.mydeals[key]._id + ' ' + $scope.mydeals[key].total);
+            }
+            //JSLint convert == to ===
+            if($scope.mydeals[key]._id === 'total'){
+            //Fill out box of Total Leads
+            ////console.log('My Scope %o', $scope);
+                 $scope.mydeals = $scope.mydeals[key].total;
+                 //////console.log('Chads tingy: ', $scope.mydeals[key]._id);
+            }
           }
 
 
         });
+        }
         
         // Re-render the chart, we do this so that way we don't have to re-type in the options above. You can also do this by storing options in a variable
         //var plotChart1 = $.plot($('#leadschart'), data, pieChartOptions);
