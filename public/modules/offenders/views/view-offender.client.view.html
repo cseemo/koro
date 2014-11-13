@@ -1,0 +1,495 @@
+<section data-ng-controller="OffendersController" data-ng-init="findOne()">
+
+<style>
+.col-md-4{
+    padding: 10px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+.main-body{
+	background-color: #555;
+}
+</style>
+	<div class="main-body">
+	    <div class="container">
+	    	<div class="text-center bg-danger">
+	    	<h3>Past Due</h3>
+	    	</div>
+		<div class="panel panel-primary">
+	       <!--  <div class="panel panel-heading">
+	            
+	                <h2>{{offender.firstName}} {{offender.lastName}}</h2>
+
+
+	            
+	        </div> -->
+	    	<div class="col-md-4">
+	            <div class="panel panel-profile">
+	                <fieldset>
+	                    <div class="panel-heading bg-primary clearfix">
+	                                <!-- <a href="" class="pull-left profile">
+	                                    <img alt="" src="images/g1.jpg" class="img-circle img80_80">
+	                                </a> -->
+	                                <!-- <div class="pull-left profile">
+	                                    <i class="fa fa-users text-large stat-icon"></i>
+	                                </div> -->
+	                                <!-- <span class="pull-left box-icon rounded text-large">
+	                                    <i class="fa fa-check"></i>
+	                                </span> -->
+	                                <h4>Customer Information</h4>
+	                              
+	                    </div>
+	                    <div class="media">
+	                        <div class="media-body">
+	                                        <ul class="list-unstyled list-info">
+	                                            <li>
+	                                                
+	                                                <label>Name</label>
+	                                                {{offender.firstName}} {{offender.lastName}}
+	                                            </li>
+	                                            <li>
+	                                               
+	                                                <label>Email</label>
+	                                                {{offender.offenderEmail || 'N/A'}}
+	                                            </li>
+	                                            <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+	                                                <label>Phone</label>
+	                                                {{offender.mainPhone | tel}}
+	                                            </li>
+	                                            <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
+	                                                <label>Alternate</label>
+	                                                 {{offender.altPhone | tel}} 
+	                                            </li>
+	                                               <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
+	                                                <label>Date of Birth</label>
+	                                                <span style="text-transform: capitalize"> {{offender.created | date: 'MM/dd/yy' || 'N/A'}}</span>
+	                                            </li>
+
+	                                        </ul>
+	                        </div>
+	                    </div>
+	        		</fieldset>
+	               
+	            </div>
+	        </div> 
+
+	        <div class="col-md-4">
+	            <div class="panel panel-profile">
+	   	            <fieldset>
+
+	                    <!-- Pofile panel -->
+	                    <!-- <div class="panel panel-profile"> -->
+	                        <div class="panel-heading bg-primary clearfix">
+	                            <!-- <a href="" class="pull-left profile">
+	                                <img alt="" src="images/g1.jpg" class="img-circle img80_80">
+	                            </a> -->
+	                            <!-- <div class="pull-left profile">
+	                                <i class="fa fa-users text-large stat-icon"></i>
+	                            </div> -->
+	                            <!-- <span class="pull-left box-icon rounded text-large">
+	                                <i class="fa fa-check"></i>
+	                            </span> -->
+	                            <h4>Device Information</h4>
+	                          
+	                        </div>
+	                    	<div class="media">
+	                      
+	                            <div class="media-body">
+	                                <ul class="list-unstyled list-info">
+	                                    <li>
+	                                        
+	                                        <label>Type</label>
+	                                        Drunkavic 1000
+	                                    </li>
+	                                    <li>
+	                                       
+	                                        <label>Reports To</label>
+	                                        {{offender.stateReportTo || 'N/A'}}
+	                                    </li>
+	                                    <li>
+	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+	                                        <label>Deployed</label>
+	                                        {{offender.created | date: 'MMM d, yyyy' || 'N/A'}}
+	                                    </li>
+	                                    <li>
+	                                       <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
+	                                        <label>Next Lock-Out</label>
+	                                        12/15/2014
+	                                    </li>
+	                                    <li> <label>Device Issues</label>
+	                                        <select data-ng-model="deviceIssue" style="width: 60%" class="form-control pull-right" name="deviceIssues" ng-options="issue for issue in deviceIssues"></select>
+
+
+	                                    </li>
+
+	                                </ul>
+	                            </div>
+	                        </div>
+	                </fieldset>
+	               
+	            </div>
+	        </div> 
+
+
+	        <div class="col-md-4">
+	            <div class="panel panel-profile">
+
+	                <form name="form"  class="form-horizontal form-validation" novalidate>
+	                    <fieldset>
+
+	                        <!-- Pofile panel -->
+	                        <!-- <div class="panel panel-profile"> -->
+	                            <div class="panel-heading bg-primary clearfix">
+	                                <!-- <a href="" class="pull-left profile">
+	                                    <img alt="" src="images/g1.jpg" class="img-circle img80_80">
+	                                </a> -->
+	                                <!-- <div class="pull-left profile">
+	                                    <i class="fa fa-users text-large stat-icon"></i>
+	                                </div> -->
+	                                <!-- <span class="pull-left box-icon rounded text-large">
+	                                    <i class="fa fa-check"></i>
+	                                </span> -->
+	                                <h4>Vehicle Information</h4>
+	                              
+	                            </div>
+	                            <div class="media">
+	                              
+	                                    <div class="media-body">
+	                                        <ul class="list-unstyled list-info">
+	                                            <li>
+	                                                
+	                                                <label>Year</label>
+	                                                {{offender.vehicleYear}}
+	                                            </li>
+	                                            <li>
+	                                               
+	                                                <label>Make</label>
+	                                                {{offender.vehicleMake || 'N/A'}}
+	                                            </li>
+	                                            <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+	                                                <label>Model</label>
+	                                                {{offender.vehicleModel || 'N/A'}}
+	                                            </li>
+	                                          <!--   <li>
+	                                              <span class="icon glyphicon glyphicon-envelope"></span> 
+	                                                <label>Alternate</label>
+	                                                <span style="text-transform: capitalize"> {{offender.altPhone || 'N/A'}}</span>
+	                                            </li> -->
+	                                        </ul>
+	                                    </div>
+	                                </div>
+	                            </div>
+
+	                    </fieldset>
+	                </form>
+	            
+
+	            </div>
+	             
+	        </div> 
+	       <div class=" clearfix"></div>
+	    	
+		<div class="panel panel-primary">
+	<div class="panel panel-profile">
+				         <accordion close-others="oneAtATime">
+				            <accordion-group>
+				            <accordion-heading>
+				            	<div class="col-md-5">
+
+				            Work Order History
+				            </div>
+
+				            	<div class="col-md-4 text-danger">
+
+				            Pending Work Order
+				            </div>
+
+				             	<div class="col-md-3" >
+				             	
+				          <a class="btn btn-primary btn-xs pull-right" style="color: #fff;" data-ng-click="open()">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Work Order
+			</a>
+				            </div>
+				             <div class=" clearfix"></div>
+
+
+				            </accordion-heading>
+				     			         <table class="table table-bordered table-striped table-responsive" data-ng-init="getWorkOrders()">
+	                <thead>
+	                    <tr>
+	                    <th>
+	                            <div class="th">
+	                                Date
+	                             </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Type
+	                             </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Shop 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Charge 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Completed 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Notes 
+	                        </div>
+	                        </th>
+
+	                                  </tr> 
+	                </thead>
+	                <tbody>
+	                    <tr>
+	                    <td>11/2/2014</td>
+	                    <td>Installation</td>
+	                    <td>Fred's Services</td>
+	                    <td>$96.00</td>
+	                    <td>Yes</td>
+	                    <td></td>
+	                    </tr>
+
+	                      <tr>
+	                    <td>11/7/2014</td>
+	                    <td>Calibration</td>
+	                    <td>Fred's Services</td>
+	                    <td>$0.00</td>
+	                    <td>Yes</td>
+	                    <td>No charge - customer install was not up to standards</td>
+	                    </tr> <tr>
+	                    <td>11/15/2014</td>
+	                    <td>Installation</td>
+	                    <td>Fred's Services</td>
+	                    <td>$50.00</td>
+	                    <td>Yes</td>
+	                    <td>Customer tried to blame the shop again, but we charged him anyway</td>
+	                    </tr> <tr>
+	                    <td>12/3/2014</td>
+	                    <td>Calibration</td>
+	                    <td>Audio Express</td>
+	                    <td>$50.00</td>
+	                    <td>No</td>
+	                    <td>Pending Work Order</td>
+	                    </tr>
+
+
+	                    </tbody>
+	                    </table>
+
+				    </accordion-group>
+				    <accordion-group is-open="status.open">
+				      
+				            <accordion-heading>
+				            	<div class="col-md-5">
+
+				            Payment History
+				            </div>
+
+				            	<div class="col-md-4 text-danger">
+
+				            Past Due Balance
+				            </div>
+
+				             	<div class="col-md-3" >
+				             	
+				          <a class="btn btn-primary btn-xs pull-right" style="color: #fff;" data-ng-click="remove();">
+				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Make Payment
+			</a>
+
+				            </div>
+				             <div class=" clearfix"></div>
+				        </accordion-heading>
+
+				         <table class="table table-bordered table-striped table-responsive">
+	                <thead>
+	                    <tr>
+	                    <th>
+	                            <div class="th">
+	                                Date
+	                             </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Type
+	                             </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Reason 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Amount 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Account Balance 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Notes 
+	                        </div>
+	                        </th>
+
+	                                  </tr> 
+	                </thead>
+	                <tbody>
+	                    <tr>
+	                    <td>11/2/2014</td>
+	                    <td>Charge</td>
+	                    <td>Sign-Up</td>
+	                    <td>$96.00</td>
+	                    <td>$96.00</td>
+	                    <td></td>
+	                    </tr>
+
+	                     <tr>
+	                    <td>11/3/2014</td>
+	                    <td>Payment</td>
+	                    <td>Install</td>
+	                    <td>$96.00</td>
+	                    <td>$0.00</td>
+	                    <td>Work Authorized</td>
+	                    </tr>
+
+	                     <tr>
+	                    <td>11/15/2014</td>
+	                    <td>Charge</td>
+	                    <td>Reset</td>
+	                    <td>$50.00</td>
+	                    <td>$50.00</td>
+	                    <td></td>
+	                    </tr>
+
+	                                         <tr>
+	                    <td>12/1/2014</td>
+	                    <td>Charge</td>
+	                    <td>Monthly Fee</td>
+	                    <td>$95.00</td>
+	                    <td>$145.00</td>
+	                    <td></td>
+	                    </tr>
+
+
+	                    </tbody>
+	                    </table>
+
+
+
+
+
+				    </accordion-group>
+				  </accordion>
+	      		</div>
+	    </div>
+	    sdf
+	    <div class="pull-right" data-ng-show="authentication.user._id == offender.user._id">
+			<a class="btn btn-primary" href="/#!/offenders/{{offender._id}}/edit">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+			<a class="btn btn-danger" data-ng-click="remove();">
+				<i class="glyphicon glyphicon-trash"></i>
+			</a>
+		</div>
+		<small>
+			<em class="text-muted">
+				Posted on
+				<span data-ng-bind="offender.created | date:'mediumDate'"></span>
+				by
+				<span data-ng-bind="offender.user.displayName"></span>
+			</em>
+		</small>
+
+
+
+    <script type="text/ng-template" id="myModalContent.html">
+       
+        <div class="modal-header">
+
+            New Work Order for {{offender.firstName}} {{offender.lastName}}
+        </div>
+        <div class="modal-body">
+      
+        
+         <label>Work Order Type</label>
+        	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
+<br>
+        	   <label>Submitting To</label>
+        	  <select class="form-control" data-ng-model="sendTo" name="sendTo" data-ng-options="sendto for sendto in sendToOptions" data-ng-change="changeWho()"></select>
+<br>
+				<span data-ng-show="!whomCus">
+				<label>Recipient Name</label>
+        	    <input type="text" data-ng-model="toWhoName"  id="toWhoName" class="form-control" placeholder="Name" >
+        	    </span>
+
+<br>
+
+				<label>Service Center</label>
+        	    <input type="text" data-ng-model="serviceCenter"  id="serviceCenter" class="form-control" placeholder="Service Center" >
+
+<br>
+        	   <label>Email Address</label>
+        	    <input type="text" data-ng-model="emailAddress"  id="emailAddress" class="form-control" placeholder="Email Address" >
+
+<br>
+        	    <label>Email Subject</label>
+        	    <input type="text" data-ng-model="emailSubject"  id="emailSubject" class="form-control" placeholder="{{chosen}} Authorization" >
+<br>
+        	    <label>Email Text</label>
+        	    <textarea type="text" data-ng-model="emailText"  id="emailText" class="form-control" placeholder="Hi {{offender.firstName}}..." >
+
+        	    </textarea>
+                                <br>
+        	    <label>Email Signature</label>
+        	   <br>
+        	    {{authentication.user.displayName}}<br/>
+        	     {{authentication.user.telephone}}<br/>
+        	      {{authentication.user.email}}<br/>
+        	      
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Approve</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+
+    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+</div>
+
+
+
+	</div> 
+	</div></div>
+	     
+	    </div>
+	</div> 
+		
+</section>
+

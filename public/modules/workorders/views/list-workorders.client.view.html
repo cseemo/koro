@@ -1,0 +1,25 @@
+<section data-ng-controller="WorkordersController" data-ng-init="find()" style="color: #444;" >
+   <style>
+.h1{
+color: #333;
+}
+</style>
+ <div class="page-header">
+        <h1 style="color: #444;" >Workorders</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="workorder in workorders" data-ng-href="#!/workorders/{{workorder._id}}" class="list-group-item">
+        <h3 style="color: #444;" >{{workorder.type}} at {{workorder.serviceCenter}}</h3>
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="workorder.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="workorder.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="workorder.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!workorders.$resolved || workorders.length">
+    	No Workorders yet, why don't you <a href="/#!/workorders/create">create one</a>?
+    </div>
+</section>

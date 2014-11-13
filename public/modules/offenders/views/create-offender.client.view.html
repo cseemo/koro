@@ -1,0 +1,184 @@
+<section data-ng-controller="OffendersController">
+<!--<style>
+.form-group{
+    padding: 17px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+</style>
+-->
+<div class="row">
+    <div class="container">
+      
+               <div class="panel panel-primary">
+                  <div class="panel-body">
+                    <h2>Add New Offender</h2>
+                    <form class="form-horizontal" data-ng-submit="create()" novalidate>
+                        <fieldset>
+                        <div class="form-group">
+                        <label class="form-label" style="font-size: 24px;" for="address">Personal Information:</label><i></i>
+                        </div>
+                            <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">First Name</label>
+                                <div class="controls">
+                                    <input type="text" data-ng-model="firstName"  id="firstName" class="form-control" placeholder="First Name" >
+                                </div>
+                            </div>
+                                <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Last Name</label>
+                                <div class="controls">
+                                    <input type="text" data-ng-model="lastName" id="lastName" class="form-control" placeholder="Last Name" >
+                                </div>
+                            </div>
+                                                           <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Driver License No</label>
+                                <div class="controls">
+                                    <input type="text" data-ng-model="driverNumber" id="driverNumber" class="form-control" placeholder="Driver License Number" name="driverNumber" >
+                                </div>
+                            </div>
+                        </fieldset>
+
+                         <fieldset>
+                            <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Primary Telephone Number</label>
+                                <div class="controls">
+                                    <input type="text" data-ng-model="mainPhone" name="mainPhone" id="mainPhone" class="form-control" placeholder="Primary Phone Number" maxlength="10">
+                                </div>
+                            </div>
+                                <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Alternate Number</label>
+                                <div class="controls">
+                                    <input type="text" data-ng-model="altPhone" name="altPhone" id="altPhone" class="form-control" placeholder="Alt Telephone" maxlength="10">
+                                </div>
+                            </div>
+                                                           <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Email Address</label>
+                                <div class="controls">
+                                    <input type="text" data-ng-model="offenderEmail" name="offenderEmail" id="offenderEmail" class="form-control" placeholder="Email Address" >
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <div class="form-group">
+                             
+                            <label class="form-label" style="font-size: 24px;" for="address">Billing Information:</label><i></i>
+                            </div>
+                            <div class="form-group">
+                                 <div class="form-inline">
+                             
+                                <input type="text" data-ng-model="billingAddress" name="billingAddress" id="address" class="form-control" placeholder="Address">
+                                
+                                <input type="text" data-ng-model="billingCity" class="form-control" placeholder="City">
+                                
+                                <select data-ng-model="state" class="form-control" name="billingState"
+
+                                 placeholder="State" ng-options="state for state in states"></select>
+
+
+                            
+
+                                <input type="text" name="billingZipcode" data-ng-model="billingZipcode" class="form-control" placeholder="Zipcode">
+                            
+                            </div>
+                        </div>
+                        
+                          <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Credit Card Number</label>
+                                <div class="controls">
+                                           <input type="text" data-ng-model="offenderCC" id="offenderEmail" class="form-control" placeholder="Credit Card Number" >
+
+                                </div>
+                            </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">Expiration Month</label>
+                            <div class="controls">
+                                    <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
+
+
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">Expiration Year</label>
+                            <div class="controls">
+                                     <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
+                            </div>
+                        </div>
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">CCV Number</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="creditCardCCV" name="creditcardCCV" id="creditcardCCV" class="form-control" placeholder="CCV" >
+
+                            </div>
+                        </div>
+
+                        </fieldset>
+
+
+
+                        <fieldset>
+                          <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">State Reporting To</label>
+                                <div class="controls">
+                                           <select data-ng-model="stateReportTo" class="form-control" name="stateReportTo" placeholder="State" ng-options="state for state in states"></select>
+
+                                </div>
+                            </div>
+                              <div class="form-group col-md-2">
+                                <label class="control-label" for="name">Vehicle Year</label>
+                                <div class="controls">
+                                       
+                                            <select required class="form-control" name="vehicleYear" data-ng-model="vehicleYear" data-ng-options="year for year in vehicleYears"></select>
+                                      
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" >
+
+                                <label class="control-label" for="name">Vehicle Make</label>
+                                <div class="controls">
+                                     
+                                            <select required class="form-control" data-ng-model="vehicleMake" name="vehicleMake" data-ng-options="make for make in vehicles"></select>
+                                      
+                                </div>
+                            </div>
+                              <div class="form-group col-md-2">
+                                <label class="control-label" for="name">Vehicle Model</label>
+                                <div class="controls">  
+                                     <input type="text" data-ng-model="vehicleModel"  id="vehicleModel" class="form-control" placeholder="Model S" >
+                                       
+                                            
+                                      
+                                </div>
+                            </div>
+
+                          
+                       
+                        </div>
+                        </fieldset>
+                        <fieldset>
+
+                        <div class="form-group col-md-3 col-md-offset-4">
+                                <button type="submit"  data-ng-click="create()" class="btn btn-secondary btn-lg btn-block text-center">Add Offender</button>
+                            </div>
+        				<div data-ng-show="error" class="text-danger">
+        					<strong data-ng-bind="error"></strong>
+        				</div>
+                        </fieldset>
+                    </form>
+                  </div>
+             
+                 </div>
+             </div>
+        </div>
+   
+    </div>
+</div> 

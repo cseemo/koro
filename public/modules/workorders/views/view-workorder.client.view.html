@@ -1,0 +1,28 @@
+<style>
+.h1{
+color: #333;
+}
+</style>
+<section data-ng-controller="WorkordersController" data-ng-init="findOne()">
+	<div class="page-header" style="color: #444;" >
+		<h1 style="color: #444;" data-ng-bind="workorder.type"></h1>
+		<h3 style="color: #444;" >{{offender.firstName}} {{offender.lastName}}</h3>
+		<h3 style="color: #444;" >{{offender.vehicleYear}} {{offender.vehicleMake}} {{offender.vehicleModel}}</h3>
+	</div>
+	<div class="pull-right" data-ng-show="authentication.user._id == workorder.user._id">
+		<a class="btn btn-primary" href="/#!/workorders/{{workorder._id}}/edit">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a class="btn btn-primary" data-ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+	</div>
+	<small>
+		<em class="text-muted">
+			Posted on
+			<span data-ng-bind="workorder.created | date:'mediumDate'"></span>
+			by
+			<span data-ng-bind="workorder.user.displayName"></span>
+		</em>
+	</small>
+</section>
