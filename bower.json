@@ -13,7 +13,7 @@
     "angular-bootstrap": "~0.11.0",
     "angular-ui-utils": "~0.1.1",
     "angular-ui-router": "~0.2.10",
-    "jquery": "latest",
+    "jquery": "~2.1.1",
     "font-awesome": "~4.1.0",
     "toastr": "~2.0.1",
     "seiyria-bootstrap-slider": "~1.9.0",
