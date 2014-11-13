@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/mean-leads',
+	db: 'mongodb://localhost/mean-dev',
 	app: {
 		title: 'Five Cs - Quoting Tool'
 	},

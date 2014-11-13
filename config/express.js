@@ -109,8 +109,11 @@ module.exports = function(db) {
 		app.locals.cache = 'memory';
 	}
 
+
 	// Request body parsing middleware should be above methodOverride
-	app.use(bodyParser.urlencoded());
+	app.use(bodyParser.urlencoded({
+		extended: true
+	}));
 	app.use(bodyParser.json());
 	app.use(methodOverride());
 
@@ -122,12 +125,16 @@ module.exports = function(db) {
 
 	// Express MongoDB session storage
 	app.use(session({
+		saveUninitialized: true,
+		resave: true,
 		secret: config.sessionSecret,
 		store: new mongoStore({
 			db: db.connection.db,
 			collection: config.sessionCollection
 		})
 	}));
+
+	
 
 	// use passport session
 	app.use(passport.initialize());

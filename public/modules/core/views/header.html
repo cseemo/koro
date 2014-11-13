@@ -18,175 +18,14 @@
     </div>
 
     <div class="top-nav" >
-        <ul class="nav-left list-unstyled">
-        
-            <!-- <li>
-                <a href="#/" data-toggle-nav-collapsed-min
-                             class="toggle-min"
-                             id="step3"
-                             ><i class="fa fa-bars"></i></a>
-            </li>
-            <li class="dropdown hidden-xs">
-                <a href="javascript:;" class="dropdown-toggle" id="step1" data-toggle="dropdown"><i class="fa fa-cogs"></i></a>
-                <div class="dropdown-menu with-arrow panel panel-dark admin-options" ui-not-close-on-click>
-                    <div class="panel-heading"> Admin Options </div>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <p>Layouts Style</p>
-                            <label class="ui-radio"><input name="layout" type="radio" value="boxed" ng-model="admin.layout"><span>Boxed</span></label>
-                            <label class="ui-radio"><input name="layout" type="radio" value="wide" ng-model="admin.layout"><span>Wide</span></label>
-                        </li>
-                        <li class="list-group-item">
-                            <p>Menu Style</p>
-                            <label class="ui-radio"><input name="menu" type="radio" value="vertical" ng-model="admin.menu"><span>Vertical</span></label>
-                            <label class="ui-radio"><input name="menu" type="radio" value="horizontal" ng-model="admin.menu"><span>Horizontal</span></label>
-                        </li>
-                        <li class="list-group-item">
-                            <p>Additional</p>
-                            <label class="ui-checkbox"><input name="checkbox1" type="checkbox" value="option1" ng-model="admin.fixedHeader"><span>Fixed Top Header</span></label>
-                            <br>
-                            <label class="ui-checkbox"><input name="checkbox1" type="checkbox" value="option1" ng-model="admin.fixedSidebar"><span>Fixed Sidebar Menu</span></label>
-                        </li>
-                        <li class="list-group-item">
-                            <p>
-                                <span>Page Transition: </span> 
-                                <span class="space"></span>
-                                <select ng-model="admin.pageTransition"
-                                        ng-options="ageTransitionOpt.name for ageTransitionOpt in pageTransitionOpts"></select>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="search-box visible-md visible-lg">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-search text-muted"></i></span>
-                    <input type="text" class="form-control" placeholder="Search...">
-                </div>
-            </li> -->
 
-            <li class="dropdown" data-ng-controller="DealsController">
-            
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-bell-o"></i>
-                    <span class="badge badge-info">{{authentication.user.notifications.length}}</span>
-                </a>
-                <div class="dropdown-menu with-arrow panel panel-dark">
-                    <div class="panel-heading">
-                        You have {{authentication.user.notifications.length}} notifications.
-                    </div>
-                    <ul class="list-group">
-                        <!-- <li class="list-group-item">
-                            <a href="javascript:;" class="media">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-success"><i class="fa fa-bell-o"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">New tasks needs to be done</span>
-                                    <span class="text-muted block">2min ago</span>
-                                </div>
-                            </a>
-                        </li> -->
-                        <li class="list-group-item" data-ng-repeat="notification in authentication.user.notifications  | orderBy:predicate:reverse">
-                            <a href="javascript:;" class="media">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-bell-o"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">{{notification.note}}</span>
-                                    <span class="text-muted">{{notification.date | date:'medium'}}</span>
-                                </div>
-                            </a>
-                        </li>                      
-                    </ul>
-                    <div class="panel-footer">
-                    <center>
-                       <!--  <a data-ng-click="clearNotifications()">Show all notifications</a>
-                        <br> -->
-                         <a style="curosr: pointer" data-ng-click="clearNotifications()">Clear All Notifications</a>
-                         </center>
-                    </div>
-                </div>
-            </li>
-             </ul> 
 
         <ul class="nav-right pull-right list-unstyled">
 
 
-            <li class="dropdown" data-ng-controller="TimecardsController">
-            
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-clock-o" data-ng-click="getShift()" ></i>
-                     <span class="label label-info" style="font-size: 8px;">{{clockedInVal}}</span>
-
-                </a>
-                <div class="dropdown-menu with-arrow panel panel-dark">
-                    <div class="panel-heading" >
-                        Manage Your Timeclock
-                    </div>
-                    <ul class="list-group" ng-hide="clockedIn">
-                        <li class="list-group-item">
-                            <a href="javascript:;"  ng-click="clockIn('shift')" class="media">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-coffee"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">Clock In</span>
-                                   
-                                </div>
-                            </a>
-                        </li>
-                       
-                                           
-                    </ul>
-                
-                    <ul class="list-group" ng-show="clockedIn">
-                        <li class="list-group-item">
-                            <a href="javascript:;"  ng-click="clockOut('break')" class="media">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-coffee"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">Clock out for Break</span>
-                                   
-                                </div>
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="javascript:;" class="media" ng-click="clockOut('lunch')">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-cutlery"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">Clock-Out for Lunch</span>
-                               
-                                </div>
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="javascript:;" class="media" ng-click="clockOut('shift')">
-                                <span class="pull-left media-icon">
-                                    <span class="btn-icon-lined btn-icon-round btn-success"><i class="fa fa-home"></i></span>
-                                </span>
-                                <div class="media-body">
-                                    <span class="block">Clock-Out</span>
-                                   
-                                </div>
-                            </a>
-                        </li>                       
-                    </ul>
-                    <div class="panel-footer"><center>
-                   
-                        {{thisShift}}<br>
-                        <!-- <a href="#!/timecards/{{authentication.user._id}}">View My Timecard</a> -->
-                        </center>
-                    </div>
-                </div>
-            </li>
-       
             <li class="dropdown text-normal nav-profile">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                  <span class="btn-icon-lined btn-icon-round btn-success"><i class="fa fa-user fa-2x"></i></span>
+                  
                     <span class="hidden-xs" data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
                     
                 </a>
@@ -197,12 +36,12 @@
                             My Profile
                         </a>
                     </li>
-                    <li>
+                   <!--  <li>
                         <a href="#!/tasks/tasks">
                             <i class="fa fa-check"></i>
                             My Tasks
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="#!/lock">
                             <i class="fa fa-lock"></i>

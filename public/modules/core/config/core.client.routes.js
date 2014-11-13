@@ -10,7 +10,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 		$stateProvider.
 		state('home', {
 			url: '/',
-			templateUrl: 'modules/core/views/dashboard.client.view.html'
+			templateUrl: 'modules/core/views/home.client.view.html'
 			/*templateUrl: function($stateParams) {
 				console.log('stateparams: ', $stateParams.type);
 				return 'modules/core/views/dashboard.client.view.html';

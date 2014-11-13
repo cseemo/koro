@@ -35,6 +35,7 @@
     "flot": "~0.8.3",
     "flot.tooltip": "~0.7.0",
     "angular-socket-io": "~0.6.0",
-    "socket.io-client": "~1.0.0"
+    "socket.io-client": "~1.0.0",
+    "grunt-cli": "~0.1.13"
   }
 }

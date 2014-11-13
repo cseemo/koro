@@ -7,13 +7,13 @@ body {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_scaffolding\.scss}line{font-family:\0000322}}
 ::selection {
-  background: #248aaf;
+  background: #1b3959;
   color: white;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_scaffolding\.scss}line{font-family:\0000326}}
 ::-moz-selection {
-  background: #248aaf;
+  background: #1b3959;
   color: white;
 }
 
@@ -34,12 +34,12 @@ span.block {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_scaffolding\.scss}line{font-family:\0000345}}
 a.bg-primary {
-  background-color: #248aaf;
+  background-color: #1b3959;
   color: white;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_scaffolding\.scss}line{font-family:\0000310}}
 a.bg-primary:hover {
-  background-color: #248aaf;
+  background-color: #31708f;
   color: white;
 }
 
@@ -100,7 +100,7 @@ a.bg-orange:hover {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_scaffolding\.scss}line{font-family:\0000353}}
 .bg-primary {
-  background-color: #248aaf;
+  background-color: #1b3959;
   color: white;
 }
 
@@ -190,11 +190,11 @@ a.bg-orange:hover {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_type\.scss}line{font-family:\000035}}
 .blockquote-colored {
-  border-left: 5px solid #248aaf;
+  border-left: 5px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_type\.scss}line{font-family:\000037}}
 .blockquote-colored.pull-right {
-  border-right: 5px solid #248aaf;
+  border-right: 5px solid #1b3959;
   border-left: 0;
 }
 
@@ -202,7 +202,7 @@ a.bg-orange:hover {
 .gradient-text {
   font-size: 150px;
   font-weight: 300;
-  color: #248aaf;
+  color: #808080;
   background: -webkit-linear-gradient(92deg, #fb83fa, #00aced);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -260,7 +260,7 @@ a.bg-orange:hover {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_type\.scss}line{font-family:\0000335}}
 .color-primary {
-  color: #248aaf;
+  color: #1b3959;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_type\.scss}line{font-family:\0000336}}
@@ -363,19 +363,19 @@ a.bg-orange:hover {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_type\.scss}line{font-family:\0000384}}
 .dropcap.colored {
-  color: #248aaf;
+  color: #1b3959;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_type\.scss}line{font-family:\0000389}}
 .dropcap-square.colored,
 .dropcap-circle.colored {
-  background-color: #248aaf;
+  background-color: #1b3959;
   color: white;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_type\.scss}line{font-family:\0000396}}
 .highlight {
-  background-color: #248aaf;
+  background-color: #1b3959;
   color: white;
   border-radius: 4px;
   padding: 2px 5px;
@@ -456,13 +456,13 @@ a.bg-orange:hover {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_tables\.scss}line{font-family:\0000330}}
 .table-dynamic .table-bordered thead th .glyphicon-chevron-up:hover,
 .table-dynamic .table-bordered thead th .glyphicon-chevron-down:hover {
-  color: #248aaf;
+  color: #8a6d3b;
   cursor: pointer;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_tables\.scss}line{font-family:\0000334}}
 .table-dynamic .table-bordered thead th .glyphicon-chevron-up.active,
 .table-dynamic .table-bordered thead th .glyphicon-chevron-down.active {
-  color: #248aaf;
+  color: #8a6d3b;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_tables\.scss}line{font-family:\0000340}}
 .table-dynamic .table-bordered thead th .fa-angle-up,
@@ -475,13 +475,13 @@ a.bg-orange:hover {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_tables\.scss}line{font-family:\0000346}}
 .table-dynamic .table-bordered thead th .fa-angle-up:hover,
 .table-dynamic .table-bordered thead th .fa-angle-down:hover {
-  color: #248aaf;
+  color: #8a6d3b;
   cursor: pointer;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_tables\.scss}line{font-family:\0000350}}
 .table-dynamic .table-bordered thead th .fa-angle-up.active,
 .table-dynamic .table-bordered thead th .fa-angle-down.active {
-  color: #248aaf;
+  color: #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_tables\.scss}line{font-family:\0000357}}
 .table-dynamic .table-bordered thead th .glyphicon-chevron-up,
@@ -672,7 +672,7 @@ a.bg-orange:hover {
   position: absolute;
   top: 6px;
   left: -14px;
-  background-color: #248aaf;
+  background-color: #1b3959;
   border-radius: 50%;
   display: block;
 }
@@ -725,8 +725,8 @@ a.bg-orange:hover {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_form-checkbox-radio\.scss}line{font-family:\00003111}}
 .ui-checkbox input[type="checkbox"]:checked + span:before {
-  background-color: #248aaf;
-  border: 1px solid #248aaf;
+  background-color: #1b3959;
+  border: 1px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_form-checkbox-radio\.scss}line{font-family:\00003115}}
 .ui-checkbox input[type="checkbox"]:checked + span:after {
@@ -845,7 +845,7 @@ a.bg-orange:hover {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_form-input\.scss}line{font-family:\000038}}
 .form-control:focus {
-  border-color: #248aaf;
+  border-color: #1b3959;
   box-shadow: none;
 }
 
@@ -867,11 +867,11 @@ a.bg-orange:hover {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_form-input\.scss}line{font-family:\0000329}}
 input.input-primary {
-  border-color: #248aaf;
+  border-color: #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_form-input\.scss}line{font-family:\0000331}}
 input.input-primary:focus {
-  border-color: #248aaf;
+  border-color: #1b3959;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_form-input\.scss}line{font-family:\0000335}}
@@ -1028,7 +1028,7 @@ input.input-danger:focus {
 .switch :checked + i {
   padding-right: 0;
   padding-left: 25px;
-  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 50px #248aaf;
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 50px #1b3959;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_form-switch\.scss}line{font-family:\0000330}}
@@ -1140,12 +1140,12 @@ input.input-danger:focus {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\0000311}}
 .btn-line-primary:hover, .btn-line-primary:focus, .btn-line-primary:active, .btn-line-primary.active {
   color: white;
-  background-color: #248aaf;
+  background-color: #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\0000316}}
 .open .btn-line-primary.dropdown-toggle {
   color: white;
-  background-color: #248aaf;
+  background-color: #1b3959;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\0000358}}
@@ -1261,7 +1261,7 @@ input.input-danger:focus {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\0000399}}
 .btn-left.btn-primary:before {
-  border-right: 10px solid #248aaf;
+  border-right: 10px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\00003103}}
 .btn-left.btn-primary:hover:before {
@@ -1321,7 +1321,7 @@ input.input-danger:focus {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\00003168}}
 .btn-right.btn-primary:before {
-  border-left: 10px solid #248aaf;
+  border-left: 10px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\00003172}}
 .btn-right.btn-primary:hover:before {
@@ -1377,7 +1377,7 @@ input.input-danger:focus {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\00003239}}
 .btn-up.btn-primary:before {
-  border-bottom: 8px solid #248aaf;
+  border-bottom: 8px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\00003243}}
 .btn-up.btn-primary:hover:before {
@@ -1433,7 +1433,7 @@ input.input-danger:focus {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\00003308}}
 .btn-down.btn-primary:before {
-  border-top: 8px solid #248aaf;
+  border-top: 8px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\00003312}}
 .btn-down.btn-primary:hover:before {
@@ -1573,8 +1573,8 @@ input.input-danger:focus {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\00003413}}
 .btn-icon-lined.btn-primary {
-  color: #248aaf;
-  border: 2px solid #248aaf;
+  color: #1b3959;
+  border: 2px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_buttons\.scss}line{font-family:\00003417}}
 .btn-icon-lined.btn-success {
@@ -2378,7 +2378,7 @@ input.input-danger:focus {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_badges\.scss}line{font-family:\000035}}
 .badge-primary {
-  background-color: #248aaf;
+  background-color: #1b3959;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_badges\.scss}line{font-family:\000039}}
@@ -2462,16 +2462,16 @@ input.input-danger:focus {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_breadcrumbs\.scss}line{font-family:\0000349}}
 .breadcrumb-alt > li > a:hover, .breadcrumb-alt > li > a.active {
   text-decoration: none;
-  background-color: #248aaf;
+  background-color: #1b3959;
   color: #fff;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_breadcrumbs\.scss}line{font-family:\0000353}}
 .breadcrumb-alt > li > a:hover:before, .breadcrumb-alt > li > a.active:before {
-  border-color: #248aaf #248aaf #248aaf rgba(0, 0, 0, 0);
+  border-color: #1b3959 #1b3959 #1b3959 rgba(0, 0, 0, 0);
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_breadcrumbs\.scss}line{font-family:\0000356}}
 .breadcrumb-alt > li > a:hover:after, .breadcrumb-alt > li > a.active:after {
-  border-left: 1em solid #248aaf;
+  border-left: 1em solid #1b3959;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_bullets\.scss}line{font-family:\000031}}
@@ -2638,11 +2638,11 @@ input.input-danger:focus {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_dropdowns\.scss}line{font-family:\0000375}}
 .dropdown-menu.with-arrow.panel-primary:before {
-  border-bottom: 8px solid #248aaf;
+  border-bottom: 8px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_dropdowns\.scss}line{font-family:\0000378}}
 .dropdown-menu.with-arrow.panel-primary:after {
-  border-bottom: 7px solid #248aaf;
+  border-bottom: 7px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_dropdowns\.scss}line{font-family:\0000383}}
 .dropdown-menu.with-arrow.panel-success:before {
@@ -2721,7 +2721,7 @@ img.img80_80 {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_list-group\.scss}line{font-family:\0000316}}
 .list-info li .icon {
   margin-right: 10px;
-  color: #248aaf;
+  color: #ed9c28;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_list-group\.scss}line{font-family:\0000321}}
 .list-info li label {
@@ -2734,8 +2734,8 @@ img.img80_80 {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_mail\.scss}line{font-family:\000038}}
 .mail-categories .list-group .list-group-item.active > a {
-  border-left: 3px solid #248aaf;
-  color: #248aaf;
+  border-left: 3px solid #1b3959;
+  color: #eea236;
   background-color: #fafafa;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_mail\.scss}line{font-family:\0000315}}
@@ -2749,8 +2749,8 @@ img.img80_80 {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_mail\.scss}line{font-family:\0000320}}
 .mail-categories .list-group .list-group-item > a:hover {
-  border-left: 3px solid #248aaf;
-  color: #248aaf;
+  border-left: 3px solid #1b3959;
+  color: #e7e7e7;
   background-color: #fafafa;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_mail\.scss}line{font-family:\0000326}}
@@ -3204,7 +3204,7 @@ img.img80_80 {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_pricing-tables\.scss}line{font-family:\0000366}}
 .pricing-table.pricing-table-primary .pricing-price {
-  background-color: #248aaf;
+  background-color: #1b3959;
   border-bottom: 3px solid #1d6f8d;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_pricing-tables\.scss}line{font-family:\0000372}}
@@ -3283,11 +3283,11 @@ img.img80_80 {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_ribbons\.scss}line{font-family:\0000348}}
 .ui-ribbon-container.ui-ribbon-primary .ui-ribbon {
-  background-color: #248aaf;
+  background-color: #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_ribbons\.scss}line{font-family:\0000351}}
 .ui-ribbon-container.ui-ribbon-primary .ui-ribbon:before, .ui-ribbon-container.ui-ribbon-primary .ui-ribbon:after {
-  border-top: 2px solid #248aaf;
+  border-top: 2px solid #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_ribbons\.scss}line{font-family:\0000357}}
 .ui-ribbon-container.ui-ribbon-success .ui-ribbon {
@@ -3757,7 +3757,7 @@ img.img80_80 {
   padding: 10px 22px;
   border: none;
   color: #fafafa;
-  background-color: #248aaf;
+  background-color: #1b3959;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/ui\/components\/_tab\.scss}line{font-family:\0000346}}
 .ui-tab-container .nav-tabs > li > a:hover {

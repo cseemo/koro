@@ -4,15 +4,16 @@
         class="nav"
         data-ng-controller="NavController"
         data-slim-scroll
-        data-collapse-nav
+        
         data-highlight-active
     
         >
 
-        <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);">
+        <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);" style="color: white; ">
             <a href="#!/{{item.link}}">
-                <i class="fa fa-file-text-o"></i>
+                <i class="{{item.icon}}"></i>
                 <span data-ng-bind="item.title"></span>
+               
             </a>
 
             <ul data-ng-if="item.menuItemType === 'dropdown'">
@@ -21,80 +22,7 @@
                 </li>
             </ul>
         </li>
-        <li>
-        <a href="/"> <i class="fa fa-dashboard"></i>
-        <span>Dashboard</span>
-         </a>
-         </li>
 
-         <li>
-             <a href="#!/" ng-click="getLead()">
-                <i class="fa fa-phone"></i>
-                <span>Dial</span>
-             </a>
-          </li>
-
-          <li>
-             <a href="#!/leads">
-                <i class="fa fa-upload"></i>
-                <span>Leads</span>
-             </a>
-          </li>
-        
-        <li>
-             <a href="#!/deals">
-                <i class="fa fa-usd"></i>
-                <span>Deals</span>
-             </a>
-          </li>
-          <li data-ng-show="authentication.hasRole('admin')===true">
-             <a href="#!/admin">
-                <i class="fa fa-bar-chart-o"></i>
-                <span>Admin</span>
-             </a>
-
-             </li>
-          <li data-ng-show="authentication.hasRole('admin')===true">
-               <a href="#!/adminusers">
-                <i class="fa fa-users"></i>
-                <span>Users</span>
-             </a>
-          </li>
-          <li data-ng-show="authentication.hasRole('admin')===true">
-               <a href="#!/reports">
-                <i class="fa fa-barcode"></i>
-                <span>Reports</span>
-             </a>
-          </li>
-          <li data-ng-show="authentication.hasRole('admin')===true">
-              
-                  <a href="#!/timecards">
-                <i class="fa fa-clock-o"></i>
-                <span>Timecards</span>
-             </a>
-          </li>
-          </li>
-    <!--      
-        <span >
-        <li>
-             <a href="#!/adminusers">
-                <i class="fa fa-users"></i>
-                <span>Users</span>
-             </a>
-        </li>
-          <li>
-             <a href="#!/timecards">
-                <i class="fa fa-clock-o"></i>
-                <span>Timecards</span>
-             </a>
-          </li>
-          <li>
-             <a href="#!/reports">
-                <i class="fa fa-reorder"></i>
-                <span>Reports</span>
-             </a>
-          </li>
-          </span> -->
             
     </ul>
 </div>

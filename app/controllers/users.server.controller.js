@@ -257,6 +257,7 @@ exports.signup = function(req, res) {
  * Signin after passport authentication
  */
 exports.signin = function(req, res, next) {
+	console.log('Signing in');
 	passport.authenticate('local', function(err, user, info) {
 		if (err || !user) {
 			res.send(400, info);
@@ -665,6 +666,7 @@ exports.userByID = function(req, res, next, id) {
  * Require login routing middleware
  */
 exports.requiresLogin = function(req, res, next) {
+	console.log('Require Login', req.body);
 	if (!req.isAuthenticated()) {
 		return res.send(401, {
 			message: 'User is not logged in'
