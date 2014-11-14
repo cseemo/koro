@@ -84,18 +84,19 @@ var template_name='register';
 
 var async = false;
 
-mandrill_client.messages.sendTemplate({
-	'template_name': template_name,
-	'template_content': [],
-	'message': message, 
-	'async': async
-}, function(result){
+//CANCEL EMAILING UNTIL WE HAVE A TEMPLATE BUILT -- ALOS NEED TO FIX WHY IT RUNS thrice - I FIXED IT ON SUNRISE
+// mandrill_client.messages.sendTemplate({
+// 	'template_name': template_name,
+// 	'template_content': [],
+// 	'message': message, 
+// 	'async': async
+// }, function(result){
 
-	//console.log('Results from Mandrill', result);
-},
-function(e){
-	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-});
+// 	//console.log('Results from Mandrill', result);
+// },
+// function(e){
+// 	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+// });
 
 
 

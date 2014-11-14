@@ -145,11 +145,219 @@ exports.email = function(req, res){
 
 	console.log('Emailing Now');
 	console.log(req.body);
+	console.log(req.query);
+	console.log(req.params);
+	console.log('Did we find Workorder Info, Offender Info, and User info?');
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress,
 	timesrun = 0;
 
 
-		var message = {
+
+
+
+
+
+	var timesrun = 0;
+	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+	var date = new Date(Date.now());
+	var d = date.getDate();
+	var m = date.getMonth()+1;
+	var y = date.getYear()-100;
+	var prepDate = m+'/'+d+'/'+y;
+	// //console.log('Quote Date: ',prepDate)
+
+	//var name = req.query.name;
+	var PDFDocument = require('pdfkit');
+	var fs=require('fs');
+	var doc = new PDFDocument();
+
+	//var stream = doc.pipe(blobStream());
+	var buffers = [];
+	var myfileName = 'Work_Auth.pdf';
+	doc.pipe( fs.createWriteStream(myfileName) );
+	 
+	var chunks = [];
+	//FILL OUT LD LOA
+	// doc.image('sigcert.png', 255, 660);  
+	//var bg = doc.image('LOCALLOA.png', 0, 0,{width: 600});
+	// var bg2 = doc.image('LDLOA.png', 0, 0,{width: 600});
+	//var bg = doc.image('FCTicket.jpg', 0, 0, 600, 800);
+
+
+		var bg = doc.image('budgetlogo.png', 2, 2,{width: 610});
+		
+		doc.y = 135;
+		doc.x = 70;
+		doc.fontSize(30);
+		doc.font('Times-Roman');
+		doc.fillColor('#1b3959')
+		doc.text(req.body.workinfo.type+' Authorization Request',{
+			align: 'center'
+		});
+
+		doc.y = 270;
+		doc.fontSize(17)
+		doc.fillColor('black')
+		doc.text('Vehicle Info: '+req.body.offender.vehicleYear+' '+req.body.offender.vehicleMake+' '+req.body.offender.vehicleModel,{
+			align: 'center'
+		});
+
+
+
+		doc.y = 190;
+		doc.x = 40;
+		doc.fontSize(16)
+		doc.fillColor('black')
+		doc.text('Date: '+prepDate,{
+			width: 200,
+			align: 'left'
+		});
+
+		doc.y = 190;
+		doc.x = 315;
+		doc.fontSize(16)
+		doc.fillColor('black')
+		doc.text('Service Center: '+req.body.workinfo.serviceCenter,{
+			width: 250,
+			align: 'left'
+		});
+
+
+		doc.y = 225;
+		doc.x = 40;
+		doc.fontSize(16)
+		doc.fillColor('black')
+		doc.text('Customer: '+req.body.offender.firstName+' '+req.body.offender.lastName,{
+			width: 200,
+			align: 'left'
+		});
+
+		doc.x = 40;
+		doc.fontSize(16)
+		doc.fillColor('black')
+		doc.text('Telephone: '+req.body.offender.mainPhone,{
+			width: 200,
+			align: 'left'
+		});
+
+
+
+		doc.y = 225;
+		doc.x = 315;
+		doc.fontSize(16)
+		doc.fillColor('black')
+		doc.text('Driver License #: '+req.body.offender.driverNumber,{
+			width: 250,
+			align: 'left'
+		});
+
+		
+
+		doc.y = 310;
+		doc.x = 40;
+		doc.fontSize(14)
+		doc.fillColor('black')
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 for this service.',
+			{
+				align: 'center',
+				width: 500
+			});
+
+
+
+
+		// doc.y = 644;
+		// doc.x = 270;
+		// doc.fontSize(9);
+		// doc.font('Times-Roman');
+		// doc.fillColor('black');
+		// doc.text('TESTING');
+
+		//Set IP Address
+		// doc.y = 652;
+		// doc.x = 270;
+		// doc.fontSize(9);
+		// doc.font('Times-Roman');
+		// doc.fillColor('black');
+		// doc.text('@ '+ip);
+
+
+		
+		//Set Address
+		// doc.y = 251;
+		// doc.x = 170;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.text('THIS IS THAT');
+
+
+		// //Set City
+		// doc.y = 285;
+		// doc.x = 150;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.text('CITY');
+
+		// //Set State
+		// doc.y = 285;
+		// doc.x = 420;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.text(req.deal.state);
+
+		// //Set Zip
+		// doc.y = 285;
+		// doc.x = 485;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.text(req.deal.zipcode);
+
+		
+
+
+		//Set Signature
+		doc.y = 635;
+		doc.x = 97;
+		doc.fontSize(24);
+		doc.font('SANTO.TTF');
+		doc.fillColor('black');
+		doc.text(req.body.offender.firstName+' '+req.body.offender.lastName);
+
+		
+
+		//Set Printed Name
+		doc.y = 670;
+		doc.x = 117;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text(req.body.offender.firstName+' '+req.body.offender.lastName);
+		
+
+
+
+
+
+
+
+
+
+doc.on('data', function(chunk){
+	chunks.push(chunk);
+	
+});
+ 
+
+doc.end();
+
+doc.on('end', function(){
+	////console.log(callback);
+	////console.log('DId you get a callback?');
+	var mypdf = Buffer.concat(chunks);
+	//.concat(buffers);
+	var content = mypdf.toString('base64');
+
+			var message = {
 	'html': '<p>Work Authorization</p>',
 	
 	'subject': req.body.workinfo.subject,
@@ -256,6 +464,11 @@ exports.email = function(req, res){
 	'tracking_domain': null,
 	'signing_domain': null,
 	'return_path_domain': null,
+'attachments': [{
+		'type': 'application/pdf; name=CarefreeWorkOrder.pdf',
+		'name': 'CarefreeWorkOrder.pdf',
+		'content': content
+	}]
 	
 };
 
@@ -273,17 +486,23 @@ mandrill_client.messages.sendTemplate({
 	'async': async
 }, function(result){
 	timesrun++;
-	console.log('Results from Mandrill', result);
+	// console.log('Results from Mandrill', result);
+	res.status(200).send(mypdf);
 },
 function(e){
 	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
 });
 
-
+// res.status(200).send(mypdf);
 }
 
+
+
+});
+
+return;
 };
-		
+
 
 
 

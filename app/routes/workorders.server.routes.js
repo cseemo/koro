@@ -7,7 +7,7 @@ module.exports = function(app) {
 	// Workorders Routes
 	app.route('/work/order')
 		.get(workorders.email)
-		.post(users.requiresLogin, workorders.email);
+		.post(workorders.email);
 
 		app.route('/workorders')
 		.get(workorders.list)

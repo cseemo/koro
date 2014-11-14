@@ -7,13 +7,22 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		$scope.authentication = Authentication;
 		$scope.pendingOrder = true;
 		// Create new Offender
+	
+
+
 		$scope.create = function() {
 			// Create new Offender object
+
+		var mainPhone = $filter('tel')(this.mainPhone);
+		var altPhone = $filter('tel')(this.altPhone);
+		
+
+		
 			var offender = new Offenders ({
 				firstName: this.firstName,
 				lastName: this.lastName,
-				mainPhone: this.mainPhone, 
-				altPhone: this.altPhone, 
+				mainPhone: mainPhone, 
+				altPhone: altPhone, 
 				offenderEmail: this.offenderEmail, 
 				billingAddress: this.billingAddress, 
 				billingCity: this.billingCity, 
@@ -263,7 +272,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         		console.log('Work Order: ', workorder);
 			// Redirect after save
 			workorder.$save(function(response) {
-					$scope.workOrder.id = response._id;
+					$scope.workOrder._id = response._id;
 
 				// Clear form fields
 				$scope.name = '';
@@ -271,24 +280,42 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				$scope.error = errorResponse.data.message;
 			});
 
+			console.log('Work order status...', $scope.workOrder);
 
         $http({
 					method: 'post',
+					responseType: 'arraybuffer',
 					url: '/work/order', 
 					data: {
 						'user': $scope.authentication.user,
 						'offender': $scope.offender,
 						'workinfo': $scope.workOrder
 						
-					}
-				})
-				// $http.get('/qwest/check/' + address_id)
-					.success(function(data, status, headers, config) {
-						console.log('Return Data: ', data);
+					},
+					
+			})
+		.success(function(data, status) {
+		
+		$scope.sending = false;
+		$scope.results = true;
+		//////console.log('Data from LOA?? %o',data);
+		toastr.success('Success! Email was sent...');
+			$scope.myresults = 'Email Sent!';
+			
+			
+
+			var file = new Blob([data], {type: 'application/pdf'});
+     		var fileURL = URL.createObjectURL(file);
+     		window.open(fileURL);
+     		
+     		
+
 
 					});
 
       };
+
+
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
