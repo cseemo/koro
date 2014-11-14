@@ -17,7 +17,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		var altPhone = $filter('tel')(this.altPhone);
 		
 
-		
+
 			var offender = new Offenders ({
 				firstName: this.firstName,
 				lastName: this.lastName,
@@ -274,15 +274,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			workorder.$save(function(response) {
 					$scope.workOrder._id = response._id;
 
-				// Clear form fields
-				$scope.name = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
+
+
 
 			console.log('Work order status...', $scope.workOrder);
 
-        $http({
+        			$http({
 					method: 'post',
 					responseType: 'arraybuffer',
 					url: '/work/order', 
@@ -291,27 +288,32 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 						'offender': $scope.offender,
 						'workinfo': $scope.workOrder
 						
-					},
+								},
+								
+						})
+					.success(function(data, status) {
 					
-			})
-		.success(function(data, status) {
-		
-		$scope.sending = false;
-		$scope.results = true;
-		//////console.log('Data from LOA?? %o',data);
-		toastr.success('Success! Email was sent...');
-			$scope.myresults = 'Email Sent!';
-			
-			
+					$scope.sending = false;
+					$scope.results = true;
+					//////console.log('Data from LOA?? %o',data);
+					toastr.success('Success! Email was sent...');
+						$scope.myresults = 'Email Sent!';
+						
+						
 
-			var file = new Blob([data], {type: 'application/pdf'});
-     		var fileURL = URL.createObjectURL(file);
-     		window.open(fileURL);
-     		
-     		
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		window.open(fileURL);
+			     		
+			     		
 
 
-					});
+								});
+
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+
 
       };
 

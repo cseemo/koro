@@ -9,6 +9,11 @@ module.exports = function(app) {
 		.get(workorders.email)
 		.post(workorders.email);
 
+		app.route('/approve/workorder/:workorderId')
+		.get(workorders.signAuth)
+		.post(workorders.signAuth);
+
+
 		app.route('/workorders')
 		.get(workorders.list)
 		.post(users.requiresLogin, workorders.create);

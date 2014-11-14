@@ -1,8 +1,8 @@
 'use strict';
 
 // Workorders controller
-angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', 
-	function($scope, $stateParams, $location, Authentication, Workorders, Offenders ) {
+angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', '$http', 
+	function($scope, $stateParams, $location, Authentication, Workorders, Offenders, $http ) {
 		$scope.authentication = Authentication;
 
 		// Create new Workorder
@@ -38,6 +38,39 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 				});
 			}
 		};
+
+$scope.approveWorkOrderPayment = function(){
+
+	console.log('Approvign WOrk Order Payment',$stateParams);
+
+	var workorderId = $stateParams.workorderId;
+
+		 $http({
+					method: 'post',
+					responseType: 'arraybuffer',
+					url: '/approve/workorder/'+workorderId, 
+					data: {
+						'offender': $scope.offender,
+						'workinfo': $scope.workorder
+						
+					}
+					
+			})
+		.success(function(data, status) {
+		
+		$scope.sending = false;
+		$scope.results = true;
+		//////console.log('Data from LOA?? %o',data);
+		toastr.success('Approval granted...please wait for your signed copy. One will also be emailed to you for your convenience. ');
+			
+
+			var file = new Blob([data], {type: 'application/pdf'});
+     		var fileURL = URL.createObjectURL(file);
+     		window.open(fileURL);
+			
+
+			});
+	};
 
 		// Update existing Workorder
 		$scope.update = function() {

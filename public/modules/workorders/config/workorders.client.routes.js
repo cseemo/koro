@@ -17,6 +17,10 @@ angular.module('workorders').config(['$stateProvider',
 			url: '/workorders/:workorderId',
 			templateUrl: 'modules/workorders/views/view-workorder.client.view.html'
 		}).
+		state('approveWorkorder', {
+			url: '/approve/:workorderId',
+			templateUrl: 'modules/workorders/views/approve-workorder.client.view.html'
+		}).
 		state('editWorkorder', {
 			url: '/workorders/:workorderId/edit',
 			templateUrl: 'modules/workorders/views/edit-workorder.client.view.html'
