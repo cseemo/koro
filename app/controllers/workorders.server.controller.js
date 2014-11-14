@@ -316,22 +316,81 @@ exports.email = function(req, res){
 
 
 		//Set Signature
-		doc.y = 635;
-		doc.x = 97;
-		doc.fontSize(24);
-		doc.font('SANTO.TTF');
-		doc.fillColor('black');
-		doc.text(req.body.offender.firstName+' '+req.body.offender.lastName);
+		// doc.y = 635;
+		// doc.x = 97;
+		// doc.fontSize(24);
+		// doc.font('SANTO.TTF');
+		// doc.fillColor('black');
+		// doc.text(req.body.offender.firstName+' '+req.body.offender.lastName);
 
 		
 
 		//Set Printed Name
-		doc.y = 670;
-		doc.x = 117;
-		doc.fontSize(14);
+		// doc.y = 670;
+		// doc.x = 117;
+		// doc.fontSize(14);
+		// doc.font('Times-Roman');
+		// doc.fillColor('black');
+		// doc.text(req.body.offender.firstName+' '+req.body.offender.lastName);
+		
+		// doc.moveTo(100, 660)
+		// .lineTo(260, 650)
+		// .stroke();
+
+		doc.y = 662;
+		doc.x = 105;
+		doc.fontSize(12);
 		doc.font('Times-Roman');
 		doc.fillColor('black');
-		doc.text(req.body.offender.firstName+' '+req.body.offender.lastName);
+		doc.text('Customer Printed Name');
+
+
+		doc.moveTo(100, 660)
+		.lineTo(260, 660)
+		.stroke();
+
+		//Set Customer Printed Name
+		// doc.y = 648;
+		// doc.x = 120;
+		// doc.fontSize(13);
+		// doc.font('Times-Roman');
+		// doc.fillColor('black');
+		// doc.text(req.body.offender.firstName+' '+req.body.offender.lastName);
+
+
+
+		doc.y = 622;
+		doc.x = 105;
+		doc.fontSize(12);
+		doc.font('Times-Roman');
+		doc.fillColor('black');
+		doc.text('Customer Signature');
+
+
+		doc.moveTo(100, 620)
+		.lineTo(260, 620)
+		.stroke();
+
+		//Set Signature
+		// doc.y = 600;
+		// doc.x = 120;
+		// doc.fontSize(24);
+		// doc.font('SANTO.TTF');
+		// doc.fillColor('black');
+		// doc.text(req.body.offender.firstName+' '+req.body.offender.lastName);
+
+
+
+		doc.y = 685;
+		doc.x = 40;
+		doc.fontSize(10)
+		doc.fillColor('black')
+		doc.font('Times-Roman');
+		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 for this service.',
+			{
+				align: 'center',
+				width: 500
+			});
 		
 
 
@@ -479,21 +538,21 @@ var template_name='carefree-iid-workauth';
 var async = false;
 if(timesrun < 2){
 
-mandrill_client.messages.sendTemplate({
-	'template_name': template_name,
-	'template_content': [],
-	'message': message, 
-	'async': async
-}, function(result){
-	timesrun++;
-	// console.log('Results from Mandrill', result);
-	res.status(200).send(mypdf);
-},
-function(e){
-	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-});
+// mandrill_client.messages.sendTemplate({
+// 	'template_name': template_name,
+// 	'template_content': [],
+// 	'message': message, 
+// 	'async': async
+// }, function(result){
+// 	timesrun++;
+// 	// console.log('Results from Mandrill', result);
+// 	res.status(200).send(mypdf);
+// },
+// function(e){
+// 	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+// });
 
-// res.status(200).send(mypdf);
+res.status(200).send(mypdf);
 }
 
 
