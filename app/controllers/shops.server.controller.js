@@ -306,7 +306,7 @@ return
 
 
 exports.signAgreement = function(req, res) {
-	console.log('Signing Agreement Now');
+	console.log('Signing Agreement Now', req.shop);
 
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 	var id = req.shop._id;
@@ -493,14 +493,14 @@ doc.on('end', function(){
 		var message = {
 	'subject': 'Signed Service Center Agreement',
 	'from_email': req.shop.user.email,
-	'from_name': req.shop.user.displayName,
+	'from_name': 'Signed Agreements from Budget IID',
 	'to': [{
 		'email': req.shop.email,
 		'name': req.shop.primarycontactname,
 			'type': 'to'
 	}],
 	'headers': {
-		'Reply-To': req.shop.user.email
+		'Reply-To': 'admin@budgetiid.com'
 	},
 	'merge': true,
 	'global_merge_vars': [{
@@ -534,7 +534,7 @@ doc.on('end', function(){
 	'important': false,
 	'track_opens': null,
 	'track_clicks': null,
-	'auto_text': null,
+	'auto_text': true,
 	'auto_html': null,
 	'inline_css': true,
 	'url_strip_qs': null,
