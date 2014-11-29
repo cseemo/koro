@@ -481,6 +481,7 @@ doc.on('data', function(chunk){
 doc.end();
 
 
+
 doc.on('end', function(){
 	////////console.log(callback);
 // 	////////console.log('DId you get a callback?');
@@ -492,8 +493,8 @@ doc.on('end', function(){
 
 		var message = {
 	'subject': 'Signed Service Center Agreement',
-	'from_email': req.shop.user.email,
-	'from_name': 'Signed Agreements from Budget IID',
+	'from_email': 'Admin@budgetiid.com',
+	'from_name': req.shop.user.displayName,
 	'to': [{
 		'email': req.shop.email,
 		'name': req.shop.primarycontactname,
@@ -534,7 +535,7 @@ doc.on('end', function(){
 	'important': false,
 	'track_opens': null,
 	'track_clicks': null,
-	'auto_text': true,
+	'auto_text': null,
 	'auto_html': null,
 	'inline_css': true,
 	'url_strip_qs': null,
@@ -553,7 +554,7 @@ doc.on('end', function(){
 
 
 
-var template_name='budget-newshopsigned';
+var template_name='signedupshop';
 
 var async = false;
 
@@ -566,20 +567,21 @@ mandrill_client.messages.sendTemplate({
 }, function(result){
 
 	console.log('Results from Mandrill', result);
+	res.status(200).send(mypdf);
 },
 function(e){
 	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
 });
 
-res.status(200).send(mypdf);
 
 });
+		
 
 
+
+return;
 
 };
-
-
 
 
 exports.sendAgreement = function(req, res) {
@@ -720,7 +722,7 @@ doc.on('end', function(){
 			'type': 'to'
 	}],
 	'headers': {
-		'Reply-To': 'req.user.email'
+		'Reply-To': 'admin@budgetiid.com'
 	},
 	'merge': true,
 	'global_merge_vars': [{

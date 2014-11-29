@@ -5,7 +5,7 @@
     function($scope, $rootScope) {
 
           $scope.main = {
-            brand: "Carefree IID",
+            brand: "Budget IID",
             name: 'Justin Uftudrinch'
           };
           $scope.pageTransitionOpts = [

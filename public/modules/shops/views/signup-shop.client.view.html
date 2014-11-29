@@ -63,10 +63,10 @@ z-index: 999;
 
 	    <div class="container">
 	    <span data-ng-show="hideeSign">
-	    <alert class="stickyTop" type="success" >
-	    Thank you, {{shop.signer}}. Your agreement has been electronically approved. A copy of this agreement has been sent to {{shop.email}}. A representative will contact you to schedule training in the next 72 hours.
+	    <alert class="stickyTop text-center" type="success" >
+	    Thank you, {{shop.signer}}. Your agreement has been electronically approved. A copy of this agreement has been sent to {{shop.email}}. 
 	    </alert>
-	    <br><br><br>
+	    <br><br>
 	    </span>
 	    <form class="form-horizontal" novalidate>
 			<div class="jumbotron" ng-show="step===1">
@@ -83,11 +83,9 @@ z-index: 999;
 				<li>
 					Verify the Information that we have on-file for your service center is accurate and up to date. 
 				</li>
+				
 				<li>
-					Schedule a time and date for on-site visit from a Budget IID Certified Field Representative 
-				</li>
-				<li>
-					Review the terms and conditions of the Serivce Agreement, ensure that your facility is compliant with all requirements
+					Review the terms and conditions of the Service Agreement, ensure that your facility is compliant with all requirements
 				</li>
 				<li>
 					Press the 'I Agree' button - and you're done. 
@@ -96,14 +94,14 @@ z-index: 999;
 			</ul>
 			</div>
 			<div class="jumbotron col-md-10 col-md-offset-1">
-				<h4>Once you've reviewed the agreements that were sent to you via email, this entire process should take you approximately 3-5 minutes.</h4>
+				<h4>Please click the “Verify Information” Button below, this will take you to a page to review your information and give you the option to electronically sign the agreement.  The signed copy will be emailed to you within 3-5 minutes.</h4>
 
 			</div>
 			<div class="clearfix"></div>
 			<center>
 			
 			<a class="btn btn-primary btn-lg" style="color: #fff;" data-ng-click="nextStep();">
-				<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Let's Do It
+				<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>Verify Information
 			</a>  
 			</center>
 	    	</div>
@@ -238,7 +236,7 @@ z-index: 999;
                                 </div>
                             </div>
                         </div>
-        		If the information above is all correct, please press 'View Agreement' to view the agreement, if any information is inaccuarate, please correct it and then press 'Update Info' button.
+        		If the information above is all correct, please press 'Review and E-Sign' to view the agreement, if any information is inaccuarate, please correct it and then press 'Update Info' button.
 
 
 			
@@ -249,7 +247,7 @@ z-index: 999;
 				<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Update Info
 			</a>  
 			<a class="btn btn-primary" style="color: #fff;" data-ng-click="viewAgreement()">
-				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Agreement
+				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Review and E-Sign
 			</a>  
 			</center>
 
