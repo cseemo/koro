@@ -54,8 +54,8 @@
             }
           }, true);
           return ($scope.color = {
-            primary: '#245269',
-            secondary: '#ec971f',
+            primary: '#273b42',
+            secondary: '#ec5f3c',
             success: '#449d44',
             info: '#428bca',
             infoAlt: '#666699',

@@ -1,21 +1,325 @@
 <section data-ng-controller="ShopsController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="shop.name"></h1>
-	</div>
-	<div class="pull-right" data-ng-show="authentication.user._id == shop.user._id">
-		<a class="btn btn-primary" href="/#!/shops/{{shop._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="shop.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="shop.user.displayName"></span>
-		</em>
-	</small>
+	
+
+<style>
+.col-md-4{
+    padding: 10px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+.main-body{
+	background-color: #555;
+}
+</style>
+	<div class="main-body">
+
+	    <div class="container">
+
+	      <a class="btn btn-primary btn-lg" style="color: #fff;" data-ng-click="sendContract();">
+				<span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Send Service Center Agreement
+			</a>    
+
+	    	<!-- <div class="text-center bg-danger">
+	    	<h3>Past Due</h3>
+	    	</div> -->
+		<div class="panel panel-primary">
+	       
+	    	<div class="col-md-4">
+	            <div class="panel panel-profile">
+	                <fieldset>
+	                    <div class="panel-heading bg-primary clearfix">
+	                             
+	                                <h4>Service Center General Information</h4>
+	                              
+	                    </div>
+	                    <div class="media">
+	                        <div class="media-body">
+	                                        <ul class="list-unstyled list-info">
+	                                            <li>
+	                                                
+	                                                <label> Name</label>
+	                                                {{shop.name}} 
+	                                            </li>
+	                                             <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+	                                                <label>Phone</label>
+	                                                {{shop.telephone | tel}}
+	                                            </li>
+	                                            <li>
+	                                               
+	                                                <label>Email</label>
+	                                                {{shop.email}}
+	                                            </li>
+	                                            <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+	                                                <label>Primary Contact</label>
+	                                                {{shop.primarycontactname}}
+	                                            </li>
+	                                             <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+	                                                <label>Alternate Contact</label>
+	                                                {{shop.altcontactname}}
+	                                            </li>
+	                                            <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
+	                                                <label>Alternate Phone</label>
+	                                                 {{shop.alttelephone | tel}} 
+	                                            </li>
+	                                              
+	                                        </ul>
+	                        </div>
+	                    </div>
+	        		</fieldset>
+	               
+	            </div>
+	        </div> 
+
+	        <div class="col-md-4">
+	            <div class="panel panel-profile">
+	   	            <fieldset>
+
+	                    <!-- Pofile panel -->
+	                    <!-- <div class="panel panel-profile"> -->
+	                        <div class="panel-heading bg-primary clearfix">
+	                            <!-- <a href="" class="pull-left profile">
+	                                <img alt="" src="images/g1.jpg" class="img-circle img80_80">
+	                            </a> -->
+	                            <!-- <div class="pull-left profile">
+	                                <i class="fa fa-users text-large stat-icon"></i>
+	                            </div> -->
+	                            <!-- <span class="pull-left box-icon rounded text-large">
+	                                <i class="fa fa-check"></i>
+	                            </span> -->
+	                            <h4>Address & Hours of Operation</h4>
+	                          
+	                        </div>
+	                    	<div class="media">
+	                      
+	                            <div class="media-body">
+	                                <ul class="list-unstyled list-info">
+	                                    <li>
+	                                        
+	                                        <label>Address</label>
+	                                        {{shop.address}}
+	                                    
+	                                         {{shop.city}},  {{shop.state}}  {{shop.zipcode}}
+	                                    </li>
+	                                    <li>
+	                                       
+	                                        <label>Hours</label>
+	                                        <ul class="list-unstyled list-info">
+	                                    <li>
+	                                        <label>Mon - Fri</label> 8-11am<br>
+	                                      <label>Saturday</label> 9-5<br>
+	                                      <label>Sunday</label> Closed<br>
+	                                    </li>
+	                                    <li>
+	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+	                                        <label>Sign-Up Date</label>
+	                                        {{shop.created | date: 'MMM d, yyyy' || 'N/A'}}
+	                                    </li>
+	                                    
+
+	                                </ul>
+	                            </div>
+	                        </div>
+	                </fieldset>
+	               
+	            </div>
+	        </div> 
+
+
+	        <div class="col-md-4">
+	            <div class="panel panel-profile">
+
+	                <form name="form"  class="form-horizontal form-validation" novalidate>
+	                    <fieldset>
+
+	                        <!-- Pofile panel -->
+	                        <!-- <div class="panel panel-profile"> -->
+	                            <div class="panel-heading bg-primary clearfix">
+	                                <!-- <a href="" class="pull-left profile">
+	                                    <img alt="" src="images/g1.jpg" class="img-circle img80_80">
+	                                </a> -->
+	                                <!-- <div class="pull-left profile">
+	                                    <i class="fa fa-users text-large stat-icon"></i>
+	                                </div> -->
+	                                <!-- <span class="pull-left box-icon rounded text-large">
+	                                    <i class="fa fa-check"></i>
+	                                </span> -->
+	                                <h4>Recent Work Orders</h4>
+	                              
+	                            </div>
+	                            <div class="media">
+	                              
+	                                    <div class="media-body">
+	                                         <table class="table table-bordered table-striped table-responsive" data-ng-init="getWorkOrders()">
+	                <thead>
+	                    <tr>
+	                    <th>
+	                            <div class="th">
+	                                Date
+	                             </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Type
+	                             </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Client 
+	                        </div>
+	                        </th>
+	                         <th>
+	                            <div class="th">
+	                                Status 
+	                        </div>
+	                        </th>
+	                        
+
+	                                  </tr> 
+	                </thead>
+	                <tbody>
+	                    <tr>
+	                    <td>11/2/2014</td>
+	                    <td>Installation</td>
+	                    <td>Tom Johnson</td>
+	                    <td>Complete</td>
+	                   
+	                    </tr>
+
+	                      <tr>
+	                    <td>11/7/2014</td>
+	                    <td>Calibration</td>
+	                    <td>Lester Dkovaic</td>
+	                    <td>Pending</td>
+	                   
+	                    </tr> <tr>
+	                    <td>11/15/2014</td>
+	                    <td>Installation</td>
+	                    <td>Ryan Johnson</td>
+	                    <td>Rejected</td>
+	                    
+	                    </tr> <tr>
+	                    <td>12/3/2014</td>
+	                    <td>Calibration</td>
+	                    <td>Steve Smith</td>
+	                   <td>Approved</td>
+	                    </tr>
+
+
+	                    </tbody>
+	                    </table>
+	                                    </div>
+	                                </div>
+	                      
+	                            </div>
+
+	                    </fieldset>
+	                </form>
+	            
+
+	            </div>
+	           
+	             
+	        </div> 
+
+	        
+
+	       <div class=" clearfix"></div>
+	    	
+	
+	
+	    <div class="pull-right" data-ng-show="authentication.user._id == shop.user._id">
+			<a class="btn btn-primary" href="/#!/shop/{{shop._id}}/edit">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+			<a class="btn btn-danger" data-ng-click="remove();">
+				<i class="glyphicon glyphicon-trash"></i>
+			</a>
+		</div>
+		<small>
+			<em class="text-muted">
+				Posted on
+				<span data-ng-bind="shop.created | date:'mediumDate'"></span>
+				by
+				<span data-ng-bind="shop.user.displayName"></span>
+			</em>
+		</small>
+
+
+
+    <script type="text/ng-template" id="myModalContent.html">
+       
+        <div class="modal-header">
+
+            New Work Order for {{offender.firstName}} {{offender.lastName}}
+        </div>
+        <div class="modal-body">
+      
+        
+         <label>Work Order Type</label>
+        	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
+<br>
+        	   <label>Submitting To</label>
+        	  <select class="form-control" data-ng-model="sendTo" name="sendTo" data-ng-options="sendto for sendto in sendToOptions" data-ng-change="changeWho()"></select>
+<br>
+				<span data-ng-show="!whomCus">
+				<label>Recipient Name</label>
+        	    <input type="text" data-ng-model="toWhoName"  id="toWhoName" class="form-control" placeholder="Name" >
+        	    </span>
+
+<br>
+
+				<label>Service Center</label>
+        	    <input type="text" data-ng-model="serviceCenter"  id="serviceCenter" class="form-control" placeholder="Service Center" >
+
+<br>
+        	   <label>Email Address</label>
+        	    <input type="text" data-ng-model="emailAddress"  id="emailAddress" class="form-control" placeholder="Email Address" >
+
+<br>
+        	    <label>Email Subject</label>
+        	    <input type="text" data-ng-model="emailSubject"  id="emailSubject" class="form-control" placeholder="{{chosen}} Authorization" >
+<br>
+        	    <label>Email Text</label>
+        	    <textarea type="text" data-ng-model="emailText"  id="emailText" class="form-control" placeholder="Hi {{offender.firstName}}..." >
+
+        	    </textarea>
+                                <br>
+        	    <label>Email Signature</label>
+        	   <br>
+        	    {{authentication.user.displayName}}<br/>
+        	     {{authentication.user.telephone}}<br/>
+        	      {{authentication.user.email}}<br/>
+        	      
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Approve</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+
+    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+</div>
+
+
+
+	</div> 
+	</div></div>
+	     
+	    </div>
+	</div> 
+		
 </section>
+

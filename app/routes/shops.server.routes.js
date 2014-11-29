@@ -9,6 +9,10 @@ module.exports = function(app) {
 		.get(shops.list)
 		.post(users.requiresLogin, shops.create);
 
+	
+		app.route('/sendAgreement/:shopId')
+		.get(shops.sendAgreement);
+		
 	app.route('/shops/:shopId')
 		.get(shops.read)
 		.put(users.requiresLogin, shops.hasAuthorization, shops.update)

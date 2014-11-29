@@ -100,7 +100,7 @@
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/plugins\/_bootstrap-slider\.scss}line{font-family:\0000396}}
 .slider-selection {
   position: absolute;
-  background-color: #1b3959;
+  background-color: #273b42;
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -607,7 +607,7 @@ button.toast-close-button {
 .wizard > .steps .current a,
 .wizard > .steps .current a:hover,
 .wizard > .steps .current a:active {
-  background: #1b3959;
+  background: #273b42;
   color: #fff;
   cursor: default;
 }
@@ -616,7 +616,7 @@ button.toast-close-button {
 .wizard > .steps .done a,
 .wizard > .steps .done a:hover,
 .wizard > .steps .done a:active {
-  background: #1b3959;
+  background: #273b42;
   color: #fff;
   opacity: .6;
 }
@@ -1115,7 +1115,7 @@ button.toast-close-button {
   margin: 2px;
   padding: 6px 8px;
   border-radius: 4px;
-  background-color: #1b3959;
+  background-color: #273b42;
   color: white;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/plugins\/_ng-tags-input\.scss}line{font-family:\0000346}}
@@ -1232,7 +1232,7 @@ button.toast-close-button {
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  border: 2px solid #1b3959;
+  border: 2px solid #273b42;
   padding: 28px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_err\.scss}line{font-family:\0000329}}
@@ -1241,7 +1241,7 @@ button.toast-close-button {
   height: 240px;
   padding: 30px 0;
   border-radius: 50%;
-  background-color: #1b3959;
+  background-color: #273b42;
   color: #fafafa;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_err\.scss}line{font-family:\0000338}}
@@ -1344,7 +1344,7 @@ button.toast-close-button {
   padding: 0 20px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  color: #1b3959;
+  color: #273b42;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_lock-screen\.scss}line{font-family:\0000364}}
 .page-lock .lock-box .lock-img img {
@@ -1376,7 +1376,7 @@ button.toast-close-button {
   margin-top: 50px;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  color: #1b3959;
+  color: #273b42;
 }
 @media screen and (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_lock-screen\.scss}line{font-family:\0000381}}
@@ -1949,7 +1949,7 @@ html {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav\.scss}line{font-family:\0000326}}
 .nav-vertical .nav > li.open > .fa {
-  color: #1b3959;
+  color: #273b42;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav\.scss}line{font-family:\0000333}}
@@ -2005,7 +2005,7 @@ html {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav\.scss}line{font-family:\0000372}}
 .nav-container .nav > li:hover > .fa {
-  color: #1b3959;
+  color: #273b42;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav\.scss}line{font-family:\0000375}}
 .nav-container .nav > li.active > a {
@@ -2065,7 +2065,7 @@ html {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav\.scss}line{font-family:\00003128}}
 .nav-container .nav ul li.active > a {
-  border-left: 2px solid #1b3959;
+  border-left: 2px solid #273b42;
   background-color: #1b1a1f;
   color: #ed9c28;
 }
@@ -2127,11 +2127,11 @@ html {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\000037}}
   .nav-horizontal .nav > li.open > a {
     background-color: #28262c;
-    color: #1b3959;
+    color: #273b42;
   }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\0000311}}
   .nav-horizontal .nav > li.open > .fa {
-    color: #1b3959;
+    color: #273b42;
   }
 }
 @media (min-width: 768px) {
@@ -2180,11 +2180,11 @@ html {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\0000363}}
   .nav-horizontal .nav > li.active > a {
     background-color: #e1e1e1;
-    color: #1b3959;
+    color: #273b42;
   }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\0000367}}
   .nav-horizontal .nav > li.active > .fa {
-    color: #1b3959;
+    color: #273b42;
   }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\0000370}}
   .nav-horizontal .nav > li > a {
@@ -2239,11 +2239,11 @@ html {
   }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\00003125}}
   .nav-horizontal .nav > li > ul li:hover > a, .nav-horizontal .nav > li > ul li.active > a {
-    color: #1b3959;
+    color: #273b42;
   }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\00003130}}
   .nav-horizontal .nav > li > ul li.active > a {
-    border-left: 2px solid #1b3959;
+    border-left: 2px solid #273b42;
     background-color: #d4d4d4;
   }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\00003136}}
@@ -2365,7 +2365,7 @@ html {
   position: absolute;
   width: 100%;
   height: 60px;
-  background-color: #1b3959;
+  background-color: #273b42;
   color: #fafafa;
   line-height: 60px;
   text-align: center;
@@ -2552,7 +2552,7 @@ html {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_header\.scss}line{font-family:\00003191}}
 .header-container > .top-header .top-nav .nav-left > li ul.dropdown-menu a:hover,
 .header-container > .top-header .top-nav .nav-right > li ul.dropdown-menu a:hover {
-  background-color: #1b3959;
+  background-color: #273b42;
   color: #fff;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_header\.scss}line{font-family:\00003196}}
