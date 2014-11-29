@@ -21,7 +21,7 @@ fieldset{
 
 	    <div class="container">
 
-	      <a class="btn btn-primary btn-lg" style="color: #fff;" data-ng-click="sendContract();">
+	      <a class="btn btn-primary" style="color: #fff;" data-ng-click="sendContract();">
 				<span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Send Service Center Agreement
 			</a>    
 
@@ -119,11 +119,19 @@ fieldset{
 	                                      <label>Saturday</label> 9-5<br>
 	                                      <label>Sunday</label> Closed<br>
 	                                    </li>
-	                                    <li>
+	                                    <li data-ng-show="shop.signDate">
 	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                        <label>Sign-Up Date</label>
-	                                        {{shop.created | date: 'MMM d, yyyy' || 'N/A'}}
-	                                    </li>
+	                                        {{shop.signDate | date: 'MMM d, yyyy' || 'N/A'}}
+	                                    
+	                                    
+	                                        <br>
+	                                        <center>
+	                                     <a class="btn btn-primary" data-ng-click="downloadSA(shop._id)">
+										<i class="glyphicon glyphicon-cloud-download"></i><small>Download Signed Agreement</small>
+
+									</a>
+									</center>							</li>
 	                                    
 
 	                                </ul>

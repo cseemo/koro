@@ -71,6 +71,11 @@ var ShopSchema = new Schema({
 	signer: {
 			type: String,
 			trim: true
+	},
+	signDate: {
+			type: Date,
+			default: null
+			
 	}
 });
 

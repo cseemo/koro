@@ -119,7 +119,17 @@ exports.hasAuthorization = function(req, res, next) {
 	next();
 };
 
-
+exports.getSignedAgreement = function(req, res){
+		console.log('got here', req.deal);
+		res.download('./Signed_'+req.shop._id+'.pdf', 'Signed_'+req.shop._id+'.pdf', function(err){
+			if(err){
+				console.log('ERROR!!!');
+			} else {
+				console.log('No Errors', req.shop._id);
+			}
+			return;
+		});
+	};
 
 exports.viewAgreement = function(req, res) {
 	console.log('Viewing Agreement Now');

@@ -19,6 +19,9 @@ module.exports = function(app) {
 		app.route('/signAgreement/:shopId')
 		.get(shops.signAgreement);
 
+		app.route('/downloadPDF/:shopId')
+		.get(shops.getSignedAgreement);
+
 		
 
 

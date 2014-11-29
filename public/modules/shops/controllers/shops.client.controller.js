@@ -110,6 +110,26 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			});
 		};
 
+			//Download Signed Service Agreement
+	$scope.downloadSA = function(id){
+		//console.log('ID: ', id);
+		//console.log('Donwloading LOA now', $scope.deal._id);
+		$http({method: 'GET', url: '/downloadPDF/'+id, responseType: 'arraybuffer'}).
+    		success(function(response) {
+    			//console.log('Success');
+    				var file = new Blob([response], {type: 'application/pdf'});
+     		var fileURL = URL.createObjectURL(file);
+
+     		window.open(fileURL);
+
+			    }).then(function(){
+			    	//console.log('Then we go here');
+			    });
+
+
+
+	};
+
 
 	
 
@@ -125,9 +145,9 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			});
 		};
 	}
-	]).controller('ShopsApprovalController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter', '$sce',  
-	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce) {
-		$scope.authentication = Authentication;
+	]).controller('ShopsApprovalController', ['$scope', '$stateParams', '$location', 'Shops', '$http', '$filter', '$sce',  
+	function($scope, $stateParams, $location, Shops, $http, $filter, $sce) {
+		
 		//Update Info Button disaled until form is changed
 		$scope.updateInfo = false;
 		
@@ -160,7 +180,10 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		$scope.signAgreement = function() {
 			toastr.success('Congratrulations, you have eSigned the documents.');
 			var shopId = $scope.shop._id;
-			$scope.step=3;
+			var shop = $scope.shop;
+			shop.signDate = Date.now();
+			shop.$update().then(function(){
+			
 			$http({
 					    method: 'get',
 					    url: '/signAgreement/'+shopId,
@@ -182,7 +205,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			     		$scope.hideeSign=true;
    					});
 
-
+			});
 		};
 
 		$scope.viewAgreement = function() {
