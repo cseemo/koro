@@ -5,15 +5,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce) {
 		$scope.authentication = Authentication;
 		//Update Info Button disaled until form is changed
-		$scope.updateInfo = false;
-
-		  $scope.step=1;
-		  $scope.nextStep = function() {
-		  	console.log('Next Step', $scope.step);
-
-		  	$scope.step = +$scope.step+1;
-		  	console.log('Step: ', $scope.step);
-		  };
+		
 
 		// Create new Shop
 		$scope.create = function() {
@@ -88,6 +80,111 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		};
 
 		//Shop Views before Approving Agreement
+
+
+
+		// Remove existing Shop
+		$scope.remove = function( shop ) {
+			if ( shop ) { shop.$remove();
+
+				for (var i in $scope.shops ) {
+					if ($scope.shops [i] === shop ) {
+						$scope.shops.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.shop.$remove(function() {
+					$location.path('shops');
+				});
+			}
+		};
+
+		// Update existing Shop
+		$scope.update = function() {
+			var shop = $scope.shop ;
+
+			shop.$update(function() {
+				$location.path('shops/' + shop._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+
+	
+
+		// Find a list of Shops
+		$scope.find = function() {
+			$scope.shops = Shops.query();
+		};
+
+		// Find existing Shop
+		$scope.findOne = function() {
+			$scope.shop = Shops.get({ 
+				shopId: $stateParams.shopId
+			});
+		};
+	}
+	]).controller('ShopsApprovalController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter', '$sce',  
+	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce) {
+		$scope.authentication = Authentication;
+		//Update Info Button disaled until form is changed
+		$scope.updateInfo = false;
+		
+
+		  $scope.step=1;
+		  $scope.nextStep = function() {
+		  	console.log('Next Step', $scope.step);
+
+		  	$scope.step = +$scope.step+1;
+		  	console.log('Step: ', $scope.step);
+		  };
+
+
+
+			// Update existing Shop
+		$scope.updateAgreement = function() {
+			var shop = $scope.shop ;
+
+			shop.$update(function() {
+				// $location.path('shops/' + shop._id);
+				toastr.success('Your information has been updated');
+				// $scope.step=3;
+				$scope.updateInfo = false;
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+						//Shop Signs Agreement
+		$scope.signAgreement = function() {
+			toastr.success('Congratrulations, you have eSigned the documents.');
+			var shopId = $scope.shop._id;
+			$scope.step=3;
+			$http({
+					    method: 'get',
+					    url: '/signAgreement/'+shopId,
+					    responseType: 'arraybuffer',
+					    headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+		
+					  })
+					.error(function(data) {
+						console.log('Error!! ', data);
+					})
+					.success(function(data, status, headers, config) {
+						
+						console.log('Step = ',$scope.step);
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		
+			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+			     		$scope.step=3;
+			     		$scope.hideeSign=true;
+   					});
+
+
+		};
+
 		$scope.viewAgreement = function() {
 			console.log($scope.shop);
 			var shop = $scope.shop;
@@ -118,81 +215,8 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 		};
 
-				//Shop Signs Agreement
-		$scope.signAgreement = function() {
-			toastr.success('Congratrulations, you have eSigned the documents.');
-			var shopId = $scope.shop._id;
-			$scope.step=3;
-			$http({
-					    method: 'get',
-					    url: '/signAgreement/'+shopId,
-					    responseType: 'arraybuffer',
-					    headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
-		
-					  })
-					.error(function(data) {
-						console.log('Error!! ', data);
-					})
-					.success(function(data, status, headers, config) {
-						
-						console.log('Step = ',$scope.step);
-						var file = new Blob([data], {type: 'application/pdf'});
-			     		var fileURL = URL.createObjectURL(file);
-			     		
-			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
-			     		$scope.step=3;
-			     		$scope.hideeSign=true;
-   					});
 
 
-		};
-
-		// Remove existing Shop
-		$scope.remove = function( shop ) {
-			if ( shop ) { shop.$remove();
-
-				for (var i in $scope.shops ) {
-					if ($scope.shops [i] === shop ) {
-						$scope.shops.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.shop.$remove(function() {
-					$location.path('shops');
-				});
-			}
-		};
-
-		// Update existing Shop
-		$scope.update = function() {
-			var shop = $scope.shop ;
-
-			shop.$update(function() {
-				$location.path('shops/' + shop._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-
-		// Update existing Shop
-		$scope.updateAgreement = function() {
-			var shop = $scope.shop ;
-
-			shop.$update(function() {
-				// $location.path('shops/' + shop._id);
-				toastr.success('Your information has been updated');
-				// $scope.step=3;
-				$scope.updateInfo = false;
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-		// Find a list of Shops
-		$scope.find = function() {
-			$scope.shops = Shops.query();
-		};
 
 		// Find existing Shop
 		$scope.findOne = function() {
@@ -200,5 +224,5 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 				shopId: $stateParams.shopId
 			});
 		};
-	}
+
 ]);
