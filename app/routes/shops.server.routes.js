@@ -12,7 +12,13 @@ module.exports = function(app) {
 	
 		app.route('/sendAgreement/:shopId')
 		.get(shops.sendAgreement);
+
+		app.route('/viewAgreement/:shopId')
+		.get(shops.viewAgreement);
+
+
 		
+
 	app.route('/shops/:shopId')
 		.get(shops.read)
 		.put(users.requiresLogin, shops.hasAuthorization, shops.update)

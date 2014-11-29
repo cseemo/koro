@@ -20,12 +20,12 @@ angular.module('core').directive('imgHolder', [
 
          path = function() {
           var test = $location.path();
-          test = test.substring(0,8);
+          test = test.substring(0,14);
           // console.log('Test Path',test);
 
-          if(test==='/approve' || test==='/letsdoi'){
+          if(test==='/svccntrsignup' || test==='/letsdoi'){
             // console.log('We got it approved');
-            path = '/approve';
+            path = '/svccntrsignup';
              return $element.addClass('body-wide');
           }else{
 
@@ -42,7 +42,7 @@ angular.module('core').directive('imgHolder', [
             case '/pages/500':
             case '/signin':
             case '/signup':
-            case '/approve':
+            case '/svccntrsignup':
             case '/pages/forgot-password':
               return $element.addClass('body-wide');
             case '/lock':

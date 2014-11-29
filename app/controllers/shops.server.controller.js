@@ -119,6 +119,135 @@ exports.hasAuthorization = function(req, res, next) {
 	next();
 };
 
+
+
+exports.viewAgreement = function(req, res) {
+	console.log('Viewing Agreement Now');
+
+	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+	var id = req.shop._id;
+	var today = new moment();
+	var convertedPretty = moment(today).format("MM/DD/YYYY");
+	var fName = req.shop.primarycontactname.split(' ');
+	fName = fName[0];
+	
+	var doc = new PDFDocument();
+
+	//var stream = doc.pipe(blobStream());
+	var buffers = [];
+	var myfileName = 'TestContract.pdf';
+	// doc.pipe( fs.createWriteStream(myfileName) );
+	 
+	var chunks = [];
+	
+
+	//Page 1
+	var bg = doc.image('images/page1.png', 0, 0,{width: 600});
+	
+		//Set Company Name
+		doc.y = 220;
+		doc.x = 220;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.shop.name);
+
+		//Set Address
+		doc.y = 251;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.shop.address);
+
+
+		//Set City, State, and Zip
+		doc.y = 278;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.shop.city+', '+req.shop.state+' '+req.shop.zipcode);
+
+
+		//Set Name
+		doc.y = 300;
+		doc.x = 170;
+		doc.text(req.shop.primarycontactname);
+
+		//Set Telephone Number
+		doc.y = 327;
+		doc.x = 170;
+		doc.text(req.shop.telephone);
+
+		//Set Fax Number
+		doc.y = 353;
+		doc.x = 170;
+		doc.text(req.shop.fax);
+
+		//Set Email Address
+		doc.y = 375;
+		doc.x = 170;
+		doc.text(req.shop.email);
+
+		//Set Date
+		doc.y = 426;
+		doc.x = 240;
+		doc.fontSize(16);
+		doc.text(convertedPretty);
+
+
+
+
+
+		doc.addPage();
+
+		//Page 2 
+		var bg = doc.image('images/page2.png', 0, 0,{width: 600});
+		doc.addPage();
+
+		//Page 3
+		var bg = doc.image('images/page3.png', 0, 0,{width: 600});
+		doc.addPage();
+
+		//Page 4
+		var bg = doc.image('images/page4.png', 0, 0,{width: 600});
+		doc.addPage();
+
+		//Page 5
+		var bg = doc.image('images/page5.png', 0, 0,{width: 600});
+		doc.addPage();
+
+		//Page 6
+		var bg = doc.image('images/page6.png', 0, 0,{width: 600});
+
+		
+
+		doc.addPage();
+
+		//Page 7
+		var bg = doc.image('images/page7.png', 0, 0,{width: 600});
+
+
+
+doc.pipe( res );
+
+
+doc.on('data', function(chunk){
+	chunks.push(chunk);
+	////////console.log('chunk:', chunk.length);
+});
+ 
+
+
+
+doc.end();
+
+
+
+return
+
+};
+
+
+
 exports.sendAgreement = function(req, res) {
 	console.log('Sending Agreement Now');
 

@@ -1,9 +1,19 @@
 'use strict';
 
 // Shops controller
-angular.module('shops').controller('ShopsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter',  
-	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter) {
+angular.module('shops').controller('ShopsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter', '$sce',  
+	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce) {
 		$scope.authentication = Authentication;
+		//Update Info Button disaled until form is changed
+		$scope.updateInfo = false;
+
+		  $scope.step=1;
+		  $scope.nextStep = function() {
+		  	console.log('Next Step', $scope.step);
+
+		  	$scope.step = +$scope.step+1;
+		  	console.log('Step: ', $scope.step);
+		  };
 
 		// Create new Shop
 		$scope.create = function() {
@@ -71,6 +81,32 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 		};
 
+		//Shop Approves Agreement
+		$scope.viewAgreement = function() {
+			// console.log($scope.shop);
+			var shopId = $scope.shop._id;
+			$scope.step=3;
+			$http({
+					    method: 'get',
+					    url: '/viewAgreement/'+shopId,
+					    responseType: 'arraybuffer',
+					    headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+		
+					  })
+					.error(function(data) {
+						console.log('Error!! ', data);
+					})
+					.success(function(data, status, headers, config) {
+
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		
+			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+   					});
+
+
+		};
+
 		// Remove existing Shop
 		$scope.remove = function( shop ) {
 			if ( shop ) { shop.$remove();
@@ -93,6 +129,21 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 			shop.$update(function() {
 				$location.path('shops/' + shop._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+
+		// Update existing Shop
+		$scope.updateAgreement = function() {
+			var shop = $scope.shop ;
+
+			shop.$update(function() {
+				// $location.path('shops/' + shop._id);
+				toastr.success('Your information has been updated');
+				// $scope.step=3;
+				$scope.updateInfo = false;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

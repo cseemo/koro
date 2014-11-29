@@ -20,6 +20,13 @@ angular.module('shops').config(['$stateProvider',
 		state('editShop', {
 			url: '/shops/:shopId/edit',
 			templateUrl: 'modules/shops/views/edit-shop.client.view.html'
+		}).
+		state('shopSignUp', {
+			url: '/svccntrsignup/:shopId',
+			templateUrl: 'modules/shops/views/signup-shop.client.view.html'
 		});
+
+
+		
 	}
 ]);
