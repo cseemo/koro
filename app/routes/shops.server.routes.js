@@ -16,6 +16,11 @@ module.exports = function(app) {
 		app.route('/viewAgreement/:shopId')
 		.get(shops.viewAgreement);
 
+		app.route('/signAgreement/:shopId')
+		.get(shops.signAgreement);
+
+		
+
 
 		
 

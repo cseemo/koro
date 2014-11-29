@@ -63,6 +63,14 @@ var ShopSchema = new Schema({
 	altcontactname: {
 			type: String,
 			trim: true
+	},
+	signertitle: {
+			type: String,
+			trim: true
+	},
+	signer: {
+			type: String,
+			trim: true
 	}
 });
 

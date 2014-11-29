@@ -216,15 +216,63 @@ exports.viewAgreement = function(req, res) {
 		doc.addPage();
 
 		//Page 6
-		var bg = doc.image('images/page6.png', 0, 0,{width: 600});
+		var bg = doc.image('images/page6pending.png', 0, 0,{width: 600});
+		
+		//Set Printed Names and Date on Page 6
+		//Set Date
+		doc.y = 517;
+		doc.x = 120;
+		doc.fontSize(14);
+		
+		doc.text(convertedPretty);
 
+	
+
+		doc.y = 607;
+		doc.x = 360;
+		doc.fontSize(16);
+		doc.font('Times-Roman');
+		doc.text(req.shop.signer);
+
+		doc.y = 630;
+		doc.x = 345;
+		doc.fontSize(16);
+		doc.font('Times-Roman');
+		doc.text(req.shop.signertitle);
 		
 
 		doc.addPage();
 
 		//Page 7
-		var bg = doc.image('images/page7.png', 0, 0,{width: 600});
+		var bg = doc.image('images/page7pending.png', 0, 0,{width: 600});
 
+		//Set Printed Names and Date on Page 7
+		//Set Date
+		doc.y = 460;
+		doc.x = 355;
+		doc.fontSize(14);
+		doc.text(convertedPretty);
+
+	
+
+		doc.y = 412;
+		doc.x = 360;
+		doc.fontSize(16);
+		doc.font('Times-Roman');
+		doc.text(req.shop.signer);
+
+		doc.y = 435;
+		doc.x = 345;
+		doc.fontSize(16);
+		doc.font('Times-Roman');
+		doc.text(req.shop.signertitle);
+
+		doc.y = 636;
+		doc.x = 55;
+		doc.fontSize(10);
+		doc.font('Times-Roman');
+		doc.text(req.shop.address+' '+req.shop.city+', '+req.shop.state+' '+req.shop.zipcode+' Tel:'+req.shop.telephone+' Fax:'+req.shop.fax+' '+req.shop.email);
+		
 
 
 doc.pipe( res );
@@ -245,6 +293,189 @@ doc.end();
 return
 
 };
+
+
+exports.signAgreement = function(req, res) {
+	console.log('Viewing Agreement Now');
+
+	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+	var id = req.shop._id;
+	var today = new moment();
+	var convertedPretty = moment(today).format("MM/DD/YYYY");
+	var fName = req.shop.primarycontactname.split(' ');
+	fName = fName[0];
+	
+	var doc = new PDFDocument();
+
+	//var stream = doc.pipe(blobStream());
+	var buffers = [];
+	var myfileName = 'TestContract.pdf';
+	// doc.pipe( fs.createWriteStream(myfileName) );
+	 
+	var chunks = [];
+	
+
+	//Page 1
+	var bg = doc.image('images/page1.png', 0, 0,{width: 600});
+	
+		//Set Company Name
+		doc.y = 220;
+		doc.x = 220;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.shop.name);
+
+		//Set Address
+		doc.y = 251;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.shop.address);
+
+
+		//Set City, State, and Zip
+		doc.y = 278;
+		doc.x = 170;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		doc.text(req.shop.city+', '+req.shop.state+' '+req.shop.zipcode);
+
+
+		//Set Name
+		doc.y = 300;
+		doc.x = 170;
+		doc.text(req.shop.primarycontactname);
+
+		//Set Telephone Number
+		doc.y = 327;
+		doc.x = 170;
+		doc.text(req.shop.telephone);
+
+		//Set Fax Number
+		doc.y = 353;
+		doc.x = 170;
+		doc.text(req.shop.fax);
+
+		//Set Email Address
+		doc.y = 375;
+		doc.x = 170;
+		doc.text(req.shop.email);
+
+		//Set Date
+		doc.y = 426;
+		doc.x = 240;
+		doc.fontSize(16);
+		doc.text(convertedPretty);
+
+
+
+
+
+		doc.addPage();
+
+		//Page 2 
+		var bg = doc.image('images/page2.png', 0, 0,{width: 600});
+		doc.addPage();
+
+		//Page 3
+		var bg = doc.image('images/page3.png', 0, 0,{width: 600});
+		doc.addPage();
+
+		//Page 4
+		var bg = doc.image('images/page4.png', 0, 0,{width: 600});
+		doc.addPage();
+
+		//Page 5
+		var bg = doc.image('images/page5.png', 0, 0,{width: 600});
+		doc.addPage();
+
+		//Page 6
+		var bg = doc.image('images/page6.png', 0, 0,{width: 600});
+		
+		//Set Printed Names and Date on Page 6
+		//Set Date
+		doc.y = 517;
+		doc.x = 120;
+		doc.fontSize(14);
+		
+		doc.text(convertedPretty);
+
+		doc.y = 574;
+		doc.x = 340;
+		doc.font('SANTO.TTF');
+		doc.fontSize(24);
+		doc.text(req.shop.signer);
+
+		doc.y = 607;
+		doc.x = 360;
+		doc.fontSize(16);
+		doc.font('Times-Roman');
+		doc.text(req.shop.signer);
+
+		doc.y = 630;
+		doc.x = 345;
+		doc.fontSize(16);
+		doc.font('Times-Roman');
+		doc.text(req.shop.signertitle);
+		
+
+		doc.addPage();
+
+		//Page 7
+		var bg = doc.image('images/page7.png', 0, 0,{width: 600});
+
+		//Set Printed Names and Date on Page 7
+		//Set Date
+		doc.y = 460;
+		doc.x = 355;
+		doc.fontSize(14);
+		doc.text(convertedPretty);
+
+		doc.y = 375;
+		doc.x = 330;
+		doc.fontSize(26);
+		doc.font('SANTO.TTF');
+		doc.text(req.shop.signer);
+
+		doc.y = 412;
+		doc.x = 360;
+		doc.fontSize(16);
+		doc.font('Times-Roman');
+		doc.text(req.shop.signer);
+
+		doc.y = 435;
+		doc.x = 345;
+		doc.fontSize(16);
+		doc.font('Times-Roman');
+		doc.text(req.shop.signertitle);
+
+		doc.y = 636;
+		doc.x = 55;
+		doc.fontSize(10);
+		doc.font('Times-Roman');
+		doc.text(req.shop.address+' '+req.shop.city+', '+req.shop.state+' '+req.shop.zipcode+' Tel:'+req.shop.telephone+' Fax:'+req.shop.fax+' '+req.shop.email);
+		
+
+
+doc.pipe( res );
+
+
+doc.on('data', function(chunk){
+	chunks.push(chunk);
+	////////console.log('chunk:', chunk.length);
+});
+ 
+
+
+
+doc.end();
+
+
+
+return
+
+};
+
 
 
 
@@ -345,7 +576,6 @@ exports.sendAgreement = function(req, res) {
 		//Page 6
 		var bg = doc.image('images/page6.png', 0, 0,{width: 600});
 
-		
 
 		doc.addPage();
 

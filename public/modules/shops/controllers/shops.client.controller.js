@@ -81,9 +81,9 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 		};
 
-		//Shop Approves Agreement
+		//Shop Views before Approving Agreement
 		$scope.viewAgreement = function() {
-			// console.log($scope.shop);
+			console.log($scope.shop);
 			var shopId = $scope.shop._id;
 			$scope.step=3;
 			$http({
@@ -97,11 +97,41 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 						console.log('Error!! ', data);
 					})
 					.success(function(data, status, headers, config) {
-
+						console.log('Got pdf');
+						console.log('Step = ',$scope.step);
 						var file = new Blob([data], {type: 'application/pdf'});
 			     		var fileURL = URL.createObjectURL(file);
 			     		
 			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+   					});
+
+
+		};
+
+				//Shop Signs Agreement
+		$scope.signAgreement = function() {
+			
+			var shopId = $scope.shop._id;
+			$scope.step=3;
+			$http({
+					    method: 'get',
+					    url: '/signAgreement/'+shopId,
+					    responseType: 'arraybuffer',
+					    headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+		
+					  })
+					.error(function(data) {
+						console.log('Error!! ', data);
+					})
+					.success(function(data, status, headers, config) {
+						
+						console.log('Step = ',$scope.step);
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		
+			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+			     		$scope.step=3;
+			     		$scope.hideeSign=true;
    					});
 
 

@@ -202,6 +202,22 @@ h4 {
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                     <div class="form-group">
+                    	 <div class="col-md-6">
+                                <label class="control-label" for="name">Your Name</label>
+                                <div class="controls">
+                                    <input type="text" data-ng-change="updateInfo=true" data-ng-model="shop.signer" class="form-control" placeholder="Your Name" maxlength="10" />
+                                </div>
+                        </div>
+                        <div class="col-md-6">
+
+                                 <label class="control-label" for="name">Your Title</label>
+                                <div class="controls">
+                                    <input type="text" data-ng-change="updateInfo=true" data-ng-model="shop.signertitle" class="form-control" placeholder="Your Title" maxlength="10" />
+                                </div>
+                            </div>
+                        </div>
         		If the information above is all correct, please press 'View Agreement' to view the agreement, if any information is inaccuarate, please correct it and then press 'Update Info' button.
 
 
@@ -212,7 +228,7 @@ h4 {
 			<a class="btn btn-primary" data-ng-disabled="!updateInfo" style="color: #fff;" data-ng-click="updateAgreement();">
 				<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Update Info
 			</a>  
-			<a class="btn btn-primary" style="color: #fff;" data-ng-click="viewAgreement();">
+			<a class="btn btn-primary" style="color: #fff;" data-ng-click="viewAgreement()">
 				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Agreement
 			</a>  
 			</center>
@@ -220,19 +236,19 @@ h4 {
 		</div>
 	</div>
 </div>
-		
+	</div>	
 		
 
 <div class="clearfix"></div>
 		
 		<div class="jumbotron" ng-show="step===3">
-		<div class="signUpButton">
+		<div class="signUpButton" data-ng-show="!hideeSign">
 		<center>
 		<small>
 		When you are ready, simply click the button to agree
 		</small>
 		<br>
-		<a class="btn btn-primary" style="color: #fff;" data-ng-click="viewAgreement();">
+		<a class="btn btn-primary" style="color: #fff;" data-ng-click="signAgreement();">
 				<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> eSign Now
 			</a>  
 			<br>
@@ -255,6 +271,10 @@ h4 {
 				Upon electronic approval of this document, you will be emailed a signed copy immediately.</h4>
 
 				<object data="{{mycontent}}" type="application/pdf" style="width:100%;height:1100px;"></object>
+
+				<a class="btn btn-primary" data-ng-show="!hideeSign" style="color: #fff;" data-ng-click="signAgreement();">
+				<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> eSign Now
+			</a> 
 				
 	</div>
 	
