@@ -76,7 +76,15 @@ var ShopSchema = new Schema({
 			type: Date,
 			default: null
 			
-	}
+	},
+	techname: {
+			type: String,
+			trim: true
+	},
+	techphone: {
+			type: String,
+			trim: true
+	},
 });
 
 mongoose.model('Shop', ShopSchema);
