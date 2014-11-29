@@ -500,7 +500,7 @@ doc.on('end', function(){
 			'type': 'to'
 	}],
 	'headers': {
-		'Reply-To': 'req.shop.user.email'
+		'Reply-To': req.shop.user.email
 	},
 	'merge': true,
 	'global_merge_vars': [{
