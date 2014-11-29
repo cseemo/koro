@@ -1,8 +1,8 @@
 'use strict';
 
 // Shops controller
-angular.module('shops').controller('ShopsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter', '$sce',  
-	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce) {
+angular.module('shops').controller('ShopsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter', '$sce', '$timeout',  
+	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce, $timeout) {
 		$scope.authentication = Authentication;
 		//Update Info Button disaled until form is changed
 		
@@ -64,8 +64,14 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 					    console.log('Success sending agreement!');
 						toastr.success('Success! Email was sent to '+$scope.shop.email);
 						var file = new Blob([data], {type: 'application/pdf'});
-			     		var fileURL = URL.createObjectURL(file);
-			     		window.open(fileURL);
+			     		 $scope.fileURL = URL.createObjectURL(file);
+			     		 $scope.seeSA = true;
+			     		 $timeout(function(){
+								////console.log('Going to Change');
+							$scope.seeSA = false;
+							}, 10000);
+
+			     		
      	});
 
 
@@ -79,7 +85,11 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 		};
 
-		//Shop Views before Approving Agreement
+		//View Agreement
+		$scope.seeAgreement = function() {
+			console.log('See Agreement!');
+			window.open($scope.fileURL);
+		}
 
 
 

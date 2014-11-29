@@ -9,12 +9,15 @@
 .btn-primary:hover{
   background-color: #ec5f3c;
 }
-
+.container-body{
+     background-color: #333;
+}
 
 </style>
 
 <section data-ng-controller="ShopsController">
-<div class="container">
+<div class="container-body">
+    <div class="container">
             <div class="panel panel-primary">
                <div class="panel-heading">
                  <h2>Add New Shop</h2>
@@ -33,7 +36,7 @@
                      <div class="row">
                         <div class="col-md-5 pull-left">
                             <div class="form-group">
-                                <label class="control-label" for="name">Primary Contact</label>
+                                <label class="control-label" for="name">Primary Contact (Owner)</label>
                                 <div class="controls">
                                     <input type="text" data-ng-model="primarycontactname" class="form-control" placeholder="Contact Name"/>
                                 </div>
@@ -54,7 +57,7 @@
 
 
                               <div class="form-group">
-                                <label class="control-label" for="name">Alternate Contact</label>
+                                <label class="control-label" for="name">Alternate Contact (Manager)</label>
                                 <div class="controls">
                                     <input type="text" data-ng-model="altcontactname" id="name" class="form-control" placeholder="Alternate Contact"/>
                                 </div>
@@ -72,6 +75,30 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                     <div class="col-md-5 pull-left">
+
+
+                              <div class="form-group">
+                                <label class="control-label" for="name">Trained Installer Name </label>
+                                <div class="controls">
+                                    <input type="text" data-ng-model="altcontactname" id="name" class="form-control" placeholder="Trained Technician"/>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                         <div class="col-md-5 pull-right">
+                            <div class="form-group">
+                                <label class="control-label" for="name">Technician Phone Number</label>
+                                <div class="controls">
+                                    <input type="text" data-ng-model="alttelephone" class="form-control" placeholder="Tech Phone Number" maxlength="10" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="row">
                         <div class="col-md-5 pull-left">
@@ -132,4 +159,6 @@
            
         </div>
     </div>
+
+
 </section>

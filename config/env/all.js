@@ -2,7 +2,7 @@
 
 module.exports = {
 	app: {
-		title: 'Carefree',
+		title: 'Budget IID',
 		description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
 		keywords: 'MongoDB, Express, AngularJS, Node.js'
 	},
