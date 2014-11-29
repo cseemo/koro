@@ -26,7 +26,7 @@ module.exports = function(app) {
 
 	app.route('/shops/:shopId')
 		.get(shops.read)
-		.put(users.requiresLogin, shops.hasAuthorization, shops.update)
+		.put(shops.update)
 		.delete(users.requiresLogin, shops.hasAuthorization, shops.delete);
 
 	// Finish by binding the Shop middleware

@@ -34,6 +34,14 @@ h4 {
 .makeMed {
 	font-size: 1.5em;
 }
+.stickyTop{
+position: fixed;
+top: 0px;
+left: 0px;
+right: 00px;
+z-index: 999;
+
+}
 .signUpButton{
 	background-color: #1b3959;
 	color: #898;
@@ -54,6 +62,12 @@ h4 {
 	<div class="main-body">
 
 	    <div class="container">
+	    <span data-ng-show="hideeSign">
+	    <alert class="stickyTop" type="success" >
+	    Thank you, {{shop.signer}}. Your agreement has been electronically approved. A copy of this agreement has been sent to {{shop.email}}. A representative will contact you to schedule training in the next 72 hours.
+	    </alert>
+	    <br><br><br>
+	    </span>
 	    <form class="form-horizontal" novalidate>
 			<div class="jumbotron" ng-show="step===1">
 				<center>
@@ -273,8 +287,11 @@ h4 {
 			<div class="panel-body text-center">	
 			
 				
-				<h4>
+				<h4 data-ng-show="!hideeSign">
 				Upon electronic approval of this document, you will be emailed a signed copy immediately.</h4>
+
+				<h4 data-ng-show="hideeSign">
+				Signed Service Center Agreements. A copy has been sent to {{shop.email}} as well.</h4>
 
 				<span data-ng-show="!hideeSign" class="makeMed pull-left">
 				<a data-ng-click="step=step-1">

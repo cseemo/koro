@@ -224,5 +224,6 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 				shopId: $stateParams.shopId
 			});
 		};
+	}
 
 ]);
