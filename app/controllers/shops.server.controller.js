@@ -296,7 +296,7 @@ return
 
 
 exports.signAgreement = function(req, res) {
-	console.log('Viewing Agreement Now');
+	console.log('Signing Agreement Now');
 
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 	var id = req.shop._id;
@@ -309,8 +309,8 @@ exports.signAgreement = function(req, res) {
 
 	//var stream = doc.pipe(blobStream());
 	var buffers = [];
-	var myfileName = 'TestContract.pdf';
-	// doc.pipe( fs.createWriteStream(myfileName) );
+	var myfileName = 'Signed_'+req.shop._id+'.pdf';
+	doc.pipe( fs.createWriteStream(myfileName) );
 	 
 	var chunks = [];
 	
@@ -457,7 +457,7 @@ exports.signAgreement = function(req, res) {
 		
 
 
-doc.pipe( res );
+// doc.pipe( res );
 
 
 doc.on('data', function(chunk){
@@ -471,8 +471,101 @@ doc.on('data', function(chunk){
 doc.end();
 
 
+doc.on('end', function(){
+	////////console.log(callback);
+// 	////////console.log('DId you get a callback?');
+	var mypdf = Buffer.concat(chunks);
+	//.concat(buffers);
+	var content = mypdf.toString('base64');
 
-return
+	//var content = fs.readFileSync(myfileName, 'base64');
+
+		var message = {
+	'subject': 'Signed Service Center Agreement',
+	'from_email': req.shop.user.email,
+	'from_name': req.shop.user.displayName,
+	'to': [{
+		'email': req.shop.email,
+		'name': req.shop.primarycontactname,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': 'req.shop.user.email'
+	},
+	'merge': true,
+	'global_merge_vars': [{
+		'name': 'merge1',
+		'content': 'merge1 content'
+	}],
+	'merge_vars': [{
+			'rcpt': req.shop.email,
+			'vars': [{
+					'name': 'fName',
+					'content': fName
+				},
+				{
+					'name': 'signip',
+					'content': ip
+				},
+				{
+					'name': 'repName',
+					'content': req.shop.user.displayName
+				},
+				{
+					'name': 'shopid',
+					'content': req.shop._id
+				},
+
+
+
+
+				]
+	}],
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': true,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null,
+	'attachments': [{
+		'type': 'application/pdf; name=Signed_ServiceCenter_Agreement.pdf',
+		'name': 'Signed_ServiceCenter_Agreement.pdf',
+		'content': content
+	}]
+};
+
+
+
+var template_name='budget-newshopsigned';
+
+var async = false;
+
+
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
+
+	console.log('Results from Mandrill', result);
+},
+function(e){
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+});
+
+res.status(200).send(mypdf);
+
+});
+
+
 
 };
 
@@ -682,10 +775,10 @@ mandrill_client.messages.sendTemplate({
 	'async': async
 }, function(result){
 
-	//////console.log('Results from Mandrill', result);
+	console.log('Results from Mandrill', result);
 },
 function(e){
-	//////console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
 });
 
 
@@ -694,6 +787,6 @@ function(e){
 
 	// res.status(222).send('Still Writing Code!');
 
-return
+return;
 
 };

@@ -51,7 +51,9 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		//Send Contract 
 		$scope.sendContract = function() {
 			console.log('Sending out Contract');
-			var shopId = $scope.shop._id;
+			
+
+							var shopId = $scope.shop._id;
 			console.log(shopId);
 					$http({
 					    method: 'get',
@@ -74,6 +76,10 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			     		window.open(fileURL);
      	});
 
+
+		
+
+
      		
 
 
@@ -84,6 +90,8 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		//Shop Views before Approving Agreement
 		$scope.viewAgreement = function() {
 			console.log($scope.shop);
+			var shop = $scope.shop;
+			shop.$update().then(function(){
 			var shopId = $scope.shop._id;
 			$scope.step=3;
 			$http({
@@ -105,12 +113,14 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
    					});
 
+				});
+
 
 		};
 
 				//Shop Signs Agreement
 		$scope.signAgreement = function() {
-			
+			toastr.success('Congratrulations, you have eSigned the documents.');
 			var shopId = $scope.shop._id;
 			$scope.step=3;
 			$http({

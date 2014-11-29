@@ -28,6 +28,12 @@ h3 {
 h4 {
 	color: #555;
 }
+.makeBig {
+	font-size: 2em;
+}
+.makeMed {
+	font-size: 1.5em;
+}
 .signUpButton{
 	background-color: #1b3959;
 	color: #898;
@@ -214,7 +220,7 @@ h4 {
 
                                  <label class="control-label" for="name">Your Title</label>
                                 <div class="controls">
-                                    <input type="text" data-ng-change="updateInfo=true" data-ng-model="shop.signertitle" class="form-control" placeholder="Your Title" maxlength="10" />
+                                    <input type="text" data-ng-change="updateInfo=true" data-ng-model="shop.signertitle" class="form-control" placeholder="Your Title"  />
                                 </div>
                             </div>
                         </div>
@@ -270,11 +276,22 @@ h4 {
 				<h4>
 				Upon electronic approval of this document, you will be emailed a signed copy immediately.</h4>
 
+				<span data-ng-show="!hideeSign" class="makeMed pull-left">
+				<a data-ng-click="step=step-1">
+				<i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i></a> Back
+			</span>
+
 				<object data="{{mycontent}}" type="application/pdf" style="width:100%;height:1100px;"></object>
 
-				<a class="btn btn-primary" data-ng-show="!hideeSign" style="color: #fff;" data-ng-click="signAgreement();">
+				<a class="btn btn-lg btn-primary" data-ng-show="!hideeSign" style="color: #fff;" data-ng-click="signAgreement();">
 				<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> eSign Now
 			</a> 
+
+			<br>
+			<span class="makeBig pull-left" data-ng-show="!hideeSign">
+				<a   data-ng-click="step=step-1">
+				<i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i></a> Go Back
+			</span>
 				
 	</div>
 	
