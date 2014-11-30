@@ -131,7 +131,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
     						$scope.haveFiles = false;
     					}
 
-    					
+
 
     			}else{
     				console.log('Lenght of Files: ', response.length);
@@ -184,13 +184,27 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 		};
 
+		//Open Hours of Operation
+			$scope.setHours = function() {
+			var modalInstance;
+		modalInstance = $modal.open({
+          templateUrl: 'hoursModal.html',
+          controller: 'shopModalInstanceCtrl',
+          resolve: {
+            shop: function() {
+              return $scope.shop;
+            }
+        }
+      });
+		console.log('Hours Modal Opened');
+		};
 
 		//Open Modal
 		$scope.uploadPhotos = function() {
 			var modalInstance;
 		modalInstance = $modal.open({
           templateUrl: 'myModalContent.html',
-          controller: 'ModalInstanceCtrl',
+          controller: 'shopModalInstanceCtrl',
           resolve: {
             shop: function() {
               return $scope.shop;
@@ -272,7 +286,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			$scope.getUploads($stateParams.shopId);
 		};
 	}
-	]).controller('ModalInstanceCtrl', [
+	]).controller('shopModalInstanceCtrl', [
     '$scope', '$modalInstance', '$http', 'FileUploader', 'shop', function($scope, $modalInstance, $http, FileUploader, shop) {
 
     	console.log('Shop is', shop);

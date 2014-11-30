@@ -114,6 +114,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 //Modal Stuff for New Work Order
       $scope.workOrderTypes = ['New Install', 'Calibration', 'Reset', 'Removal'];
       $scope.open = function() {
+      	console.log('Opening Modal');
         var modalInstance;
         var offender = $scope.offender;
         modalInstance = $modal.open({

@@ -48,6 +48,7 @@ z-index: 999;
 .modal-dialog{
 	width: 90%;
 }
+
 .largeText {
 	font-size: 1.5em;
 	vertical-align: text-bottom;
@@ -70,7 +71,7 @@ z-index: 999;
 				<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Send Service Center Agreement
 			</a>  
 
-				      <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="sendContract();">
+				      <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="setHours();">
 				<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Set Hours of Operation
 			</a> 
 
@@ -204,6 +205,12 @@ z-index: 999;
 	                                        </a>
 	                                        <br>
 	                                        </span>
+	                                        <br>
+	                                        <center>
+	                                        <a class="btn btn-primary btn-xs" ng-click="uploadPhotos()"> 
+	                                        Add File
+	                                        </a>
+	                                        </center>
 	                                    							</li>
 
 
@@ -359,10 +366,93 @@ z-index: 999;
 			
 	</div> -->
 
+	<script type="text/ng-template"  ng-class="modal-sm" id="hoursModal.html">
+	<style>
+	.modal-dialog{
+		width: 50%;
+	}
+	.container-sm{
+		width: 50%;
+		align: center:
+		text
 
+	}
+	table, th, td {
+		padding: 3px;
+		border: 1px solid black;
+		table-layout: fixed;
+		width: 80%;
+	}
+	td{
+		display: table-cell;
+		width: 100%;
+	}
+	</style>
+	<center>
+	<div class="container-sm">
+            <div class="row">
+            	
+	           	 
+            	<h4>Set Hours of Operation</h4>
+				
+				<table align="center">
+					<thead>
+					<tr>
+						<th>Day</th>
+						<th>Open</th>
+						<th>Close</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><label>Monday</label></td>
+							<td>8am</td>
+							<td>5pm</td>
+						</tr>
+						<tr>
+							<td><label>Tuesday</label></td>
+							<td>8am</td>
+							<td>5pm</td>
+						</tr>
+						<tr>
+							<td><label>Wednesday</label></td>
+							<td>8am</td>
+							<td>5pm</td>
+						</tr>
+						<tr>
+							<td><label>Thursday</label></td>
+							<td>8am</td>
+							<td>5pm</td>
+						</tr>
+						<tr>
+							<td><label>Friday</label></td>
+							<td>8am</td>
+							<td>5pm</td>
+						</tr>
+						<tr>
+							<td><label>Saturday</label></td>
+							<td>8am</td>
+							<td>5pm</td>
+						</tr>
+						<tr>
+							<td><label>Sunday</label></td>
+							<td>8am</td>
+							<td>5pm</td>
+						</tr>
+					</tbody>
+				</table>
+ 				<div class="modal-footer">
+            <button class="btn btn-primary" ng-click="makeHours()">Approve</button>
+            <button class="btn btn-warning" ng-click="close()">Cancel</button>
+        </div>
+       
+			</div>
+			</div>
+			</center>
+	</script>
     
     <script type="text/ng-template" id="myModalContent.html">
-<!DOCTYPE html>
+		<!DOCTYPE html>
    
 
         <style>
@@ -396,9 +486,9 @@ z-index: 999;
 
                 <div class="col-md-10 col-md-offset-1" style="margin-bottom: 40px">
                     
-                    	<div class="pull-right">
-	<a class="largeText" data-ng-click="close()"><span class="glyphicon glyphicon-remove-sign"></span>Close<br></a>
-	</div>
+                    	
+
+	
 
                     <h4>Upload Service Center Photos & Documents (.JPG/.PNG/.GIF/.PDF)</h4>
                  
@@ -477,9 +567,10 @@ z-index: 999;
                     </div>
 
                 </div>
+                <button class="btn btn-warning" ng-click="close()">Close</button>
 
             </div>
-
+           
         </div>
 
     </body>
