@@ -1,5 +1,9 @@
+
+<script src="../../angular-file-upload.js"></script>
+
 <section data-ng-controller="ShopsController" data-ng-init="findOne()">
-	
+	<!-- Fix for old browsers -->
+     
 
 <style>
 .col-md-4{
@@ -15,6 +19,9 @@ fieldset{
 }
 .main-body{
 	background-color: #555;
+}
+h3, h4 {
+	color: #565;
 }
 .stickyTop{
 position: fixed;
@@ -38,7 +45,16 @@ z-index: 999;
 	z-index: 999;
 
 }
+.modal-dialog{
+	width: 90%;
+}
+.largeText {
+	font-size: 1.5em;
+	vertical-align: text-bottom;
+	cursor: pointer;
+}
 </style>
+
 
 
 	<div class="main-body">
@@ -58,8 +74,16 @@ z-index: 999;
 				<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Set Hours of Operation
 			</a> 
 
-				      <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="sendContract();">
+				      <a  data-ng-show="!haveFiles" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="uploadPhotos();">
 				<span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Upload Insurance Docs
+			</a>   
+
+				      <a  data-ng-show="!haveFiles" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="uploadPhotos();">
+				<span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload Lease
+			</a>   
+
+				      <a data-ng-show="!havePhotos" lass="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="uploadPhotos();">
+				<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Upload Photos
 			</a>   
 			</alert>
 
@@ -164,12 +188,25 @@ z-index: 999;
 	                                    
 	                                    
 	                                        <br>
-	                                        <center>
-	                                     <a class="btn btn-primary" data-ng-click="downloadSA(shop._id)">
-										<i class="glyphicon glyphicon-cloud-download"></i><small>Download Signed Agreement</small>
+	                                         <label>Service Agreement</label>
+	                                        
+	                                     <a data-ng-click="downloadSA(shop._id)">Download Signed Agreement
 
 									</a>
-									</center>							</li>
+														</li>
+									    <li data-ng-show="myUploads">
+	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+
+	                                       <span ng-repeat="file in myUploads">
+	                                       <label>Filename</label>
+	                                       <a ng-click="dlUpload(file._id, file.FileName)"> 
+	                                        {{file.FileName | limitTo: 32}}
+	                                        </a>
+	                                        <br>
+	                                        </span>
+	                                    							</li>
+
+
 	                                    
 
 	                                </ul>
@@ -323,63 +360,133 @@ z-index: 999;
 	</div> -->
 
 
-
+    
     <script type="text/ng-template" id="myModalContent.html">
-       
-        <div class="modal-header">
+<!DOCTYPE html>
+   
 
-            New Work Order for {{offender.firstName}} {{offender.lastName}}
-        </div>
-        <div class="modal-body">
-      
+        <style>
+            .my-drop-zone { border: dotted 3px lightgray; }
+            .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+            .another-file-over-class { border: dotted 3px green; }
+            html, body { height: 100%; }
+            canvas {
+                background-color: #f3f3f3;
+                -webkit-box-shadow: 3px 3px 3px 0 #e3e3e3;
+                -moz-box-shadow: 3px 3px 3px 0 #e3e3e3;
+                box-shadow: 3px 3px 3px 0 #e3e3e3;
+                border: 1px solid #c3c3c3;
+                height: 100px;
+                margin: 6px 0 0 6px;
+            }
+        </style>
+
+    </head>
+
+    <!-- Example: nv-file-drop="" uploader="{Object}" options="{Object}" filters="{String}" -->
+    <body nv-file-drop="" uploader="uploader">
+
+        <div class="container">
         
-         <label>Work Order Type</label>
-        	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
-<br>
-        	   <label>Submitting To</label>
-        	  <select class="form-control" data-ng-model="sendTo" name="sendTo" data-ng-options="sendto for sendto in sendToOptions" data-ng-change="changeWho()"></select>
-<br>
-				<span data-ng-show="!whomCus">
-				<label>Recipient Name</label>
-        	    <input type="text" data-ng-model="toWhoName"  id="toWhoName" class="form-control" placeholder="Name" >
-        	    </span>
+           
 
-<br>
+            <div class="row">
 
-				<label>Service Center</label>
-        	    <input type="text" data-ng-model="serviceCenter"  id="serviceCenter" class="form-control" placeholder="Service Center" >
+            	 
 
-<br>
-        	   <label>Email Address</label>
-        	    <input type="text" data-ng-model="emailAddress"  id="emailAddress" class="form-control" placeholder="Email Address" >
+                <div class="col-md-10 col-md-offset-1" style="margin-bottom: 40px">
+                    
+                    	<div class="pull-right">
+	<a class="largeText" data-ng-click="close()"><span class="glyphicon glyphicon-remove-sign"></span>Close<br></a>
+	</div>
 
-<br>
-        	    <label>Email Subject</label>
-        	    <input type="text" data-ng-model="emailSubject"  id="emailSubject" class="form-control" placeholder="{{chosen}} Authorization" >
-<br>
-        	    <label>Email Text</label>
-        	    <textarea type="text" data-ng-model="emailText"  id="emailText" class="form-control" placeholder="Hi {{offender.firstName}}..." >
+                    <h4>Upload Service Center Photos & Documents (.JPG/.PNG/.GIF/.PDF)</h4>
+                 
+                 	<input type="file" nv-file-select="" uploader="uploader" multiple  /><br/>
 
-        	    </textarea>
-                                <br>
-        	    <label>Email Signature</label>
-        	   <br>
-        	    {{authentication.user.displayName}}<br/>
-        	     {{authentication.user.telephone}}<br/>
-        	      {{authentication.user.email}}<br/>
-        	      
 
+                    <p>Items to Upload: {{ uploader.queue.length }}</p>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">Name</th>
+                                <th ng-show="uploader.isHTML5">Size</th>
+                                <th ng-show="uploader.isHTML5">Progress</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in uploader.queue">
+                                <td>
+                                    <strong>{{ item.file.name }}</strong>
+                                    
+                                    
+                                    <!-- Image preview -->
+                                    <!--auto height-->
+                                    <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
+                                    <!--auto width-->
+                                    <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                                    <!--fixed width and height -->
+                                    <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
+                                     
+                                </td>
+                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                <td ng-show="uploader.isHTML5">
+                                    <div class="progress" style="margin-bottom: 0;">
+                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                </td>
+                                <td nowrap>
+                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <div>
+                            Queue progress:
+                            <div class="progress" style="">
+                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                            <span class="glyphicon glyphicon-upload"></span> Upload all
+                        </button>
+                        <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                        </button>
+                        <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                            <span class="glyphicon glyphicon-trash"></span> Remove all
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">Approve</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
+
+    </body>
+</html>
+			
     </script>
 
-
-    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
-</div>
 
 
 

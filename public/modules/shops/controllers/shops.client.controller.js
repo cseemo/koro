@@ -1,8 +1,8 @@
 'use strict';
 
 // Shops controller
-angular.module('shops').controller('ShopsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter', '$sce', '$timeout',  
-	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce, $timeout) {
+angular.module('shops').controller('ShopsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter', '$sce', '$timeout', '$modal', 
+	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce, $timeout, $modal) {
 		$scope.authentication = Authentication;
 		//Update Info Button disaled until form is changed
 		
@@ -85,6 +85,92 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 		};
 
+		//Get Uploads associated with this SHop
+		$scope.getUploads = function(id) {
+			console.log('Getting Uploads');
+			$http({method: 'GET', url: '/uploads/'+id}).
+    		success(function(response, data) {
+    			console.log('Success', response);
+    			console.log('Data', data);
+    			$scope.myUploads = response;
+    			if(response.length>2){
+    				console.log('How many images? and How many files?');
+    				var numImages = 0;
+    				var numFiles = 0 ;
+    				angular.forEach(response, function(value, key) {
+    					console.log('Key: '+key+' and Value: '+value);
+    					console.log('Value Details %o', value);
+    					var filetype = value.FileName.substr(value.FileName.length-4);
+    					console.log('File Type: ', filetype);
+    					if(filetype==='.pdf'){
+    						numFiles++;
+    					}else{
+    						numImages++;
+    					}
+    					console.log('Images: '+numImages+', Files: '+numFiles);
+    					if(numImages>2){
+    						console.log('Assuming they have all the images');
+    						$scope.havePhotos = true;
+    					}
+    					if(numFiles>1){
+    						console.log('Assume we have both Insurance/Lease');
+    						$scope.haveFiles = true;
+    					}
+    				});
+
+    			}else{
+    				console.log('Lenght of Files: ', response.length);
+    			}
+			    }).then(function(){
+			    	console.log('Then we go here and show those documents');
+			    });
+
+		};
+
+		//Download an Uploaded File
+		$scope.dlUpload = function(id, name) {
+			console.log('Downloading File', id);
+			console.log('Name: ', name);
+			var dltype;
+			var filetype = name.substr(name.length-4);
+			console.log('File Type: ', filetype);
+			if(filetype==='.png'){
+				dltype = 'image/png';
+			}else{
+					dltype = 'application/pdf';
+			}
+			$http({method: 'GET', url: '/dlUpload/'+id, responseType: 'arraybuffer'}).
+    		success(function(response, data) {
+    			var file = new Blob([response], {type: dltype});
+     		var fileURL = URL.createObjectURL(file);
+
+     		window.open(fileURL);
+
+
+			    }).then(function(){
+			    	console.log('We have proceeded');
+			    });
+
+
+		};
+
+
+		//Open Modal
+		$scope.uploadPhotos = function() {
+			var modalInstance;
+		modalInstance = $modal.open({
+          templateUrl: 'myModalContent.html',
+          controller: 'ModalInstanceCtrl',
+          resolve: {
+            shop: function() {
+              return $scope.shop;
+            }
+        }
+      });
+		console.log('Modal Opened');
+		};
+
+
 		//View Agreement
 		$scope.seeAgreement = function() {
 			console.log('See Agreement!');
@@ -153,9 +239,80 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			$scope.shop = Shops.get({ 
 				shopId: $stateParams.shopId
 			});
+			$scope.getUploads($stateParams.shopId);
 		};
 	}
-	]).controller('ShopsApprovalController', ['$scope', '$stateParams', '$location', 'Shops', '$http', '$filter', '$sce',  
+	]).controller('ModalInstanceCtrl', [
+    '$scope', '$modalInstance', '$http', 'FileUploader', 'shop', function($scope, $modalInstance, $http, FileUploader, shop) {
+
+    	console.log('Shop is', shop);
+    	$scope.shop = shop;
+    	$scope.close = function(){
+    		$modalInstance.close();
+
+    	};
+
+     	var uploader = $scope.uploader = new FileUploader({
+            url: '/upload/shop/'+$scope.shop._id
+        });
+
+        // FILTERS
+
+        uploader.filters.push({
+            name: 'imageFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options) {
+                var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+                return '|jpg|png|jpeg|bmp|gif|pdf|'.indexOf(type) !== -1;
+            }
+        });
+
+        // CALLBACKS
+
+        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        uploader.onAfterAddingFile = function(fileItem) {
+            console.info('onAfterAddingFile', fileItem);
+        };
+        uploader.onAfterAddingAll = function(addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
+        };
+        uploader.onBeforeUploadItem = function(item) {
+            console.info('onBeforeUploadItem', item);
+
+        };
+        uploader.onProgressItem = function(fileItem, progress) {
+            console.info('onProgressItem', fileItem, progress);
+        };
+        uploader.onProgressAll = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            console.info('onSuccessItem', fileItem, response, status, headers);
+        };
+        uploader.onErrorItem = function(fileItem, response, status, headers) {
+            console.info('onErrorItem', fileItem, response, status, headers);
+        };
+        uploader.onCancelItem = function(fileItem, response, status, headers) {
+            console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('onCompleteItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteAll = function() {
+            console.info('onCompleteAll');
+            toastr.success('Your files have been uploaded');
+            $modalInstance.close();
+
+        };
+
+        console.info('uploader', uploader);
+
+
+
+
+
+ }]).controller('ShopsApprovalController', ['$scope', '$stateParams', '$location', 'Shops', '$http', '$filter', '$sce',  
 	function($scope, $stateParams, $location, Shops, $http, $filter, $sce) {
 		
 		//Update Info Button disaled until form is changed

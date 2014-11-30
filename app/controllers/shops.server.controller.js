@@ -16,6 +16,14 @@ var mongoose = require('mongoose'),
 	var moment = require('moment');
 	var PDFDocument = require('pdfkit');
 	var fs=require('fs');
+	var inspect = require('util').inspect;
+	var multer = require('multer');
+	var Busboy = require('busboy');
+	var path = require('path'),
+	Upload = mongoose.model('Upload');
+	var os = require('os');
+
+
 
 	// console.log('Portal Stuff ', portal);
     var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
@@ -108,6 +116,16 @@ exports.shopByID = function(req, res, next, id) { Shop.findById(id).populate('us
 		next();
 	});
 };
+
+exports.uploadByID = function(req, res, next, id) { Upload.findById(id).populate('user', 'displayName').exec(function(err, upload) {
+		if (err) return next(err);
+		if (! upload) return next(new Error('Failed to load Upload ' + id));
+		req.upload = upload ;
+		next();
+	});
+};
+
+
 
 /**
  * Shop authorization middleware
@@ -301,6 +319,377 @@ doc.end();
 
 
 return
+
+};
+
+//Display Uploads
+exports.getUploads = function(req, res) {
+	var results = [];
+	console.log('got to uploads', req.shop);
+	Upload.find({location: 'public/uploads/files/'+req.shop._id}).populate('user', 'displayName').exec(function(err, upload) {
+		if (err) return next(err);
+		if (! upload) console.log('FAIL');
+		console.log('Got an uplaod');
+		console.log(upload);
+		var x=0;
+		var getFileDetails = function(elm, i, arr) {
+			console.log('Index: '+i+' Elm: '+elm+' Array: '+arr);
+			fs.readFile(elm.url, function(err, content) {
+				if(err)console.log('ERROR!! ', err);
+				// console.log(content);
+				results.push({'FileName': elm.filename, 'Index': i, 'Path': 'public/uploads/files/'+req.shop._id+'/'+elm.filename, '_id': elm._id });
+				// console.log('Results; ', results);
+				// console.log('Array Length: ',arr.length);
+				// console.log('I: ', i);
+				x++;
+				console.log('X is', x);
+				if(x==arr.length){
+					console.log('Done', results);
+			 res.status(200).send(results);
+
+
+				}
+			});
+			
+		};
+		upload.forEach(getFileDetails);
+
+			console.log('Finisehd');
+	// res.status(200).send({message: 'Got the Uploads!', data: upload});
+});
+
+
+
+};
+
+//Download an Uploaded File
+exports.dlUpload = function(req, res){
+		console.log('got here', req.upload);
+		res.download(req.upload.url, req.upload.filename, function(err){
+			if(err){
+				console.log('ERROR!!!');
+			} else {
+				console.log('No Errors', req.upload);
+			}
+			return;
+		});
+	};
+/**
+ * Create file upload
+ */
+exports.uploadFile = function (req, res, next) {
+	console.log('Uploading File');
+    console.log('Got to post');
+	console.log('Request.files', req.files);
+
+
+    	var rootDir = path.normalize(__dirname + '../../../'),
+		publicDir = rootDir + 'public',
+		relativeDir = 'public/uploads/files',
+		uploadDir = relativeDir+'/'+req.shop._id, 
+		uploadURL = '/uploads/' + req.shop._id,
+		imageTypes= /\.(gif|jpe?g|png)$/i;
+		console.log('Public Dir: ', publicDir);
+		var util = require('util');
+
+	if(req.files) {
+		console.log('req.files: ', req.files);
+		if(req.files.size === 0) {
+			return res.send(400, {
+				message: 'Empty file'
+			});
+		}
+		// if(req.files.file.extension==='pdf'){
+		// uploadDir = relativeDir+'/'+req.shop._id;
+		// }else {
+		// 	uploadDir = relativeDir+'/'+req.shop._id+'/images';
+		// }
+		console.log('Upload DIr', uploadDir);
+		fs.exists(uploadDir, function(isDir) {
+			if(!isDir) {
+				console.log('We dont have a director for this shop yet'+uploadDir+' so Im gonna make one: '+ req.files.file.path);
+				try{
+					fs.mkdir(uploadDir, function(err){
+						if(err)console.log('ERROR MOTHERFUCKER!!! ', err);
+
+						console.log('We have made our directory now!');
+
+
+
+					});	
+				} catch(e) {
+
+					// Ignore the current directory already exists error.
+					// As uploading multiple files could flag this error.
+					if(e.code !== 'EEXIST') {
+						console.log('What the fuck!!', e);
+						// throw e;
+				}
+			}
+
+			}
+
+				
+
+
+			var findValidFileName = function(file, path, extension, i) {
+				console.log('checking file: %s', path + file);
+				
+				if(fs.existsSync(path + file)) {
+					console.log('file exists');
+					
+					if(!i) i = 0; i++;
+					
+					var f = file.substr(0, file.lastIndexOf('.')) || file;
+					f = f + '-' + i + '.' + extension;
+					
+					console.log('checking if new filename: %s exists', f);
+					if(fs.existsSync(path + f)) {
+						return findValidFileName(file, path, extension, i);
+					} else {
+						return f;
+					}
+				} else {
+					// console.log('file doesnt exist');
+					return file;
+				}
+			};
+			
+
+			var fileName = findValidFileName(req.files.file.originalname, uploadDir + '/', req.files.file.extension);
+			
+			console.log('original name: ', req.files.file.originalname);
+			console.log('new name: ', fileName);
+
+		
+
+			fs.rename(req.files.file.path, uploadDir+'/' + fileName, function(err){
+				if(err)console.log('ERROR!!!!!!!!', err);
+				console.log('Preparing to save our Upload, filename: '+fileName+' | Location: '+relativeDir+'/'+req.shop._id+' | URL: '+uploadDir+'/' + fileName);
+		
+						
+							var finished = function() {
+							console.log('Saving our Upload now');
+				upload.save(function(err) {
+					if(err) {
+						res.send(400, {
+							message: getErrorMessage(err)
+						});
+					} else {
+						//res.jsonp(upload);
+						console.log('Got it!!!');
+					res.status(200).send('Uploaded!');
+						//exports.uploadBySession(req, res);
+					}
+				});
+			};
+
+
+
+
+
+						var upload = new Upload({
+							session: req.sessionID,
+							filename: fileName,
+							location: relativeDir+'/'+req.shop._id,
+							url: uploadDir+'/' + fileName,
+							size: req.files.file.size,
+
+							
+						});
+
+						finished();
+			});
+			
+	
+	});
+}
+	
+      	
+          // console.log('Request Info', req);
+          // fs.readFile(req.files.file.path, function(err, data) {
+          // 	console.log('Reading File', req.files.file.name);
+          // 	var newPath = "/uploads/"+req.shop.name+"/";
+          // 	console.log(newPath);
+          // 	console.log('Data: ', data);
+          // 	var options = {
+          // 		encoding: null
+          // 	};
+          // 	fs.rename(req.files.file.path, '/public/uploads/chad/', function(err) {
+
+          // 		fs.writeFile('/public/uploads/'+req.shop._id+'/test.png', data, options, function(err) {
+          // 	// console.log('I hope this works', newFile);
+          // 	console.log('Writing File');
+          // 	res.send('hi');
+          // });
+
+
+
+          // 	});
+          	
+
+          // });
+
+
+          // })
+          // var newPath = '/public/uploads/'+req.shop.name;
+          // var newFile = fs.writeFile('TEST.png', req.files.file, function(err) {
+          // 	console.log('I hope this works', newFile);
+          // 	// res.status(200).send(newFile);
+
+
+
+
+
+          // });
+
+   
+
+
+//     if (req.method === 'POST') {
+//     	console.log('Got To POst:');
+
+//     	var rootDir = path.normalize(__dirname + '../../../'),
+// 		publicDir = rootDir + 'public',
+// 		relativeDir = 'public/uploads/files/',
+// 		uploadDir = rootDir + relativeDir,
+// 		uploadURL = '/uploads/' + req.shop._id+'/',
+// 		imageTypes= /\.(gif|jpe?g|png)$/i;
+
+// 		var util = require('util');
+
+// 	if(req.files) {
+// 		console.log('req.files: ', req.files);
+// 		if(req.files.size === 0) {
+// 			return res.send(400, {
+// 				message: 'Empty file'
+// 			});
+// 		}
+// 		console.log('Upload DIr', uploadDir);
+// 		fs.exists(uploadDir, function(isDir) {
+// 			if(!isDir) {
+// 				try{
+// 					fs.mkdirSync(uploadDir);	
+// 				} catch(e) {
+
+// 					// Ignore the current directory already exists error.
+// 					// As uploading multiple files could flag this error.
+// 					if(e.code !== 'EEXIST') {
+// 						console.log('What the fuck!!', e);
+// 						// throw e;
+// 				}
+// 			}
+
+// 			}
+
+// 			var findValidFileName = function(file, path, extension, i) {
+// 				console.log('checking file: %s', path + file);
+				
+// 				if(fs.existsSync(path + file)) {
+// 					console.log('file exists');
+					
+// 					if(!i) i = 0; i++;
+					
+// 					var f = file.substr(0, file.lastIndexOf('.')) || file;
+// 					f = f + '-' + i + '.' + extension;
+					
+// 					console.log('checking if new filename: %s exists', f);
+// 					if(fs.existsSync(path + f)) {
+// 						return findValidFileName(file, path, extension, i);
+// 					} else {
+// 						return f;
+// 					}
+// 				} else {
+// 					console.log('file doesnt exist');
+// 					return file;
+// 				}
+// 			};
+
+// 			var fileName = findValidFileName(req.files.file.originalname, uploadDir + '/', req.files.file.extension);
+// 			console.log('original name: ', req.files.file.originalname);
+// 			console.log('new name: ', fileName);
+
+// 			fs.renameSync(rootDir + req.files.file.path, uploadDir + '/' + fileName);
+
+// 			var upload = new Upload({
+// 				session: req.sessionID,
+// 				filename: fileName,
+// 				location: relativeDir,
+// 				url: uploadURL + '/' + fileName,
+// 				size: req.files.file.size,
+// 				versions: {}
+// 			});
+
+// 			upload.versions = {};
+
+// 			// var counter = 0;
+// 			// Object.keys(imageVersions).forEach(function (version) {
+
+// 			// 	counter++;
+// 			// 	fs.exists(uploadDir + '/' + version, function(vDir) {
+// 			// 		if(!vDir) {
+// 			// 			try{
+// 			// 				fs.mkdirSync(uploadDir + '/' + version);
+// 			// 			} catch(e) {
+
+// 			// 				// Ignore the current directory already exists error.
+// 			// 				// As uploading multiple files could flag this error.
+// 			// 				if(e.code !== 'EEXIST') throw e;
+// 			// 			}
+// 			// 		}
+
+// 			// 	});
+// 			// });
+// 						var finished = function() {
+// 				upload.save(function(err) {
+// 					if(err) {
+// 						res.send(400, {
+// 							message: getErrorMessage(err)
+// 						});
+// 					} else {
+// 						//res.jsonp(upload);
+// 						console.log('Got it!!!');
+// 						res.jsonp({files: [upload]});
+// 						//exports.uploadBySession(req, res);
+// 					}
+// 				});
+// 			};
+// 		});
+
+// 	} else {
+// 		res.status(400).send({
+// 			message: 'Empty file'
+// 		});
+// 	}
+// }
+
+
+  //   var busboy = new Busboy({ headers: req.headers });
+  //   busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+  //     console.log('File [' + fieldname + ']: filename: ' + filename);
+  //     file.on('data', function(data) {
+  //       console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+  //     });
+  //     file.on('end', function() {
+  //       console.log('File [' + fieldname + '] Finished');
+  //     });
+  //   });
+  //   busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
+  //     console.log('Field [' + fieldname + ']: value: ' + inspect(val));
+  //   });
+  //   busboy.on('finish', function() {
+  //     console.log('Done parsing form!');
+  //     res.writeHead(303, { Connection: 'close', Location: '/' });
+  //     res.end();
+  //   });
+  //   console.log('Huh');
+  //   req.pipe(busboy);
+  // }    
+
+return;
+
+
+
 
 };
 

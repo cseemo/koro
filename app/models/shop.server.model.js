@@ -26,7 +26,8 @@ var ShopSchema = new Schema({
 	},
 	address: {
 			type: String,
-			trim: true
+			trim: true,
+			// required: 'We Need the Shop\'s Physical Address',
 	},
 	city: {
 			type: String,
@@ -85,6 +86,9 @@ var ShopSchema = new Schema({
 			type: String,
 			trim: true
 	},
+	uploads: {
+		type: Boolean
+	}
 });
 
 mongoose.model('Shop', ShopSchema);

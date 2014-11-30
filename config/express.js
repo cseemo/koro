@@ -19,6 +19,8 @@ var express = require('express'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
 	path = require('path');
+	var busboy = require('busboy');
+	var multer = require('multer');
 // 	var memwatch = require('memwatch');
 
 // memwatch.on('leak', function(info) {
@@ -73,6 +75,28 @@ module.exports = function(db) {
 	app.locals.facebookAppId = config.facebook.clientID;
 	app.locals.jsFiles = config.getJavaScriptAssets();
 	app.locals.cssFiles = config.getCSSAssets();
+
+app.use(multer({ dest: './public/uploads/'}));
+	// app.use(busboy());
+// 	app.use(multer({ dest: './public/uploads/',
+// 	rename: function(fieldname, filename) {
+// 	console.log(fieldname);
+// 	console.log(filename);
+
+// 		return 'img'+filename;
+// 	}
+// }));
+	// app.use(multer({ dest: './public/uploads/',
+	// rename: function(fieldname, filename) {
+	// 	console.log('What do we know here - ', req);
+	// 	return 'chad'+filename;
+	// },
+	// onFileUploadStart: function(file) {
+	// 	console.log(file.originalname + ' is starting');
+
+	// }
+	
+	// }));
 
 	// Passing the request url to environment locals
 	app.use(function(req, res, next) {

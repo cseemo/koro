@@ -22,6 +22,16 @@ module.exports = function(app) {
 		app.route('/downloadPDF/:shopId')
 		.get(shops.getSignedAgreement);
 
+		app.route('/upload/shop/:shopId')
+		.post(shops.uploadFile);
+
+		app.route('/uploads/:shopId')
+		.get(shops.getUploads);
+
+		app.route('/dlupload/:fileId')
+		.get(shops.dlUpload);
+
+
 		
 
 
@@ -34,4 +44,5 @@ module.exports = function(app) {
 
 	// Finish by binding the Shop middleware
 	app.param('shopId', shops.shopByID);
+	app.param('fileId', shops.uploadByID);
 };
