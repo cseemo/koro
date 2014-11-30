@@ -330,8 +330,11 @@ exports.getUploads = function(req, res) {
 		if (err) return next(err);
 		if (! upload) console.log('FAIL');
 		console.log('Got an uplaod');
-		console.log(upload);
+		console.log('Length: ',upload.length);
 		var x=0;
+		if(upload.length<1){
+			res.status(200).send(results);
+		}
 		var getFileDetails = function(elm, i, arr) {
 			console.log('Index: '+i+' Elm: '+elm+' Array: '+arr);
 			fs.readFile(elm.url, function(err, content) {

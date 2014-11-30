@@ -92,8 +92,13 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
     		success(function(response, data) {
     			console.log('Success', response);
     			console.log('Data', data);
-    			$scope.myUploads = response;
-    			if(response.length>2){
+    			if(response.length<1){
+    				console.log('No Uploads');
+
+    			}else{
+
+    				$scope.myUploads = response;
+    				if(response.length>2){
     				console.log('How many images? and How many files?');
     				var numImages = 0;
     				var numFiles = 0 ;
@@ -107,23 +112,40 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
     					}else{
     						numImages++;
     					}
-    					console.log('Images: '+numImages+', Files: '+numFiles);
+
+    					
+
+    				});
+    				console.log('Images: '+numImages+', Files: '+numFiles);
     					if(numImages>2){
     						console.log('Assuming they have all the images');
     						$scope.havePhotos = true;
+    					}else{
+    						$scope.havePhotos = false;
+		
     					}
     					if(numFiles>1){
     						console.log('Assume we have both Insurance/Lease');
     						$scope.haveFiles = true;
+    					}else{
+    						$scope.haveFiles = false;
     					}
-    				});
+
+    					
 
     			}else{
     				console.log('Lenght of Files: ', response.length);
     			}
+    		}
 			    }).then(function(){
 			    	console.log('Then we go here and show those documents');
 			    });
+
+
+
+
+    			
+    			
 
 		};
 
@@ -134,11 +156,19 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			var dltype;
 			var filetype = name.substr(name.length-4);
 			console.log('File Type: ', filetype);
+			if(filetype==='.jpg'){
+				dltype = 'image/jpg';
+			}else 
 			if(filetype==='.png'){
 				dltype = 'image/png';
-			}else{
-					dltype = 'application/pdf';
+			}else 
+			if(filetype==='.pdf'){
+				dltype = 'application/pdf';
 			}
+			else{
+					dltype = 'UTF-8';
+			}
+			console.log('Type: ', dltype);
 			$http({method: 'GET', url: '/dlUpload/'+id, responseType: 'arraybuffer'}).
     		success(function(response, data) {
     			var file = new Blob([response], {type: dltype});
