@@ -66,8 +66,8 @@ z-index: 999;
 	    <div class="container">
 	    <alert type="warning" class="text-center" data-ng-show="!shop.complete">
 		Just a head's up, it appears that this Service Center is not complete:<br>
-
-	      <a data-ng-show="!shop.signDate" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="sendContract();">
+		
+	      <a data-ng-show="!shop.agreementSent" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="sendContract();">
 				<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Send Service Center Agreement
 			</a>  
 
@@ -198,22 +198,22 @@ z-index: 999;
 	                                       
 	                                        <br>
 	                                    
-	                                        <label>Monday</label><input ng-model="shop.hoursMon" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                        <label>Monday</label><input ng-model="shop.hoursMon" cb:inline ng-blur="saveMe()" ></input>
 	                                        <br>
 	                                    
-	                                        <label>Tuesday</label><input ng-model="shop.hoursTue" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                        <label>Tuesday</label><input ng-model="shop.hoursTue" cb:inline ng-blur="saveMe()" ></input>
 	                                    <br>
-	                                       <label>Wednesday</label><input ng-model="shop.hoursWed" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                       <label>Wednesday</label><input ng-model="shop.hoursWed" cb:inline ng-blur="saveMe()" String></input>
 	                                        <br>
 	                                    
-	                                        <label>Thursday</label><input ng-model="shop.hoursThu" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                        <label>Thursday</label><input ng-model="shop.hoursThu" cb:inline ng-blur="saveMe()" String></input>
 	                                    <br>
-	                                       <label>Friday</label><input ng-model="shop.hoursFri" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                       <label>Friday</label><input ng-model="shop.hoursFri" cb:inline ng-blur="saveMe()" String></input>
 	                                        <br>
 	                                    
-	                                        <label>Saturday</label><input ng-model="shop.hoursSat" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                        <label>Saturday</label><input ng-model="shop.hoursSat" cb:inline ng-blur="saveMe()" String></input>
 	                                    <br>
-	                                        <label>Sunday</label><input ng-model="shop.hoursSun" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                        <label>Sunday</label><input ng-model="shop.hoursSun" cb:inline ng-blur="saveMe()" String></input>
 	                                         <br>
 	                                    </li>
 
@@ -230,8 +230,9 @@ z-index: 999;
 
 									</a>
 														</li>
+														<label>Files & Images</label>
 									    <li data-ng-show="myUploads">
-	                                      <label>Files & Images</label>
+	                                      
 
 	                                       <span ng-repeat="file in myUploads">
 	                                       <label>Filename</label>

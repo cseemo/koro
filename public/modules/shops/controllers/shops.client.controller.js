@@ -1,19 +1,51 @@
 'use strict';
 
 // Shops controller
-angular.module('shops').controller('ShopsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter', '$sce', '$timeout', '$modal', 
-	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce, $timeout, $modal) {
+angular.module('shops').controller('ShopsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shops', '$http', '$filter', '$sce', '$timeout', '$modal', '$rootScope', 
+	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce, $timeout, $modal, $rootScope) {
 		$scope.authentication = Authentication;
 		//Update Info Button disaled until form is changed
 		
 
 		// Create new Shop
 		$scope.create = function() {
-			// Create new Shop object
+			// Create new Shop 
+			console.log('Createing new shop!!');
 			console.log(this);
-			var phone = $filter('tel')(this.telephone);
-			var altphone = $filter('tel')(this.alttelephone);
-			var fax  = $filter('tel')(this.fax);
+			var phone;
+			var altphone;
+			var fax;
+			var techphone;
+
+			if(!this.telephone){
+				phone = 'Telephone Number';
+			}else{
+
+			phone = $filter('tel')(this.telephone);
+			}
+			if(!this.altphone){
+				altphone = 'Alternate Telephone Number';
+			}else{
+
+			altphone = $filter('tel')(this.altphone);
+			}
+			if(!this.fax){
+				fax = 'Fax Number';
+			}else{
+
+			fax = $filter('tel')(this.fax);
+			}
+			if(!this.techphone){
+				techphone = 'Tech Phone Number';
+			}else{
+
+			techphone = $filter('tel')(this.techphone);
+			}
+			console.log('Phone is: ', phone);
+			console.log('TechPhone is: ', techphone);
+			console.log('AltPhone is: ', altphone);
+			console.log('Fax is: ', fax);
+
 			var shop = new Shops ({
 				name: this.name,
 				primarycontactname: this.primarycontactname,
@@ -45,7 +77,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			console.log('Sending out Contract');
 			
 
-							var shopId = $scope.shop._id;
+			var shopId = $scope.shop._id;
 			console.log(shopId);
 					$http({
 					    method: 'get',
@@ -69,6 +101,8 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			     		 $timeout(function(){
 								////console.log('Going to Change');
 							$scope.seeSA = false;
+							$scope.shop.agreementSent = true;
+							$scope.shop.$update();
 							}, 10000);
 
 			     		
@@ -86,7 +120,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		};
 
 		//Get Uploads associated with this SHop
-		$scope.getUploads = function(id) {
+		$rootScope.getUploads = function(id) {
 			// console.log('Getting Uploads');
 			$http({method: 'GET', url: '/uploads/'+id}).
     		success(function(response, data) {
@@ -134,19 +168,26 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
     						console.log('This shop is complete!');
     						$scope.shop.complete = 'true';
     						$scope.shop.$update();
-    					}else {
+    					}else 
     						if(numImages>2 && numFiles >2){
     						console.log('This shop is complete!');
     						$scope.shop.complete = 'true';
     						$scope.shop.$update();
+    					}else 
+    						if(numImages>2 && numFiles >1 && $scope.shop.agreementSent){
+    						console.log('This shop is complete!');
+    						$scope.shop.complete = 'true';
+    						$scope.shop.$update();
     					}
+
+    					
     					}
     					
 
 
 
     			}
-    		}
+    		
 			    }).then(function(){
 			    	// console.log('Then we go here and show those documents');
 			    });
@@ -365,7 +406,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		};
 	}
 	]).controller('shopModalInstanceCtrl', [
-    '$scope', '$modalInstance', '$http', 'FileUploader', 'shop', function($scope, $modalInstance, $http, FileUploader, shop) {
+    '$scope', '$modalInstance', '$http', 'FileUploader', 'shop', '$rootScope', function($scope, $modalInstance, $http, FileUploader, shop, $rootScope) {
 
     	console.log('Shop is', shop);
     	$scope.shop = shop;
@@ -425,6 +466,9 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
             console.info('onCompleteAll');
             toastr.success('Your files have been uploaded');
             $modalInstance.close();
+            console.log(shop._id);
+            $rootScope.getUploads(shop._id);
+
 
         };
 

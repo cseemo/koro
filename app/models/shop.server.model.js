@@ -54,17 +54,17 @@ var ShopSchema = new Schema({
 	fax: {
 			type: String,
 			trim: true,
-			default: 'Fax Number'
+			default: null
 	},
 	telephone: {
 			type: String,
 			trim: true,
-			default: 'Phone Number'
+			default: null
 	},
 	alttelephone: {
 			type: String,
 			trim: true,
-			default: 'Alternate Phone Nmber'
+			default: null
 	},
 	primarycontactname: {
 			type: String,
@@ -100,7 +100,7 @@ var ShopSchema = new Schema({
 	techphone: {
 			type: String,
 			trim: true,
-			default: 'Tech Phone Number'
+			default: null
 
 	},
 	hoursMon: {
@@ -141,7 +141,13 @@ var ShopSchema = new Schema({
 	complete: {
 		type: String,
 		default: null
+	},
+	agreementSent: {
+		type: String,
+		default: null
 	}
+
+	
 
 });
 
