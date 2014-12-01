@@ -64,16 +64,16 @@ z-index: 999;
 <a class="btn btn-primary btn-sm" style="color: #fff;" ng-click="seeAgreement()">View Agreement</a>
 </alert>
 	    <div class="container">
-	    <alert type="warning" class="text-center" >
+	    <alert type="warning" class="text-center" data-ng-show="!shop.complete">
 		Just a head's up, it appears that this Service Center is not complete:<br>
 
 	      <a data-ng-show="!shop.signDate" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="sendContract();">
 				<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Send Service Center Agreement
 			</a>  
 
-				      <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="setHours();">
+				<!--       <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="setHours();">
 				<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Set Hours of Operation
-			</a> 
+			</a>  -->
 
 				      <a  data-ng-show="!haveFiles" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="uploadPhotos();">
 				<span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Upload Insurance Docs
@@ -105,34 +105,50 @@ z-index: 999;
 	                        <div class="media-body">
 	                                        <ul class="list-unstyled list-info">
 	                                            <li>
+
+<!-- 	                                                <div class="controls">
+<a xeditable href="javascript:;" id="address" data-pk="1" data-type="textarea" data-name="address" data-ng-model="shop.address" data-placement="right" data-placeholder="Required" data-showbuttons="true" data-original-title="Enter Address" class="editable editable-click">{{shop.address}}</a>
+    </div> -->
+
+    
 	                                                
 	                                                <label> Name</label>
-	                                                {{shop.name}} 
+	                                                <input ng-model="shop.name" ng-blur="saveMe()" cb:inline></input>
 	                                            </li>
 	                                             <li>
 	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                                <label>Phone</label>
-	                                                {{shop.telephone | tel}}
+	                                                <input ng-model="shop.telephone" cb:inline ng-blur="saveMe()"></input>
+
 	                                            </li>
 	                                            <li>
 	                                               
 	                                                <label>Email</label>
-	                                                {{shop.email}}
+	                                                <input ng-model="shop.email" cb:inline ng-blur="saveMe()"></input>
 	                                            </li>
 	                                            <li>
 	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                                <label>Primary Contact</label>
-	                                                {{shop.primarycontactname}}
+	                                                <input ng-model="shop.primarycontactname" cb:inline ng-blur="saveMe()"></input>
+	                                               
 	                                            </li>
 	                                             <li>
 	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                                <label>Alternate Contact</label>
-	                                                {{shop.altcontactname}}
+	                                                
+	                                                <input ng-model="shop.altcontactname" cb:inline ng-blur="saveMe()"></input>
 	                                            </li>
 	                                            <li>
 	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
 	                                                <label>Alternate Phone</label>
-	                                                 {{shop.alttelephone | tel}} 
+	                                                
+	                                                 <input ng-model="shop.alttelephone" cb:inline ng-blur="saveMe()"></input> 
+	                                            </li>
+	                                             <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
+	                                                <label>Fax</label>
+	                                                
+	                                                 <input ng-model="shop.fax" cb:inline ng-blur="saveMe()"></input> 
 	                                            </li>
 	                                              
 	                                        </ul>
@@ -169,19 +185,38 @@ z-index: 999;
 	                                    <li>
 	                                        
 	                                        <label>Address</label>
-	                                        {{shop.address}}
+	                                   
+	                                           <input ng-model="shop.address" cb:inline ng-blur="saveMe()"></input> 
+	                                           
+	                                       	 <input ng-model="shop.city" cb:inline ng-blur="saveMe()"></input>  <select ng-model="shop.state" ng-options="state.abr as state.name for state in states" cb:inline ng-blur="saveMe()"></select>  <input ng-model="shop.zipcode" cb:inline ng-blur="saveMe()" maxlength="5"></input> 
 	                                    
-	                                         {{shop.city}},  {{shop.state}}  {{shop.zipcode}}
+	                                        
 	                                    </li>
+	                                     <label>Hours of Operation</label>
 	                                    <li>
 	                                       
-	                                        <label>Hours</label>
-	                                        <ul class="list-unstyled list-info">
-	                                    <li>
-	                                        <label>Mon - Fri</label> 8-11am<br>
-	                                      <label>Saturday</label> 9-5<br>
-	                                      <label>Sunday</label> Closed<br>
+	                                       
+	                                        <br>
+	                                    
+	                                        <label>Monday</label><input ng-model="shop.hoursMon" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                        <br>
+	                                    
+	                                        <label>Tuesday</label><input ng-model="shop.hoursTue" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                    <br>
+	                                       <label>Wednesday</label><input ng-model="shop.hoursWed" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                        <br>
+	                                    
+	                                        <label>Thursday</label><input ng-model="shop.hoursThu" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                    <br>
+	                                       <label>Friday</label><input ng-model="shop.hoursFri" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                        <br>
+	                                    
+	                                        <label>Saturday</label><input ng-model="shop.hoursSat" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                    <br>
+	                                        <label>Sunday</label><input ng-model="shop.hoursSun" cb:inline ng-blur="saveMe()" maxlength="2"></input>
+	                                         <br>
 	                                    </li>
+
 	                                    <li data-ng-show="shop.signDate">
 	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                        <label>Sign-Up Date</label>
@@ -196,7 +231,7 @@ z-index: 999;
 									</a>
 														</li>
 									    <li data-ng-show="myUploads">
-	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+	                                      <label>Files & Images</label>
 
 	                                       <span ng-repeat="file in myUploads">
 	                                       <label>Filename</label>
@@ -406,7 +441,7 @@ z-index: 999;
 					<tbody>
 						<tr>
 							<td><label>Monday</label></td>
-							<td>8am</td>
+							<td>{{shop.hours.Monday.open}}</td>
 							<td>5pm</td>
 						</tr>
 						<tr>

@@ -43,13 +43,17 @@ module.exports = {
 				'public/lib/flot.tooltip/js/jquery.flot.tooltip.min.js',
 				'public/lib/angular-socket-io/socket.js',
 				'public/lib/socket.io-client/socket.io.js',
-				'public/lib/angular-file-upload/angular-file-upload.js'
+				'public/lib/angular-file-upload/angular-file-upload.js',
+				'public/lib/angular-xeditable/dist/js/xeditable.js'
+
+
 
 				//'public/lib/flot/*.js'
 			]
 		},
 		css: [
-			'public/modules/**/css/*.css'
+			'public/modules/**/css/*.css',
+			'public/lib/angular-xeditable/dist/css/xeditable.css'
 		],
 		js: [
 			'public/config.js',

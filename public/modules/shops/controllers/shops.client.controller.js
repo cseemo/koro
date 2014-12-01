@@ -87,11 +87,11 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 		//Get Uploads associated with this SHop
 		$scope.getUploads = function(id) {
-			console.log('Getting Uploads');
+			// console.log('Getting Uploads');
 			$http({method: 'GET', url: '/uploads/'+id}).
     		success(function(response, data) {
-    			console.log('Success', response);
-    			console.log('Data', data);
+    			// console.log('Success', response);
+    			// console.log('Data', data);
     			if(response.length<1){
     				console.log('No Uploads');
 
@@ -99,14 +99,14 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
     				$scope.myUploads = response;
     				if(response.length>2){
-    				console.log('How many images? and How many files?');
+    				// console.log('How many images? and How many files?');
     				var numImages = 0;
     				var numFiles = 0 ;
     				angular.forEach(response, function(value, key) {
-    					console.log('Key: '+key+' and Value: '+value);
-    					console.log('Value Details %o', value);
+    					// console.log('Key: '+key+' and Value: '+value);
+    					// console.log('Value Details %o', value);
     					var filetype = value.FileName.substr(value.FileName.length-4);
-    					console.log('File Type: ', filetype);
+    					// console.log('File Type: ', filetype);
     					if(filetype==='.pdf'){
     						numFiles++;
     					}else{
@@ -116,29 +116,39 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
     					
 
     				});
-    				console.log('Images: '+numImages+', Files: '+numFiles);
+    				// console.log('Images: '+numImages+', Files: '+numFiles);
     					if(numImages>2){
-    						console.log('Assuming they have all the images');
+    						// console.log('Assuming they have all the images');
     						$scope.havePhotos = true;
     					}else{
     						$scope.havePhotos = false;
 		
     					}
     					if(numFiles>1){
-    						console.log('Assume we have both Insurance/Lease');
+    						// console.log('Assume we have both Insurance/Lease');
     						$scope.haveFiles = true;
     					}else{
     						$scope.haveFiles = false;
     					}
+    					if(numImages>2 && $scope.shop.signDate && numFiles >1){
+    						console.log('This shop is complete!');
+    						$scope.shop.complete = 'true';
+    						$scope.shop.$update();
+    					}else {
+    						if(numImages>2 && numFiles >2){
+    						console.log('This shop is complete!');
+    						$scope.shop.complete = 'true';
+    						$scope.shop.$update();
+    					}
+    					}
+    					
 
 
 
-    			}else{
-    				console.log('Lenght of Files: ', response.length);
     			}
     		}
 			    }).then(function(){
-			    	console.log('Then we go here and show those documents');
+			    	// console.log('Then we go here and show those documents');
 			    });
 
 
@@ -148,6 +158,74 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
     			
 
 		};
+
+		$scope.states=[
+		{name: "Alabama", abr: "AL"},
+		{name: "Alaska", abr: "AK"},
+		{name: "Arizona", abr: "AZ"},
+		{name: "Arkansas", abr: "AR"},
+		{name: "California", abr: "CA"},
+		{name: "Connecticut", abr: "CT"},
+		{name: "Colorado", abr: "CO"},
+		{name: "Delaware", abr: "DE"},
+		{name: "Florida", abr: "FL"},
+		{name: "Georgia", abr: "GA"},
+		{name: "Hawaii", abr: "HI"},
+		{name: "Idaho", abr: "ID"},
+		{name: "Illinois", abr: "IL"},
+		{name: "Indiana", abr: "IN"},
+		{name: "Iowa", abr: "IA"},
+		{name: "Kansas", abr: "KS"},
+		{name: "Kentucky", abr: "KY"},
+		{name: "Louisiana", abr: "LA"},
+		{name: "Maine", abr: "ME"},
+		{name: "Maryland", abr: "MD"},
+		{name: "Massachusetts", abr: "MA"},
+		{name: "Michigan", abr: "MI"},
+		{name: "Minnesota", abr: "MN"},
+		{name: "Mississippi", abr: "MS"},
+		{name: "Missouri", abr: "MO"},
+		{name: "Montana", abr: "MT"},
+		{name: "Nebraska", abr: "NB"},
+		{name: "Nevada", abr: "NV"},
+		{name: "New Hampshire", abr: "NH"},
+		{name: "New Jersey", abr: "NJ"},
+		{name: "New Mexico", abr: "NM"},
+		{name: "New York", abr: "NY"},
+		{name: "North Dakota", abr: "ND"},
+		{name: "North Carolina", abr: "NC"},
+		{name: "Ohio", abr: "OH"},
+		{name: "Oklahoma", abr: "OK"},
+		{name: "Oregon", abr: "OR"},
+		{name: "Pennsylvania", abr: "PA"},
+		{name: "Rhode Island", abr: "RI"},
+		{name: "South Carolina", abr: "SC"},
+		{name: "South Dakota", abr: "SD"},
+		{name: "Tennessee", abr: "TN"},
+		{name: "Texas", abr: "TX"},
+		{name: "Utah", abr: "UT"},
+		{name: "Vermont", abr: "VT"},
+		{name: "Virginia", abr: "VI"},
+		{name: "Washington", abr: "WA"},
+		{name: "West Virginia", abr: "WV"},
+		{name: "Wisconsin", abr: "WI"},
+		{name: "Wyoming", abr: "WY"}];
+		
+
+
+
+		$scope.saveMe = function() {
+			console.log('Save it!!');
+			$scope.shop.$update().then(function(){
+				console.log('Saved');
+			});
+
+
+		};
+
+		 $scope.enableEdit = function() { $scope.edit = true; }
+    $scope.disableEdit = function() { $scope.edit = false;  }
+
 
 		//Download an Uploaded File
 		$scope.dlUpload = function(id, name) {

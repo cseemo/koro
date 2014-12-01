@@ -469,7 +469,12 @@ exports.uploadFile = function (req, res, next) {
 			fs.rename(req.files.file.path, uploadDir+'/' + fileName, function(err){
 				if(err)console.log('ERROR!!!!!!!!', err);
 				console.log('Preparing to save our Upload, filename: '+fileName+' | Location: '+relativeDir+'/'+req.shop._id+' | URL: '+uploadDir+'/' + fileName);
-		
+				
+				//Delete Temp File
+				fs.unlink(req.files.file.path, function(err){
+					console.log('Deleted Item: ', req.files.file.path);
+
+				});
 						
 							var finished = function() {
 							console.log('Saving our Upload now');

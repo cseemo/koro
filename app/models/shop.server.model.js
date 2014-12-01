@@ -12,9 +12,10 @@ var mongoose = require('mongoose'),
 var ShopSchema = new Schema({
 	name: {
 		type: String,
-		default: '',
+		default: 'Service Center Name',
 		// required: 'Please fill Shop name',
 		trim: true
+
 	},
 	created: {
 		type: Date,
@@ -27,51 +28,63 @@ var ShopSchema = new Schema({
 	address: {
 			type: String,
 			trim: true,
+			default: 'Street Address'
 			// required: 'We Need the Shop\'s Physical Address',
 	},
 	city: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'City'
 	},
 	state: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'State'
 	},
 	zipcode: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'Zipcode'
 	},
 	email: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'Email Address'
 	},
 	fax: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'Fax Number'
 	},
 	telephone: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'Phone Number'
 	},
 	alttelephone: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'Alternate Phone Nmber'
 	},
 	primarycontactname: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'Owner Name'
 	},
 	altcontactname: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'Alternate Contact'
 	},
 	signertitle: {
 			type: String,
-			trim: true
+			trim: true,
+			
 	},
 	signer: {
 			type: String,
-			trim: true
+			trim: true,
+
 	},
 	signDate: {
 			type: Date,
@@ -80,15 +93,56 @@ var ShopSchema = new Schema({
 	},
 	techname: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'Trained Tech Name'
+
 	},
 	techphone: {
 			type: String,
-			trim: true
+			trim: true,
+			default: 'Tech Phone Number'
+
 	},
-	uploads: {
-		type: Boolean
+	hoursMon: {
+		type: String,
+		trim: true,
+		default: '8am-5pm'
+	},
+	hoursTue: {
+		type: String,
+		trim: true,
+		default: '8am-5pm'
+	},
+	hoursWed: {
+		type: String,
+		trim: true,
+		default: '8am-5pm'
+	},
+	hoursThu: {
+		type: String,
+		trim: true,
+		default: '8am-5pm'
+	},
+	hoursFri: {
+		type: String,
+		trim: true,
+		default: '8am-5pm'
+	},
+	hoursSat: {
+		type: String,
+		trim: true,
+		default: '10am-3pm'
+	},
+	hoursSun: {
+		type: String,
+		trim: true,
+		default: 'Closed'
+	},
+	complete: {
+		type: String,
+		default: null
 	}
+
 });
 
 mongoose.model('Shop', ShopSchema);

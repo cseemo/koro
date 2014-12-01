@@ -81,4 +81,50 @@ angular.module('shops').factory('Shops', ['$resource',
                 }
             }
         };
-    }]);
+    }]).directive('xeditable', ['$timeout', function($timeout) {
+    	console.log('Got to our xeditable directive!');
+    return {
+        restrict: 'A',
+        require: "ngModel",
+        link: function(scope, element, attrs, ngModel) {
+        	console.log('Linking Xeditable Directive!');
+        	console.log('Scope: ', scope);
+        	console.log('Element: ', element);
+        	console.log('Attributes: ', attrs);
+        	console.log('Model: ', ngModel);
+
+
+
+
+            var loadXeditable = function() {
+            	console.log('Loading xEditable: ');
+                element.editable({
+                    display: function(value, srcData) {
+                        ngModel.$setViewValue(value);
+                        scope.$apply();
+                    }
+                });
+            }
+           
+        }
+    };
+
+     }]).directive ('unfocus', function() { return {
+
+  restrict: 'A',
+  link: function (scope, element, attribs) {
+      
+    element[0].focus();
+      
+    element.bind ("blur", function() {
+        scope.$apply(attribs["unfocus"]);
+        console.log("??");
+      });
+                                   
+  } 
+    
+} });
+
+
+
+
