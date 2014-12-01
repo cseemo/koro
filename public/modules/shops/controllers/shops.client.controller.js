@@ -17,7 +17,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 if( ios ) {
 	console.log('IOS');
-	$scope.showEdits = true;
+	 $rootScope.showEdits = true;
     
     if ( !standalone && safari ) {
 
@@ -37,7 +37,7 @@ if( ios ) {
 } else {
     console.log('Not IOS');
     $scope.deviceType = 'Not iOS';
-
+     $rootScope.showEdits = false;
     
     }
 };
