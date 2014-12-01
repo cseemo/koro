@@ -6,7 +6,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		$scope.authentication = Authentication;
 		//Update Info Button disaled until form is changed
 		  $scope.deviceType = 'Unknown';
-		  $scope.showEdits = false;
+		  $rootScope.showEdits = false;
 		//Check type of Device
 		$scope.deviceCheck = function() {
 			console.log('Checking Device! ', Date.now());

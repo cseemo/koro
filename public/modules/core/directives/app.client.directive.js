@@ -140,9 +140,20 @@ angular.module('core').directive('imgHolder', [
 
         return (country + ' (' + city + ') ' + number).trim();
     };
-}).directive("cbInline", function($timeout) {
-  var template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:dblclick=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+}).directive("cbInline", function($timeout, $rootScope) {
+    var template;
+  console.log('Got to Directive!: ', $rootScope);
+  if($rootScope.showEdits){
+    console.log('Need to show our edits!!');
+    template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:click=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
 
+  }else {
+    console.log('Standard view');
+    // template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:dblclick=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:click=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+
+  }
+ 
   return {
     transclude: "element",
     priority: 2,
