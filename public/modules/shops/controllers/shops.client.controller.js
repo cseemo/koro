@@ -6,6 +6,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		$scope.authentication = Authentication;
 		//Update Info Button disaled until form is changed
 		  $scope.deviceType = 'Unknown';
+		  $scope.showEdits = false;
 		//Check type of Device
 		$scope.deviceCheck = function() {
 			console.log('Checking Device! ', Date.now());
@@ -16,7 +17,7 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 if( ios ) {
 	console.log('IOS');
-	
+	$scope.showEdits = true;
     
     if ( !standalone && safari ) {
 

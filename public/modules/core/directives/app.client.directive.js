@@ -153,6 +153,7 @@ angular.module('core').directive('imgHolder', [
     template: template,
     replace: true,
     link: function(scope, elm, attr) {
+      console.log('Line 156: Scope: ', scope);
       var originalValue, transcluded;
       originalValue = scope.model;
       transcluded = elm.find(".transclude-root").children().first();
