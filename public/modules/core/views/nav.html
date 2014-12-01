@@ -9,7 +9,22 @@
     
         >
 
-        <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);" style="color: white; ">
+         <li>
+        <a href="#!/dashboard"> <i class="fa fa-dashboard"></i>
+        <span>Dashboard</span>
+         </a>
+         </li>
+          <li>
+        <a href="#!/offenders"> <i class="fa fa-male"></i>
+        <span>Offenders</span>
+         </a>
+         </li>
+          <li>
+        <a href="#!/shops"> <i class="fa fa-building-o"></i>
+        <span>Svc Centers</span>
+         </a>
+         </li>
+   <!--      <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);" style="color: white; ">
             <a href="#!/{{item.link}}">
                 <i class="{{item.icon}}"></i>
                 <span data-ng-bind="item.title"></span>
@@ -21,7 +36,7 @@
                     <a href="/#!/{{subitem.link}}" data-ng-bind="subitem.title"></a>
                 </li>
             </ul>
-        </li>
+        </li> -->
 
             
     </ul>

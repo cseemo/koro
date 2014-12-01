@@ -5,7 +5,8 @@ color: #333;
 </style>
 <section data-ng-controller="OffendersController" data-ng-init="find()">
     <div class="page-header">
-        <h1 style="color: #333;">Offenders</h1>
+        <h1 style="color: #333;">Customers</h1>
+           <a  href="/#!/offenders/create" class="btn btn-primary btn-sm" style="color: #fff;" >Add New Client</a>
     </div>
     <div class="list-group">
         <a data-ng-repeat="offender in offenders" data-ng-href="#!/offenders/{{offender._id}}" class="list-group-item">

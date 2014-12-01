@@ -131,7 +131,7 @@ table.responsive {
   border: 1px solid #ddd;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/plugins\/_responsive-tables\.scss}line{font-family:\000037}}
   table.responsive {
     margin-bottom: 0;
@@ -1220,7 +1220,7 @@ button.toast-close-button {
 .page-err .err-container {
   padding: 45px 10px 0;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_err\.scss}line{font-family:\0000314}}
   .page-err .err-container {
     padding: 100px 0 0;
@@ -1315,7 +1315,7 @@ button.toast-close-button {
   right: 0;
   margin-top: -65px;
 }
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_lock-screen\.scss}line{font-family:\0000315}}
   .page-lock .lock-centered {
     margin-top: -75px;
@@ -1356,7 +1356,7 @@ button.toast-close-button {
   border: 6px solid white;
   background: white;
 }
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_lock-screen\.scss}line{font-family:\0000364}}
   .page-lock .lock-box .lock-img img {
     left: 33%;
@@ -1378,7 +1378,7 @@ button.toast-close-button {
   border-bottom-right-radius: 4px;
   color: #273b42;
 }
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_lock-screen\.scss}line{font-family:\0000381}}
   .page-lock .lock-box .lock-pwd {
     padding: 0 0 0 80px;
@@ -1551,7 +1551,7 @@ button.toast-close-button {
 .page-forgot .signin-header {
   margin-top: 50px;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_auth\.scss}line{font-family:\000035}}
   .page-signin .signin-header,
   .page-signup .signin-header,
@@ -1732,7 +1732,7 @@ button.toast-close-button {
   text-align: center;
   border: 1px solid #ddd;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/pages\/_demo\.scss}line{font-family:\0000334}}
   .bs-glyphicons li {
     width: 12.5%;
@@ -1801,7 +1801,7 @@ html {
 .app > .header-container.header-fixed + .main-container {
   padding-top: 120px;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_layouts\.scss}line{font-family:\0000333}}
   .app > .header-container.header-fixed + .main-container {
     padding-top: 60px;
@@ -1836,7 +1836,7 @@ html {
   border-style: solid;
   border-color: #1b1a1f;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_layouts\.scss}line{font-family:\0000361}}
   .app > .main-container > .nav-container {
     display: block;
@@ -1864,7 +1864,7 @@ html {
   bottom: 0;
   float: none;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_layouts\.scss}line{font-family:\0000387}}
   .app > .main-container > .nav-container.nav-fixed {
     top: 60px;
@@ -1876,14 +1876,14 @@ html {
   min-height: 100%;
   margin-left: 0;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_layouts\.scss}line{font-family:\00003100}}
   .app > .main-container > .content-container {
     margin-left: 220px;
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_layouts\.scss}line{font-family:\00003120}}
   .app > .main-container > .nav-container.nav-horizontal {
     z-index: 9;
@@ -2097,7 +2097,7 @@ html {
   top: 12px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-off-canvas\.scss}line{font-family:\000035}}
   .on-canvas #header {
     position: fixed;
@@ -2123,7 +2123,7 @@ html {
     margin-right: -220px;
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\000037}}
   .nav-horizontal .nav > li.open > a {
     background-color: #28262c;
@@ -2134,7 +2134,7 @@ html {
     color: #273b42;
   }
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-horizontal\.scss}line{font-family:\0000325}}
   .main-container > .nav-container.nav-horizontal {
     float: none;
@@ -2251,7 +2251,7 @@ html {
     padding: 13px 40px 13px 20px;
   }
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_nav-min\.scss}line{font-family:\000036}}
   .app.nav-collapsed-min .slimScrollDiv {
     overflow: visible !important;
@@ -2370,7 +2370,7 @@ html {
   line-height: 60px;
   text-align: center;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_header\.scss}line{font-family:\0000332}}
   .header-container > .top-header .logo {
     display: inline-block;
@@ -2416,7 +2416,7 @@ html {
 .header-container > .top-header .menu-button .icon-bar + .icon-bar {
   margin-top: 4px;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_header\.scss}line{font-family:\0000359}}
   .header-container > .top-header .menu-button {
     display: none;
@@ -2455,7 +2455,7 @@ html {
   height: 60px;
   padding: 60px 0 0;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_header\.scss}line{font-family:\00003120}}
   .header-container > .top-header .top-nav {
     padding: 0 0 0 220px;
@@ -2498,7 +2498,7 @@ html {
 .header-container > .top-header .top-nav .nav-right > li > .toggle-min {
   display: none;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_header\.scss}line{font-family:\00003154}}
   .header-container > .top-header .top-nav .nav-left > li > .toggle-min,
   .header-container > .top-header .top-nav .nav-right > li > .toggle-min {
@@ -2521,7 +2521,7 @@ html {
   height: 60px;
   padding: 19px 16px;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_header\.scss}line{font-family:\00003169}}
   .header-container > .top-header .top-nav .nav-left > li > .btn-group > a,
   .header-container > .top-header .top-nav .nav-left > li > a,
@@ -2539,7 +2539,7 @@ html {
   top: 6px;
   right: 3px;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/nelsmar\/Downloads\/rainbow-v1\.3\/rainbow-min\/client\/styles\/sections\/_header\.scss}line{font-family:\00003179}}
   .header-container > .top-header .top-nav .nav-left > li > .btn-group > a .badge,
   .header-container > .top-header .top-nav .nav-left > li > a .badge,
