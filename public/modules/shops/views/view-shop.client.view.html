@@ -58,7 +58,7 @@ z-index: 999;
 
 
 
-	<div class="main-body">
+	<div class="main-body" data-ng-init="deviceCheck()">
 	<alert type="success" class="text-center" data-ng-show="seeSA">
 	Congratulations, the agreement has been sent to {{shop.primarycontactname}} ({{shop.email}}) from {{shop.name}}. If you'd like to review the agreement that was sent out, please click the button below. <br>
 <a class="btn btn-primary btn-sm" style="color: #fff;" ng-click="seeAgreement()">View Agreement</a>
@@ -377,6 +377,7 @@ z-index: 999;
 				<span data-ng-bind="shop.created | date:'mediumDate'"></span>
 				by
 				<span data-ng-bind="shop.user.displayName"></span>
+				<br> You are viewing this site on {{deviceType}}
 			</em>
 		</small>
 

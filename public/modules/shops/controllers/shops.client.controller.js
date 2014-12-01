@@ -5,7 +5,43 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 	function($scope, $stateParams, $location, Authentication, Shops, $http, $filter, $sce, $timeout, $modal, $rootScope) {
 		$scope.authentication = Authentication;
 		//Update Info Button disaled until form is changed
-		
+		  $scope.deviceType = 'Unknown';
+		//Check type of Device
+		$scope.deviceCheck = function() {
+			console.log('Checking Device! ', Date.now());
+			var standalone = window.navigator.standalone,
+    userAgent = window.navigator.userAgent.toLowerCase(),
+    safari = /safari/.test( userAgent ),
+    ios = /iphone|ipod|ipad/.test( userAgent );
+
+if( ios ) {
+	console.log('IOS');
+	
+    
+    if ( !standalone && safari ) {
+
+        
+        $scope.deviceType = 'IOS Browser';
+        
+    } else if ( standalone && !safari ) {
+        
+         $scope.deviceType = 'IOS Standalone';
+        
+    } else if ( !standalone && !safari ) {
+        
+        $scope.deviceType = 'IOS uiwebview';
+        
+    };
+    
+} else {
+    console.log('Not IOS');
+    $scope.deviceType = 'Not iOS';
+
+    
+    }
+};
+
+
 
 		// Create new Shop
 		$scope.create = function() {
