@@ -149,8 +149,8 @@ angular.module('core').directive('imgHolder', [
 
   }else {
     console.log('Standard view');
-    // template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:dblclick=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
-template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:click=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+    template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:dblclick=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+// template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:click=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
 
   }
  
