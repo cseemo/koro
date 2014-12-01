@@ -8,39 +8,39 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		  $scope.deviceType = 'Unknown';
 		  $rootScope.showEdits = false;
 		//Check type of Device
-		$scope.deviceCheck = function() {
-			console.log('Checking Device! ', Date.now());
-			var standalone = window.navigator.standalone,
-    userAgent = window.navigator.userAgent.toLowerCase(),
-    safari = /safari/.test( userAgent ),
-    ios = /iphone|ipod|ipad/.test( userAgent );
+// 		$scope.deviceCheck = function() {
+// 			console.log('Checking Device! ', Date.now());
+// 			var standalone = window.navigator.standalone,
+//     userAgent = window.navigator.userAgent.toLowerCase(),
+//     safari = /safari/.test( userAgent ),
+//     ios = /iphone|ipod|ipad/.test( userAgent );
 
-if( ios ) {
-	console.log('IOS');
-	 $rootScope.showEdits = true;
+// if( ios ) {
+// 	console.log('IOS');
+// 	 $rootScope.showEdits = true;
     
-    if ( !standalone && safari ) {
+//     if ( !standalone && safari ) {
 
         
-        $scope.deviceType = 'IOS Browser';
+//         $scope.deviceType = 'IOS Browser';
         
-    } else if ( standalone && !safari ) {
+//     } else if ( standalone && !safari ) {
         
-         $scope.deviceType = 'IOS Standalone';
+//          $scope.deviceType = 'IOS Standalone';
         
-    } else if ( !standalone && !safari ) {
+//     } else if ( !standalone && !safari ) {
         
-        $scope.deviceType = 'IOS uiwebview';
+//         $scope.deviceType = 'IOS uiwebview';
         
-    };
+//     };
     
-} else {
-    console.log('Not IOS');
-    $scope.deviceType = 'Not iOS';
-     $rootScope.showEdits = false;
+// } else {
+//     console.log('Not IOS');
+//     $scope.deviceType = 'Not iOS';
+//      $rootScope.showEdits = false;
     
-    }
-};
+//     }
+// };
 
 
 

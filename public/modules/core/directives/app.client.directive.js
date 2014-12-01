@@ -142,17 +142,55 @@ angular.module('core').directive('imgHolder', [
     };
 }).directive("cbInline", function($timeout, $rootScope) {
     var template;
-  console.log('Got to Directive!: ', $rootScope);
-  if($rootScope.showEdits){
-    console.log('Need to show our edits!!');
+
+    //Check iPad
+      var standalone = window.navigator.standalone,
+    userAgent = window.navigator.userAgent.toLowerCase(),
+    safari = /safari/.test( userAgent ),
+    ios = /iphone|ipod|ipad/.test( userAgent );
+
+if( ios ) {
+  console.log('IOS');
+   $rootScope.showEdits = true;
     template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:click=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
 
-  }else {
-    console.log('Standard view');
-    template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:dblclick=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
-// template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:click=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+    if ( !standalone && safari ) {
 
-  }
+        
+        $rootScope.deviceType = 'IOS Browser';
+        
+    } else if ( standalone && !safari ) {
+        
+         $rootScope.deviceType = 'IOS Standalone';
+        
+    } else if ( !standalone && !safari ) {
+        
+        $rootScope.deviceType = 'IOS uiwebview';
+        
+    };
+    
+} else {
+  template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:dblclick=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+
+    console.log('Not IOS');
+    $rootScope.deviceType = 'Not iOS';
+     $rootScope.showEdits = true;
+    
+    }
+
+
+//   console.log('Got to Directive!: ', $rootScope);
+//    console.log('Show Edits: ', $rootScope.showEdits);
+//   if($rootScope.showEdits===true){
+
+//     console.log('Need to show our edits!!');
+//     template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:click=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+//   }else {
+//     console.log('Standard view');
+//     template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:dblclick=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+// // template = "<span class=\"InlineEditWidget\">\n  <span ng:show=\"editing\" class=\"InlineEditing\">\n     <span class=\"transclude-root\" ng:transclude></span>\n  </span>\n\n  <span class=\"InlineEditable\" ng:hide=\"editing\"  ng:click=\"enter()\">{{altModel || model}}&nbsp;</span>\n\n</span>";
+
+//   }
  
   return {
     transclude: "element",
@@ -164,7 +202,8 @@ angular.module('core').directive('imgHolder', [
     template: template,
     replace: true,
     link: function(scope, elm, attr) {
-      console.log('Line 156: Scope: ', scope);
+       console.log('Show Edits: ', $rootScope.showEdits);
+      // console.log('Line 156: Scope: ', scope);
       var originalValue, transcluded;
       originalValue = scope.model;
       transcluded = elm.find(".transclude-root").children().first();
