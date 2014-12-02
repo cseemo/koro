@@ -28,6 +28,9 @@ module.exports = function(app) {
 		app.route('/uploads/:shopId')
 		.get(shops.getUploads);
 
+		app.route('/countersign/:shopId')
+		.get(shops.counterSign);
+
 		app.route('/dlupload/:fileId')
 		.get(shops.dlUpload);
 

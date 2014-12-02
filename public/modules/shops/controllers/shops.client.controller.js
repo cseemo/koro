@@ -7,6 +7,81 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 		//Update Info Button disaled until form is changed
 		  $scope.deviceType = 'Unknown';
 		  $rootScope.showEdits = false;
+		  $scope.shopStatus = '';
+		  $scope.signManual = function() {
+		  	$scope.signedManual = true;
+		  };
+
+		  //Date Picker stuff
+
+ $scope.today = function() {
+        return $scope.dt = new Date();
+      };
+      $scope.today();
+      $scope.showWeeks = true;
+      $scope.toggleWeeks = function() {
+        return $scope.showWeeks = !$scope.showWeeks;
+      };
+      $scope.clear = function() {
+        return $scope.dt = null;
+      };
+      $scope.disabled = function(date, mode) {
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+      };
+      $scope.toggleMin = function() {
+        var _ref;
+        return $scope.minDate = (_ref = $scope.minDate) != null ? _ref : {
+          "null": new Date()
+        };
+      };
+      $scope.toggleMin();
+      $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        return $scope.opened = true;
+      };
+      $scope.dateOptions = {
+        'year-format': "'yy'",
+        'starting-day': 7
+      };
+      $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
+      $scope.format = $scope.formats[0];
+   
+
+
+$scope.mytime = $scope.dt;
+      $scope.hstep = 1;
+      $scope.mstep = 5;
+      $scope.options = {
+        hstep: [1, 2, 3],
+        mstep: [1, 5, 10, 15, 25, 30]
+      };
+      $scope.ismeridian = true;
+      $scope.toggleMode = function() {
+        return $scope.ismeridian = !$scope.ismeridian;
+      };
+
+
+      $scope.updateTime = function() {
+        var d;
+        d = new Date();
+        d.setHours(14);
+        d.setMinutes(0);
+        return $scope.mytime = d;
+      };
+
+      //Set service center as signed up per Rep -- manual contract uploaded
+     
+      $scope.signedUp = function() {
+      	var shop = $scope.shop;
+      	shop.signDate = $scope.dt;
+      	console.log('Sign Date: ', shop.signDate);
+      	shop.$update().then(function(){
+      		toastr.success(shop.name+' has been signed up...please make sure to upload the signed contract.');
+      	});
+
+
+      };
 		//Check type of Device
 // 		$scope.deviceCheck = function() {
 // 			console.log('Checking Device! ', Date.now());
@@ -156,6 +231,38 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 		};
 
+
+		//Counter-Sign Service Agreement
+		$scope.counterSignShopAgreement = function() {
+			var id = $scope.shop._id;
+			$http({method: 'GET', url: '/countersign/'+id,
+		 	responseType: 'arraybuffer',
+					    headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+		
+					 })
+					.error(function(data) {
+						console.log('Error!! ', data);
+					})
+					.success(function(data, status, headers, config) {
+					    if(status === 222) {
+					    	console.log('Got it!!');
+					    }
+					    // console.log('Success sending agreement!');
+						toastr.success('Counter-signed agreement sent to '+$scope.shop.email);
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		 $scope.fileURL = URL.createObjectURL(file);
+			     		 $scope.seeSA = true;
+			     		 $timeout(function(){
+								////console.log('Going to Change');
+							$scope.seeSA = false;
+							$scope.shop.counterSigned = true;
+							$scope.shop.$update();
+							}, 10000);
+
+			     		
+     	})
+		};
+
 		//Get Uploads associated with this SHop
 		$rootScope.getUploads = function(id) {
 			// console.log('Getting Uploads');
@@ -202,16 +309,6 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
     						$scope.haveFiles = false;
     					}
     					if(numImages>2 && $scope.shop.signDate && numFiles >1){
-    						console.log('This shop is complete!');
-    						$scope.shop.complete = 'true';
-    						$scope.shop.$update();
-    					}else 
-    						if(numImages>2 && numFiles >2){
-    						console.log('This shop is complete!');
-    						$scope.shop.complete = 'true';
-    						$scope.shop.$update();
-    					}else 
-    						if(numImages>2 && numFiles >1 && $scope.shop.agreementSent){
     						console.log('This shop is complete!');
     						$scope.shop.complete = 'true';
     						$scope.shop.$update();
@@ -300,6 +397,9 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 
 		};
+
+
+
 
 		 $scope.enableEdit = function() { $scope.edit = true; }
     $scope.disableEdit = function() { $scope.edit = false;  }

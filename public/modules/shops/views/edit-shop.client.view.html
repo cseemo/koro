@@ -25,6 +25,40 @@
                  <h2>Edit Shop Details</h2>
                 </div>
         <div class="panel-body">
+          <a class="glyphicon glyphicon-arrow-left" href="#!/shops/{{shop._id}}" aria-hidden="true">Back</a><br><br>
+          <div class="col-md-6">
+
+                    <a  class="btn btn-primary btn-xs" style="color: #fff;" data-ng-click="sendContract();">
+                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Re-send Service Center Agreement
+            </a> 
+            </div>
+              <div class="col-md-6">
+
+            <div data-ng-show="!shop.signDate">
+             <label class="switch" style="vertical-align: middle"> Signed Manually:<input type="checkbox" style="vertical-align: middle" data-ng-click="signedManual=true" ng-model="nothing"><i></i></label>
+
+              <div data-ng-show="signedManual" class="input-group ui-datepicker" ng-click="open($event)">
+                   Contract Signed Date: <input type="text" 
+                           class="form-control pull-right"
+                           datepicker-popup="{{format}}"
+                           ng-model="dt"
+                           is-open="opened"
+                           min="minDate"
+                           max="'2016-06-22'"
+                           datepicker-options="dateOptions"
+                           ng-required="true" 
+                           close-text="Close"
+                           style="width: 65%"
+                           name="FLUPDate">
+                    <span class="input-group-addon" ><i class="fa fa-calendar"></i></span>
+
+                
+               <br> <a class="glyphicon glyphicon-thumbs-up" href="#!/shops/{{shop._id}}"  aria-hidden="true" data-ng-click="signedUp();">Mark as Signed-Up</a>
+            
+                     
+            </div>
+            </div>
+                </div>
   
             <form class="form-horizontal" data-ng-submit="create()" novalidate>
                 <div class="col-md-8 col-md-offset-2">

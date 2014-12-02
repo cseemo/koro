@@ -6,6 +6,7 @@
     </div>
     <div class="list-group">
         <a data-ng-repeat="shop in shops" data-ng-href="#!/shops/{{shop._id}}" class="list-group-item">
+      
 			<small class="list-group-item-text">
 				Posted on
 				<span data-ng-bind="shop.created | date:'medium'"></span>
@@ -13,6 +14,20 @@
 				<span data-ng-bind="shop.user.displayName"></span>
 			</small>
 			<h4 class="list-group-item-heading" data-ng-bind="shop.name"></h4>
+           
+              <span style="danger" data-ng-show="shop.signDate && !shop.counterSigned">
+            
+        Pending Counter-Signature
+        </span>
+                <span style="danger" data-ng-show="!shop.signDate && shop.agreementSent">
+       Unsigned...
+        </span>
+          <span style="danger" data-ng-show="!shop.signDate && !shop.agreementSent">
+       Agreement Not Sent
+        </span>
+           <span style="danger" data-ng-show="shop.signDate && shop.counterSigned">
+       Approved
+        </span>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!shops.$resolved || shops.length">

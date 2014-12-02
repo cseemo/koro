@@ -79,10 +79,10 @@ z-index: 999;
 	    <div class="row">
 	     <h2>Service Center Details - {{shop.name}}</h2>
 	     </div>
-	    <alert type="warning" class="text-center" data-ng-show="!shop.complete">
+	    <alert type="warning" class="text-center" data-ng-show="!shop.complete===true">
 		Just a head's up, it appears that this Service Center is not complete:<br>
 		
-	      <a  class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="sendContract();">
+	      <a  class="btn btn-primary btn-sm" data-ng-show="!shop.signDate" style="color: #fff;" data-ng-click="sendContract();">
 				<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Send Service Center Agreement
 			</a>  
 
@@ -101,7 +101,15 @@ z-index: 999;
 				      <a data-ng-show="!havePhotos" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="uploadPhotos();">
 				<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Upload Photos
 			</a>   
+			Agreement Sent: {{shop.agreementSent}}<br>
+			Counter-Signed: {{shop.counterSigned}}
+
+			
+
 			</alert>
+			     <a  data-ng-show="shop.signDate && shop.agreementSent && !shop.counterSigned && authentication.hasRole('admin')===true" class="btn btn-default btn-sm" style="color: #333;" data-ng-click="counterSignShopAgreement();">
+				<span class="glyphicon glyphicon-send" aria-hidden="true"></span> Counter-Sign & Approve
+			</a> 
 
 	    	<!-- <div class="text-center bg-danger">
 	    	<h3>Past Due</h3>

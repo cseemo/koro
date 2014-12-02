@@ -145,6 +145,10 @@ var ShopSchema = new Schema({
 	agreementSent: {
 		type: String,
 		default: null
+	},
+	counterSigned: {
+		type: String,
+		default: null
 	}
 
 	
