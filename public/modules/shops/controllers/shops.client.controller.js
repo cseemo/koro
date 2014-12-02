@@ -213,7 +213,7 @@ $scope.mytime = $scope.dt;
 			     		 $timeout(function(){
 								////console.log('Going to Change');
 							$scope.seeSA = false;
-							$scope.shop.agreementSent = true;
+							$scope.shop.agreementSent = 'true';
 							$scope.shop.$update();
 							}, 10000);
 
@@ -255,7 +255,7 @@ $scope.mytime = $scope.dt;
 			     		 $timeout(function(){
 								////console.log('Going to Change');
 							$scope.seeSA = false;
-							$scope.shop.counterSigned = true;
+							$scope.shop.counterSigned = 'true';
 							$scope.shop.$update();
 							}, 10000);
 

@@ -101,8 +101,7 @@ z-index: 999;
 				      <a data-ng-show="!havePhotos" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="uploadPhotos();">
 				<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Upload Photos
 			</a>   
-			Agreement Sent: {{shop.agreementSent}}<br>
-			Counter-Signed: {{shop.counterSigned}}
+			
 
 			
 
@@ -110,7 +109,10 @@ z-index: 999;
 			     <a  data-ng-show="shop.signDate && shop.agreementSent && !shop.counterSigned && authentication.hasRole('admin')===true" class="btn btn-default btn-sm" style="color: #333;" data-ng-click="counterSignShopAgreement();">
 				<span class="glyphicon glyphicon-send" aria-hidden="true"></span> Counter-Sign & Approve
 			</a> 
-
+			<!-- Sign Date: {{shop.signDate | date: 'short'}}<br>
+Agreement Sent: {{shop.agreementSent}}<br>
+			Counter-Signed: {{shop.counterSigned}}<br>
+			Complete: {{shop.complete}} -->
 	    	<!-- <div class="text-center bg-danger">
 	    	<h3>Past Due</h3>
 	    	</div> -->
