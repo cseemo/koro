@@ -187,8 +187,6 @@ $scope.mytime = $scope.dt;
 		//Send Contract 
 		$scope.sendContract = function() {
 			console.log('Sending out Contract');
-			
-
 			var shopId = $scope.shop._id;
 			console.log(shopId);
 					$http({
@@ -196,16 +194,16 @@ $scope.mytime = $scope.dt;
 					    url: '/sendAgreement/'+shopId,
 					    responseType: 'arraybuffer',
 					    headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
-		
-					  })
-					.error(function(data) {
-						console.log('Error!! ', data);
+					 })
+					.error(function(err, status) {
+						// console.log('Error!! ERr ', err);
+						// console.log('Error!!  RESP', err.name);
+						// console.log('Error Message: ', err.message);
+						toastr.warning('Email Error: Is the email a valid address?');
 					})
 					.success(function(data, status, headers, config) {
-					    if(status === 222) {
-					    	console.log('Got it!!');
-					    }
-					    console.log('Success sending agreement!');
+					    // console.log('Status ', status);
+					    // console.log('Success sending agreement!', data);
 						toastr.success('Success! Email was sent to '+$scope.shop.email);
 						var file = new Blob([data], {type: 'application/pdf'});
 			     		 $scope.fileURL = URL.createObjectURL(file);
@@ -215,20 +213,8 @@ $scope.mytime = $scope.dt;
 							$scope.seeSA = false;
 							$scope.shop.agreementSent = 'true';
 							$scope.shop.$update();
-							}, 10000);
-
-			     		
-     	});
-
-
-		
-
-
-     		
-
-
-
-
+							}, 10000);	     		
+     				});
 		};
 
 
@@ -681,8 +667,11 @@ $scope.mytime = $scope.dt;
 
 		$scope.viewAgreement = function() {
 			console.log($scope.shop);
+			
 			var shop = $scope.shop;
+			console.log(shop.signer+' '+shop.signertitle);
 			shop.$update().then(function(){
+
 			var shopId = $scope.shop._id;
 			$scope.step=3;
 			$http({

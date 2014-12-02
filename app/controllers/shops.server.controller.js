@@ -150,6 +150,10 @@ exports.getSignedAgreement = function(req, res){
 	};
 
 exports.viewAgreement = function(req, res) {
+	if(!req.shop.signer || !req.shop.signertitle){
+		console.log('Shop SIgner or Title is missing!');
+		res.status(400).send('Missing Authorized Signer');
+	}
 	console.log('Viewing Agreement Now');
 
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
@@ -683,6 +687,7 @@ mandrill_client.messages.sendTemplate({
 },
 function(e){
 	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	res.status(411).send(e);
 });
 
 
@@ -1312,10 +1317,16 @@ return;
 
 };
 
-
+//Send Service Agreement to Shop
 exports.sendAgreement = function(req, res) {
 	console.log('Sending Agreement Now');
+	//Make sure we have a valid email address for the shop
+	if(!req.shop.email || req.shop.email==='Email Address'){
+		console.log('We have a bad email address!!');
+		res.status(400).send({message: 'We need a damn email address!'});
+	}else {
 
+		console.log("Shop Email: ", req.shop.email);
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 	var id = req.shop._id;
 	var today = new moment();
@@ -1328,7 +1339,7 @@ exports.sendAgreement = function(req, res) {
 	//var stream = doc.pipe(blobStream());
 	var buffers = [];
 	var myfileName = 'TestContract.pdf';
-	doc.pipe( fs.createWriteStream(myfileName) );
+	// doc.pipe( fs.createWriteStream(myfileName) );
 	 
 	var chunks = [];
 	
@@ -1418,7 +1429,7 @@ exports.sendAgreement = function(req, res) {
 
 
 
-doc.pipe( res );
+// doc.pipe( res );
 
 
 doc.on('data', function(chunk){
@@ -1440,14 +1451,15 @@ doc.on('end', function(){
 	var content = mypdf.toString('base64');
 
 	//var content = fs.readFileSync(myfileName, 'base64');
-
+	var fromemail = req.user.email || '';
+	var toname = req.shop.primarycontactname || '';
 		var message = {
 	'subject': 'Ignition Interlock Service Center Agreement',
-	'from_email': req.user.email,
+	'from_email': fromemail,
 	'from_name': req.user.displayName,
 	'to': [{
 		'email': req.shop.email,
-		'name': req.shop.primarycontactname,
+		'name': toname,
 			'type': 'to'
 	}],
 	'headers': {
@@ -1517,9 +1529,13 @@ mandrill_client.messages.sendTemplate({
 }, function(result){
 
 	console.log('Results from Mandrill', result);
+	// console.log(result[0].status);
+	// var manmess = result[0].status;
+	res.status(200).send(mypdf);
 },
 function(e){
 	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	res.status(411).send(e.message);
 });
 
 
@@ -1529,5 +1545,6 @@ function(e){
 	// res.status(222).send('Still Writing Code!');
 
 return;
+}
 
 };

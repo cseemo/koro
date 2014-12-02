@@ -138,9 +138,13 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                             <div class="form-group">
+                          <!--    <div class="form-group">
                                 <label class="form-label" for="address">State:</label>
-                               <select class="form-control" ng-model="shop.state" ng-options="state.abr as state.name for state in states"></select>  
+                               <select class="form-control" ng-model="shop.state" ng-options="state.abr as state.name for state in states"></select>   -->
+                                <div class="form-group">
+                                <label class="form-label" for="address">City:</label>
+                                <input type="text" data-ng-model="state" class="form-control" placeholder="State" required/>
+                          
 
                             </div>
                         </div>
