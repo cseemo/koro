@@ -131,7 +131,7 @@ var ShopSchema = new Schema({
 	hoursSat: {
 		type: String,
 		trim: true,
-		default: '10am-3pm'
+		default: 'Closed'
 	},
 	hoursSun: {
 		type: String,

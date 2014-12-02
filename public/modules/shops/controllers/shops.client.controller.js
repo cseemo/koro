@@ -310,7 +310,8 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 			console.log('Downloading File', id);
 			console.log('Name: ', name);
 			var dltype;
-			var filetype = name.substr(name.length-4);
+			var filetype = name.substr(name.length-4)
+			filetype = filetype.toLowerCase();
 			console.log('File Type: ', filetype);
 			if(filetype==='.jpg'){
 				dltype = 'image/jpg';
