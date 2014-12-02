@@ -1,6 +1,9 @@
 
 
 <style>
+body{
+	font-size: 2em;
+}
 .col-md-4{
     padding: 10px;
 
@@ -17,6 +20,11 @@ fieldset{
 }
 h3, h4 {
 	color: #565;
+
+}
+h4{
+	text-decoration: none;
+	cursor: pointer;
 }
 .stickyTop{
 position: fixed;
@@ -49,21 +57,28 @@ z-index: 999;
 	vertical-align: text-bottom;
 	cursor: pointer;
 }
+.tiny {
+	font-size: .5em;
+}
 </style>
 <script src="../../angular-file-upload.js"></script>
 
 <section data-ng-controller="ShopsController" data-ng-init="findOne()">
 
-     
-
-
-
 	<div class="main-body" >
+
+	 
+
+
+
 	<alert type="success" class="text-center" data-ng-show="seeSA">
 	Congratulations, the agreement has been sent to {{shop.primarycontactname}} ({{shop.email}}) from {{shop.name}}. If you'd like to review the agreement that was sent out, please click the button below. <br>
 <a class="btn btn-primary btn-sm" style="color: #fff;" ng-click="seeAgreement()">View Agreement</a>
 </alert>
-	    <div class="container">
+	    <div class="container-fluid">
+	    <div class="row">
+	     <h2>Service Center Details - {{shop.name}}</h2>
+	     </div>
 	    <alert type="warning" class="text-center" data-ng-show="!shop.complete">
 		Just a head's up, it appears that this Service Center is not complete:<br>
 		
@@ -93,29 +108,45 @@ z-index: 999;
 	    	</div> -->
 		<div class="panel panel-primary">
 	       
-	    	<div class="col-md-4">
+	    
 	            <div class="panel panel-profile">
+
 	                <fieldset>
-	                    <div class="panel-heading bg-primary clearfix">
-	                             
-	                                <h4>Service Center General Information</h4>
-	                              
-	                    </div>
-	                    <div class="media">
-	                        <div class="media-body">
+	             	    <a class="btn btn-default btn-xs pull-right" style="color: #222;" href="/#!/shops/{{shop._id}}/edit">
+				<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Edit Details
+			</a>
+	                  	<accordion close-others="oneAtATime">
+				            <accordion-group>
+				            <accordion-heading>
+				           <div class="col-md-5">
+
+				           <h4> Service Center General Information</h4>
+				            </div>
+
+				            	<div class="col-md-4 text-danger">
+				            	<span data-ng-show="!shop.complete">Not Complete</span>
+				           
+				            </div>
+
+				             	<div class="col-md-3" >
+				             	
+				         
+
+				            </div>
+				             <div class=" clearfix"></div>
+				            	
+				             
+
+				            </accordion-heading>
+
 	                                        <ul class="list-unstyled list-info">
-	                                            <li>
+	                                            <li class="list-item">
 
-<!-- 	                                                <div class="controls">
-<a xeditable href="javascript:;" id="address" data-pk="1" data-type="textarea" data-name="address" data-ng-model="shop.address" data-placement="right" data-placeholder="Required" data-showbuttons="true" data-original-title="Enter Address" class="editable editable-click">{{shop.address}}</a>
-    </div> -->
-
-    
 	                                                
-	                                                <label> Name</label>
+	                                                <label class="list-item"> Name</label>
 	                                                <input ng-model="shop.name" ng-blur="saveMe()" cb:inline></input>
 	                                            </li>
-	                                             <li>
+	                                            <li class="list-item">
 	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                                <label>Phone</label>
 	                                                <input ng-model="shop.telephone" cb:inline ng-blur="saveMe()"></input>
@@ -126,7 +157,7 @@ z-index: 999;
 	                                                <label>Email</label>
 	                                                <input ng-model="shop.email" cb:inline ng-blur="saveMe()"></input>
 	                                            </li>
-	                                            <li>
+	                                           <li class="list-item">
 	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                                <label>Primary Contact</label>
 	                                                <input ng-model="shop.primarycontactname" cb:inline ng-blur="saveMe()"></input>
@@ -138,7 +169,7 @@ z-index: 999;
 	                                                
 	                                                <input ng-model="shop.altcontactname" cb:inline ng-blur="saveMe()"></input>
 	                                            </li>
-	                                            <li>
+	                                          <li class="list-item">
 	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
 	                                                <label>Alternate Phone</label>
 	                                                
@@ -152,36 +183,30 @@ z-index: 999;
 	                                            </li>
 	                                              
 	                                        </ul>
-	                        </div>
-	                    </div>
-	        		</fieldset>
-	               
-	            </div>
-	        </div> 
 
-	        <div class="col-md-4">
-	            <div class="panel panel-profile">
-	   	            <fieldset>
 
-	                    <!-- Pofile panel -->
-	                    <!-- <div class="panel panel-profile"> -->
-	                        <div class="panel-heading bg-primary clearfix">
-	                            <!-- <a href="" class="pull-left profile">
-	                                <img alt="" src="images/g1.jpg" class="img-circle img80_80">
-	                            </a> -->
-	                            <!-- <div class="pull-left profile">
-	                                <i class="fa fa-users text-large stat-icon"></i>
-	                            </div> -->
-	                            <!-- <span class="pull-left box-icon rounded text-large">
-	                                <i class="fa fa-check"></i>
-	                            </span> -->
-	                            <h4>Address & Hours of Operation</h4>
-	                          
-	                        </div>
-	                    	<div class="media">
-	                      
-	                            <div class="media-body">
-	                                <ul class="list-unstyled list-info">
+				    </accordion-group>
+				    <accordion-group is-open="status.open">
+				      
+				            <accordion-heading>
+				            	<div class="col-md-5">
+
+				           <h4> Address & Hours of Operation</h4>
+				            </div>
+
+				            	<div class="col-md-4 text-danger">
+
+				         
+				            </div>
+
+				             	<div class="col-md-3" >
+				             	
+				        
+				            </div>
+				             <div class=" clearfix"></div>
+				        </accordion-heading>
+
+				         <ul class="list-unstyled list-info">
 	                                    <li>
 	                                        
 	                                        <label>Address</label>
@@ -217,7 +242,45 @@ z-index: 999;
 	                                         <br>
 	                                    </li>
 
-	                                    <li data-ng-show="shop.signDate">
+	                      
+
+
+	                                    
+
+	                                </ul>
+
+
+
+
+
+				  
+
+
+				    </accordion-group>
+
+				    <accordion-group>
+				      
+				            <accordion-heading>
+				            	<div class="col-md-5">
+
+				           <h4>Files & Photos</h4>
+				            </div>
+
+				            	<div class="col-md-4 text-danger">
+
+				         
+				            </div>
+
+				             	<div class="col-md-3" >
+				             	 <a class="btn btn-default btn-sm" ng-click="uploadPhotos()"> 
+	                                        Add File
+	                                        </a>
+				        
+				            </div>
+				             <div class=" clearfix"></div>
+				        </accordion-heading>
+
+				                      <li data-ng-show="shop.signDate">
 	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                        <label>Sign-Up Date</label>
 	                                        {{shop.signDate | date: 'MMM d, yyyy' || 'N/A'}}
@@ -234,7 +297,7 @@ z-index: 999;
 				<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Re-send Service Center Agreement
 			</a> 
 														</li>
-														<label>Files & Images</label>
+														
 									    <li data-ng-show="myUploads">
 	                                      
 
@@ -253,118 +316,12 @@ z-index: 999;
 	                                        </center>
 	                                    							</li>
 
-
-	                                    
-
-	                                </ul>
-	                            </div>
-	                        </div>
-	                </fieldset>
+				  </accordion>     
+	        		</fieldset>
 	               
 	            </div>
 	        </div> 
 
-
-	        <div class="col-md-4">
-	            <div class="panel panel-profile">
-
-	                <form name="form"  class="form-horizontal form-validation" novalidate>
-	                    <fieldset>
-
-	                        <!-- Pofile panel -->
-	                        <!-- <div class="panel panel-profile"> -->
-	                            <div class="panel-heading bg-primary clearfix">
-	                                <!-- <a href="" class="pull-left profile">
-	                                    <img alt="" src="images/g1.jpg" class="img-circle img80_80">
-	                                </a> -->
-	                                <!-- <div class="pull-left profile">
-	                                    <i class="fa fa-users text-large stat-icon"></i>
-	                                </div> -->
-	                                <!-- <span class="pull-left box-icon rounded text-large">
-	                                    <i class="fa fa-check"></i>
-	                                </span> -->
-	                                <h4>Recent Work Orders</h4>
-	                              
-	                            </div>
-	                            <div class="media">
-	                              
-	                                    <div class="media-body">
-	                                         <table class="table table-bordered table-striped table-responsive" data-ng-init="getWorkOrders()">
-	                <thead>
-	                    <tr>
-	                    <th>
-	                            <div class="th">
-	                                Date
-	                             </div>
-	                        </th>
-	                        <th>
-	                            <div class="th">
-	                                Type
-	                             </div>
-	                        </th>
-	                        <th>
-	                            <div class="th">
-	                                Client 
-	                        </div>
-	                        </th>
-	                         <th>
-	                            <div class="th">
-	                                Status 
-	                        </div>
-	                        </th>
-	                        
-
-	                                  </tr> 
-	                </thead>
-	                <tbody>
-	                    <tr>
-	                    <td>11/2/2014</td>
-	                    <td>Installation</td>
-	                    <td>Tom Johnson</td>
-	                    <td>Complete</td>
-	                   
-	                    </tr>
-
-	                      <tr>
-	                    <td>11/7/2014</td>
-	                    <td>Calibration</td>
-	                    <td>Lester Dkovaic</td>
-	                    <td>Pending</td>
-	                   
-	                    </tr> <tr>
-	                    <td>11/15/2014</td>
-	                    <td>Installation</td>
-	                    <td>Ryan Johnson</td>
-	                    <td>Rejected</td>
-	                    
-	                    </tr> <tr>
-	                    <td>12/3/2014</td>
-	                    <td>Calibration</td>
-	                    <td>Steve Smith</td>
-	                   <td>Approved</td>
-	                    </tr>
-
-
-	                    </tbody>
-	                    </table>
-	                                    </div>
-	                                </div>
-	                      
-	                            </div>
-
-	                    </fieldset>
-	                </form>
-	            
-
-	            </div>
-	           
-	             
-	        </div> 
-
-	        
-
-	       <div class=" clearfix"></div>
-	    	
 	
 	
 	    <div class="pull-right" data-ng-show="authentication.user._id == shop.user._id">
@@ -375,14 +332,14 @@ z-index: 999;
 				<i class="glyphicon glyphicon-trash"></i>
 			</a>
 		</div>
-		<small>
+		<small class="tiny">
 			<em class="text-muted">
 				Posted on
 				<span data-ng-bind="shop.created | date:'mediumDate'"></span>
 				by
 				<span data-ng-bind="shop.user.displayName"></span>
 				<br> You are viewing this site on {{deviceType}}<br>
-				Show Edits: {{showEdits}}
+				
 			</em>
 		</small>
 
