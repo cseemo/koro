@@ -314,7 +314,7 @@ Agreement Sent: {{shop.agreementSent}}<br>
 	                                     
 	                                      <th>Filename</th>
 	                                       <th>Description </th>
-	                                      <th>File Size </th>
+	                                      <th class="hidden-xs">File Size </th>
 	                                      <th>Created</th>
 	                                      <th>Delete</th>
 	                                      </tr>
@@ -334,7 +334,7 @@ Agreement Sent: {{shop.agreementSent}}<br>
 	                                        <td>
 	                                        <input ng-model="file.desc" data-ng-blur="saveUpload(file._id, file.desc);" cb:inline></input>
 	                                      
-	                                        <td>
+	                                        <td class="hidden-xs">
 	                                        {{(file.size/1024)/1000 | number:2}}MB
 
 	                                       </td>
