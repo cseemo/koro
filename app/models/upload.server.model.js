@@ -41,6 +41,11 @@ var UploadSchema = new Schema({
 		type: Boolean,
 		default: true
 	},
+	desc: {
+		type: String,
+		trim: true,
+		default: 'N/A'
+	},
 	// properties: {
 	// 	articleId: 'asdfasdfasdf'
 	// 	whateverId: 'asdfasdf'

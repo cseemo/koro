@@ -70,6 +70,102 @@ $scope.mytime = $scope.dt;
         return $scope.mytime = d;
       };
 
+
+      //Serivce Center Table Stuff
+
+  $scope.tableData = {
+      searchKeywords: '',
+    };
+    $scope.filteredDeals= [];
+    $scope.row = '';
+    $scope.numPerPageOpt = [3, 5, 10, 20];
+    $scope.numPerPage = $scope.numPerPageOpt[2];
+    $scope.currentPage = 1;
+    //$scope.currentPageDeals= $scope.getinit;
+    $scope.currentPageDeals= [];
+
+
+
+    $scope.select = function(page) {
+    	//////////////console.log('Variable page: ',page);
+      var end, start;
+      start = (page - 1) * $scope.numPerPage;
+      end = start + $scope.numPerPage;
+      //////////////console.log('Start '+start+' and End '+end);
+      $scope.currentPage = page;
+      //////////////console.log('Filtered Deals %o', $scope.filteredDeals);
+      return $scope.currentPageDeals = $scope.filteredDeals.slice(start, end);
+
+    };
+    $scope.onFilterChange = function() {
+      $scope.select(1);
+      $scope.currentPage = 1;
+      return $scope.row = '';
+    };
+    $scope.onNumPerPageChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.onOrderChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.search = function() {
+      //////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
+      $scope.filteredDeals = $filter('filter')($scope.shops, $scope.tableData.searchKeywords);
+
+      // {companyname: $scope.tableData.searchKeywords},
+
+      /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
+        firstName: $scope.searchKeywords,
+        lastName: $scope.searchKeywords,
+        confirmationNumber: $scope.searchKeywords,
+      });*/
+      return $scope.onFilterChange();
+    };
+
+     $scope.searchRep = function() {
+      //////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
+      $scope.filteredDeals = $filter('filter')($scope.shops, $scope.authentication.user._id);
+
+      // {companyname: $scope.tableData.searchKeywords},
+
+      /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
+        firstName: $scope.searchKeywords,
+        lastName: $scope.searchKeywords,
+        confirmationNumber: $scope.searchKeywords,
+      });*/
+      return $scope.onFilterChange();
+    };
+
+
+    $scope.order = function(rowName) {
+    	//////////////console.log('Reordering by ',rowName);
+    	//////////////console.log('Scope.row ', $scope.row);
+      if ($scope.row === rowName) {
+        return;
+      }
+      $scope.row = rowName;
+      $scope.filteredDeals = $filter('orderBy')($scope.filteredDeals, rowName);
+      //////////////console.log(rowName);
+      return $scope.onOrderChange();
+    };
+    $scope.setCurrentDeal = function(shop) {
+      $scope.currentDeal = $scope.filteredDeals.indexOf(shop);
+    };
+
+	// init = function() {
+	// 		//$scope.registrations = Registrations.query();
+	// 		//$scope.find();
+	
+
+	// 		$scope.deals.$promise.then(function() {
+	// 			$scope.search();
+	// 			return $scope.select($scope.currentPage);
+	// 			});	
+	// 	}();
+
+
       //Set service center as signed up per Rep -- manual contract uploaded
      
       $scope.signedUp = function() {
@@ -184,6 +280,51 @@ $scope.mytime = $scope.dt;
 			});
 		};
 
+
+		//saveUpload
+		$scope.saveUpload = function(id, desc) {
+			console.log('Save upload, ', id);
+			console.log(desc);
+						$http({
+					    method: 'post',
+					    url: '/dlupload/'+id,
+					    data: {
+					    	description: desc
+					    }
+					})
+					.error(function(err, status) {
+						// console.log('Error!! ERr ', err);
+						// console.log('Error!!  RESP', err.name);
+						// console.log('Error Message: ', err.message);
+						toastr.warning('Error Saving Upload Information', err);
+					})
+					.success(function(data, status, headers, config) {
+						console.log('Upload info was saved');
+					    
+					});
+			
+
+		};
+
+
+		//Delete File
+		$scope.deleteFile = function(id, row) {
+			$scope.myUploads.splice(row, 1);
+			console.log('Delete File ID: '+id+' at: '+row);
+			$http({method: 'GET', url: '/removefile/'+id}).
+			error(function(err, status) {
+				console.log("ERROR!!! ", err);
+				console.log("ERROR STATUS!", status);
+			}).
+    		success(function(response, data) {
+    			console.log('Response: ', response);
+
+    			// $rootScope.getUploads($scope.shop._id);
+    		});
+		};
+
+
+
 		//Send Contract 
 		$scope.sendContract = function() {
 			console.log('Sending out Contract');
@@ -251,13 +392,14 @@ $scope.mytime = $scope.dt;
 
 		//Get Uploads associated with this SHop
 		$rootScope.getUploads = function(id) {
-			// console.log('Getting Uploads');
+			console.log('Getting Uploads', id);
 			$http({method: 'GET', url: '/uploads/'+id}).
     		success(function(response, data) {
     			// console.log('Success', response);
     			// console.log('Data', data);
     			if(response.length<1){
     				console.log('No Uploads');
+    				$scope.myUploads = null;
 
     			}else{
 
@@ -519,6 +661,11 @@ $scope.mytime = $scope.dt;
 		// Find a list of Shops
 		$scope.find = function() {
 			$scope.shops = Shops.query();
+
+			$scope.shops.$promise.then(function() {
+				$scope.search();
+				return $scope.select($scope.currentPage);
+				});	
 		};
 
 		// Find existing Shop
@@ -556,47 +703,47 @@ $scope.mytime = $scope.dt;
         // CALLBACKS
 
         uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-            console.info('onWhenAddingFileFailed', item, filter, options);
+            // console.info('onWhenAddingFileFailed', item, filter, options);
         };
         uploader.onAfterAddingFile = function(fileItem) {
-            console.info('onAfterAddingFile', fileItem);
+            // console.info('onAfterAddingFile', fileItem);
         };
         uploader.onAfterAddingAll = function(addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
+            // console.info('onAfterAddingAll', addedFileItems);
         };
         uploader.onBeforeUploadItem = function(item) {
-            console.info('onBeforeUploadItem', item);
+            // console.info('onBeforeUploadItem', item);
 
         };
         uploader.onProgressItem = function(fileItem, progress) {
-            console.info('onProgressItem', fileItem, progress);
+            // console.info('onProgressItem', fileItem, progress);
         };
         uploader.onProgressAll = function(progress) {
-            console.info('onProgressAll', progress);
+            // console.info('onProgressAll', progress);
         };
         uploader.onSuccessItem = function(fileItem, response, status, headers) {
-            console.info('onSuccessItem', fileItem, response, status, headers);
+            // console.info('onSuccessItem', fileItem, response, status, headers);
         };
         uploader.onErrorItem = function(fileItem, response, status, headers) {
-            console.info('onErrorItem', fileItem, response, status, headers);
+            // console.info('onErrorItem', fileItem, response, status, headers);
         };
         uploader.onCancelItem = function(fileItem, response, status, headers) {
-            console.info('onCancelItem', fileItem, response, status, headers);
+            // console.info('onCancelItem', fileItem, response, status, headers);
         };
         uploader.onCompleteItem = function(fileItem, response, status, headers) {
-            console.info('onCompleteItem', fileItem, response, status, headers);
+            // console.info('onCompleteItem', fileItem, response, status, headers);
         };
         uploader.onCompleteAll = function() {
-            console.info('onCompleteAll');
+            // console.info('onCompleteAll');
             toastr.success('Your files have been uploaded');
             $modalInstance.close();
-            console.log(shop._id);
+            // console.log(shop._id);
             $rootScope.getUploads(shop._id);
 
 
         };
 
-        console.info('uploader', uploader);
+        // console.info('uploader', uploader);
 
 
 
@@ -611,10 +758,10 @@ $scope.mytime = $scope.dt;
 
 		  $scope.step=1;
 		  $scope.nextStep = function() {
-		  	console.log('Next Step', $scope.step);
+		  	// console.log('Next Step', $scope.step);
 
 		  	$scope.step = +$scope.step+1;
-		  	console.log('Step: ', $scope.step);
+		  	// console.log('Step: ', $scope.step);
 		  };
 
 
@@ -667,7 +814,7 @@ $scope.mytime = $scope.dt;
 
 		$scope.viewAgreement = function() {
 			console.log($scope.shop);
-			
+
 			var shop = $scope.shop;
 			console.log(shop.signer+' '+shop.signertitle);
 			shop.$update().then(function(){

@@ -1,20 +1,150 @@
 <section data-ng-controller="ShopsController" data-ng-init="find()">
-    <div class="page-body">
+   
     <div class="page-header">
-        <h1>Shops</h1>
+        <h1>Service Centers</h1>
         <a  href="/#!/shops/create" class="btn btn-primary btn-sm" style="color: #fff;" >Add New Shop</a>
     </div>
-    <div class="list-group">
-        <a data-ng-repeat="shop in shops" data-ng-href="#!/shops/{{shop._id}}" class="list-group-item">
-      
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="shop.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="shop.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="shop.name"></h4>
-           
+  
+
+    <section class="panel panel-default table-dynamic">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Service Centers</strong>
+             
+          </div>
+          <div class="panel-body">
+        
+            <div class="table-filters">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <input type="text"
+                               placeholder="Search..."
+                               class="form-control"
+                               data-ng-model="tableData.searchKeywords"
+                               data-ng-keyup="search()">
+                        {{tableData.searchKeywords}}
+                    </div>
+                    <div class="col-sm-3 col-xs-6 filter-result-info">
+                        <span>
+                            Showing {{currentPageDeals.length}}/{{filteredDeals.length}} Matches
+                        </span>              
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                Service Center Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('name') "
+                                      data-ng-class="{active: row == 'name'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-name') "
+                                      data-ng-class="{active: row == '-name'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Owner Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('primarycontactname') "
+                                      data-ng-class="{active: row == 'primarycontactname'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-primarycontactname') "
+                                      data-ng-class="{active: row == '-primarycontactname'}"></span>
+                            </div>
+                        </th>
+                  <!--       <th>
+                            <div class="th">
+                                Status
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('stagenum') "
+                                      data-ng-class="{active: row == 'stagenum'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-stagenum') "
+                                      data-ng-class="{active: row == '-stagenum'}"></span>
+                            </div>
+                        </th> -->
+                       <!--  <th>
+                            <div class="th">
+                                Progress
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('stagenum') "
+                                      data-ng-class="{active: row == 'stagenum'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-stagenum') "
+                                      data-ng-class="{active: row == '-stagenum'}"></span>
+                            </div>
+                        </th> -->
+                        <th>
+                            <div class="th">
+                                Telephone
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('telephone') "
+                                      data-ng-class="{active: row == 'telephone'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-telephone') "
+                                      data-ng-class="{active: row == '-telephone'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                City
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('city') "
+                                      data-ng-class="{active: row == 'city'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-city') "
+                                      data-ng-class="{active: row == '-city'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                State
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('state') "
+                                      data-ng-class="{active: row == 'state'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-state') "
+                                      data-ng-class="{active: row == '-state'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                Service Agreement
+                                <!-- <span class="fa fa-angle-up"
+                                      data-ng-click=" order('status') "
+                                      data-ng-class="{active: row == 'status'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-status') "
+                                      data-ng-class="{active: row == '-status'}"></span> -->
+                            </div>
+                        </th>
+                       <!--  <th>
+                            <div class="th">
+                                Last Update
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('update') "
+                                      data-ng-class="{active: row == 'update'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-update') "
+                                      data-ng-class="{active: row == '-update'}"></span>
+                            </div>
+                        </th>
+ -->
+
+                    </tr> 
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="shop in currentPageDeals" >
+                        <td><a data-ng-click="setCurrentDeal()" href="#!/shops/{{shop._id}}">{{shop.name}} </a></td>
+                         <td>{{shop.primarycontactname}} </td>
+                           <td>{{shop.telephone | tel}}</td>
+                             <td>{{shop.city}}</td>
+                               <td>{{shop.state}}</td>
+                               <td>
+
               <span style="danger" data-ng-show="shop.signDate && !shop.counterSigned">
             
         Pending Counter-Signature
@@ -28,10 +158,38 @@
            <span style="danger" data-ng-show="shop.signDate && shop.counterSigned">
        Approved
         </span>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!shops.$resolved || shops.length">
-    	No Shops yet, why don't you <a href="/#!/shops/create">create one</a>?
-    </div>
-    </div>
+                  </td>
+                    
+                   
+                    </tr>
+                </tbody>
+            </table>
+
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                        <span>
+                            Show 
+                            <select data-ng-model="numPerPage"
+                                    data-ng-options="num for num in numPerPageOpt"
+                                    data-ng-change="onNumPerPageChange()">
+                            </select> 
+                            shops per page
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredDeals.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
 </section>

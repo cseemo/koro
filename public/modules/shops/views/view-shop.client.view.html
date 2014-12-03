@@ -290,6 +290,56 @@ Agreement Sent: {{shop.agreementSent}}<br>
 				             <div class=" clearfix"></div>
 				        </accordion-heading>
 
+
+										   <table class="table table-bordered table-striped table-responsive" data-ng-show="myUploads">
+	                                      <thead>
+	                                      <tr>
+	                                     
+	                                      <th>Filename</th>
+	                                       <th>Description </th>
+	                                      <th>File Size </th>
+	                                      <th>Created</th>
+	                                      <th>Delete</th>
+	                                      </tr>
+	                                      </thead>
+	                                      <tbody>
+	                                      <tr ng-repeat="file in myUploads track by $index">
+
+	                                      
+	                                     
+	                                        
+	                                        <td>
+	                                          <a ng-click="dlUpload(file._id, file.FileName)"> 
+	                                       {{file.FileName}}
+	                                        </a>
+	                                       
+	                                         </td>
+	                                        <td>
+	                                        <input ng-model="file.desc" data-ng-blur="saveUpload(file._id, file.desc);" cb:inline></input>
+	                                      
+	                                        <td>
+	                                        {{(file.size/1024)/1000 | number:2}}MB
+
+	                                       </td>
+	                                       <td>
+	                                       {{file.created | date:'MM/dd/yy hh:mma'}}
+	                                       </td>
+	                                       
+	                                       <td >
+	                                       <a style="cursor: pointer; text-decoration: none;" data-ng-click="deleteFile(file._id, $index)"class="glyphicon glyphicon-trash"></a>
+	                                       </td>
+	                                        </tr>
+	                                        </tbody>
+	                                        </table>
+														
+
+
+
+
+
+
+
+
 				                      <li data-ng-show="shop.signDate">
 	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                        <label>Sign-Up Date</label>
@@ -307,17 +357,10 @@ Agreement Sent: {{shop.agreementSent}}<br>
 				<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Re-send Service Center Agreement
 			</a> 
 														</li>
-														
-									    <li data-ng-show="myUploads">
-	                                      
 
-	                                       <span ng-repeat="file in myUploads">
-	                                       <label>Filename</label>
-	                                       <a ng-click="dlUpload(file._id, file.FileName)"> 
-	                                        {{file.FileName}}
-	                                        </a>
-	                                        <br>
-	                                        </span>
+
+									    <li >
+	                                      
 	                                        <br>
 	                                        <center>
 	                                        <a class="btn btn-primary btn-xs" ng-click="uploadPhotos()"> 

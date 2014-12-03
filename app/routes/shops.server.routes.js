@@ -32,7 +32,15 @@ module.exports = function(app) {
 		.get(shops.counterSign);
 
 		app.route('/dlupload/:fileId')
-		.get(shops.dlUpload);
+		.get(shops.dlUpload)
+		.post(shops.saveUpload);
+
+		app.route('/removefile/:fileId')
+		.get(shops.delFile);
+
+		
+
+
 
 
 		

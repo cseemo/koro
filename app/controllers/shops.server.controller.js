@@ -326,6 +326,59 @@ return
 
 };
 
+//Update Upload Information 
+exports.saveUpload = function(req, res) {
+	console.log('saving upload');
+	var upload = req.upload;
+	var desc = req.body.description;
+	console.log('Upload Info: ', desc);
+	upload.desc = desc;
+
+	upload.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: err //errorHandler.getErrorMessage(err)
+			});
+		} else {
+			console.log('Post Save: ', upload);
+		res.status(200).send('Upload Deleted');
+		}
+	});
+	
+	
+
+
+};
+//Delete File
+exports.delFile = function(req, res) {
+	console.log('Deleting File');
+	console.log(req.params);
+	console.log(req.query);
+	console.log('File Info: ', req.upload);
+	var upload = req.upload;
+	fs.unlink(req.upload.url, function(err){
+		if(err)console.log('ERR!!!!', err);
+					console.log('Deleted Item: ', req.upload.url);
+		upload.remove(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: err //errorHandler.getErrorMessage(err)
+			});
+		} else {
+			console.log('Upload is done!!');
+			res.status(200).send('Deleted');
+
+		}
+	});
+
+				});
+
+
+
+
+};
+
+
 //Display Uploads
 exports.getUploads = function(req, res) {
 	var results = [];
@@ -333,18 +386,21 @@ exports.getUploads = function(req, res) {
 	Upload.find({location: 'public/uploads/files/'+req.shop._id}).populate('user', 'displayName').exec(function(err, upload) {
 		if (err) return next(err);
 		if (! upload) console.log('FAIL');
-		console.log('Got an uplaod');
+		console.log('Got an uplaod', upload.desc);
 		console.log('Length: ',upload.length);
 		var x=0;
 		if(upload.length<1){
 			res.status(200).send(results);
 		}
+		
+
 		var getFileDetails = function(elm, i, arr) {
 			console.log('Index: '+i+' Elm: '+elm+' Array: '+arr);
 			fs.readFile(elm.url, function(err, content) {
 				if(err)console.log('ERROR!! ', err);
+				var desc = elm.desc || 'None';
 				// console.log(content);
-				results.push({'FileName': elm.filename, 'Index': i, 'Path': 'public/uploads/files/'+req.shop._id+'/'+elm.filename, '_id': elm._id });
+				results.push({'FileName': elm.filename, 'Index': i, 'Path': 'public/uploads/files/'+req.shop._id+'/'+elm.filename, '_id': elm._id, 'created': elm.created, 'desc': desc, 'size': elm.size });
 				// console.log('Results; ', results);
 				// console.log('Array Length: ',arr.length);
 				// console.log('I: ', i);
@@ -839,6 +895,7 @@ exports.uploadFile = function (req, res, next) {
 							location: relativeDir+'/'+req.shop._id,
 							url: uploadDir+'/' + fileName,
 							size: req.files.file.size,
+
 
 							
 						});
