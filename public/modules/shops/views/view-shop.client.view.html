@@ -64,10 +64,16 @@ z-index: 999;
 <script src="../../angular-file-upload.js"></script>
 
 <section data-ng-controller="ShopsController" data-ng-init="findOne()">
+ <div class="page-header">
+ <a  data-ng-show="shop.signDate && shop.agreementSent && !shop.counterSigned && authentication.hasRole('admin')===true" class="btn btn-default btn-sm" style="color: #333;" data-ng-click="counterSignShopAgreement();">
+				<span class="glyphicon glyphicon-send" aria-hidden="true"></span> Counter-Sign & Approve
+			</a> 
+
+</div>
 
 	<div class="main-body" >
 
-	 
+		 
 
 
 
@@ -106,9 +112,7 @@ z-index: 999;
 			
 
 			</alert>
-			     <a  data-ng-show="shop.signDate && shop.agreementSent && !shop.counterSigned && authentication.hasRole('admin')===true" class="btn btn-default btn-sm" style="color: #333;" data-ng-click="counterSignShopAgreement();">
-				<span class="glyphicon glyphicon-send" aria-hidden="true"></span> Counter-Sign & Approve
-			</a> 
+			    
 			<!-- Sign Date: {{shop.signDate | date: 'short'}}<br>
 Agreement Sent: {{shop.agreementSent}}<br>
 			Counter-Signed: {{shop.counterSigned}}<br>
@@ -229,7 +233,7 @@ Agreement Sent: {{shop.agreementSent}}<br>
 	                                   
 	                                           <input ng-model="shop.address" cb:inline ng-blur="saveMe()"></input> 
 	                                           
-	                                       	 <input ng-model="shop.city" cb:inline ng-blur="saveMe()"></input>  <select ng-model="shop.state" ng-options="state.abr as state.name for state in states" cb:inline ng-blur="saveMe()"></select>  <input ng-model="shop.zipcode" cb:inline ng-blur="saveMe()" maxlength="5"></input> 
+	                                       	 <input ng-model="shop.city" cb:inline ng-blur="saveMe()"></input>  <select ng-model="shop.state" ng-options="state.abr as state.name for state in states" cb:inline ng-blur="saveMe()">  <option value=""></option></select>  <input ng-model="shop.zipcode" cb:inline ng-blur="saveMe()" maxlength="5"></input> 
 	                                    <br>
 	                                    <label>District/Jurisdiction</label>
 	                                   

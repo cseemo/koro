@@ -176,7 +176,9 @@
                         <div class="col-md-3">
                              <div class="form-group">
                                 <label class="form-label" for="address">State:</label>
-                                <select class="form-control" ng-model="shop.state" ng-options="state.abr as state.name for state in states"></select>  
+                                <select class="form-control" ng-model="shop.state" ng-options="state.abr as state.name for state in states">
+                                      <option value=""></option>
+                                </select>  
                             </div>
                         </div>
                         <div class="col-md-2">
