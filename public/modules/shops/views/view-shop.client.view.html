@@ -191,6 +191,12 @@ Agreement Sent: {{shop.agreementSent}}<br>
 	                                                
 	                                                 <input ng-model="shop.fax" cb:inline ng-blur="saveMe()"></input> 
 	                                            </li>
+	                                            <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
+	                                                <label>Notes</label>
+	                                                
+	                                                 <textarea  class="form-control"  rows="3" ng-model="shop.notes" placeholder="Shop Notes" ng-blur="saveMe()"></textarea> 
+	                                            </li>
 	                                              
 	                                        </ul>
 
@@ -224,7 +230,10 @@ Agreement Sent: {{shop.agreementSent}}<br>
 	                                           <input ng-model="shop.address" cb:inline ng-blur="saveMe()"></input> 
 	                                           
 	                                       	 <input ng-model="shop.city" cb:inline ng-blur="saveMe()"></input>  <select ng-model="shop.state" ng-options="state.abr as state.name for state in states" cb:inline ng-blur="saveMe()"></select>  <input ng-model="shop.zipcode" cb:inline ng-blur="saveMe()" maxlength="5"></input> 
-	                                    
+	                                    <br>
+	                                    <label>District/Jurisdiction</label>
+	                                   
+	                                           <input ng-model="shop.district" cb:inline ng-blur="saveMe()"></input> 
 	                                        
 	                                    </li>
 	                                     <label>Hours of Operation</label>
@@ -252,8 +261,12 @@ Agreement Sent: {{shop.agreementSent}}<br>
 	                                         <br>
 	                                    </li>
 
-	                      
-
+	                      			       
+	                                    
+	                                     <label>Shop Rates</label>
+	                                    <li>
+	                                    <input ng-model="shop.rate" cb:inline ng-blur="saveMe()" String></input>
+	                                    </li>
 
 	                                    
 

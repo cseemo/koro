@@ -149,7 +149,21 @@ var ShopSchema = new Schema({
 	counterSigned: {
 		type: String,
 		default: null
-	}
+	},
+	notes: {
+		type: String,
+		trim: true
+	},
+	rate: {
+		type: String,
+		trim: true,
+		default: 'Standard'
+	},
+	district: {
+		type: String,
+		trim: true,
+		default: '000'
+	},
 
 	
 
