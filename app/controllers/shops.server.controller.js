@@ -763,7 +763,7 @@ exports.dlUpload = function(req, res){
 		console.log('got here', req.upload);
 		res.download(req.upload.url, req.upload.filename, function(err){
 			if(err){
-				console.log('ERROR!!!');
+				console.log('ERROR!!!', err);
 			} else {
 				console.log('No Errors', req.upload);
 			}

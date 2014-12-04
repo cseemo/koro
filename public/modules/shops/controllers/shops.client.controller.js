@@ -225,6 +225,8 @@ $scope.mytime = $scope.dt;
 			var fax;
 			var techphone;
 
+
+
 			if(!this.telephone){
 				phone = 'Telephone Number';
 			}else{
@@ -546,6 +548,9 @@ $scope.mytime = $scope.dt;
 			}else 
 			if(filetype==='.png'){
 				dltype = 'image/png';
+			}else 
+			if(filetype==='.jpeg'){
+				dltype = 'image/jpeg';
 			}else 
 			if(filetype==='.pdf'){
 				dltype = 'application/pdf';
