@@ -555,9 +555,7 @@ $scope.mytime = $scope.dt;
 			if(filetype==='.pdf'){
 				dltype = 'application/pdf';
 			}
-			else{
-					dltype = 'UTF-8';
-			}
+			
 			console.log('Type: ', dltype);
 			$http({method: 'GET', url: '/dlUpload/'+id, responseType: 'arraybuffer'}).
     		success(function(response, data) {
