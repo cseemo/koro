@@ -549,7 +549,7 @@ $scope.mytime = $scope.dt;
 			if(filetype==='.png'){
 				dltype = 'image/png';
 			}else 
-			if(filetype==='.jpeg'){
+			if(filetype==='jpeg'){
 				dltype = 'image/jpeg';
 			}else 
 			if(filetype==='.pdf'){
