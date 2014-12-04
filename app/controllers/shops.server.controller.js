@@ -1508,7 +1508,12 @@ doc.on('end', function(){
 	var content = mypdf.toString('base64');
 
 	//var content = fs.readFileSync(myfileName, 'base64');
-	var fromemail = req.user.email || '';
+
+	var fromemail = 'Budget IID';
+	if(req.user.email) {
+		console.log('User Email: ', req.user.email);
+		fromemail = req.user.email;
+	}
 	var toname = req.shop.primarycontactname || '';
 		var message = {
 	'subject': 'Ignition Interlock Service Center Agreement',
