@@ -824,10 +824,16 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
     };
 
     //Work Order Authorization Options
-    $scope.sendeSign = function() {
-    	$modalInstance.close();
-  			console.log('Sending eSign');
-  	};
+   //  $scope.sendeSign = function() {
+   //  	$modalInstance.close();
+  	// 		console.log('Sending eSign');
+  	// 		 $scope.findWorkOrder();
+   //      	$scope.workorder.$promise.then(function(){
+  	// 		var Id = $scope.workorder._id;
+  	// 		// $location.path('/workorderauth/'+Id);
+  	// 		window.open('/#!/workorderauth/'+Id);
+  	// 	});
+  	// };
 
   	$scope.eSignHere = function() {
     	$modalInstance.close();
@@ -845,6 +851,35 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
   	$scope.printAuth = function() {
     	$modalInstance.close();
   			console.log('Printing Work Auth');
+  			 $scope.findWorkOrder();
+        	$scope.workorder.$promise.then(function(){
+  			var Id = $scope.workorder._id;
+  					$http({
+  					method: 'get',
+					responseType: 'arraybuffer',
+					url: '/viewWorkOrder/'+Id, 
+					
+								
+						})
+					.success(function(data, status) {
+					
+					$scope.sending = false;
+					$scope.results = true;
+					//////console.log('Data from LOA?? %o',data);
+					toastr.info('Please print the following document...');
+						$scope.myresults = 'Email Sent!';
+						
+						
+
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		window.open(fileURL);
+			     	});
+
+				});
+
+
+
   	};
 
       	$scope.complete = function() {
@@ -879,10 +914,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
   			
 
   			$scope.workorder.email = $scope.offender.offenderEmail;
-		     $scope.workorder.type =  'New Install';
-		     $scope.workorder.subject = 'New Install Authorization from Budget Ignition Interlock';
+		     // $scope.workorder.type =  'New Install';
+		     $scope.workorder.subject = 'Authorization for Budget Ignition Interlock';
 		     $scope.workorder.toWhom = 'Customer';
-		     $scope.workorder.serviceCenter = 'Need to get SVC CEnter Name';
+		     // $scope.workorder.serviceCenter = 'Need to get SVC CEnter Name';
 		     $scope.workorder.toWhomName =  $scope.offender.firstName+' '+ $scope.offender.lastName;
 
   			        			$http({

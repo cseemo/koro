@@ -27,6 +27,7 @@ module.exports = function(app) {
 
 
 		app.route('/viewWorkOrder/:workorderId')
+		.get(workorders.viewOrder)
 		.post(workorders.viewOrder);
 
 		// app.route('/signWorkOrder/:workorderId')

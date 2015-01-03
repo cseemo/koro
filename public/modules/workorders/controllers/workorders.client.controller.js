@@ -210,7 +210,7 @@ $scope.approveWorkOrderPayment = function(){
 			     		$scope.step=3;
 			     		$scope.hideeSign=true;
 			     		console.log('line 212 work');
-			     		// chargeCard(workorder, $scope.offender);
+			     		chargeCard(workorder, $scope.offender);
    					});
 
 			});
