@@ -110,4 +110,200 @@ $scope.approveWorkOrderPayment = function(){
 			});
 		};
 	}
+]).controller('WorkOrderApprovalController', ['$scope', '$stateParams', '$location', 'Shops', '$http', '$filter', '$sce', 'Workorders', 'Offenders',  
+	function($scope, $stateParams, $location, Shops, $http, $filter, $sce, Workorders, Offenders) {
+		
+		//Update Info Button disaled until form is changed
+		$scope.updateInfo = false;
+		
+
+		  $scope.step=1;
+		  $scope.nextStep = function() {
+		  	// console.log('Next Step', $scope.step);
+
+		  	$scope.step = +$scope.step+1;
+		  	// console.log('Step: ', $scope.step);
+		  };
+
+
+
+			// Update existing Shop
+		$scope.updateAgreement = function() {
+			var shop = $scope.shop ;
+
+			shop.$update(function() {
+				// $location.path('shops/' + shop._id);
+				toastr.success('Your information has been updated');
+				// $scope.step=3;
+				$scope.updateInfo = false;
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		//Charge Credit Card for Work order
+		var chargeCard = function (wo, off){
+			console.log('Charging Credit Card Now');
+						$http({
+					    method: 'post',
+					    url: '/chargeCard/'+wo._id,
+					    data: {
+					    	offender: off
+					    }
+					    
+		
+					  })
+					.error(function(data) {
+						console.log('Error!! ', data);
+						toastr.error(data);
+					})
+					.success(function(data, status, headers, config) {
+						console.log('Data From Charge: ', data.directResponse);
+						var resp = data.directResponse.split(',');
+						console.log('4', resp[4]);
+						console.log('Trans Type (11)', resp[11]);
+						console.log('Trans Type (12)', resp[12]);
+						console.log('OR -- Trans Type (13)', resp[13]);
+						var amount = resp[9];
+						var description = resp[3];
+						var authCode = resp[4];
+						toastr.success(description+' on '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
+   					});
+
+			
+		};
+
+
+	
+
+						//Shop Signs Agreement
+		$scope.signAgreement = function() {
+			toastr.success('Congratrulations, you have eSigned the documents.');
+			var Id = $scope.workorder._id;
+			var workorder = $scope.workorder;
+			workorder.authSigned = Date.now();
+			var shop = $scope.shop;
+			
+			workorder.$update().then(function(){
+			
+			$http({
+					    method: 'post',
+					    url: '/approve/workorder/'+Id,
+					    responseType: 'arraybuffer',
+					    // headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+					    data: {
+					    	workinfo: workorder,
+					    	offender: $scope.offender
+					    }
+		
+					  })
+					.error(function(data) {
+						console.log('Error!! ', data);
+					})
+					.success(function(data, status, headers, config) {
+						
+						console.log('Step = ',$scope.step);
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		console.log('line 208 work');
+			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+			     		$scope.step=3;
+			     		$scope.hideeSign=true;
+			     		console.log('line 212 work');
+			     		// chargeCard(workorder, $scope.offender);
+   					});
+
+			});
+		};
+
+		$scope.viewAgreement = function() {
+			// console.log($scope.shop);
+
+			// var shop = $scope.shop;
+			// console.log(shop.signer+' '+shop.signertitle);
+			// shop.$update().then(function(){
+
+			// var shopId = $scope.shop._id;
+			console.log('Viewing Agreement');
+			console.log('Work ORder: ', $scope.workorder);
+			console.log('Offender: ', $scope.offender);
+			var Id = $scope.workorder._id;
+
+			$scope.step=3;
+			 $http({
+					method: 'post',
+					responseType: 'arraybuffer',
+					// url: '/approve/workorder/'+Id,
+					url: '/viewWorkOrder/'+Id, 
+					data: {
+						'offender': $scope.offender,
+						'workinfo': $scope.workorder
+						
+					}
+					
+			})
+
+			// $http({
+			// 		    method: 'post',
+			// 		    url: '/viewWorkOrder/'+Id,
+			// 		    responseType: 'arraybuffer',
+			// 		    headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+			// 		    data: {
+			// 			// 'offender': $scope.offender,
+			// 			'workinfo': $scope.workorder
+			// 			}
+		
+			// 		  })
+			// 		.error(function(data) {
+			// 			console.log('Error!! ', data);
+			// 		})
+					.success(function(data, status, headers, config) {
+						console.log('Got pdf');
+						console.log('Step = ',$scope.step);
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		
+			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+   					});
+
+				
+
+
+		};
+
+
+
+
+		// Find existing Shop
+		$scope.findOne = function() {
+			$scope.workorder = Workorders.get({ 
+				workorderId: $stateParams.workorderId
+			});
+			console.log('Found our Workorder:  ', $scope.workorder);
+
+
+				$scope.workorder.$promise.then(function(){
+
+					console.log('Going after our OFfender');
+					console.log('Found our Workorder Offender:  ', $scope.workorder.offender);
+
+
+					var offender = Offenders.get({ 
+				offenderId: $scope.workorder.offender
+			});
+					$scope.offender = offender;
+
+				console.log('What did we get back..', $scope.offender);
+					$scope.offender.$promise.then(function() {
+					$scope.displayName = offender.firstName+' '+offender.lastName;
+					console.log($scope.displayName);
+
+
+					});
+
+			});
+
+		};
+	}
+
 ]);

@@ -3,7 +3,11 @@
 color: #333;
 }
 </style>
-<section data-ng-controller="OffendersController" data-ng-init="init()">
+<section data-ng-controller="OffendersController" data-ng-init="findPending()">
+    <div class="page-header">
+        <h1 style="color: #333;">Pending Customers</h1>
+           
+    </div>
 
 
     <section class="panel panel-default table-dynamic" >
@@ -22,7 +26,7 @@ color: #333;
                                placeholder="Search..."
                                class="form-control"
                                data-ng-model="tableData.searchKeywords"
-                               data-ng-keyup="search()">
+                               data-ng-keyup="searchPending()">
                         {{tableData.searchKeywords}}
                     </div>
                     <div class="col-sm-3 col-xs-6 filter-result-info">
@@ -45,6 +49,17 @@ color: #333;
                                 <span class="fa fa-angle-down"
                                       data-ng-click=" order('-firstName') "
                                       data-ng-class="{active: row == '-firstName'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                         <div class="th">
+                                Type of Appointment
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('pendingWorkType') "
+                                      data-ng-class="{active: row == 'pendingWorkType'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-pendingWorkType') "
+                                      data-ng-class="{active: row == '-pendingWorkType'}"></span>
                             </div>
                         </th>
                   
@@ -89,7 +104,8 @@ color: #333;
                 
                 <tbody>
                     <tr data-ng-repeat="item in currentPageOffenders" >
-                    <td><a data-ng-click="setCurrentOffender()" href="#!/offenders/{{item._id}}">{{item.firstName}} {{item.lastName}}</a></td>
+                    <td><a data-ng-click="setCurrentOffender()" href="#!/customer/{{item._id}}">{{item.firstName}} {{item.lastName}}</a></td>
+                    <td>{{item.pendingWorkType}}</td>
                     <td>{{item.mainPhone}}</td>
                     <td>{{item.billingCity}}</td>
                     <td>{{item.billingState}}</td>

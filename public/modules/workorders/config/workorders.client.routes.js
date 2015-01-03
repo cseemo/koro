@@ -18,7 +18,7 @@ angular.module('workorders').config(['$stateProvider',
 			templateUrl: 'modules/workorders/views/view-workorder.client.view.html'
 		}).
 		state('approveWorkorder', {
-			url: '/approve/:workorderId',
+			url: '/workorderauth/:workorderId',
 			templateUrl: 'modules/workorders/views/approve-workorder.client.view.html'
 		}).
 		state('editWorkorder', {

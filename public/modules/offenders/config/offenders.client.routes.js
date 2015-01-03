@@ -17,9 +17,25 @@ angular.module('offenders').config(['$stateProvider',
 			url: '/offenders/:offenderId',
 			templateUrl: 'modules/offenders/views/view-offender.client.view.html'
 		}).
+		state('shopView', {
+			url: '/customer/:offenderId',
+			templateUrl: 'modules/offenders/views/view-offender.shop.view.html'
+		}).
+		state('shopViewPending', {
+			url: '/pending',
+			templateUrl: 'modules/offenders/views/list-pendingorders.shop.view.html'
+		}).
 		state('editOffender', {
 			url: '/offenders/:offenderId/edit',
 			templateUrl: 'modules/offenders/views/edit-offender.client.view.html'
+		}).
+		state('lookUpCustomer', {
+			url: '/lookUpCustomer',
+			templateUrl: 'modules/offenders/views/view-lookupcustomer.shop.view.html'
 		});
+
+
+
+		
 	}
 ]);

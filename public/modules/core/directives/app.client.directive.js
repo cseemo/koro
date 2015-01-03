@@ -23,7 +23,7 @@ angular.module('core').directive('imgHolder', [
           test = test.substring(0,14);
           // console.log('Test Path',test);
 
-          if(test==='/svccntrsignup' || test==='/letsdoi'){
+          if(test==='/svccntrsignup' || test==='/workorderauth'){
             // console.log('We got it approved');
             path = '/svccntrsignup';
              return $element.addClass('body-wide');

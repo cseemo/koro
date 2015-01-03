@@ -38,6 +38,14 @@
                     <input type="text" id="telephone" name="telephone" class="form-control" data-ng-model="userB.telephone" placeholder="Telephone NUmber">
                 </div>
 
+                  <div class="form-group">
+                    <label for="telephone">Service Center</label>
+                    <select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"></select>
+                </div>
+
+
+                   
+
                 <label class="form-label" style="font-size: 14px;">Roles:</label>
                 
             <label class="switch" style="vertical-align: middle">User<input type="checkbox" style="vertical-align: middle" ng-model="roles.user" class="pull-right"><i></i></label>

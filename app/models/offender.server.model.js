@@ -12,13 +12,29 @@ var mongoose = require('mongoose'),
 var OffenderSchema = new Schema({
 	firstName: {
 		type: String,
-		required: 'Please include first name'
+		required: 'Please include first name',
+		trim: true
 		
 	},
 		lastName: {
 		type: String,
-		required: 'Please include first name'
+		required: 'Please include first name',
+		trim: true
 		
+	},
+		displayName: {
+		type: String,
+		trim: true
+		
+	},
+	dobMO: {
+		type: Number
+	},
+	dobDAY: {
+		type: Number
+	},
+	dobYR: {
+		type: Number
 	},
 	created: {
 		type: Date,
@@ -31,6 +47,14 @@ var OffenderSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	merchantCustomerId: {
+		type: Number
+
+	},
+	paymentProfileId: {
+		type: Number
+
 	},
 
 		driverNumber: {
@@ -93,7 +117,44 @@ var OffenderSchema = new Schema({
 		type: String,
 		default: 'AZ',
 		trim: true
-	}
+	}, 
+	assignedShop: {
+		type: Schema.ObjectId,
+		ref: 'Shop',
+		default: null
+	
+	}, 
+	pendingWorkOrder: {
+		type: Schema.ObjectId,
+		ref: 'Workorder',
+		default: null
+
+	}, 
+	pendingWorkType: {
+		type: String,
+		default: 'Unkown',
+		trim: true
+	},
+	agreementSigned: {
+		type: Boolean,
+		default: false
+	},
+	cardNumber: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	cardCVV: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	cardExp: {
+		type: String,
+		default: '',
+		trim: true
+	},
+
 
 });
 

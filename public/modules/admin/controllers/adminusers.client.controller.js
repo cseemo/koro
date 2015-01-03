@@ -1,11 +1,18 @@
 'use strict';
 
-angular.module('admin').controller('AdminusersController', ['$scope', '$stateParams', 'Users',  '$location', 'Authentication', '$http',
-	function($scope, $stateParams, Users, $location, Authentication, $http) {
+angular.module('admin').controller('AdminusersController', ['$scope', '$stateParams', 'Users', 'Shops',  '$location', 'Authentication', '$http',
+	function($scope, $stateParams, Users, Shops, $location, Authentication, $http) {
 
 		// Storage for our "switches" role type current condition (true or false)
 		$scope.roles = {};
 
+		 $scope.shops = Shops.query();
+		 $scope.changeSvcCenter = function() {
+		 	$scope.userB.shop = $scope.serviceCenter._id;
+		 	console.log('User is: ', $scope.userB);
+
+
+		 };
 		// Find existing Deal
 		$scope.findOne = function() {
 			//console.log('MyScope at beginning %o', $scope);

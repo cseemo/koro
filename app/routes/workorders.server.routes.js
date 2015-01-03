@@ -21,7 +21,19 @@ module.exports = function(app) {
 		app.route('/orderByOffender/:offId')
 		.get(workorders.getByOffender);
 
-	app.route('/workorders/:workorderId')
+		app.route('/chargeCard/:workorderId')
+		.post(workorders.runAuth);
+
+
+
+		app.route('/viewWorkOrder/:workorderId')
+		.post(workorders.viewOrder);
+
+		// app.route('/signWorkOrder/:workorderId')
+		// .get(workorders.signWorkOrder);
+		
+
+		app.route('/workorders/:workorderId')
 		.get(workorders.read)
 		.put(users.requiresLogin, workorders.hasAuthorization, workorders.update)
 		.delete(users.requiresLogin, workorders.hasAuthorization, workorders.delete);
@@ -30,3 +42,4 @@ module.exports = function(app) {
 	app.param('workorderId', workorders.workorderByID);
 	app.param('offId', workorders.offenderByID);
 };
+

@@ -1,0 +1,73 @@
+   <div class="container">
+
+   <style>
+.form-group{
+    padding: 17px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+
+h2{
+    color: #555;
+}
+.giant{
+    height: 100px !important;
+    width: 250px !important;
+    padding-left: 20px !important;
+    font-size: 3em !important;
+}
+</style>
+
+<section data-ng-controller="OffendersController">
+ 
+      
+               <div class="panel panel-primary text-center">
+                  <div class="panel-body ">
+                  
+                    <h2>Lookup Customer</h2>
+
+                     <form data-ng-submit="signin()" class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                           
+                            <input 
+                                   type="text"
+                                   class="giant"
+                                   data-ng-model="credentials.username"
+                                   placeholder="Username"
+                                   >
+
+                                     <input 
+                                   type="text"
+                                   class="giant"
+                                   data-ng-model="credentials.username"
+                                   placeholder="Zipcode"
+                                   >
+                        </div>
+                       
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-lg btn-round">Search</button>
+                        </div>
+                        <div data-ng-show="error" class="text-center text-danger">
+                            <strong data-ng-bind="error"></strong>
+                        </div>
+                    </fieldset>
+                </form>
+
+
+                    
+                  
+                 </div>
+             </div>
+        
+ 
+
+</section>
+ </div>
+

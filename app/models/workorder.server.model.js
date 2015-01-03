@@ -28,11 +28,70 @@ var WorkorderSchema = new Schema({
 		default: '',
 		trim: true
 	},
+	shopId: {
+		type: Schema.ObjectId,
+		ref: 'Shop'
+		
+	},
 	offender: {
-		type: String,
+		type: Schema.ObjectId,
 		ref: 'Offender'
 		
-	}
+	},
+	checkIn: {
+		type: Date,
+		default: null
+	},
+	status: {
+		type: String,
+		default: 'Pending'
+		
+	},
+	completed: {
+		type: Date,
+		default: null
+	},
+	apptDate: {
+		type: Date,
+		default: null
+	},
+	deviceSN: {
+		type: String,
+		default: null,
+		trim: true
+		
+	},
+	svcAddress: {
+		type: String,
+		default: null,
+		trim: true
+		
+	},
+	deviceNotes: {
+		type: String,
+		default: null,
+		trim: true
+		
+	},
+	inspected: {
+		type: Date,
+		default: null
+	},
+	customerVideo: {
+		type: Date,
+		default: null
+	},
+	techName: {
+		type: String,
+		default: null,
+		trim: true
+		
+	},
+	authSigned: {
+		type: Date,
+		default: null
+	},
+
 });
 
 mongoose.model('Workorder', WorkorderSchema);

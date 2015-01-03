@@ -9,6 +9,13 @@ module.exports = function(app) {
 		.get(offenders.list)
 		.post(users.requiresLogin, offenders.create);
 
+
+		app.route('/updateCCInfo/:offenderId')
+		.get(offenders.updateCCInfo);
+		
+		app.route('/getPendingOrders')
+		.get(offenders.pending);
+
 	app.route('/offenders/:offenderId')
 		.get(offenders.read)
 		.put(users.requiresLogin, offenders.hasAuthorization, offenders.update)

@@ -63,6 +63,13 @@ fieldset{
                                     <input type="text" data-ng-model="offenderEmail" name="offenderEmail" id="offenderEmail" class="form-control" placeholder="Email Address" >
                                 </div>
                             </div>
+                            <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Date of Birth</label>
+                                                    <input type="text" maxlength="2" style="width:50px" ng-model="dobMO"></input>/
+                                                    <input type="text" maxlength="2" style="width:50px" ng-model="dobDAY"></input>/
+                                                    <input type="text" maxlength="4" style="width:75px" ng-model="dobYR"></input>
+                            </div>
+
                         </fieldset>
 
                         <fieldset>
@@ -77,9 +84,10 @@ fieldset{
                                 
                                 <input type="text" data-ng-model="billingCity" class="form-control" placeholder="City">
                                 
-                                <select data-ng-model="state" class="form-control" name="billingState"
+                                <select data-ng-model="billingState" class="form-control" name="billingState"
 
-                                 placeholder="State" ng-options="state for state in states"></select>
+                                 placeholder="State" ng-options="state for state in states">
+                                 <option value=""></option></select>
 
 
                             
@@ -92,7 +100,7 @@ fieldset{
                           <div class="form-group col-md-4" >
                                 <label class="control-label" for="name">Credit Card Number</label>
                                 <div class="controls">
-                                           <input type="text" data-ng-model="offenderCC" id="offenderEmail" class="form-control" placeholder="Credit Card Number" >
+                                           <input type="text" data-ng-model="offenderCC" id="offenderEmail" class="form-control" placeholder="Credit Card Number" maxlength="16">
 
                                 </div>
                             </div>
