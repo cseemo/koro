@@ -836,7 +836,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         	$scope.workorder.$promise.then(function(){
   			var Id = $scope.workorder._id;
   			// $location.path('/workorderauth/'+Id);
-  			window.open('http://localhost:5000/#!/workorderauth/'+Id);
+  			window.open('http://'+localhost+':5000/#!/workorderauth/'+Id);
   		});
 
 
