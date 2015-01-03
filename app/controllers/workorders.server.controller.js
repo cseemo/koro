@@ -596,8 +596,13 @@ exports.runAuth = function(req, res) {
 	  customerProfileId: cus.merchantCustomerId,
 	  customerPaymentProfileId: cus.paymentProfileId,
   order: {
-    invoiceNumber: Date.now()
-    // description: 
+    invoiceNumber: Date.now(),
+    description: 'Work at '+req.workorder.serviceCenter
+  },
+  billTo: {
+  	firstName: cus.firstName,
+  	lastName: cus.lastName,
+  	address: cus.billingAddress
   }
 };
 

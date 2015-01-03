@@ -23,6 +23,15 @@ var createPaymentProfile = function(customerId, cus){
 	console.log('Card Expirations: ', cardExp);
 var options = {
   customerType: 'individual',
+  billTo: {
+  		firstName: cus.firstName,
+  		lastName: cus.lastName,
+  		address: cus.billingAddress,
+  		city: cus.billingCity,
+  		state: cus.billingState,
+  		zip: cus.billingZipcode,
+  		phoneNumber: cus.mainPhone
+  },
   payment: {
     creditCard: new Authorize.CreditCard({
       cardNumber: cus.cardNumber,
@@ -67,6 +76,7 @@ var createAuthProfile = function(off, cb) {
   merchantCustomerId: customerID,
   description: off.firstName+' '+off.lastName,
   email: off.offenderEmail,
+  
   // customerProfileId: 349494
 }
 
