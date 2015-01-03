@@ -326,7 +326,7 @@ exports.email = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -368,7 +368,7 @@ exports.email = function(req, res){
 		doc.fontSize(10)
 		doc.fillColor('black');
 		doc.font('Times-Roman');
-		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 for this service.',
+		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -574,12 +574,24 @@ exports.runAuth = function(req, res) {
 	// 	console.log('Failed at runnig charge');
 	// 	res.status(333).send('WE cannot charge that card'+err);
 	// }
-
-	var totalCharge = 55;
+	var workCharge;
+	if(req.workorder.type==='New Install') {
+		workCharge = 189;
+	
+	}else{
+		workCharge = 50;
+	}
+	
+	var totalCharge = workCharge*1.0985;
+	totalCharge = totalCharge.toFixed(2);
 	var invoiceNumber = 6544;
-	var stateTax = 10.01;
+	var stateTax = +totalCharge-workCharge;
+	stateTax = stateTax.toFixed(2);
 	var taxState = 'KS';
 
+console.log('Total Charge: ', totalCharge);
+console.log('Work Order Charge: ', workCharge);
+console.log('Tax Amount: ', stateTax);
 
 	var transaction = {
   amount: totalCharge,
@@ -913,7 +925,7 @@ exports.signAuth = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -970,7 +982,7 @@ exports.signAuth = function(req, res){
 		doc.fontSize(10)
 		doc.fillColor('black');
 		doc.font('Times-Roman');
-		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 for this service.',
+		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -1322,7 +1334,7 @@ exports.viewOrder = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -1379,7 +1391,7 @@ exports.viewOrder = function(req, res){
 		doc.fontSize(10)
 		doc.fillColor('black');
 		doc.font('Times-Roman');
-		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 for this service.',
+		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500

@@ -257,16 +257,24 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       		console.log('Credit Card:', $scope.offender);
 	      	$scope.offender.cardExp =  $scope.expYear+'-'+$scope.expMonth;
 	      	// $scope.offender.cardExp = $scope.cardExp;
-			$scope.offender.cardCVV = $scope.cardCVV;
-			$scope.offender.cardNumber = $scope.cardNumber;
+			// $scope.offender.cardCVV = $scope.cardCVV;
+			// $scope.offender.cardNumber = $scope.cardNumber;
+			$scope.offender.last4 = $scope.cardNumber.slice(-4);
+
 			// console.log
 			console.log('OFfender Updating: ', $scope.offender);
 	      	$scope.offender.$update(function() {
 	      		console.log('Offender info to send: ', $scope.offender);
      			$http({
-					method: 'get',
+					method: 'post',
 					url: '/updateCCInfo/'+$scope.offender._id,
-					})
+					
+					data: {
+						cardNumber: $scope.cardNumber,
+						CVV: $scope.cardCVV,
+						expDate: $scope.expYear+'-'+$scope.expMonth
+					}
+				})
 					.success(function(data, status) {
 							if(status === 200) {
 								
@@ -324,6 +332,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				dobMO: $scope.dobMO,
 				dobDAY: $scope.dobDAY,
 				dobYR: $scope.dobYR,
+				last4: $scope.offenderCC.slice(-4)
 			});
 
 			// Redirect after save

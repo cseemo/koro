@@ -108,6 +108,10 @@ var OffenderSchema = new Schema({
 		
 		trim: true
 	},
+	last4: {
+		type: String,
+		trim: true
+	},
 			billingZipcode: {
 		type: String,
 		

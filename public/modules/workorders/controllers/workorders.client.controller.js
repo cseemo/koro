@@ -201,14 +201,14 @@ $scope.approveWorkOrderPayment = function(){
 						console.log('Error!! ', data);
 					})
 					.success(function(data, status, headers, config) {
-						
+						$scope.hideeSign=true;
 						console.log('Step = ',$scope.step);
 						var file = new Blob([data], {type: 'application/pdf'});
 			     		var fileURL = URL.createObjectURL(file);
 			     		console.log('line 208 work');
 			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
 			     		$scope.step=3;
-			     		$scope.hideeSign=true;
+			     		
 			     		console.log('line 212 work');
 			     		chargeCard(workorder, $scope.offender);
    					});

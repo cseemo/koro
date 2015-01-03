@@ -11,7 +11,7 @@ module.exports = function(app) {
 
 
 		app.route('/updateCCInfo/:offenderId')
-		.get(offenders.updateCCInfo);
+		.post(offenders.updateCCInfo);
 		
 		app.route('/getPendingOrders')
 		.get(offenders.pending);

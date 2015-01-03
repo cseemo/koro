@@ -8,13 +8,26 @@ var mongoose = require('mongoose'),
 	Offender = mongoose.model('Offender'),
 	_ = require('lodash');
 
-	var Authorize = require('auth-net-types')
-	  , _AuthorizeCIM = require('auth-net-cim')
-	  , AuthorizeCIM = new _AuthorizeCIM({
+	var Authorize = require('auth-net-types'),
+	   _AuthorizeCIM = require('auth-net-cim'),
+	  	AuthorizeCIM = new _AuthorizeCIM({
 	    api: '78HDftF7Gs',
 	    key: '83H8U65tX3ekuFrD',
 	    sandbox: true // false
 	  });
+
+//Delete Card Info
+var delCardInfo = function(off){
+	console.log('Deleting', off);
+    off.cardNumber = 'XXXXXXXX'+off.last4;
+    off.cardExp = '';
+    off.cardCVV = '';
+    off.save();
+    console.log('Done.');
+    console.log(off);
+
+}
+
 
 var createPaymentProfile = function(customerId, cus){
 	console.log('What is cus?', cus);
@@ -47,7 +60,7 @@ AuthorizeCIM.createCustomerPaymentProfile({
 }, function(err, response) {
 	if(err) console.log(err);
 	console.log('Response from Payment Profile, ', response);
-	cus.cardNumber = '';
+	cus.cardNumber = 'XXXXXXXX'+cus.last4;;
 	cus.cardExp = '';
 	cus.cardCVV = '';
 	console.log('Here is payment infO: ', response.customerPaymentProfileId);
@@ -99,10 +112,13 @@ var createAuthProfile = function(off, cb) {
 
 };
 
+
+
 //Update Credit Card Info
 exports.updateCCInfo = function (req, res) {
 	console.log('Updating the CC Info');
 	console.log(req.offender);
+	console.log('Credit Info: ', req.body);
 	 // var customerID2 = req.offender._id.toString();
 	  // var customerID = customerID2.substring(3, 23);
 	  // var cardExp = req.offender.expYear+'='+req.offender.expMonth;
@@ -113,9 +129,9 @@ exports.updateCCInfo = function (req, res) {
 				   customerPaymentProfileId: req.offender.paymentProfileId,
 				  payment: {
 				    creditCard: new Authorize.CreditCard({
-				      cardNumber: req.offender.cardNumber,
-				        expirationDate: req.offender.cardExp,
-				        cardCode: req.offender.cardCVV
+				      cardNumber: req.body.cardNumber,
+				        expirationDate: req.body.expDate,
+				        cardCode: req.body.CVV
 				    })
 				  }
 				}
@@ -161,6 +177,7 @@ exports.updateCCInfo = function (req, res) {
 	  		}else{
 	  			console.log('Response from creating Auth PRofile', resp);
 	  			res.status(200).send('Card Information Updated');
+	  			delCardInfo(req.offender);
 	  		}
 
 
