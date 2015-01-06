@@ -104,7 +104,7 @@ exports.list = function(req, res) {
  * Workorder middleware
  */
 exports.workorderByID = function(req, res, next, id) { 
-	console.log('Looking for WOrk Order');
+	console.log('Looking for WOrk Order', id);
 
 	Workorder.findById(id).populate('user', 'displayName').exec(function(err, workorder) {
 		if (err) return next(err);

@@ -1,8 +1,8 @@
 'use strict';
 
 // Workorders controller
-angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', '$http', 
-	function($scope, $stateParams, $location, Authentication, Workorders, Offenders, $http ) {
+angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', 'Payments', '$http', 
+	function($scope, $stateParams, $location, Authentication, Workorders, Offenders, Payments, $http ) {
 		$scope.authentication = Authentication;
 
 		// Create new Workorder
@@ -110,8 +110,8 @@ $scope.approveWorkOrderPayment = function(){
 			});
 		};
 	}
-]).controller('WorkOrderApprovalController', ['$scope', '$stateParams', '$location', 'Shops', '$http', '$filter', '$sce', 'Workorders', 'Offenders',  
-	function($scope, $stateParams, $location, Shops, $http, $filter, $sce, Workorders, Offenders) {
+]).controller('WorkOrderApprovalController', ['$scope', '$stateParams', '$location', 'Shops', '$http', '$filter', '$sce', 'Workorders', 'Payments', 'Offenders',  
+	function($scope, $stateParams, $location, Shops, $http, $filter, $sce, Workorders, Payments, Offenders) {
 		
 		//Update Info Button disaled until form is changed
 		$scope.updateInfo = false;
@@ -144,6 +144,27 @@ $scope.approveWorkOrderPayment = function(){
 		//Charge Credit Card for Work order
 		var chargeCard = function (wo, off){
 			console.log('Charging Credit Card Now');
+
+
+        	//Create New Payment
+        		var pmt = new Payments ({
+				workorder: wo._id,
+				pmtType: wo.type,
+				offender: off._id,
+				status: 'Pending',
+				notes: 'Nothing'
+				
+			});
+
+        		
+			// Redirect after save
+			pmt.$save(function(response) {
+					console.log('Response from saving PMT: ', response);
+
+        		});
+
+
+
 						$http({
 					    method: 'post',
 					    url: '/chargeCard/'+wo._id,

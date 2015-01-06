@@ -206,7 +206,7 @@ exports.create = function(req, res) {
 				message: err //errorHandler.getErrorMessage(err)
 			});
 		} else {
-			createAuthProfile(offender);
+			// createAuthProfile(offender);
 			res.jsonp(offender);
 		}
 	});
