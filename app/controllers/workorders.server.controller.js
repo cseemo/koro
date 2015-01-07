@@ -168,7 +168,19 @@ exports.email = function(req, res){
 	var y = date.getYear()-100;
 	var prepDate = m+'/'+d+'/'+y;
 	// //console.log('Quote Date: ',prepDate)
-	var termLength = '12';
+	var termLength = req.body.offender.term;
+	var workCharge;
+	if(req.body.workinfo.type==='New Install') {
+		workCharge =  req.body.workinfo.amount || 89;
+	
+	}
+	else if(req.body.workinfo.type==='Reset') {
+		workCharge = 50;
+	
+	}else if(req.body.workinfo.type==='Removal') {
+		workCharge = 75;
+	
+	}
 
 	//var name = req.query.name;
 	var PDFDocument = require('pdfkit');
@@ -178,7 +190,7 @@ exports.email = function(req, res){
 	//var stream = doc.pipe(blobStream());
 	var buffers = [];
 	var myfileName = 'Work_Auth.pdf';
-	doc.pipe( fs.createWriteStream(myfileName) );
+	// doc.pipe( fs.createWriteStream(myfileName) );
 	 
 	var chunks = [];
 	//FILL OUT LD LOA
@@ -326,7 +338,7 @@ exports.email = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 plus tax for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+workCharge+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -368,7 +380,7 @@ exports.email = function(req, res){
 		doc.fontSize(10)
 		doc.fillColor('black');
 		doc.font('Times-Roman');
-		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 plus tax for this service.',
+		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Budget Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -510,8 +522,8 @@ doc.on('end', function(){
 	'signing_domain': null,
 	'return_path_domain': null,
 'attachments': [{
-		'type': 'application/pdf; name=CarefreeWorkOrder.pdf',
-		'name': 'CarefreeWorkOrder.pdf',
+		'type': 'application/pdf; name=Buget_IID_WorkOrder.pdf',
+		'name': 'BudgetWorkOrder.pdf',
 		'content': content
 	}]
 	
@@ -576,10 +588,15 @@ exports.runAuth = function(req, res) {
 	// }
 	var workCharge;
 	if(req.workorder.type==='New Install') {
-		workCharge = 189;
+		workCharge =  req.workorder.amount || 89;
 	
-	}else{
+	}
+	else if(req.workorder.type==='Reset') {
 		workCharge = 50;
+	
+	}else if(req.workorder.type==='Removal') {
+		workCharge = 75;
+	
 	}
 	
 	var totalCharge = workCharge*1.0985;
@@ -651,7 +668,30 @@ exports.signAuth = function(req, res){
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress,
 	timesrun = 0;
 
-
+	// var workCharge;
+	// if(req.workorder.type==='New Install') {
+	// 	workCharge = 189;
+	
+	// }
+	// else if(req.workorder.type==='Reset') {
+	// 	workCharge = 50;
+	
+	// }else if(req.workorder.type==='Removal') {
+	// 	workCharge = 75;
+	
+	// }
+	var workCharge;
+	if(req.body.workinfo.type==='New Install') {
+		workCharge =  req.body.workinfo.amount || 89;
+	
+	}
+	else if(req.body.workinfo.type==='Reset') {
+		workCharge = 50;
+	
+	}else if(req.body.workinfo.type==='Removal') {
+		workCharge = 75;
+	
+	}
 
 
 
@@ -683,7 +723,7 @@ exports.signAuth = function(req, res){
 	 
 	var today = new moment();
 	var convertedPretty = moment(today).format("MM/DD/YYYY");
-	var termLength = 12;
+	var termLength = req.body.offender.term;
 	
 	var firstInitial = req.body.offender.firstName.substring(0, 1);
 	var secondInitial = req.body.offender.lastName.substring(0, 1);
@@ -925,7 +965,7 @@ exports.signAuth = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 plus tax for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+workCharge+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -982,7 +1022,7 @@ exports.signAuth = function(req, res){
 		doc.fontSize(10)
 		doc.fillColor('black');
 		doc.font('Times-Roman');
-		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 plus tax for this service.',
+		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Budget Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -1180,8 +1220,20 @@ exports.viewOrder = function(req, res){
 	var prepDate = m+'/'+d+'/'+y;
 
 	//Variables to fill out
-	var termLength = 12;
+	var termLength = req.body.offender.term;
 	
+	var workCharge;
+	if(req.body.workinfo.type==='New Install') {
+		workCharge =  req.body.workinfo.amount || 89;
+	
+	}
+	else if(req.body.workinfo.type==='Reset') {
+		workCharge = 50;
+	
+	}else if(req.body.workinfo.type==='Removal') {
+		workCharge = 75;
+	
+	}
 
 	// //console.log('Quote Date: ',prepDate)
 
@@ -1334,7 +1386,7 @@ exports.viewOrder = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $50.00 plus tax for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+workCharge+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -1391,7 +1443,7 @@ exports.viewOrder = function(req, res){
 		doc.fontSize(10)
 		doc.fillColor('black');
 		doc.font('Times-Roman');
-		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Carefree Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $50.00 plus tax for this service.',
+		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Budget Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -1433,8 +1485,8 @@ doc.on('end', function(){
 			var message = {
 	'html': '<p>Approval Copy for </p>',
 	
-	'subject': 'For Your Records -- Carefree IID Approval for '+req.body.workinfo.type,
-	'from_email': 'admin@carefreeiid.com',
+	'subject': 'For Your Records -- Budget IID Approval for '+req.body.workinfo.type,
+	'from_email': 'admin@budgetiid.com',
 	'from_name': req.body.offender.user.displayName,
 	'to': [{
 		'email': req.body.workinfo.email,
@@ -1442,7 +1494,7 @@ doc.on('end', function(){
 			'type': 'to'
 	}],
 	'headers': {
-		'Reply-To': 'admin@carefreeiid.com'
+		'Reply-To': 'admin@budgetiid.com'
 	},
 	'merge': true,
 	'global_merge_vars': [{

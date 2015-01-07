@@ -2,28 +2,26 @@
 
 
 // Offenders controller
-angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Workorders', '$filter', '$modal', '$log', '$http', 
-	function($scope, $stateParams, $location, Authentication, Offenders, Workorders, $filter, $modal, $log, $http) {
+angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', 
+	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http) {
 		$scope.authentication = Authentication;
 		$scope.pendingOrder = true;
 		// Create new Offender
 		
 		$scope.signedUpStatus = 'Get Install Agreement Signed';
-		
+		$scope.installFee = '65.00';
+
 		$scope.checklist = [
 		{item: 'Set Appointment Date', click: 'setAppt'},
 		{item: 'Customer Check-In', click: 'checkIn'},
 		{item: 'Inspect Vehicle', click: 'inspected'},
-		// {item: 'Verify Horn Works', click: 'false'},
+		{item: 'Inventory Device', click: 'checkOutDevice'},
 		{item: 'Have Customer Watch Training Video', click: 'customerVideo'},
 		{item: $scope.signedUpStatus, click: 'installPaperwork'},
-		{item: 'Check-Out Device', click: 'checkOutDevice'},
-		// {item: 'Complete Device Installation', click: 'checkItem($index)'},
-		// {item: 'Verify Horn and Lights Work', click: 'checkItem($index)'},
 		{item: 'Installation Complete', click: 'complete'}
 		];
 
-
+		
 		$scope.saveMe = function() {
 			console.log('Save it!!');
 			$scope.offender.$update().then(function(){
@@ -33,7 +31,77 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 		};
 		
+		$scope.findClient = function() {
+			console.log('Looking for client', $scope.dLNumber);
+			$http({
+					method: 'post',
+					
+					url: '/getClientbyDL', 
+					data: {
+						'dl': $scope.dLNumber,
+						
+						
+								},
+								
+						})
+					.success(function(data, status) {
 
+						console.log('Yeah!!!', data);
+						console.log('Got Offender', status);
+
+      				// $location.path('offenders/' + data[0]._id);
+      				$scope.offender = data[0];
+      				// $scope.offender.$promise.then(function(){
+
+      					console.log('Promise done');
+      					$scope.offender.assignedShop = $scope.authentication.user.shop;
+      					console.log('Authentication Shop: ', $scope.authentication.user.shop);
+      					// $scope.update();
+					// $location.path('neworder/' + $scope.offender._id);
+	      			
+	      			console.log($scope.offender);
+
+	      			var modalInstance;
+       
+        console.log('Getting Offender', $scope.offender._id);
+		      	var MYoffender = Offenders.get({ 
+				offenderId: $scope.offender._id
+					});
+		      	MYoffender.$promise.then(function(){
+		      		console.log('Offender finished', MYoffender);
+		      		
+
+
+        modalInstance = $modal.open({
+          templateUrl: 'shopModalContent.html',
+          controller: 'ModalInstanceCtrl',
+          resolve: {
+            items: function() {
+              return $scope.workOrderTypes;
+            }, 
+             workorder: function() {
+             	console.log('Sending workorder info');
+	              return null
+	            },
+            offender: function() {
+		      	return MYoffender
+		      	
+		      }
+
+            },
+            
+           
+		  });
+
+		      	});
+
+
+
+      
+            });
+         
+        
+		};
 
 		$scope.clicked = function(data, index) {
 			console.log('Clicked; ', data);
@@ -504,6 +572,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 //Modal Stuff for New Work Order
       $scope.workOrderTypes = ['New Install', 'Calibration', 'Reset', 'Removal'];
+      $scope.serviceTypes = ['Calibration', 'Reset', 'Removal'];
+      
+
       $scope.open = function() {
       	console.log('Opening Modal');
         var modalInstance;
@@ -529,6 +600,33 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
           $log.info('Modal dismissed at: ' + new Date());
         });
       };
+
+      //       $scope.openShopModal = function() {
+      // 	console.log('Opening Shop Modal');
+      //   var modalInstance;
+      //   var offender = $scope.offender;
+      //   console.log('Scope Offender: ', $scope.offender);
+      //   modalInstance = $modal.open({
+      //     templateUrl: 'shopModalContent.html',
+      //     controller: 'ModalInstanceCtrl',
+      //     resolve: {
+      //       items: function() {
+      //         return $scope.serviceTypes;
+      //       }, 
+      //       offender: function() {
+      //         return $scope.offender;
+      //       },
+      //       workorder: function() {
+      //         return $scope.workorder;
+      //       }
+      //     }
+      //   });
+      //   // modalInstance.result.then(function(selectedItem, offender) {
+      //   //   $scope.selected = selectedItem;
+      //   // }, function() {
+      //   //   $log.info('Modal dismissed at: ' + new Date());
+      //   // });
+      // };
 
 
       //Table for Work Orders per Offender
@@ -650,6 +748,18 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				$scope.workorder = data;
 				console.log($scope.workorder);
 				// $scope.workorder.checkIn = Date.now();
+
+		// 			$scope.checklist = [
+		// {item: 'Set Appointment Date', click: 'setAppt'},
+		// {item: 'Customer Check-In', click: 'checkIn'},
+		// {item: 'Inspect Vehicle', click: 'inspected'},
+		// {item: 'Inventory Device', click: 'checkOutDevice'},
+		// {item: 'Have Customer Watch Training Video', click: 'customerVideo'},
+		// {item: $scope.signedUpStatus, click: 'installPaperwork'},
+		// {item: 'Installation Complete', click: 'complete'}
+		// ];
+
+
 				if($scope.workorder.apptDate){
 					console.log('This baby has an Appointment Date already!!');
 					console.log("STuff: ", $scope.checklist[0]);
@@ -671,20 +781,20 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 				if($scope.workorder.customerVideo){
 					console.log('Customer Video Already Watched!!');
-					console.log("STuff: ", $scope.checklist[3]);
-					$scope.checklist[3]['strike'] = "done-true" ;
+					console.log("STuff: ", $scope.checklist[4]);
+					$scope.checklist[4]['strike'] = "done-true" ;
 				}
 				if($scope.workorder.authSigned){
 
 					console.log('Install Agreement Already Signed');
-					console.log("STuff: ", $scope.checklist[4]);
-					$scope.checklist[4]['strike'] = "done-true" ;
+					console.log("STuff: ", $scope.checklist[5]);
+					$scope.checklist[5]['strike'] = "done-true" ;
 				}
 
 				if($scope.workorder.deviceSN){
 					console.log('Workorder Alrady has Serial Number Assigned');
-					console.log("STuff: ", $scope.checklist[5]);
-					$scope.checklist[5]['strike'] = "done-true" ;
+					console.log("STuff: ", $scope.checklist[3]);
+					$scope.checklist[3]['strike'] = "done-true" ;
 				}
 				if($scope.workorder.completed){
 					console.log('Workorder Alrady Completed');
@@ -710,6 +820,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
     '$scope', '$modalInstance', 'items', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location',  function($scope, $modalInstance, items, offender, Authentication, $http, Workorders, Shops, workorder, $location) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
+    
+
+
      $scope.findWorkOrder = function(id) {
      		console.log('Workorder: ', workorder);
      		if(id) workorder = id;
@@ -728,6 +841,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// 	offenderId: $scope.workorder.offender
 			// });
 		};
+
+	  $scope.termoptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+	  $scope.installFee = 65;
+	  $scope.serviceTypes = ['Calibration', 'Reset', 'Removal'];
+      
+
       $scope.items = items;
       $scope.selected = {
         item: $scope.items[0]
@@ -771,6 +890,20 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
       };
+
+		      	$scope.myShop = function(){
+		      		console.log('Getting myshop: ', $scope.authentication.user.shop);
+		      		var myShop = Shops.get({ 
+				shopId: $scope.authentication.user.shop
+					});
+		      	myShop.$promise.then(function(){
+		      		console.log('Shop Promise finished', myShop);
+		      		
+		      		$scope.myShopInfo = myShop;
+		      		$scope.serviceCenter = myShop;
+
+		      	});
+		      };
 
             $scope.changeType = function(){
       	console.log('Changing Type', $scope.chosen);
@@ -964,6 +1097,95 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			
   		};
 
+  		$scope.shopOrder = function() {
+        $modalInstance.close($scope.selected.item);
+        $scope.offender.assignedShop = $scope.serviceCenter._id;
+        $scope.offender.pendingWorkType = $scope.chosen;
+        console.log($scope.offender);
+        console.log('Service Center Name: ', $scope.serviceCenter.name);
+        var shopAddy = $scope.serviceCenter.address+' '+$scope.serviceCenter.city+' '+$scope.serviceCenter.state+' '+$scope.serviceCenter.zipcode;
+        console.log('Service Addy: ', shopAddy);
+        
+
+
+        console.log($scope);
+
+        	var chargeAmount = 0;
+
+        	if($scope.chosen==='New Install'){
+        		chargeAmount = $scope.installFee;
+        	} 
+        	if($scope.chosen==='Reset') {
+        		chargeAmount = 50;
+        	}
+        	if($scope.chosen==='Removal') {
+        		chargeAmount = 75;
+        	}
+
+        	
+
+        	//Save New Work Order
+        		var workorder = new Workorders ({
+				serviceCenter: $scope.serviceCenter.name,
+				svcAddress: shopAddy,
+				offender: $scope.offender._id,
+				type: $scope.chosen,
+				shopId: $scope.serviceCenter._id, 
+				amount: chargeAmount
+				
+			});
+
+        		console.log('Work Order: ', workorder);
+			// Redirect after save
+			workorder.$save(function(response) {
+					$scope.workOrder._id = response._id;
+					$scope.offender.pendingWorkOrder = response._id;
+					$scope.offender.term = $scope.term;
+        			$scope.offender.$update();
+
+
+
+			console.log('Work order status...', $scope.workOrder);
+
+        			$http({
+					method: 'post',
+					responseType: 'arraybuffer',
+					url: '/work/order', 
+					data: {
+						'user': $scope.authentication.user,
+						'offender': $scope.offender,
+						'workinfo': $scope.workOrder
+						
+								},
+								
+						})
+					.success(function(data, status) {
+					
+					$scope.sending = false;
+					$scope.results = true;
+					//////console.log('Data from LOA?? %o',data);
+					toastr.success('Success! Email was sent...');
+						$scope.myresults = 'Email Sent!';
+						
+						
+
+						// var file = new Blob([data], {type: 'application/pdf'});
+			   //   		var fileURL = URL.createObjectURL(file);
+			   //   		window.open(fileURL);
+			     		
+			     		
+
+
+								});
+
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+
+
+      };
+
+
       $scope.ok = function() {
         $modalInstance.close($scope.selected.item);
         $scope.offender.assignedShop = $scope.serviceCenter._id;
@@ -985,9 +1207,22 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         	toWhomName: $scope.toWhomName
 
         };
+
         console.log($scope);
 
-        
+        	var chargeAmount = 0;
+
+        	if($scope.chosen==='New Install'){
+        		chargeAmount = $scope.installFee;
+        	} 
+        	if($scope.chosen==='Reset') {
+        		chargeAmount = 50;
+        	}
+        	if($scope.chosen==='Removal') {
+        		chargeAmount = 75;
+        	}
+
+        	
 
         	//Save New Work Order
         		var workorder = new Workorders ({
@@ -995,7 +1230,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				svcAddress: shopAddy,
 				offender: $scope.offender._id,
 				type: $scope.chosen,
-				shopId: $scope.serviceCenter._id
+				shopId: $scope.serviceCenter._id, 
+				amount: chargeAmount
 				
 			});
 
@@ -1004,6 +1240,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			workorder.$save(function(response) {
 					$scope.workOrder._id = response._id;
 					$scope.offender.pendingWorkOrder = response._id;
+					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
 
 

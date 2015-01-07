@@ -13,6 +13,10 @@ angular.module('offenders').config(['$stateProvider',
 			url: '/offenders/create',
 			templateUrl: 'modules/offenders/views/create-offender.client.view.html'
 		}).
+		state('createShopOrder', {
+			url: '/neworder/:offenderId',
+			templateUrl: 'modules/offenders/views/create-workorder.shop.view.html'
+		}).
 		state('viewOffender', {
 			url: '/offenders/:offenderId',
 			templateUrl: 'modules/offenders/views/view-offender.client.view.html'

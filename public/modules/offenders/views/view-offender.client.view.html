@@ -114,7 +114,7 @@ fieldset{
 	                                    <li>
 	                                        
 	                                        <label>Type</label>
-	                                        Drunkavic 1000
+	                                        Brac Auditlock 1
 	                                    </li>
 	                                    <li>
 	                                       
@@ -392,7 +392,7 @@ fieldset{
 	      		</div>
 	    </div>
 	  
-	    <div class="pull-right" data-ng-show="authentication.user._id == offender.user._id">
+	    <div class="pull-right">
 			<a class="btn btn-primary" href="/#!/offenders/{{offender._id}}/edit">
 				<i class="glyphicon glyphicon-edit"></i>
 			</a>
@@ -422,9 +422,19 @@ fieldset{
         
          <label>Work Order Type</label>
         	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
+        	
 <br>
+<span data-ng-show="chosen==='New Install'">
+         <label>Install Fee</label>
+        	  <input type="text" data-ng-model="installFee"  id="installFee" class="form-control" placeholder="80" >
+        	<br>
+           <label>Term of Service</label>
+        	  <select class="form-control" data-ng-model="term" name="term" data-ng-options="term for term in termoptions"> <option value=""></option></select>
+<br> 
+
+</span>
         	   <label>Submitting To</label>
-        	  <select class="form-control" data-ng-model="sendTo" name="sendTo" data-ng-options="sendto for sendto in sendToOptions" data-ng-change="changeWho()"></select>
+        	  <select class="form-control" data-ng-model="sendTo" name="sendTo" data-ng-options="sendto for sendto in sendToOptions" data-ng-change="changeWho()"> <option value=""></option></select>
 <br>
 				<span data-ng-show="!whomCus">
 				<label>Recipient Name</label>
@@ -460,7 +470,7 @@ fieldset{
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">Send Form</button>
+            <button class="btn btn-primary" nd-disabled="!serviceCenter|| !term " ng-click="ok()">Send Form</button>
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>

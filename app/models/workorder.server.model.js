@@ -91,6 +91,11 @@ var WorkorderSchema = new Schema({
 		type: Date,
 		default: null
 	},
+	amount:
+	{
+		type: Number,
+		default: 65
+	}
 
 });
 

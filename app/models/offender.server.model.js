@@ -112,6 +112,10 @@ var OffenderSchema = new Schema({
 		type: String,
 		trim: true
 	},
+		term: {
+		type: String,
+		trim: true
+	},
 			billingZipcode: {
 		type: String,
 		

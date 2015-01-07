@@ -18,7 +18,7 @@ h2{
 }
 .giant{
     height: 100px !important;
-    width: 250px !important;
+    width: 500px !important;
     padding-left: 20px !important;
     font-size: 3em !important;
 }
@@ -32,23 +32,23 @@ h2{
                   
                     <h2>Lookup Customer</h2>
 
-                     <form data-ng-submit="signin()" class="form-horizontal">
+                     <form data-ng-submit="findClient()" class="form-horizontal">
                     <fieldset>
                         <div class="form-group">
                            
                             <input 
                                    type="text"
                                    class="giant"
-                                   data-ng-model="credentials.username"
-                                   placeholder="Username"
+                                   data-ng-model="dLNumber"
+                                   placeholder="Driver License Number"
                                    >
 
-                                     <input 
+                                    <!--  <input 
                                    type="text"
                                    class="giant"
                                    data-ng-model="credentials.username"
-                                   placeholder="Zipcode"
-                                   >
+                                   pla ceholder="Zipcode"
+                                   >-->
                         </div>
                        
                         <div class="form-group">
@@ -66,6 +66,62 @@ h2{
                  </div>
              </div>
         
+
+
+    <script type="text/ng-template" id="shopModalContent.html">
+       
+        <div class="modal-header" ng-init="myShop()">
+
+           {{offender.firstName}} {{offender.lastName}}
+
+            <br>
+            {{offender.billingCity}}, {{offender.billingState}}
+            <br>
+            {{offender.vehicleYear}}   {{offender.vehicleMake}}   {{offender.vehicleModel}}
+        </div>
+        <div class="modal-body">
+      
+        
+         <label>Work Order Type</label>
+            <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in serviceTypes" data-ng-change="changeType()"></select>
+          
+<br>
+
+
+        <label>Service Center</label>
+        <br>
+         {{myShopInfo.name}}<br>
+        {{myShopInfo.address}}  {{myShopInfo.city}},  {{myShopInfo.state}}  {{myShopInfo.Zipcode}}
+      
+<br>
+<br>
+             <label>Email Address</label>
+              <input type="text" data-ng-model="emailAddress"  id="emailAddress" class="form-control" placeholder="Email Address" >
+
+<br>
+              <label>Email Subject</label>
+              <input type="text" data-ng-model="emailSubject"  id="emailSubject" class="form-control" placeholder="{{chosen}} Authorization" >
+<br>
+              <label>Email Text</label>
+              <textarea type="text" data-ng-model="emailText"  id="emailText" class="form-control" placeholder="Hi {{offender.firstName}}..." >
+
+              </textarea>
+                                <br>
+              <label>Email Signature</label>
+             <br>
+              {{authentication.user.displayName}}<br/>
+               {{authentication.user.telephone}}<br/>
+                {{authentication.user.email}}<br/>
+                
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" nd-disabled="!serviceCenter|| !term " ng-click="shopOrder()">Send Form</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
  
 
 </section>

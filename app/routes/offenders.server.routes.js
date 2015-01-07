@@ -16,6 +16,9 @@ module.exports = function(app) {
 		app.route('/getPendingOrders')
 		.get(offenders.pending);
 
+		app.route('/getClientbyDL')
+		.post(offenders.offenderByDl);
+
 	app.route('/offenders/:offenderId')
 		.get(offenders.read)
 		.put(users.requiresLogin, offenders.hasAuthorization, offenders.update)

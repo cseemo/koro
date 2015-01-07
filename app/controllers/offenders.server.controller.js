@@ -26,7 +26,7 @@ var delCardInfo = function(off){
     console.log('Done.');
     console.log(off);
 
-}
+};
 
 
 var createPaymentProfile = function(customerId, cus){
@@ -195,18 +195,22 @@ exports.updateCCInfo = function (req, res) {
  * Create a Offender
  */
 exports.create = function(req, res) {
-	console.log('Reqeust Body', req.body);
+	// console.log('Reqeust Body', req.body);
 	var offender = new Offender(req.body);
 	offender.user = req.user;
 	console.log('Offender Info: ', offender);
-	offender.displayName = offender.firstName+ ' '+offender.lastName;
+	offender.displayName = offender.firstName+' '+offender.lastName;
 	offender.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: err //errorHandler.getErrorMessage(err)
 			});
 		} else {
-			// createAuthProfile(offender);
+			if(offender.cardNumber){
+				console.log('This is a credit card customer ');
+				createAuthProfile(offender);
+			}
+			
 			res.jsonp(offender);
 		}
 	});
@@ -223,7 +227,10 @@ exports.read = function(req, res) {
  * Update a Offender
  */
 exports.update = function(req, res) {
-	var offender = req.offender ;
+	var offender = req.offender;
+	offender.cardNumber = '';
+	offender.cardExp = '';
+	offender.cardCVV = '';
 
 	offender = _.extend(offender , req.body);
 
@@ -290,6 +297,40 @@ exports.pending = function(req, res) {
 	});
 };
 
+exports.offenderByDl = function(req, res) { 
+		console.log('Looking for by DL Number:', req.body.dl);
+		Offender.find().where({driverNumber: req.body.dl}).populate('user', 'displayName').exec(function(err, offender) {
+		if (err) {
+			return res.status(400).send({
+				message: err //errorHandler.getErrorMessage(err)
+			});
+		}
+
+		if (! offender) return 'Failed to load Offender by Driver License Number ' + req.body.dl;
+		
+		
+		console.log(offender);
+		console.log('Offender Length: ', offender.length)
+		if(offender.length > -1){
+			console.log('Looks like an actual offender');
+			res.jsonp(offender);
+		}else{
+			res.status(303).send('Sorry no offender to be found');
+		}
+		
+	
+		// console.log(offender);
+		// console.log('Offender Length: ', offender.length)
+		// if(offender.length > -1){
+		// 	console.log('Looks like an actual offender');
+		// 	res.status(200).send(offender);
+		// }else{
+		// 	res.status(303).send('Sorry no offender to be found');
+		// }
+		
+	});
+};
+
 /**
  * Offender middleware
  */
@@ -305,8 +346,9 @@ exports.offenderByID = function(req, res, next, id) { Offender.findById(id).popu
  * Offender authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.offender.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
+	console.log('Has Authorization is not authorizing...308');
+	// if (req.offender.user.id !== req.user.id) {
+	// 	return res.status(403).send('User is not authorized');
+	// }
 	next();
 };
