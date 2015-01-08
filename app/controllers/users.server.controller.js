@@ -25,6 +25,9 @@ exports.list = function(req, res) { User.find().exec(function(err, users) {
 	});
 };
 
+
+
+
 exports.sendRegistration = function(req, res){
 	//console.log('Sending Registration');
 	//console.log('Request',req);
@@ -80,23 +83,23 @@ exports.sendRegistration = function(req, res){
 
 
 
-var template_name='register';
+var template_name='budget-registration';
 
 var async = false;
 
 //CANCEL EMAILING UNTIL WE HAVE A TEMPLATE BUILT -- ALOS NEED TO FIX WHY IT RUNS thrice - I FIXED IT ON SUNRISE
-// mandrill_client.messages.sendTemplate({
-// 	'template_name': template_name,
-// 	'template_content': [],
-// 	'message': message, 
-// 	'async': async
-// }, function(result){
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
 
-// 	//console.log('Results from Mandrill', result);
-// },
-// function(e){
-// 	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-// });
+	//console.log('Results from Mandrill', result);
+},
+function(e){
+	//console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+});
 
 
 

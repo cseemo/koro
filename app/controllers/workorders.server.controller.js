@@ -146,9 +146,9 @@ exports.offenderByID = function(req, res, next, id) {
  * Workorder authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.workorder.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
+	// if (req.workorder.user.id !== req.user.id) {
+	// 	return res.status(403).send('User is not authorized');
+	// }
 	next();
 };
 
@@ -529,9 +529,17 @@ doc.on('end', function(){
 	
 };
 
+var template_name;
+
+if(req.body.workinfo.type==='New Install') {
+		template_name='carefree-newclient';
+	
+	}
+	else{
+		template_name='carefree-iid-workauth';
+	}
 
 
-var template_name='carefree-iid-workauth';
 
 var async = false;
 if(timesrun < 2){

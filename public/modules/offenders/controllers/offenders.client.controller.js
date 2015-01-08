@@ -376,7 +376,16 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 		var mainPhone = $filter('tel')(this.mainPhone);
 		var altPhone = $filter('tel')(this.altPhone);
+		var cardExp;
+		var last4;
 		
+		if($scope.offenderCC){
+				
+				cardExp =  $scope.expYear+'-'+$scope.expMonth;
+				
+				last4 = $scope.offenderCC.slice(-4);
+
+				}
 
 
 			var offender = new Offenders ({
@@ -396,11 +405,11 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				driverNumber: $scope.driverNumber, 
 				cardNumber: $scope.offenderCC,
 				cardCVV: $scope.creditCardCCV,
-				cardExp: $scope.expYear+'-'+$scope.expMonth,
+				cardExp: cardExp,
 				dobMO: $scope.dobMO,
 				dobDAY: $scope.dobDAY,
 				dobYR: $scope.dobYR,
-				last4: $scope.offenderCC.slice(-4)
+				last4: last4
 			});
 
 			// Redirect after save
@@ -952,7 +961,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         $scope.findWorkOrder();
         $scope.workorder.$promise.then(function(){
 	       	console.log($scope.workorder);
-	        $scope.workorder.deviceNotes = $scope.deviceNotes;
+	         $scope.workorder.deviceNotes = $scope.deviceNotes;
 	        $scope.workorder.deviceSN = $scope.deviceSN;
 	        $scope.workorder.$update(function(){
 					console.log('Update complete!', $scope.workorder);
@@ -1027,6 +1036,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       	$scope.complete = function() {
   			console.log('Work Order Complete');
   			$modalInstance.close();
+  			console.log('Device NOtes: ', $scope.orderNotes);
   			console.log('Scope.workorder', $scope.workorder);
   			 $scope.findWorkOrder();
        		 $scope.workorder.$promise.then(function(){
@@ -1035,6 +1045,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					console.log('WHTFFF!!', wo);
 					wo.status = 'Complete';
 					wo.techName = $scope.techName;
+					wo.orderNotes = $scope.orderNotes;
 					console.log('WO', wo);
 					wo.$update(function(){
 					console.log('Update complete!', wo);

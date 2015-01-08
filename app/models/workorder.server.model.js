@@ -73,6 +73,12 @@ var WorkorderSchema = new Schema({
 		trim: true
 		
 	},
+	orderNotes: {
+		type: String,
+		default: null,
+		trim: true
+		
+	},
 	inspected: {
 		type: Date,
 		default: null

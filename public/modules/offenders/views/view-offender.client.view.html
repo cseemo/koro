@@ -271,9 +271,9 @@ fieldset{
 	                    <td>{{wo.apptDate | date: 'short'}}</td>
 	                    <td>{{wo.type}}</td>
 	                    <td>{{wo.serviceCenter}}</td>
-	                    <td>$55.00</td>
+	                    <td>${{wo.amount | number: '2'}}</td>
 	                    <td>{{wo.status}}</td>
-	                    <td>{{wo.deviceNotes}}</td>
+	                    <td>{{wo.orderNotes}}</td>
 	                    
 	                    </tr>
 
