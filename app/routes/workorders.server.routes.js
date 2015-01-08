@@ -16,7 +16,7 @@ module.exports = function(app) {
 
 		app.route('/workorders')
 		.get(workorders.list)
-		.post(workorders.create);
+		.post(users.requiresLogin, workorders.create);
 
 		app.route('/orderByOffender/:offId')
 		.get(workorders.getByOffender);
@@ -36,7 +36,7 @@ module.exports = function(app) {
 
 		app.route('/workorders/:workorderId')
 		.get(workorders.read)
-		.put(users.requiresLogin, workorders.hasAuthorization, workorders.update)
+		.put(workorders.update)
 		.delete(users.requiresLogin, workorders.hasAuthorization, workorders.delete);
 
 	// Finish by binding the Workorder middleware
