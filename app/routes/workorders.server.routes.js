@@ -16,7 +16,7 @@ module.exports = function(app) {
 
 		app.route('/workorders')
 		.get(workorders.list)
-		.post(users.requiresLogin, workorders.create);
+		.post(workorders.create);
 
 		app.route('/orderByOffender/:offId')
 		.get(workorders.getByOffender);
