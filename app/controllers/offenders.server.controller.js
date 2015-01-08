@@ -228,9 +228,12 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var offender = req.offender;
-	offender.cardNumber = '';
+	if(offender.cardNumber && offender.cardNumber > 11){
+	offender.cardNumber = 'XXXXXXXX'+offender.last4;
 	offender.cardExp = '';
 	offender.cardCVV = '';
+	}
+	
 
 	offender = _.extend(offender , req.body);
 

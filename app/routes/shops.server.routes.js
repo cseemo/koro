@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Shops Routes
 	app.route('/shops')
-		.get(shops.list)
+		.get(users.requiresLogin,shops.list)
 		.post(users.requiresLogin, shops.create);
 
 	

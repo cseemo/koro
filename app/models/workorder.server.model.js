@@ -101,6 +101,11 @@ var WorkorderSchema = new Schema({
 	{
 		type: Number,
 		default: 65
+	}, 
+	authCode: 
+	{
+		type: String,
+		trim: true
 	}
 
 });

@@ -6,12 +6,12 @@ module.exports = function(app) {
 
 	// Payments Routes
 	app.route('/payments')
-		.get(payments.list)
-		.post(users.requiresLogin, payments.create);
+		.get(users.requiresLogin, payments.list)
+		.post(payments.create);
 
 	app.route('/payments/:paymentId')
 		.get(payments.read)
-		.put(users.requiresLogin, payments.hasAuthorization, payments.update)
+		.put(payments.update)
 		.delete(users.requiresLogin, payments.hasAuthorization, payments.delete);
 
 	// Finish by binding the Payment middleware

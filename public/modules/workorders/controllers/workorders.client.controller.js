@@ -143,7 +143,7 @@ $scope.approveWorkOrderPayment = function(){
 
 		//Charge Credit Card for Work order
 		var chargeCard = function (wo, off){
-			console.log('Charging Credit Card Now');
+			console.log('Charging Credit Card Now', $scope.offender);
 
 
         	//Create New Payment
@@ -189,6 +189,10 @@ $scope.approveWorkOrderPayment = function(){
 						var description = resp[3];
 						var authCode = resp[4];
 						toastr.success(description+' on '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
+   						wo.authCode = authCode;
+   						wo.amount = amount;
+   						wo.$update();
+
    					});
 
 			
@@ -230,8 +234,14 @@ $scope.approveWorkOrderPayment = function(){
 			     		$scope.mycontent = $sce.trustAsResourceUrl(fileURL);
 			     		$scope.step=3;
 			     		
-			     		console.log('line 212 work');
-			     		chargeCard(workorder, $scope.offender);
+			     		
+			     		if($scope.offender.cardNumber && $scope.offender.cardNumber.length > 11){
+			     			console.log('line 235 work');
+			     			console.log('Length of Card Number: ', $scope.offender.cardNumber.length);
+			     			console.log('We are charging this guy because: ', $scope.offender);
+			     			chargeCard(workorder, $scope.offender);
+			     		}
+			     		
    					});
 
 			});
@@ -239,7 +249,7 @@ $scope.approveWorkOrderPayment = function(){
 
 		$scope.viewAgreement = function() {
 			// console.log($scope.shop);
-
+			console.log('Viewing Agreement now');
 			// var shop = $scope.shop;
 			// console.log(shop.signer+' '+shop.signertitle);
 			// shop.$update().then(function(){

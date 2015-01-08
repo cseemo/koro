@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Offenders Routes
 	app.route('/offenders')
-		.get(offenders.list)
+		.get(users.requiresLogin, offenders.list)
 		.post(users.requiresLogin, offenders.create);
 
 
