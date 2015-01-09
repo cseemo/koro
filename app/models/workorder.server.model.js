@@ -97,10 +97,10 @@ var WorkorderSchema = new Schema({
 		type: Date,
 		default: null
 	},
-	amount:
-	{
-		type: Number,
-		default: 65
+	amount: {
+		type: String,
+		default: '65',
+		trim: true
 	}, 
 	authCode: 
 	{

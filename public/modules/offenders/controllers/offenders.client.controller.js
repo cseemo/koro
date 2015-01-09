@@ -18,6 +18,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		{item: 'Inventory Device', click: 'checkOutDevice'},
 		{item: 'Have Customer Watch Training Video', click: 'customerVideo'},
 		{item: $scope.signedUpStatus, click: 'installPaperwork'},
+		{item: 'Collect Payment', click: 'getMoney'},
 		{item: 'Installation Complete', click: 'complete'}
 		];
 
@@ -378,7 +379,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		var altPhone = $filter('tel')(this.altPhone);
 		var cardExp;
 		var last4;
-		
+
 		if($scope.offenderCC){
 				
 				cardExp =  $scope.expYear+'-'+$scope.expMonth;
@@ -805,10 +806,15 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					console.log("STuff: ", $scope.checklist[3]);
 					$scope.checklist[3]['strike'] = "done-true" ;
 				}
-				if($scope.workorder.completed){
-					console.log('Workorder Alrady Completed');
+				if($scope.workorder.authCode){
+					console.log('Workorder Alrady Paid For');
 					console.log("STuff: ", $scope.checklist[6]);
 					$scope.checklist[6]['strike'] = "done-true" ;
+				}
+				if($scope.workorder.completed){
+					console.log('Workorder Alrady Completed');
+					console.log("STuff: ", $scope.checklist[7]);
+					$scope.checklist[7]['strike'] = "done-true" ;
 				}
 
 				
@@ -1121,18 +1127,22 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
         console.log($scope);
 
-        	var chargeAmount = 0;
+        	var chargeAmount = '0';
 
         	if($scope.chosen==='New Install'){
         		chargeAmount = $scope.installFee;
         	} 
         	if($scope.chosen==='Reset') {
-        		chargeAmount = 50;
+        		chargeAmount = '50';
         	}
         	if($scope.chosen==='Removal') {
-        		chargeAmount = 75;
+        		chargeAmount = '75';
         	}
-
+        	if($scope.chosen==='Calibration') {
+        		chargeAmount = '0';
+        	}
+        	console.log('Charge Amount: ', chargeAmount);
+        	console.log('$scope.installFee = ', $scope.installFee);
         	
 
         	//Save New Work Order
@@ -1219,20 +1229,24 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
         };
 
-        console.log($scope);
+                console.log($scope);
 
-        	var chargeAmount = 0;
+        	var chargeAmount = '0';
 
         	if($scope.chosen==='New Install'){
         		chargeAmount = $scope.installFee;
         	} 
         	if($scope.chosen==='Reset') {
-        		chargeAmount = 50;
+        		chargeAmount = '50';
         	}
         	if($scope.chosen==='Removal') {
-        		chargeAmount = 75;
+        		chargeAmount = '75';
         	}
-
+        	if($scope.chosen==='Calibration') {
+        		chargeAmount = '0';
+        	}
+        	console.log('Charge Amount: ', chargeAmount);
+        	console.log('$scope.installFee = ', $scope.installFee);
         	
 
         	//Save New Work Order
@@ -1249,7 +1263,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         		console.log('Work Order: ', workorder);
 			// Redirect after save
 			workorder.$save(function(response) {
-					$scope.workOrder._id = response._id;
+					// $scope.workOrder._id = response._id;
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
@@ -1265,7 +1279,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					data: {
 						'user': $scope.authentication.user,
 						'offender': $scope.offender,
-						'workinfo': $scope.workOrder
+						'workinfo': workorder
 						
 								},
 								

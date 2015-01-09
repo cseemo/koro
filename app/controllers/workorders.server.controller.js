@@ -169,18 +169,19 @@ exports.email = function(req, res){
 	var prepDate = m+'/'+d+'/'+y;
 	// //console.log('Quote Date: ',prepDate)
 	var termLength = req.body.offender.term;
-	var workCharge;
-	if(req.body.workinfo.type==='New Install') {
-		workCharge =  req.body.workinfo.amount || 89;
+	var workCharge =req.body.workinfo.amount;
+	console.log('Charge for Service: ', workCharge);
+	// if(req.body.workinfo.type==='New Install') {
+	// 	workCharge =  req.body.workinfo.amount || 89;
 	
-	}
-	else if(req.body.workinfo.type==='Reset') {
-		workCharge = 50;
+	// }
+	// else if(req.body.workinfo.type==='Reset') {
+	// 	workCharge = 50;
 	
-	}else if(req.body.workinfo.type==='Removal') {
-		workCharge = 75;
+	// }else if(req.body.workinfo.type==='Removal') {
+	// 	workCharge = 75;
 	
-	}
+	// }
 
 	//var name = req.query.name;
 	var PDFDocument = require('pdfkit');
