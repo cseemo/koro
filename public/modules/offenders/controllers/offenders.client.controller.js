@@ -104,6 +104,29 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         
 		};
 
+		      $scope.openPmt = function() {
+      	console.log('Opening Modal');
+        var modalInstance;
+        var offender = $scope.offender;
+        modalInstance = $modal.open({
+          templateUrl: 'pmtModalContent.html',
+          controller: 'paymentCtrl',
+          resolve: {
+            offender: function() {
+              return $scope.offender;
+            },
+             workorders: function() {
+              return $scope.workorders;
+            }
+          }
+        });
+        modalInstance.result.then(function(selectedItem, offender) {
+          $scope.selected = selectedItem;
+        }, function() {
+          $log.info('Modal dismissed at: ' + new Date());
+        });
+      };
+
 		$scope.clicked = function(data, index) {
 			console.log('Clicked; ', data);
 			console.log('Workorder: ', $scope.workorder);
@@ -661,6 +684,30 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 };
 
+      $scope.getPayments = function(){
+     	console.log('Getting Payments for: ', $scope.offender);
+     	$scope.offender.$promise.then(function() {
+     			$http({
+					method: 'post',
+					url: '/pmtsByOffender/',
+					data: {
+						id: $scope.offender._id
+					}
+					})
+					.success(function(data, status) {
+							if(status === 200) {
+								
+							console.log('Return Payments Data: ', data);
+							$scope.payments = data;
+							}
+				});
+
+     	});
+				
+
+
+};
+
 
 		// Remove existing Offender
 		$scope.remove = function( offender ) {
@@ -802,7 +849,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				}
 
 				if($scope.workorder.deviceSN){
-					console.log('Workorder Alrady has Serial Number Assigned');
+					console.log('Workorder Already has Serial Number Assigned');
 					console.log("STuff: ", $scope.checklist[3]);
 					$scope.checklist[3]['strike'] = "done-true" ;
 				}
@@ -1383,7 +1430,139 @@ $scope.mytime = $scope.dt;
 
 
     }
-  ]).controller('PaginationDemoCtrl', [
+  ]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments) {
+     $scope.authentication = Authentication;
+     $scope.shops = Shops.query();
+    $scope.offender = offender;
+    $scope.worders = workorders;
+
+  $scope.oneAtATime = true;
+
+	$scope.myShop = function(){
+		console.log('Getting our shop');
+      		
+      			console.log('Getting myshop: ', $scope.wochosen );
+      				var myShop = Shops.get({ 
+					shopId: $scope.wochosen.shopId
+					});
+      				myShop.$promise.then(function(){
+      				console.log('Shop Promise finished', myShop);
+      		
+      		
+      				$scope.serviceCenter = myShop;
+
+      	});
+
+
+      		
+      		
+      };
+
+  $scope.addItem = function() {
+    var newItemNo = $scope.items.length + 1;
+    $scope.items.push('Item ' + newItemNo);
+  };
+
+  $scope.status = {
+    isFirstOpen: true,
+    isFirstDisabled: false
+  };
+  $scope.pmtTypes = ['Monthly Fee', 'Service Fee', 'Late Fee'];
+
+  $scope.pmtOpts = ['Cash', 'Check', 'Gift Card', 'Credit Card'];
+
+  $scope.changepmtType = function() {
+  	console.log('Changing Payment Type');
+  	$scope.hide = false;
+
+
+  };
+
+
+$scope.chooseRow = function(row) {
+	console.log('This is: ', this);
+	console.log('Do we know the index', $scope);
+	console.log('Row: ', row);
+	$scope.hide = true;
+	$scope.wochosen = $scope.worders[row];
+	$scope.pmtAmount = $scope.wochosen.amount;
+	$scope.myShop();
+
+};
+
+$scope.makePmt = function(){
+	console.log('Making Payment');
+	console.log('Payment Amount: ', $scope.pmtAmount);
+	console.log('Work Order Assigned: ', $scope.wochosen);
+
+	if($scope.wochosen){
+		var wo = $scope.wochosen;
+		var pmt = new Payments ({
+				workorder: $scope.wochosen._id,
+				pmtType: $scope.pmtType,
+				pmtOpt: $scope.pmtOpt,
+				offender: $scope.offender._id,
+				status: 'Paid',
+				notes: 'Nothing', 
+				amount: $scope.pmtAmount
+				
+			});
+
+	} else {
+		var pmt = new Payments ({
+				pmtType: $scope.pmtType,
+				pmtOpt: $scope.pmtOpt,
+				offender: $scope.offender._id,
+				status: 'Paid',
+				notes: 'Nothing', 
+				amount: $scope.pmtAmount
+				
+			});
+
+
+	}
+	//Create New Payment
+        		
+
+        		
+			// Redirect after save
+			pmt.$save(function(response) {
+					console.log('Response from saving PMT: ', response);
+					toastr.success('Payment has been recorded for '+$scope.pmtAmount);
+					 $modalInstance.dismiss('complete');
+					 if(wo){
+					 	console.log('Updating Work order to paid status', wo);
+					 	var work = $scope.findWorkOrder(wo._id);
+				// console.log('Wo is: ', wo);
+				work.$promise.then(function() {
+						console.log('Got Work Order: ', work);
+					 	
+					 	work.pmtStatus = 'Paid';
+       				 	work.$update();
+					 });
+			}
+					 
+        		});
+
+
+};
+      $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+
+      };
+
+      		$scope.findWorkOrder = function(id) {
+     		console.log('Workorder: ', id);
+			$scope.workorder = Workorders.get({ 
+				workorderId: id
+			});
+			console.log('Found our Workorder:  ', $scope.workorder);
+			return $scope.workorder;
+
+		};
+
+
+}]).controller('PaginationDemoCtrl', [
 ]).controller('AccordionDemoCtrl', function ($scope) {
   $scope.oneAtATime = true;
 
@@ -1413,7 +1592,7 @@ $scope.mytime = $scope.dt;
 
 
 
-});;
+});
 
 
 

@@ -304,7 +304,7 @@ fieldset{
 
 				             	<div class="col-md-3" >
 				             	
-				          <a class="btn btn-primary btn-xs pull-right" style="color: #fff;" >
+				          <a class="btn btn-primary btn-xs pull-right" style="color: #fff;" data-ng-click="openPmt()">
 				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Make Payment
 			</a>
 
@@ -312,7 +312,7 @@ fieldset{
 				             <div class=" clearfix"></div>
 				        </accordion-heading>
 
-				         <table class="table table-bordered table-striped table-responsive">
+				         <table class="table table-bordered table-striped table-responsive" data-ng-init="getPayments()">
 	                <thead>
 	                    <tr>
 	                    <th>
@@ -322,12 +322,12 @@ fieldset{
 	                        </th>
 	                        <th>
 	                            <div class="th">
-	                                Type
+	                                Fee Type
 	                             </div>
 	                        </th>
 	                        <th>
 	                            <div class="th">
-	                                Reason 
+	                                Payment Type 
 	                        </div>
 	                        </th>
 	                        <th>
@@ -337,7 +337,7 @@ fieldset{
 	                        </th>
 	                        <th>
 	                            <div class="th">
-	                                Account Balance 
+	                                Status
 	                        </div>
 	                        </th>
 	                        <th>
@@ -349,41 +349,15 @@ fieldset{
 	                                  </tr> 
 	                </thead>
 	                <tbody>
-	                    <tr>
-	                    <td>11/2/2014</td>
-	                    <td>Charge</td>
-	                    <td>Sign-Up</td>
-	                    <td>$96.00</td>
-	                    <td>$96.00</td>
-	                    <td></td>
+	                    <tr data-ng-repeat="pmt in payments">
+	                    <td>{{pmt.created | date: 'MM/dd/yyyy'}}</td>
+	                    <td>{{pmt.pmtType}}</td>
+	                    <td>{{pmt.pmtOpt}}</td>
+	                    <td>${{pmt.amount}}</td>
+	                    <td>{{pmt.status}}</td>
+	                    <td>{{pmt.notes}}</td>
 	                    </tr>
 
-	                     <tr>
-	                    <td>11/3/2014</td>
-	                    <td>Payment</td>
-	                    <td>Install</td>
-	                    <td>$96.00</td>
-	                    <td>$0.00</td>
-	                    <td>Work Authorized</td>
-	                    </tr>
-
-	                     <tr>
-	                    <td>11/15/2014</td>
-	                    <td>Charge</td>
-	                    <td>Reset</td>
-	                    <td>$50.00</td>
-	                    <td>$50.00</td>
-	                    <td></td>
-	                    </tr>
-
-	                                         <tr>
-	                    <td>12/1/2014</td>
-	                    <td>Charge</td>
-	                    <td>Monthly Fee</td>
-	                    <td>$95.00</td>
-	                    <td>$145.00</td>
-	                    <td></td>
-	                    </tr>
 
 
 	                    </tbody>
@@ -476,7 +450,7 @@ fieldset{
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" nd-disabled="!serviceCenter|| !term " ng-click="ok()">Send Form</button>
+            <button class="btn btn-primary" ng-disabled="!serviceCenter|| !term " ng-click="ok()">Send Form</button>
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
@@ -484,6 +458,158 @@ fieldset{
 
     <div ng-show="selected">Selection from a modal: {{ selected }}</div>
 </div>
+
+
+
+
+
+    <script type="text/ng-template" id="pmtModalContent.html">
+       
+        <div class="modal-header">
+
+            New Payment for {{offender.firstName}} {{offender.lastName}}
+        </div>
+        <div class="modal-body">
+
+        <div class="row">
+        <div class="col-md-6"> 
+         <label>For:</label>
+        	  <select class="form-control" data-ng-model="pmtType"  data-ng-options="item for item in pmtTypes" data-ng-change="changepmtType()"><option value=""></option></select>
+        	  </div>
+
+        	   <div class="col-md-6"> 
+        	
+
+			<label>Payment Type:</label>
+        	  <select class="form-control" data-ng-model="pmtOpt"  data-ng-options="item for item in pmtOpts" ><option value=""></option></select>
+
+        	  </div>
+        	  </div>
+
+        	  <span data-ng-show="pmtType==='Service Fee' && hide" >
+        	 
+        	 <br>
+        	  <div class="row">
+        	   <div class="col-md-6"> 
+        	   Service Type: {{wochosen.type}}<br>
+        	    Date: {{wochosen.apptDate}}<br>
+        	  	Status: {{wochosen.status}}<br>
+        	    Customer Charge: ${{wochosen.amount}}
+        	   
+
+        	   
+
+        	   
+        	   <br>
+        	   </div>
+
+        	    <div class="col-md-6"> 
+        	    Work Order ID: {{wochosen._id}}<br>
+        	    Service Center: {{serviceCenter.name}}<br>
+        	    Address: {{serviceCenter.address}} 
+        	   {{serviceCenter.city}}, {{serviceCenter.state}}
+
+        	   
+
+        	   
+        	   <br>
+        	   </div>
+        	   </div>
+        	  
+        	   </span>
+
+        	   <span data-ng-show="pmtType==='Service Fee'">
+        	  <div class="row">
+        	   <div class="col-md-12"> 
+        	  
+        	   <span data-ng-show="!hide">
+        	   <br>
+       		 <table class="table table-bordered table-striped table-responsive" >
+	                <thead>
+	                    <tr>
+	                    <th>
+	                            <div class="th">
+	                                Date
+	                             </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Type
+	                             </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Shop 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Charge 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Status 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Notes 
+	                        </div>
+	                        </th>
+
+	                                  </tr> 
+	                </thead>
+	                <tbody>
+	                    <tr data-ng-repeat="wo in worders track by $index" data-ng-click="chooseRow($index)">
+	                    <td>{{wo.apptDate | date: 'short'}}</td>
+	                    <td>{{wo.type}}</td>
+	                    <td>{{wo.serviceCenter}}</td>
+	                    <td>${{wo.amount | number: '2'}}</td>
+	                    <td>{{wo.status}}</td>
+	                    <td>{{wo.orderNotes}}</td>
+	                    
+	                    </tr>
+
+	                  
+
+	                    </tbody>
+	                    </table>
+        </div>
+        </div>
+        </span>
+        </span>
+
+
+        	 
+        	 
+        	 <br>
+        	  <div class="row">
+        	   <div class="col-md-6"> 
+        	    <label>Amount: </label>
+        	  <input type="text" data-ng-model="pmtAmount"  id="" class="form-control" placeholder="Amount" >
+        	
+        	    </div>
+        	   
+
+
+        	    <span data-ng-show="pmtOpt==='Check'" >
+        	     <div class="col-md-6"> 
+ <label>Check Number: </label>
+        	  <input type="text" data-ng-model="checkNum"  id="" class="form-control" placeholder="Check Number" >
+        	
+        	   </div>
+        	  
+
+        	   </span>
+        	    </div>
+        	    <br>
+
+        <div class="modal-footer">
+            <button class="btn btn-primary"  ng-click="makePmt()">Confirm Payment</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
 
 
 

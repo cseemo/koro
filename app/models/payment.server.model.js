@@ -29,6 +29,10 @@ var PaymentSchema = new Schema({
 	pmtType: {
 		type: String,
 		trim: true
+	},
+	pmtOpt: {
+		type: String,
+		trim: true
 	}, 
 	amount: {
 		type: String,
@@ -39,6 +43,10 @@ var PaymentSchema = new Schema({
 		trim: true
 	},
 	notes: {
+		type: String,
+		trim: true
+	},
+	authCode: {
 		type: String,
 		trim: true
 	},

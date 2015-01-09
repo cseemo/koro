@@ -41,12 +41,7 @@ var chargeCard = function(req, res){
 var makePayment = function(req, res, pmt) {
 	console.log('Making payment...', pmt);
 
-
-	var workorder = workorderByID(pmt.workorder, function(wo){
-		console.log('Wo: ', wo);
-
-
-	});
+	//if Payment Opt is credit card -- run Auth.net Integration
 	
 
 // 	var workCharge;
@@ -106,7 +101,7 @@ var makePayment = function(req, res, pmt) {
 
 
 
-
+res.jsonp(pmt);
 
 
 };
@@ -126,6 +121,23 @@ exports.create = function(req, res) {
 			// res.jsonp(payment);
 			makePayment(req, res, payment);
 		}
+	});
+};
+
+
+//Get Payments associated with a specific offender
+exports.getByOffender = function(req, res) { 
+	console.log('Get Payment By OFfender: ', req.body);
+	
+	var id = req.body.id;
+	console.log('Offender ID: ', id);
+
+		Payment.find().where({offender: id}).populate('user', 'displayName').exec(function(err, payment) {
+		if (err) return err;
+		if (! payment) return new Error('Failed to load Payment ' + id);
+		// req.workorder = workorder ;
+		console.log('Found Payments: ', payment);
+		res.status(200).send(payment);
 	});
 };
 

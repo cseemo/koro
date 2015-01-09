@@ -106,6 +106,11 @@ var WorkorderSchema = new Schema({
 	{
 		type: String,
 		trim: true
+	}, 
+	pmtStatus: 
+	{
+		type: String,
+		trim: true
 	}
 
 });

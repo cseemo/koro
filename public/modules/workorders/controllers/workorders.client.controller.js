@@ -150,9 +150,11 @@ $scope.approveWorkOrderPayment = function(){
         		var pmt = new Payments ({
 				workorder: wo._id,
 				pmtType: wo.type,
+				pmtOpt: 'Credit Card', 
 				offender: off._id,
 				status: 'Pending',
-				notes: 'Nothing'
+				notes: 'Auto-Pay thru Portal', 
+				amount: wo.amount
 				
 			});
 
@@ -190,9 +192,14 @@ $scope.approveWorkOrderPayment = function(){
 						var authCode = resp[4];
 						toastr.success(description+' on '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
    						wo.authCode = authCode;
+   						wo.pmtStatus = 'Paid';
    						wo.amount = amount;
    						wo.$update();
 
+   						console.log('Do we still have payment? - can we Add AuthCode and update status', pmt);
+   						pmt.status = 'Paid';
+   						pmt.authCode = authCode;
+   						pmt.$update();
    					});
 
 			
