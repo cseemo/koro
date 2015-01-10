@@ -10,6 +10,7 @@ var mongoose = require('mongoose'),
 	mandrill = require('mandrill-api/mandrill');
 	var moment = require('moment');
 
+
 	var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	var Authorize = require('auth-net-types')
 	  , _AuthorizeCIM = require('auth-net-cim')
@@ -89,7 +90,7 @@ exports.list = function(req, res) {
 	console.log('Listing WOrk Orders Now');
 
 
-	Workorder.find().sort('-created').populate('user', ['displayName', 'email']).exec(function(err, workorders) {
+	Workorder.find().sort('-created').populate('user').exec(function(err, workorders) {
 		if (err) {
 			return res.status(400).send({
 				message: err //errorHandler.getErrorMessage(err)
@@ -339,7 +340,7 @@ exports.email = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+workCharge+'.00 plus tax for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+req.body.workinfo.amount+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -595,20 +596,22 @@ exports.runAuth = function(req, res) {
 	// 	console.log('Failed at runnig charge');
 	// 	res.status(333).send('WE cannot charge that card'+err);
 	// }
-	var workCharge;
-	if(req.workorder.type==='New Install') {
-		workCharge =  req.workorder.amount || 89;
+	var workCharge = req.workorder.amount;
+	// if(req.workorder.type==='New Install') {
+	// 	workCharge =  req.workorder.amount || 89;
 	
-	}
-	else if(req.workorder.type==='Reset') {
-		workCharge = 50;
+	// }
+	// else if(req.workorder.type==='Reset') {
+	// 	workCharge = 50;
 	
-	}else if(req.workorder.type==='Removal') {
-		workCharge = 75;
+	// }else if(req.workorder.type==='Removal') {
+	// 	workCharge = 75;
 	
-	}
-	
-	var totalCharge = workCharge*1.0985;
+	// }
+	var totalCharge = 0;
+	if(workCharge > 0){
+
+	 totalCharge = workCharge*1.0985;
 	totalCharge = totalCharge.toFixed(2);
 	var invoiceNumber = 6544;
 	var stateTax = +totalCharge-workCharge;
@@ -644,7 +647,7 @@ console.log('Tax Amount: ', stateTax);
   }
 };
 
-AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, CaptureOnly, PriorAuthCapture */, transaction, function(err, response) {
+	AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, CaptureOnly, PriorAuthCapture */, transaction, function(err, response) {
 	if(err){
 		console.log('Error Charging Card', err);
 		res.status(400).send('ERROR: '+err);
@@ -654,6 +657,11 @@ AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, Capture
 		res.status(200).send(response);
 	}
 });
+
+} else {
+	res.status(200).send('Work Order Authorization has been approved by customer...payment is pending');
+}
+
 
 
 
@@ -974,7 +982,7 @@ exports.signAuth = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+workCharge+'.00 plus tax for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+req.body.workinfo.amount+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -1395,7 +1403,7 @@ exports.viewOrder = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+workCharge+'.00 plus tax for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+req.body.workinfo.amount+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500

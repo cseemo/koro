@@ -12,14 +12,18 @@
 fieldset{
     padding: 3px;
 }
+h1, h2, h3{
+	color: #333;
+}
 .main-body{
 	background-color: #555;
 }
 </style>
 	<div class="main-body">
 	    <div class="container">
-	    	<div class="text-center bg-danger">
+	    	<div class="text-center bg-danger" data-ng-show="pastDue">
 	    	<h3>Past Due</h3>
+	    	
 	    	</div>
 		<div class="panel panel-primary">
 	       <!--  <div class="panel panel-heading">
@@ -222,8 +226,9 @@ fieldset{
 				            </div>
 
 				            	<div class="col-md-4 text-danger">
-
+				            	<span data-ng-show="offender.pendingWorkOrder">
 				            Pending Work Order
+				            </span>
 				            </div>
 
 				             	<div class="col-md-3" >
@@ -273,7 +278,7 @@ fieldset{
 	                                  </tr> 
 	                </thead>
 	                <tbody>
-	                    <tr data-ng-repeat="wo in workorders">
+	                    <tr data-ng-click="pickWO($index)" data-ng-repeat="wo in workorders track by $index">
 	                    <td>{{wo.apptDate | date: 'short'}}</td>
 	                    <td>{{wo.type}}</td>
 	                    <td>{{wo.serviceCenter}}</td>
@@ -297,9 +302,10 @@ fieldset{
 				            Payment History
 				            </div>
 
-				            	<div class="col-md-4 text-danger">
-
+				            	<div class="col-md-4 text-danger" >
+				            	<span data-ng-show="pastDue">
 				            Past Due Balance
+				            </span>
 				            </div>
 
 				             	<div class="col-md-3" >
@@ -315,9 +321,14 @@ fieldset{
 				         <table class="table table-bordered table-striped table-responsive" data-ng-init="getPayments()">
 	                <thead>
 	                    <tr>
+	                       <th>
+	                            <div class="th">
+	                                Date Created
+	                             </div>
+	                        </th>
 	                    <th>
 	                            <div class="th">
-	                                Date
+	                               Due Date
 	                             </div>
 	                        </th>
 	                        <th>
@@ -349,8 +360,9 @@ fieldset{
 	                                  </tr> 
 	                </thead>
 	                <tbody>
-	                    <tr data-ng-repeat="pmt in payments">
+	                    <tr data-ng-click="getPmtDetail($index)" data-ng-repeat="pmt in payments track by $index">
 	                    <td>{{pmt.created | date: 'MM/dd/yyyy'}}</td>
+	                     <td>{{pmt.dueDate | date: 'MM/dd/yyyy'}}</td>
 	                    <td>{{pmt.pmtType}}</td>
 	                    <td>{{pmt.pmtOpt}}</td>
 	                    <td>${{pmt.amount}}</td>
@@ -389,6 +401,72 @@ fieldset{
 			</em>
 		</small>
 
+
+    <script type="text/ng-template" id="workOrderModal.html">
+       
+        <div class="modal-header">
+
+            New Work Order for {{offender.firstName}} {{offender.lastName}}
+        </div>
+        <div class="modal-body">
+      
+        {{workorder}}
+         <label>Work Order Type</label>
+        	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
+        }
+        }
+        	
+<br>
+<span data-ng-show="chosen==='New Install'">
+         <label>Install Fee</label>
+        	  <input type="text" data-ng-model="installFee"  id="installFee" class="form-control" placeholder="80" >
+        	<br>
+           <label>Term of Service</label>
+        	  <select class="form-control" data-ng-model="term" name="term" data-ng-options="term for term in termoptions"> <option value=""></option></select>
+<br> 
+
+</span>
+        	   <label>Submitting To</label>
+        	  <select class="form-control" data-ng-model="sendTo" name="sendTo" data-ng-options="sendto for sendto in sendToOptions" data-ng-change="changeWho()"> <option value=""></option></select>
+<br>
+				<span data-ng-show="!whomCus">
+				<label>Recipient Name</label>
+        	    <input type="text" data-ng-model="toWhoName"  id="toWhoName" class="form-control" placeholder="Name" >
+        	    <br></span>
+
+
+
+				<label>Service Center</label>
+				<select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"></select>
+        	   
+
+<br>
+        	   <label>Email Address</label>
+        	    <input type="text" data-ng-model="emailAddress"  id="emailAddress" class="form-control" placeholder="Email Address" >
+
+<br>
+        	    <label>Email Subject</label>
+        	    <input type="text" data-ng-model="emailSubject"  id="emailSubject" class="form-control" placeholder="{{chosen}} Authorization" >
+<br>
+        	    <label>Email Text</label>
+        	    <textarea type="text" data-ng-model="emailText"  id="emailText" class="form-control" placeholder="Hi {{offender.firstName}}..." >
+
+        	    </textarea>
+                                <br>
+        	    <label>Email Signature</label>
+        	   <br>
+        	    {{authentication.user.displayName}}<br/>
+        	     {{authentication.user.telephone}}<br/>
+        	      {{authentication.user.email}}<br/>
+        	      
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary"  ng-click="ok()">Send Form</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
 
 
     <script type="text/ng-template" id="myModalContent.html">
@@ -450,7 +528,7 @@ fieldset{
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-disabled="!serviceCenter|| !term " ng-click="ok()">Send Form</button>
+            <button class="btn btn-primary"  ng-click="ok()">Send Form</button>
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
@@ -463,39 +541,75 @@ fieldset{
 
 
 
-    <script type="text/ng-template" id="pmtModalContent.html">
+    <script type="text/ng-template" id="pmtModalContent.html"  data-ng-init="getPayments()">
        
         <div class="modal-header">
-
             New Payment for {{offender.firstName}} {{offender.lastName}}
         </div>
         <div class="modal-body">
+        	<div class="col-md-12">
+        	<span data-ng-show="!hide">
+        	   <br>
+        	   <h3>What are we paying for?</h3>
+        	  
+        	   <div class="panel-primary">
+        	   <div class="content">
+       		 <table class="table table-bordered table-striped table-responsive">
+	                <thead>
+	                    <tr>
+	                    <th>
+	                            <div class="th">
+	                                Due Date
+	                             </div>
+	                        </th>
+	                       
+	                        <th>
+	                            <div class="th">
+	                                Charge 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Status 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Notes 
+	                        </div>
+	                        </th>
 
-        <div class="row">
-        <div class="col-md-6"> 
-         <label>For:</label>
-        	  <select class="form-control" data-ng-model="pmtType"  data-ng-options="item for item in pmtTypes" data-ng-change="changepmtType()"><option value=""></option></select>
-        	  </div>
+	                                  </tr> 
+	                </thead>
+	                <tbody>
+	                    <tr data-ng-repeat="wo in payments track by $index" data-ng-click="chooseRow($index)">
+	                    <td>{{wo.dueDate | date: 'short'}}</td>
+	                   
+	                    <td>${{wo.amount | number: '2'}}</td>
+	                    <td>{{wo.status}}</td>
+	                    <td>{{wo.notes}}</td>
+	                    
+	                    </tr>
 
-        	   <div class="col-md-6"> 
-        	
+	                  
 
-			<label>Payment Type:</label>
-        	  <select class="form-control" data-ng-model="pmtOpt"  data-ng-options="item for item in pmtOpts" ><option value=""></option></select>
+	                    </tbody>
+	                    </table>
+	                    </div>
+	                   </div>
+      
+        </span>
 
-        	  </div>
-        	  </div>
+        	</div>
 
-        	  <span data-ng-show="pmtType==='Service Fee' && hide" >
+        	  <span data-ng-show="hide" >
         	 
         	 <br>
         	  <div class="row">
         	   <div class="col-md-6"> 
-        	   Service Type: {{wochosen.type}}<br>
-        	    Date: {{wochosen.apptDate}}<br>
-        	  	Status: {{wochosen.status}}<br>
-        	    Customer Charge: ${{wochosen.amount}}
-        	   
+        	   <label>Payment Creation Date:</label> {{pmtchosen.created | date: 'MM/dd/yyyy'}}<br>
+        	   <label>Due Date: </label> {{pmtchosen.dueDate | date: 'MM/dd/yyyy'}}<br>
+        	   <label>Amount Due: </label>  {{pmtchosen.amount | currency}}<br>
 
         	   
 
@@ -517,80 +631,30 @@ fieldset{
         	   </div>
         	  
         	   </span>
+       
 
-        	   <span data-ng-show="pmtType==='Service Fee'">
-        	  <div class="row">
-        	   <div class="col-md-12"> 
-        	  
-        	   <span data-ng-show="!hide">
-        	   <br>
-       		 <table class="table table-bordered table-striped table-responsive" >
-	                <thead>
-	                    <tr>
-	                    <th>
-	                            <div class="th">
-	                                Date
-	                             </div>
-	                        </th>
-	                        <th>
-	                            <div class="th">
-	                                Type
-	                             </div>
-	                        </th>
-	                        <th>
-	                            <div class="th">
-	                                Shop 
-	                        </div>
-	                        </th>
-	                        <th>
-	                            <div class="th">
-	                                Charge 
-	                        </div>
-	                        </th>
-	                        <th>
-	                            <div class="th">
-	                                Status 
-	                        </div>
-	                        </th>
-	                        <th>
-	                            <div class="th">
-	                                Notes 
-	                        </div>
-	                        </th>
-
-	                                  </tr> 
-	                </thead>
-	                <tbody>
-	                    <tr data-ng-repeat="wo in worders track by $index" data-ng-click="chooseRow($index)">
-	                    <td>{{wo.apptDate | date: 'short'}}</td>
-	                    <td>{{wo.type}}</td>
-	                    <td>{{wo.serviceCenter}}</td>
-	                    <td>${{wo.amount | number: '2'}}</td>
-	                    <td>{{wo.status}}</td>
-	                    <td>{{wo.orderNotes}}</td>
-	                    
-	                    </tr>
-
-	                  
-
-	                    </tbody>
-	                    </table>
-        </div>
-        </div>
-        </span>
-        </span>
-
-
-        	 
-        	 
-        	 <br>
-        	  <div class="row">
-        	   <div class="col-md-6"> 
+        <div class="row">
+        <div class="col-md-6"> 
         	    <label>Amount: </label>
         	  <input type="text" data-ng-model="pmtAmount"  id="" class="form-control" placeholder="Amount" >
         	
         	    </div>
         	   
+
+        	   <div class="col-md-6"> 
+        	
+
+			<label>Payment Type:</label>
+        	  <select class="form-control" data-ng-model="pmtOpt"  data-ng-options="item for item in pmtOpts" ><option value=""></option></select>
+
+        	  </div>
+        	  </div>
+
+        	 
+        	 
+        	 <br>
+        	  <div class="row">
+        	  
 
 
         	    <span data-ng-show="pmtOpt==='Check'" >
@@ -602,8 +666,70 @@ fieldset{
         	  
 
         	   </span>
+
+
         	    </div>
-        	    <br>
+        	   
+        	            	     <div data-ng-show="pmtOpt==='Credit Card'" >
+        	            	     <br>
+        	     	<div class="panel-primary">
+        	     	    
+        	            	     	 
+
+                        
+                          <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Credit Card Number</label>
+                                <div class="controls">
+                                           <input type="text" data-ng-model="offenderCC" id="offenderEmail" class="form-control" placeholder="Credit Card Number" maxlength="16">
+
+                                </div>
+                            </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">Expiration Month</label>
+                            <div class="controls">
+                                    <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
+
+
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">Expiration Year</label>
+                            <div class="controls">
+                                     <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">CCV Number</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="creditCardCCV" name="creditcardCCV" id="creditcardCCV" class="form-control" placeholder="CCV" >
+
+                            </div>
+                        </div>
+
+
+                        <br>
+                   <br>  <a class="btn btn-primary btn-sm" style="color: #fff;" >
+				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Use Card On-File
+			</a>
+        	  
+        	  </div>
+        	  
+        	  <br>
+        	   </div>
+
+
+        	   <br>
+        	   <div class="row">
+        	   <div class="col-md-12">
+        	   <label>Payment Notes</label>
+        	    <textarea type="text" data-ng-model="payment.notes"  id="notes" class="form-control" placeholder="Notes..." >
+
+        	    </textarea>
+        	    </div>
+        	   </div>
 
         <div class="modal-footer">
             <button class="btn btn-primary"  ng-click="makePmt()">Confirm Payment</button>
@@ -621,3 +747,42 @@ fieldset{
 		
 </section>
 
+
+
+
+    <script type="text/ng-template" id="pmtDetailContent.html">
+       
+        <div class="modal-header">
+        <span class="small pull-right">
+            <label>Logged In-As</label>
+        	 
+        	    {{authentication.user.displayName}}
+        	    </span>
+
+        	    <center>
+
+        	      <br>
+        	      <h2>Payment Detail</h2>
+        	      </center>
+        </div>
+        <div class="modal-body">
+      	<label>Status:</label>
+      	{{payment.status}}
+      	<br><br>
+      	{{payment}}
+      	<br><br>
+
+      	Amount: <input type="text" ng-model="payment.amount"><br>
+      	Due Date: <input type="text" ng-model="payment.dueDate">
+        
+ 
+        	   
+
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary"  ng-click="ok()">Save Payment</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>

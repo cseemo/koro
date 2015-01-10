@@ -85,6 +85,7 @@ $scope.approveWorkOrderPayment = function(){
 
 		// Find a list of Workorders
 		$scope.find = function() {
+			console.log('Found Workorders');
 			$scope.workorders = Workorders.query();
 		};
 

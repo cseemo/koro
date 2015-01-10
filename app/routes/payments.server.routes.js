@@ -15,6 +15,10 @@ module.exports = function(app) {
 		.post(payments.getByOffender)
 		.put(payments.update);
 
+		
+		app.route('/checkpastdue')
+		.post(payments.checkPastDue);
+		// .put(payments.update);
 
 	app.route('/payments/:paymentId')
 		.get(payments.read)
