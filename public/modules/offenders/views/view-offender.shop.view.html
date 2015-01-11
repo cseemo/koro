@@ -25,6 +25,9 @@ fieldset{
     color: rgb(255, 255, 255);
     background-color: rgb(66, 139, 202);
 }
+h1, h2, h3{
+	color: #333;
+}
 
 /* DEMO ONLY - REMOVES UNWANTED MARGIN */
 .well .list-group {
@@ -50,8 +53,37 @@ fieldset{
 	    	<h3>Order Complete</h3>
 	    	</div>
 		<div class="panel panel-primary">
-	       
-	    	<div class="col-md-4">
+	     
+	       	    	<div class="col-md-4" data-ng-hide="offender.pendingWorkOrder">
+	            <div class="panel panel-profile">
+	                <fieldset>
+	                    <div class="panel-heading bg-primary clearfix">
+	                          
+	                                <h4>No Pending Orders</h4>
+	                                
+	                              
+	                    </div>
+	                    <div class="media">
+	                        <div class="media-body">
+
+
+
+	                                        <ul class="list-unstyled list-info">
+	                                  
+	                                            <li class="done-{{todo.done}}" data-ng-repeat="stuff in checklist2 track by $index" >
+	                                            <input type="checkbox" data-ng-model="todo.done" data-ng-click="clicked(stuff.click, $index)" />
+	                                           
+             										 <span class="{{stuff.strike}}" >{{stuff.item}} </span>
+	                                            </li>
+	                                        </ul>
+	                        </div>
+	                    </div>
+	        		</fieldset>
+	               
+	            </div>
+	        </div> 
+
+	    	<div class="col-md-4" data-ng-show="offender.pendingWorkOrder">
 	            <div class="panel panel-profile">
 	                <fieldset>
 	                    <div class="panel-heading bg-primary clearfix">
@@ -65,6 +97,7 @@ fieldset{
 	                                    <i class="fa fa-check"></i>
 	                                </span> -->
 	                                <h4>Service Checklist</h4>
+	                               
 	                              
 	                    </div>
 	                    <div class="media">
@@ -153,7 +186,7 @@ fieldset{
 	    	
 		<div class="panel panel-primary">
 	<div class="panel panel-profile">
-				         <accordion close-others="oneAtATime">
+  <accordion close-others="oneAtATime">
 				            <accordion-group>
 				            <accordion-heading>
 				            	<div class="col-md-5">
@@ -162,8 +195,7 @@ fieldset{
 				            </div>
 
 				            	<div class="col-md-4 text-danger">
-
-				           <span data-ng-show="offender.pendingWorkOrder">
+				            	<span data-ng-show="offender.pendingWorkOrder">
 				            Pending Work Order
 				            </span>
 				            </div>
@@ -174,7 +206,6 @@ fieldset{
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Work Order
 			</a>
 				            </div>
-
 				             <div class=" clearfix"></div>
 
 
@@ -216,7 +247,7 @@ fieldset{
 	                                  </tr> 
 	                </thead>
 	                <tbody>
-	                    <tr data-ng-repeat="wo in workorders">
+	                    <tr data-ng-click="pickWO($index)" data-ng-repeat="wo in workorders track by $index">
 	                    <td>{{wo.apptDate | date: 'short'}}</td>
 	                    <td>{{wo.type}}</td>
 	                    <td>{{wo.serviceCenter}}</td>
@@ -299,7 +330,7 @@ fieldset{
 	                </thead>
 	                <tbody>
 	                    <tr data-ng-click="getPmtDetail($index)" data-ng-repeat="pmt in payments track by $index">
-	                    <td>{{pmt.created | date: 'MM/dd/yyyy'}}</td>
+	                    <td>{{pmt.created | date: 'MM/dd/yyyy hh:mm:ss'}}</td>
 	                     <td>{{pmt.dueDate | date: 'MM/dd/yyyy'}}</td>
 	                    <td>{{pmt.pmtType}}</td>
 	                    <td>{{pmt.pmtOpt}}</td>
@@ -400,6 +431,59 @@ fieldset{
 
     <div ng-show="selected">Selection from a modal: {{ selected }}</div>
 </div>
+
+
+
+    <script type="text/ng-template" id="workOrderModal.html">
+       
+        <div class="modal-header">
+        	<span class="small pull-right">
+        	    <label>Logged in as </label>
+        	    {{authentication.user.displayName}}
+        	    </span>
+        	    <h3>Work Order Details</h3>
+        	    <div class="pull-right">
+        	     <a class="btn btn-danger" data-ng-click="remove();">
+				Delete Work Order:<i class="glyphicon glyphicon-trash"></i>
+			</a></div>
+			<br>
+            
+        </div>
+        <div class="modal-body">
+      
+        <br>
+        <label>Customer: </label>{{offender.displayName}}<br>
+        <label>Service Type: </label>{{workorder.type}}<br>
+        <label>Status: </label>{{workorder.status}}<br>
+        <label>Apointment Date: </label>{{workorder.apptDate}}<br>
+        <label>Service Fee: </label> <input type="text" ng-model="workorder.amount"/><br>
+        <label>Created by: </label>{{workorder.user.displayName}}
+
+
+
+<br>
+
+	<label>Service Center</label>
+				<select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"></select>
+        	   
+
+<br>
+
+        	    <label>Notes</label>
+        	    <textarea type="text" data-ng-model="workorder.orderNotes"  id="orderNotes" class="form-control" placeholder="Notes...reasons for making change" >
+
+        	    </textarea>
+                                <br>
+
+        	      
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary"  ng-click="ok()">Save Workorder</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
 
 
 
@@ -680,6 +764,95 @@ fieldset{
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
+
+
+
+        <script type="text/ng-template" id="setNewWOModal.html">
+       
+        <div class="modal-header">
+        <center>
+        <h3>Schedule New Work Order</h3>
+        for {{offender.firstName}} {{offender.lastName}}
+        </center>
+        </div>
+
+        <div class="modal-body">
+    
+         <fieldset>
+        	<div class="col-md-6 inline-block">
+        <label>Choose the date for the appointment </label>
+        </div>
+       
+        <div class="col-md-6 inline-block">
+         <div class="input-group ui-datepicker" ng-click="openCalendar($event)" ng-init="findWorkOrder()">
+                    <span class="input-group-addon" ><i class="fa fa-calendar"></i></span>
+                    <input type="text" 
+                           class="form-control "
+                           datepicker-popup="{{format}}"
+                           ng-model="dt"
+                           is-open="opened"
+                           min="minDate"
+                           max="'2016-06-22'"
+                           datepicker-options="dateOptions"
+                           ng-required="true" 
+                           close-text="Close"
+                           style="width: 65%"
+                           name="ApptDate"
+                           >
+                   
+                     
+
+
+                </div>
+                </div>
+                <hr>
+                 <div class="col-md-6 inline-block">
+                <label> Please choose the time of the appointment</label>
+                 </div>
+                  <div class="col-md-6 inline-block">
+
+                   <div ng-model="mytime" ng-change="changed()" style="display:inline-block;" >
+                    <timepicker class="ui-timepicker" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian" ></timepicker>
+                </div>  
+                </div>
+                </fieldset>
+
+                <br>
+               
+
+
+                 <label>Work Order Type</label>
+        	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
+        	
+
+<br>
+        	   <label>Email Address</label>
+        	    <input type="text" data-ng-model="offender.offenderEmail"  id="emailAddress" class="form-control" placeholder="Email Address" >
+
+<br>
+        	    <label>Email Subject</label>
+        	    <input type="text" data-ng-model="emailSubject"  id="emailSubject" class="form-control" placeholder="Budget IID Work Order" >
+<br>
+        	    <label>Email Text</label>
+        	    <textarea type="text" data-ng-model="emailText"  id="emailText" class="form-control" placeholder="Hi {{offender.firstName}}..." >
+
+        	    </textarea>
+                                <br>
+        	    <label>Email Signature</label>
+        	   <br>
+        	    {{authentication.user.displayName}}<br/>
+        	     {{authentication.user.telephone}}<br/>
+        	      {{authentication.user.email}}<br/>
+        	      
+
+            </div>
+             <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="scheduleNew()">Create Work Order</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+
+
+</script>
 
 
 

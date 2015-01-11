@@ -157,10 +157,11 @@ exports.hasAuthorization = function(req, res, next) {
 exports.email = function(req, res){
 
 	console.log('Emailing Now');
-	console.log(req.body);
-	console.log(req.query);
-	console.log(req.params);
-	console.log('Did we find Workorder Info, Offender Info, and User info?');
+	// console.log(req.body);
+	// console.log(req.query);
+	// console.log(req.params);
+	// console.log('Did we find Workorder Info, Offender Info, and User info?');
+	console.log('WorkOrder: ', req.body.workinfo);
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress,
 	timesrun = 0;
 	var date = new Date(Date.now());
@@ -438,6 +439,10 @@ doc.on('end', function(){
 					'content': req.body.workinfo.serviceCenter
 				},
 				{
+					'name': 'fName',
+					'content': req.body.offender.firstName
+				},
+				{
 					'name': 'repname',
 					'content': req.body.user.displayName
 				},
@@ -468,6 +473,10 @@ doc.on('end', function(){
 				{
 					'name': 'serviceCenter',
 					'content': req.body.workinfo.serviceCenter
+				},
+				{
+					'name': 'serviceCenterAddress',
+					'content': req.body.workinfo.svcAddress
 				},
 				{
 					'name': 'customContent',
@@ -503,7 +512,12 @@ doc.on('end', function(){
 				{
 					'name': 'workorderid',
 					'content': req.body.workinfo._id
+				},
+				{
+					'name': 'apptDate',
+					'content': req.body.workinfo.apptDate
 				}
+
 
 
 

@@ -134,30 +134,22 @@ var mongoose = require('mongoose'),
 var CronJob = require('cron').CronJob;
 
 var job = new CronJob({
-  cronTime: '0 0 6 * * 1-7',
+  cronTime: '0 * * * * 1-7',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
+  	console.log('Ontick called');
   	var today = new moment();
   	// var startDate = moment().hours(0).minutes(0).seconds(0);
 	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
-	 // var tomorrow = moment().add(1, 'days').hours(0).minutes(0).seconds(0);
-  //    var t = tomorrow._d;
-  //    startDate = startDate._d;
-  //    var startDate2 = moment(startDate).format("YYYY-M-DTHH:mm:ss");
-  //    var endDate2= moment(t).format("YYYY-M-DTHH:mm:ss");
-  //    console.log('Tomorrow: ', t);
-  //    console.log('Start Date: ', startDate2);
-  //    console.log('End Date: ', endDate2);
-
-    // Runs every weekday (Monday through Friday)
-    // at 11:30:00 AM. It does not run on Saturday
-    // or Sunday.a
+	
     console.log('Running Ontick!!', convertedPretty);
     createMonthlyCharge();
   },
   start: false,
   // timeZone: "America/Los_Angeles"
 });
+
+// console.log('Job.start about to executie!!');
 
 job.start();
 
