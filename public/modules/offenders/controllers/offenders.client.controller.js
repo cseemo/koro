@@ -1312,7 +1312,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
 
-
+        			$scope.workOrder.email = $scope.offender.offenderEmail;
 
 			console.log('Work order status...', $scope.workOrder);
 
@@ -1415,7 +1415,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
-
+        			workorder.email = $scope.offender.offenderEmail;
 
 
 			console.log('Work order status...', $scope.workOrder);

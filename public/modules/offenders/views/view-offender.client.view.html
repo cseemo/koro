@@ -752,14 +752,22 @@ h1, h2, h3{
         </div>
         <div class="modal-body">
       	<label>Status:</label>
-      	{{payment.status}}
-      	<br><br>
-      	{{payment}}
-      	<br><br>
+      	{{payment.status}}<br>
 
-      	Amount: <input type="text" ng-model="payment.amount"><br>
-      	Due Date: <input type="text" ng-model="payment.dueDate">
-        
+      	<label>Status:</label>
+      	{{payment.status}}<br>
+
+      	<label>Notes:</label>
+      	{{payment.notes}}<br>
+
+      	<label>Due Date:</label>
+      	<input type="text" ng-model="payment.dueDate"/><br>
+
+      	<label>Paid Date:</label>
+      	{{payment.paidDate}}<br>
+
+      	<br><br>
+    
  
         	   
 
