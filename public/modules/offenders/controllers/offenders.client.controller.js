@@ -1178,11 +1178,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       	$scope.complete = function() {
   			console.log('Work Order Complete');
   			$modalInstance.close();
-  			console.log('Device NOtes: ', $scope.orderNotes);
-  			console.log('Scope.workorder', $scope.workorder);
-  			$scope.offender.pendingWorkOrder = null;
-  			$scope.offender.pendingWorkType = null;
-  			$scope.offender.$update();
+
 
   			 $scope.findWorkOrder();
        		 $scope.workorder.$promise.then(function(){
@@ -1195,6 +1191,18 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					console.log('WO', wo);
 					wo.$update(function(){
 					console.log('Update complete!', wo);
+
+					$scope.offender.pendingWorkOrder = null;
+		  			$scope.offender.pendingWorkType = null;
+		  			if(wo.type==='New Install'){
+		  				var d = new Date();
+						var n = d.getDate();
+		  				console.log('n is: ', n);
+		  				$scope.offender.billDate = n;
+
+		  			}
+		  			
+		  			$scope.offender.$update();
 				});
 
 			});
@@ -1591,6 +1599,98 @@ $scope.mytime = $scope.dt;
     $scope.offender = offender;
     $scope.workorder = workorder;
 
+    $scope.changeSvcCenter = function(){
+    		var amt = $scope.workorder.amount;
+      		$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+			$scope.workorder.$promise.then(function() {
+				$scope.workorder.amount = amt;
+				 var shopAddy = $scope.serviceCenter.address+' '+$scope.serviceCenter.city+' '+$scope.serviceCenter.state+' '+$scope.serviceCenter.zipcode;
+       
+				$scope.workorder.svcAddress = shopAddy;
+				$scope.offender.assignedShop = $scope.serviceCenter._id;
+				$scope.workorder.shopId = $scope.serviceCenter._id;
+				$scope.workorder.serviceCenter = $scope.serviceCenter.name;
+				$scope.offender.assignedShop = $scope.serviceCenter._id;
+        		
+        		$scope.offender.$update();
+        		$scope.workorder.$update();
+
+
+			});
+
+
+      };
+
+    //Get Workorder Provider
+    $scope.findWorkOrder = function(id) {
+     		console.log('Workorder: ', id);
+			$scope.workorder = Workorders.get({ 
+				workorderId: id
+			});
+			console.log('Found our Workorder:  ', $scope.workorder);
+			return $scope.workorder;
+
+		};
+
+    //Delete Work Order
+    // Remove existing Offender
+		$scope.remove = function(  ) {
+			var url = $location.url();
+			console.log('Location: ', url);
+			console.log('$scope.workorder: ', $scope.workorder);
+			$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+			$scope.workorder.$promise.then(function() {
+
+					$scope.workorder.$remove(function() {
+						
+						$modalInstance.close('Deleted');
+						toastr.success('Workorder has been deleted');
+						// $location.path('reload');
+						setTimeout(function(){ 
+							window.location.reload();
+						}, 1500);
+						
+					});
+			});
+			
+		};
+
+		 $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+
+      };
+
+
+
+      $scope.ok = function() {
+
+
+      	console.log('Ok Pressed ', $scope.workorder);
+      	console.log('Serivce Fee: ', $scope.workorder.amount);
+      	var amt = $scope.workorder.amount;
+      		$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+
+			$scope.workorder.$promise.then(function() {
+				$scope.workorder.amount = amt;
+		console.log('Workorder to Save/Modify ', $scope.workorder);
+        $modalInstance.close('Saving Work Order');
+       
+        console.log($scope.offender);
+     
+			// Redirect after save
+			
+			$scope.offender.$update();
+        	$scope.workorder.$update(function(){
+
+        			console.log('Saved....reloading Page: ');
+        			setTimeout(function(){ 
+							window.location.reload();
+						}, 500);
+        			
+        		});
+
+		})
+		};
 
 }]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', 'payments',  function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments, payments) {
      $scope.authentication = Authentication;

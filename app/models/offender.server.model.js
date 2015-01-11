@@ -162,6 +162,10 @@ var OffenderSchema = new Schema({
 		default: '',
 		trim: true
 	},
+	billDate: {
+		type: Number,
+		default: 10
+	},
 	finalBillDate: {
 		type: Date
 	}

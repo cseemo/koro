@@ -361,7 +361,7 @@ h1, h2, h3{
 	                </thead>
 	                <tbody>
 	                    <tr data-ng-click="getPmtDetail($index)" data-ng-repeat="pmt in payments track by $index">
-	                    <td>{{pmt.created | date: 'MM/dd/yyyy'}}</td>
+	                    <td>{{pmt.created | date: 'MM/dd/yyyy hh:mm:ss'}}</td>
 	                     <td>{{pmt.dueDate | date: 'MM/dd/yyyy'}}</td>
 	                    <td>{{pmt.pmtType}}</td>
 	                    <td>{{pmt.pmtOpt}}</td>
@@ -405,65 +405,50 @@ h1, h2, h3{
     <script type="text/ng-template" id="workOrderModal.html">
        
         <div class="modal-header">
-
-            New Work Order for {{offender.firstName}} {{offender.lastName}}
+        	<span class="small pull-right">
+        	    <label>Logged in as </label>
+        	    {{authentication.user.displayName}}
+        	    </span>
+        	    <h3>Work Order Details</h3>
+        	    <div class="pull-right">
+        	     <a class="btn btn-danger" data-ng-click="remove();">
+				Delete Work Order:<i class="glyphicon glyphicon-trash"></i>
+			</a></div>
+			<br>
+            
         </div>
         <div class="modal-body">
       
-        {{workorder}}
-         <label>Work Order Type</label>
-        	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
-        }
-        }
-        	
+        <br>
+        <label>Customer: </label>{{offender.displayName}}<br>
+        <label>Service Type: </label>{{workorder.type}}<br>
+        <label>Status: </label>{{workorder.status}}<br>
+        <label>Apointment Date: </label>{{workorder.apptDate}}<br>
+        <label>Service Fee: </label> <input type="text" ng-model="workorder.amount"/><br>
+        <label>Created by: </label>{{workorder.user.displayName}}
+
+
+
 <br>
-<span data-ng-show="chosen==='New Install'">
-         <label>Install Fee</label>
-        	  <input type="text" data-ng-model="installFee"  id="installFee" class="form-control" placeholder="80" >
-        	<br>
-           <label>Term of Service</label>
-        	  <select class="form-control" data-ng-model="term" name="term" data-ng-options="term for term in termoptions"> <option value=""></option></select>
-<br> 
 
-</span>
-        	   <label>Submitting To</label>
-        	  <select class="form-control" data-ng-model="sendTo" name="sendTo" data-ng-options="sendto for sendto in sendToOptions" data-ng-change="changeWho()"> <option value=""></option></select>
-<br>
-				<span data-ng-show="!whomCus">
-				<label>Recipient Name</label>
-        	    <input type="text" data-ng-model="toWhoName"  id="toWhoName" class="form-control" placeholder="Name" >
-        	    <br></span>
-
-
-
-				<label>Service Center</label>
+	<label>Service Center</label>
 				<select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"></select>
         	   
 
 <br>
-        	   <label>Email Address</label>
-        	    <input type="text" data-ng-model="emailAddress"  id="emailAddress" class="form-control" placeholder="Email Address" >
 
-<br>
-        	    <label>Email Subject</label>
-        	    <input type="text" data-ng-model="emailSubject"  id="emailSubject" class="form-control" placeholder="{{chosen}} Authorization" >
-<br>
-        	    <label>Email Text</label>
-        	    <textarea type="text" data-ng-model="emailText"  id="emailText" class="form-control" placeholder="Hi {{offender.firstName}}..." >
+        	    <label>Notes</label>
+        	    <textarea type="text" data-ng-model="workorder.orderNotes"  id="orderNotes" class="form-control" placeholder="Notes...reasons for making change" >
 
         	    </textarea>
                                 <br>
-        	    <label>Email Signature</label>
-        	   <br>
-        	    {{authentication.user.displayName}}<br/>
-        	     {{authentication.user.telephone}}<br/>
-        	      {{authentication.user.email}}<br/>
+
         	      
 
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary"  ng-click="ok()">Send Form</button>
+            <button class="btn btn-primary"  ng-click="ok()">Save Workorder</button>
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
