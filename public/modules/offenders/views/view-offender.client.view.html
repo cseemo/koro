@@ -711,13 +711,13 @@ h1, h2, h3{
 
 
                         <br>
-                        <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="chargeCard()">
+                        <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="chargeCard('new')">
 				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Charge Card
 			</a>
                    <br>  
                    <span data-ng-show="offender.cardNumber">
                    {{offender.cardNumber}}
-                   <a class="btn btn-primary btn-sm" style="color: #fff;" >
+                   <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="chargeCard('onfile')">
 				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Use Card On-File
 			</a>
 			</span>

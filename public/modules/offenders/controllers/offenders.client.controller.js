@@ -2070,7 +2070,7 @@ $scope.mytime = $scope.dt;
         return $scope.mytime = null;
 };
 
-}]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', 'payments',  function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments, payments) {
+}]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', 'payments', '$resource',  function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments, payments, $resource) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
     $scope.offender = offender;
@@ -2281,7 +2281,8 @@ $scope.makePmt = function(){
 		};
 
 				//Charge Credit Card for Work order
-		$scope.chargeCard = function (){
+		$scope.chargeCard = function (type){
+			console.log('Charge on file or new: ', type);
 			console.log('Charging Credit Card Now', $scope.offender);
 			console.log('Payment: ', $scope.pmtchosen);
 			var pmt = $scope.pmtchosen;
@@ -2292,7 +2293,7 @@ $scope.makePmt = function(){
 			}else{
 				wo = null;
 			}
-			wo.$promise.then(function(){
+			
 				console.log('Work Order: ', wo);
 
 			var off = $scope.offender;
@@ -2336,23 +2337,50 @@ $scope.makePmt = function(){
 						var amount = resp[9];
 						var description = resp[3];
 						var authCode = resp[4];
+						$modalInstance.close();
 						toastr.success(description+' on '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
-   						wo.authCode = authCode;
-   						wo.pmtStatus = 'Paid';
-   						wo.amount = amount;
-   						wo.$update();
+   						if(wo){
+   							console.log('This is for a work order...', wo);
+   							console.log('Need One Workorder ', $scope.pmtchosen.workorder);
+   							var ourId = $scope.pmtchosen.workorder;
+   							console.log('WO[0] -- why??? ', wo[0]);
+   							console.log('Our ID: ', ourId);
 
+   							var wos = Workorders.query({_id: ourId});
+   							
+
+   							wos.$promise.then(function(){
+   								var workOrder = wos[0];
+   								console.log('Workorder ready to save: , ', workOrder);
+   								workOrder.authCode = authCode;
+		   						workOrder.pmtStatus = 'Paid';
+		   						workOrder.amount = amount;
+		   						workOrder.$update();
+
+   							});
+   							
+
+   						}	else {
+   							console.log('No work order associated with this payment');
+   						}
    						console.log('Do we still have payment? - can we Add AuthCode and update status', pmt);
-   						pmt.status = 'Paid';
-   						pmt.authCode = authCode;
-   						pmt.$update();
+   						var payment = Payments.get( {paymentId: pmt._id}).$promise.then(function(payment){
+
+   							console.log('Payment about to be saved', payment);
+   							payment.status = 'Paid';
+   							payment.authCode = authCode;
+   							payment.padiDate = Date.now();
+   							console.log('Payment Before Save: ', payment);
+   							payment.$update();
+   							console.log('Here is our Offender before we go: ----> ', $scope.offender);
+   						});
    					});
 
 			
 
 
 
-			})
+		
 			
 		};
 

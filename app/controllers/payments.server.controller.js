@@ -337,7 +337,7 @@ exports.delete = function(req, res) {
 /**
  * List of Payments
  */
-exports.list = function(req, res) { Payment.find().sort('-created').populate('user', 'displayName').exec(function(err, payments) {
+exports.list = function(req, res) { Payment.find(req.query).sort('-created').populate('user', 'displayName').exec(function(err, payments) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

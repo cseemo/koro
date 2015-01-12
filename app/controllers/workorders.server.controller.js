@@ -91,7 +91,7 @@ exports.list = function(req, res) {
 	console.log('Listing WOrk Orders Now');
 
 
-	Workorder.find().sort('-created').populate('user').exec(function(err, workorders) {
+	Workorder.find(req.query).sort('-created').populate('user').exec(function(err, workorders) {
 		if (err) {
 			return res.status(400).send({
 				message: err //errorHandler.getErrorMessage(err)
@@ -597,32 +597,56 @@ return;
 
 //Create Payment Profile 
 
-var createPaymentProfile = function(customerId, cus, next){
-	console.log('Creating Payment Profile.....What is cus?', cus);
+var createPaymentProfile = function(customerId, data, card, next){
+	var cus = data.offender;
+	console.log('Data: ', data);
+	console.log('Cus: ', cus);
+	console.log('Card: ', card);
+	var cardZip = data.cardZip || cus.billingZipcode;
+	if(data.cardName){
+		console.log('Card Name', data.cardName);
+		var name =  data.cardName.split(" ");
+		var fName = name[0];
+		console.log('Fname: ', fName);
+		var lName = name[1];
+		console.log('Fname: ', fName);
+	}else{
+	var fName = cus.firstName;
+	var lName = cus.lastName;
+	}
+	
+	if(data.cardZip){
+		console.log('Data Card Zip: ', data.cardZip);
+	}
+	
+	console.log('Creating Payment Profile.....Cusomer Details?', cus);
 	console.log('Customer ID: ', customerId);
 	cus.merchantCustomerId = customerId;
+
 	var cardExp = cus.expYear+'-'+cus.expMonth;
-	console.log('Card Expirations: ', cardExp);
+	console.log('Card Details to Charge : ', data.cardNum);
 
 var options = {
   customerType: 'individual',
   billTo: {
-  		firstName: cus.firstName,
-  		lastName: cus.lastName,
+  		firstName: fName,
+  		lastName: lName,
   		address: cus.billingAddress,
   		city: cus.billingCity,
   		state: cus.billingState,
-  		zip: cus.billingZipcode,
+  		zip: cardZip,
   		phoneNumber: cus.mainPhone
   },
   payment: {
     creditCard: new Authorize.CreditCard({
-      cardNumber: cus.cardNumber,
-      expirationDate: cardExp,
-      cardCode: cus.cardCVV
+      cardNumber: data.cardNum,
+      expirationDate: data.cardExp,
+      cardCode: data.ccv
     })
   }
 }
+
+console.log('Payment PRofile Details: ', options);
 
 AuthorizeCIM.createCustomerPaymentProfile({
   customerProfileId: customerId,
@@ -630,6 +654,7 @@ AuthorizeCIM.createCustomerPaymentProfile({
 }, function(err, response) {
 	if(err) {
 		console.log('ERROR:::', err);
+
 		return next(err);
 	} else {
 		console.log('Response from Payment Profile, ', response);
@@ -666,46 +691,78 @@ AuthorizeCIM.createCustomerPaymentProfile({
 
 //Create Customer Profile on Authorize.net
 var createAuthProfile = function(off, cb) {
-	console.log('Running Authorization for Auth.net');
-	
-
-	  console.log('Do we have Offender: ', off);
+	console.log('Creating Authorize.net Profile for: ', off);
 	  var customerID2 = off._id.toString();
 	  var customerID = customerID2.substring(3, 23);
 	  console.log('Customer ID: ', customerID);
+
 	 var profile = {
   merchantCustomerId: customerID,
   description: off.firstName+' '+off.lastName,
   email: off.offenderEmail,
   
-  // customerProfileId: 349494
-}
+};
 
 
 
-	AuthorizeCIM.createCustomerProfile({customerProfile: profile}, function(err, response){
-		if(err) console.log('ERROR from Auth.net!', err);
-		console.log('Response from Auth.net', response);
-		// console.log('Customer id: ', response.$);
-		
-		if(response && off.cardNumber.length > 11) {
-			console.log('Customer Profile ID: ', response.customerProfileId);
-			// createPaymentProfile(response.customerProfileId, off);
-			createPaymentProfile(response.customerProfileId, off, function(err, data){
-						if(err){
-					console.log('Error from Create Payment Profile: ');
-					res.status(402).send(data.message);
-				}
-
-				else{
-					
-						res.status(200).send('Credit Card Valid');
-				}
-				
-			});
+	AuthorizeCIM.createCustomerProfile({customerProfile: profile}, function(error, response){
+		if(error) {
+			console.log('ERROR from Auth.net!', error);
+			if(error.code==='E00039'){
+						//Duplicate -- So We Need to Charge
+						console.log('Duplicate Payment Profile - just charge it - Line 711');
+						return cb(error);
+					}else{
+					return cb(new Error('Failed to Create PRofile ' + error));
+					}
+			
 		}
-	});
 
+					console.log('Response from Auth.net Line 719', response);
+					// console.log('Customer id: ', response.$);
+					
+					if(response && off.cardNumber.length > 11) {
+						console.log('Customer Profile ID: ', response.customerProfileId);
+						// createPaymentProfile(response.customerProfileId, off);
+					var offender = Offender.findById( off._id).populate('user', 'displayName').exec(function(err, offender) {
+					if (err) console.log('Error; ', err);
+					
+					if (! offender) return 'Failed to load Offender ' + id;
+					
+					if(offender){
+						var cardDetails = {
+							cardNumber: off.cardNumber,
+							cardExp: off.expYear+'-'+off.expMonth,
+							cardCVV: off.cardCVV
+						};
+						offender.merchantCustomerId = response.customerProfileId;
+						offender.save(function(err){
+							console.log('Offender has been saved on line 740: ', offender);
+
+							createPaymentProfile(response.customerProfileId, offender, cardDetails, function(err, data){
+									if(err){
+								console.log('Error from Create Payment Profile: ');
+								res.status(402).send(data.message);
+							}
+
+							else{
+								
+									res.status(200).send('Credit Card Valid');
+							}
+							
+						});
+
+
+						});
+						
+					}
+
+					});
+				} else {
+					console.log('Hmmm...not sure ');
+				}
+
+			});
 
 
 
@@ -723,6 +780,7 @@ var updateCCInfo = function(req, res){
 	  // var cardExp = req.offender.expYear+'='+req.offender.expMonth;
 	  // console.log('Customer ID: ', customerID);
 	  if(req.offender.paymentProfileId && req.offender.merchantCustomerId){
+
 	  		  var options = {
 				  customerType: 'individual',
 				   customerPaymentProfileId: req.offender.paymentProfileId,
@@ -766,13 +824,37 @@ var updateCCInfo = function(req, res){
 
 					}
 	});
-	  }else {
+	  } else if(req.offender.merchantCustomerId){
+	  	console.log('Got Merhcant ID only');
+	  		createPaymentProfile(response.customerProfileId, off, function(err, data){
+						if(err){
+					console.log('Error from Create Payment Profile: ');
+					res.status(402).send(data.message);
+				}
+
+				else{
+					
+						res.status(200).send('Credit Card Valid');
+				}
+				
+			});
+
+	  } else {
 	  	console.log('This customer seems to have no CC Info Setup');
+
 	  	createAuthProfile(req.offender, function(err, resp){
 	  		if(err) {
 
 	  			console.log('Error Addint Customer Auth Profile');
-	  			res.status(333).send('Card Information Update ERROR');
+	  			if(err.code==='E00039'){
+						//Duplicate -- So We Need to Charge
+						console.log('Duplicate Payment Profile - just charge it -- Line 825');
+						chargeIt(req, res);
+					}else{
+						console.log('Error updating Auth Profile');
+						res.status(402).send(err.message);
+					}
+	  			
 	  		}else{
 	  			console.log('Response from creating Auth PRofile', resp);
 	  			res.status(200).send('Card Information Updated');
@@ -816,28 +898,9 @@ function(err, response) {
 
 };
 
-exports.chargeCCard = function(req, res) {
-	console.log('Charging Card via Auth.net', req.body);
-	if(req.body.setupProfile){
-		console.log('Need to Setup the Payment Profile first');
-
-		console.log('This customer seems to have no CC Info Setup', req.body.offender);
-			req.body.offender.cardNumber = req.body.cardNum;
-      		req.body.offender.expYear = req.body.expYear;
-      		req.body.offender.expMonth = req.body.expMonth;
-      		var expDate = req.body.expYear+'-'+req.body.expMonth;
-      		testCharge(req.body.cardNum, expDate, req.body.ccv);
-      		req.body.offender.cardCVV = req.body.ccv;
-
-		if(req.body.offender.merchantCustomerId){
-			console.log('Already setup with Authorize.net - creating new Payment Profile now');
-			
-			createPaymentProfile(req.body.offender.merchantCustomerId, req.body.offender, function(err, data){
-				if(err){
-					console.log('Error from Create Payment Profile: ');
-					res.status(402).send(err.message);
-				}else{
-						console.log('No Errors...charging card now');
+var chargeIt = function(req, res){
+							console.log('ChargeIt: ', req.body);
+							console.log('Charging card now', req.body.offender.paymentProfileId);
 							var workCharge = req.body.pmt.amount || 0;
 							var totalCharge = 0;
 
@@ -896,18 +959,68 @@ exports.chargeCCard = function(req, res) {
 						} else {
 							res.status(200).send('Work Order Authorization has been approved by customer...');
 						}
+
+
+};
+
+exports.chargeCCard = function(req, res) {
+	console.log('Charging Card via Auth.net', req.body);
+	if(req.body.setupProfile){
+		console.log('Need to Setup the Payment Profile first');
+
+		// console.log('This customer seems to have no CC Info Setup', req.body.offender);
+			req.body.offender.cardNumber = req.body.cardNum;
+      		req.body.offender.expYear = req.body.expYear;
+      		req.body.offender.expMonth = req.body.expMonth;
+      		var expDate = req.body.expYear+'-'+req.body.expMonth;
+      		// testCharge(req.body.cardNum, expDate, req.body.ccv);
+      		req.body.offender.cardCVV = req.body.ccv;
+      		var cardDetails = {
+				cardNumber: req.body.cardNumber,
+				cardExp: req.body.cardExp,
+				cardCVV: req.body.cardCVV
+			};
+
+		if(req.body.offender.merchantCustomerId && req.body.offender.paymentProfileId){
+			console.log('Customer is ready to go -- just need to charge teh card');
+			chargeIt(req, res);
+
+		}else 
+		if(req.body.offender.merchantCustomerId){
+			console.log('Already setup with Authorize.net - creating new Payment Profile now');
+			
+			createPaymentProfile(req.body.offender.merchantCustomerId, req.body, cardDetails, function(err, data){
+				if(err){
+					console.log('Error from Create Payment Profile: ', err);
+					if(err.code==='E00039'){
+						//Duplicate -- So We Need to Charge
+						console.log('Duplicate Payment Profile - just charge it');
+						chargeIt(req, res);
+					}else{
+						res.status(402).send(err.message);
+					}
+					
+				}else{
+					chargeIt(req, res);
 					
 				}
 			});
 		}else{
+			console.log('No Authorize.net Profile');
 			console.log('Creating a New Auth.net profile');
 		
 	  		createAuthProfile(req.body.offender, function(err, resp){
 
 	  		if(err) {
-
-	  			console.log('Error Addint Customer Auth Profile');
-	  			res.status(333).send('Card Information Update ERROR');
+	  			console.log('Error Line 981',err);
+	  			if(err.code==='E00039'){
+						//Duplicate -- So We Need to Charge
+						console.log('Duplicate Payment Profile - just charge it');
+						chargeIt(req, res);
+					}else{
+						console.log('Error of another sort');
+						res.status(402).send(err.message);
+					}
 	  		}else{
 	  			console.log('Response from creating Auth PRofile', resp);
 	  			res.status(200).send('Card Information Updated');
