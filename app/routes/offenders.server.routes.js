@@ -21,7 +21,7 @@ module.exports = function(app) {
 
 	app.route('/offenders/:offenderId')
 		.get(offenders.read)
-		.put(users.requiresLogin, offenders.hasAuthorization, offenders.update)
+		.put(users.requiresLogin, offenders.update)
 		.delete(users.requiresLogin, offenders.hasAuthorization, offenders.delete);
 
 	// Finish by binding the Offender middleware

@@ -661,6 +661,7 @@ AuthorizeCIM.createCustomerPaymentProfile({
 
 
 		var id = cus._id;
+		console.log('Looking for Offender: ', id);
 
 		Offender.findById(id).populate('user', 'displayName').exec(function(err, offender) {
 		if (err) console.log('Error; ', err);
@@ -668,6 +669,7 @@ AuthorizeCIM.createCustomerPaymentProfile({
 		if (! offender) return 'Failed to load Offender ' + id;
 		
 		if(offender){
+			console.log('Offender Line 671; ', offender);
 			cus = offender ;
 			cus.cardNumber = 'XXXXXXXX'+cus.last4;;
 			cus.cardExp = '';
@@ -679,7 +681,7 @@ AuthorizeCIM.createCustomerPaymentProfile({
 			cus.save(function(err) {
 				if(err) console.log('Error Saving Customer', err);
 					console.log('Customer after Save: ', cus);
-					next(null, cus);
+					next(null,  response.customerPaymentProfileId);
 			});
 		}
 	});
@@ -898,9 +900,19 @@ function(err, response) {
 
 };
 
-var chargeIt = function(req, res){
+var chargeIt = function(req, res, number){
 							console.log('ChargeIt: ', req.body);
-							console.log('Charging card now', req.body.offender.paymentProfileId);
+							var profileId;
+
+							if(req.body.offender.paymentProfileId){
+								console.log('Charging card now', req.body.offender.paymentProfileId);
+								profileId = req.body.offender.paymentProfileId;
+
+							}else{
+								console.log('Charging Card Now...910: ', number);
+								profileId = number;
+							}
+							console.log('Profile ID to Charge: ', profileId);
 							var workCharge = req.body.pmt.amount || 0;
 							var totalCharge = 0;
 
@@ -930,7 +942,7 @@ var chargeIt = function(req, res){
 						  //   description: 'No Free Shipping Option'
 						  // },
 							  customerProfileId: req.body.offender.merchantCustomerId,
-							  customerPaymentProfileId: req.body.offender.paymentProfileId,
+							  customerPaymentProfileId: profileId,
 						  order: {
 						    invoiceNumber: Date.now(),
 						    description: 'Payment made from portal...'
@@ -1001,7 +1013,8 @@ exports.chargeCCard = function(req, res) {
 					}
 					
 				}else{
-					chargeIt(req, res);
+					console.log('Response line 1005: ', data);
+					chargeIt(req, res, data);
 					
 				}
 			});

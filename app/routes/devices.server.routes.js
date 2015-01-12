@@ -14,7 +14,7 @@ app.route('/getAvailableDevices')
 
 	app.route('/devices/:deviceId')
 		.get(devices.read)
-		.put(users.requiresLogin, devices.hasAuthorization, devices.update)
+		.put(users.requiresLogin, devices.update)
 		.delete(users.requiresLogin, devices.hasAuthorization, devices.delete);
 
 	// Finish by binding the Device middleware
