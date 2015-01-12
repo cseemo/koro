@@ -1100,7 +1100,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// });
 		};
 
-	  $scope.termoptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+	  $scope.termoptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '24', '36', 'Other'];
 	  $scope.installFee = 65;
 	  $scope.serviceTypes = ['Calibration', 'Reset', 'Removal'];
       
@@ -2310,6 +2310,7 @@ $scope.makePmt = function(){
 					    data: {
 					    	offender: off,
 					    	setupProfile: true,
+					    	type: type,
 					    	workinfo: wo,
 					    	cardNum: cardNum,
 					    	cardExp: cardExp,

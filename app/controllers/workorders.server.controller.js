@@ -679,7 +679,7 @@ AuthorizeCIM.createCustomerPaymentProfile({
 			cus.save(function(err) {
 				if(err) console.log('Error Saving Customer', err);
 					console.log('Customer after Save: ', cus);
-					next();
+					next(null, cus);
 			});
 		}
 	});
