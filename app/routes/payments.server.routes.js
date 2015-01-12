@@ -4,6 +4,7 @@ module.exports = function(app) {
 	var users = require('../../app/controllers/users');
 	var payments = require('../../app/controllers/payments');
 	var offenders = require('../../app/controllers/offenders');
+	var workorders = require('../../app/controllers/workorders');
 
 	// Payments Routes
 	app.route('/payments')
@@ -18,6 +19,11 @@ module.exports = function(app) {
 		
 		app.route('/checkpastdue')
 		.post(payments.checkPastDue);
+
+		app.route('/chargeCCard')
+		.post(workorders.chargeCCard);
+
+		
 		// .put(payments.update);
 
 	app.route('/payments/:paymentId')

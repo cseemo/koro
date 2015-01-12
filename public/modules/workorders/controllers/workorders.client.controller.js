@@ -206,6 +206,38 @@ $scope.approveWorkOrderPayment = function(){
 			
 		};
 
+		//Create Manual Payment 
+				var createPayment = function (wo, off){
+			console.log('Creating Manual Payment Now', $scope.offender);
+
+
+        	//Create New Payment
+        		var pmt = new Payments ({
+				workorder: wo._id,
+				pmtType: wo.type,
+				offender: off._id,
+				status: 'Due',
+				notes: 'Pending Workorder -- Payment Due', 
+				amount: wo.amount
+				
+			});
+
+        		
+			// Redirect after save
+			pmt.$save(function(response) {
+					console.log('Response from saving PMT: ', response);
+
+        		
+
+   						wo.pmtStatus = 'Due';
+   						wo.amount = amount;
+   						wo.$update();
+
+   					});
+
+			
+		};
+
 
 	
 
@@ -248,6 +280,8 @@ $scope.approveWorkOrderPayment = function(){
 			     			console.log('Length of Card Number: ', $scope.offender.cardNumber.length);
 			     			console.log('We are charging this guy because: ', $scope.offender);
 			     			chargeCard(workorder, $scope.offender);
+			     		} else {
+			     			createPayment(workorder, $scope.offender);
 			     		}
 			     		
    					});

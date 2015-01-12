@@ -168,7 +168,17 @@ var OffenderSchema = new Schema({
 	},
 	finalBillDate: {
 		type: Date
-	}
+	},
+	deviceSN: {
+		type: String,
+		trim: true
+	},
+	device: {
+		type: Schema.ObjectId,
+		ref: 'Device',
+		default: null
+
+	}, 
 
 
 });

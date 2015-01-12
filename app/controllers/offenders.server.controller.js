@@ -100,10 +100,24 @@ var createAuthProfile = function(off, cb) {
 		console.log('Response from Auth.net', response);
 		// console.log('Customer id: ', response.$);
 		
+
 		if(response && off.cardNumber.length > 11) {
 			console.log('Customer Profile ID: ', response.customerProfileId);
+
+
 			createPaymentProfile(response.customerProfileId, off);
+		}else{
+			console.log('Customer has Profile - but not payment profile...no credit card number available');
+		off.merchantCustomerId = response.customerProfileId;
+		off.save(function(err) {
+		if(err) console.log('Error Saving Customer', err);
+		console.log('Customer: ', off);
+			});
 		}
+
+	
+
+
 	});
 
 
@@ -206,10 +220,9 @@ exports.create = function(req, res) {
 				message: err //errorHandler.getErrorMessage(err)
 			});
 		} else {
-			if(offender.cardNumber){
-				console.log('This is a credit card customer ');
+			
 				createAuthProfile(offender);
-			}
+	
 			
 			res.jsonp(offender);
 		}

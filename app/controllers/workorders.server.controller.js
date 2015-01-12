@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	// errorHandler = require('./errors'),
 	Workorder = mongoose.model('Workorder'),
 	_ = require('lodash'),
+	Offender = mongoose.model('Offender'),
 	mandrill = require('mandrill-api/mandrill');
 	var moment = require('moment');
 
@@ -252,6 +253,13 @@ exports.email = function(req, res){
 
 		//Page 3
 		doc.image('images/cusAgreementPg3.png', 0, 0,{width: 600});
+		//Device Serial Number
+		doc.y = 460;
+		doc.x = 355;
+		doc.fontSize(14);
+		doc.text(req.body.workinfo.deviceSN || 'TBD');
+
+
 		doc.addPage();
 
 		//Page 4
@@ -587,10 +595,348 @@ function(e){
 return;
 };
 
+//Create Payment Profile 
+
+var createPaymentProfile = function(customerId, cus, next){
+	console.log('Creating Payment Profile.....What is cus?', cus);
+	console.log('Customer ID: ', customerId);
+	cus.merchantCustomerId = customerId;
+	var cardExp = cus.expYear+'-'+cus.expMonth;
+	console.log('Card Expirations: ', cardExp);
+
+var options = {
+  customerType: 'individual',
+  billTo: {
+  		firstName: cus.firstName,
+  		lastName: cus.lastName,
+  		address: cus.billingAddress,
+  		city: cus.billingCity,
+  		state: cus.billingState,
+  		zip: cus.billingZipcode,
+  		phoneNumber: cus.mainPhone
+  },
+  payment: {
+    creditCard: new Authorize.CreditCard({
+      cardNumber: cus.cardNumber,
+      expirationDate: cardExp,
+      cardCode: cus.cardCVV
+    })
+  }
+}
+
+AuthorizeCIM.createCustomerPaymentProfile({
+  customerProfileId: customerId,
+  paymentProfile: options
+}, function(err, response) {
+	if(err) {
+		console.log('ERROR:::', err);
+		return next(err);
+	} else {
+		console.log('Response from Payment Profile, ', response);
+
+
+		var id = cus._id;
+
+		Offender.findById(id).populate('user', 'displayName').exec(function(err, offender) {
+		if (err) console.log('Error; ', err);
+		
+		if (! offender) return 'Failed to load Offender ' + id;
+		
+		if(offender){
+			cus = offender ;
+			cus.cardNumber = 'XXXXXXXX'+cus.last4;;
+			cus.cardExp = '';
+			cus.cardCVV = '';
+			// console.log('Here is payment infO: ', response.customerPaymentProfileId);
+			cus.paymentProfileId = response.customerPaymentProfileId;
+			// console.log('???', cus.paymentProfileId );
+			// console.log('Cus before Save: ', cus);
+			cus.save(function(err) {
+				if(err) console.log('Error Saving Customer', err);
+					console.log('Customer after Save: ', cus);
+					next();
+			});
+		}
+	});
+
+	}
+});
+	
+};
+
+//Create Customer Profile on Authorize.net
+var createAuthProfile = function(off, cb) {
+	console.log('Running Authorization for Auth.net');
+	
+
+	  console.log('Do we have Offender: ', off);
+	  var customerID2 = off._id.toString();
+	  var customerID = customerID2.substring(3, 23);
+	  console.log('Customer ID: ', customerID);
+	 var profile = {
+  merchantCustomerId: customerID,
+  description: off.firstName+' '+off.lastName,
+  email: off.offenderEmail,
+  
+  // customerProfileId: 349494
+}
+
+
+
+	AuthorizeCIM.createCustomerProfile({customerProfile: profile}, function(err, response){
+		if(err) console.log('ERROR from Auth.net!', err);
+		console.log('Response from Auth.net', response);
+		// console.log('Customer id: ', response.$);
+		
+		if(response && off.cardNumber.length > 11) {
+			console.log('Customer Profile ID: ', response.customerProfileId);
+			// createPaymentProfile(response.customerProfileId, off);
+			createPaymentProfile(response.customerProfileId, off, function(err, data){
+						if(err){
+					console.log('Error from Create Payment Profile: ');
+					res.status(402).send(data.message);
+				}
+
+				else{
+					
+						res.status(200).send('Credit Card Valid');
+				}
+				
+			});
+		}
+	});
+
+
+
+
+
+};
+
+
+
+var updateCCInfo = function(req, res){
+	console.log('Updating the CC Info');
+	console.log(req.offender);
+	console.log('Credit Info: ', req.body);
+	 // var customerID2 = req.offender._id.toString();
+	  // var customerID = customerID2.substring(3, 23);
+	  // var cardExp = req.offender.expYear+'='+req.offender.expMonth;
+	  // console.log('Customer ID: ', customerID);
+	  if(req.offender.paymentProfileId && req.offender.merchantCustomerId){
+	  		  var options = {
+				  customerType: 'individual',
+				   customerPaymentProfileId: req.offender.paymentProfileId,
+				  payment: {
+				    creditCard: new Authorize.CreditCard({
+				      cardNumber: req.body.cardNumber,
+				        expirationDate: req.body.expDate,
+				        cardCode: req.body.CVV
+				    })
+				  }
+				}
+
+				AuthorizeCIM.updateCustomerPaymentProfile({
+				  customerProfileId: req.offender.merchantCustomerId,
+				  paymentProfile: options
+				  
+				}, function(err, response) {
+					if(err) {
+						console.log('Errror updating Customer Payment Profile: ', err);
+						res.status(409).send('Error: '+err);
+					} 
+					if(response) {
+
+						console.log('Response from Update: ', response);
+						// res.status(200).send('Card Information Updated');
+
+							
+						AuthorizeCIM.validateCustomerPaymentProfile({
+						  customerProfileId: req.offender.merchantCustomerId,
+						  customerPaymentProfileId: req.offender.paymentProfileId,
+						  validationMode: 'testMode' // liveMode
+						}, function(err, response) {
+							if(err){
+							console.log('ERROR Validating Card', err);
+							res.status(409).send('Error: '+err);
+						}else{
+							console.log('Card Validated ', response);
+							res.status(200).send('Card Information Updated & Validated');
+						}
+				});
+
+					}
+	});
+	  }else {
+	  	console.log('This customer seems to have no CC Info Setup');
+	  	createAuthProfile(req.offender, function(err, resp){
+	  		if(err) {
+
+	  			console.log('Error Addint Customer Auth Profile');
+	  			res.status(333).send('Card Information Update ERROR');
+	  		}else{
+	  			console.log('Response from creating Auth PRofile', resp);
+	  			res.status(200).send('Card Information Updated');
+	  			delCardInfo(req.offender);
+	  		}
+
+
+	  	});
+
+	  }
+
+
+
+};
+
+
+
+var testCharge = function(cardNumber, ExpDate, CVV){
+	console.log('Test Credit Card Charge: ');
+	var creditCard = {
+  cardNumber: cardNumber,
+  expirationDate: ExpDate,
+  cardCode: CVV
+}
+
+
+var payment = new Authorize.PaymentSimple({
+  creditCard: new Authorize.CreditCard(creditCard),
+  // bankAccount: new Types.BankAccount(bankAccount)
+},
+function(err, response) {
+							if(err){
+
+								console.log('Error... :( ', err);
+							}
+
+							console.log('Response Baby: ', response);
+							});
+	console.log('Done with testCharge');
+
+
+};
+
+exports.chargeCCard = function(req, res) {
+	console.log('Charging Card via Auth.net', req.body);
+	if(req.body.setupProfile){
+		console.log('Need to Setup the Payment Profile first');
+
+		console.log('This customer seems to have no CC Info Setup', req.body.offender);
+			req.body.offender.cardNumber = req.body.cardNum;
+      		req.body.offender.expYear = req.body.expYear;
+      		req.body.offender.expMonth = req.body.expMonth;
+      		var expDate = req.body.expYear+'-'+req.body.expMonth;
+      		testCharge(req.body.cardNum, expDate, req.body.ccv);
+      		req.body.offender.cardCVV = req.body.ccv;
+
+		if(req.body.offender.merchantCustomerId){
+			console.log('Already setup with Authorize.net - creating new Payment Profile now');
+			
+			createPaymentProfile(req.body.offender.merchantCustomerId, req.body.offender, function(err, data){
+				if(err){
+					console.log('Error from Create Payment Profile: ');
+					res.status(402).send(err.message);
+				}else{
+						console.log('No Errors...charging card now');
+							var workCharge = req.body.pmt.amount || 0;
+							var totalCharge = 0;
+
+							if(workCharge > 0){
+
+							 totalCharge = workCharge*1.0985;
+							totalCharge = totalCharge.toFixed(2);
+							var invoiceNumber = 6544;
+							var stateTax = +totalCharge-workCharge;
+							stateTax = stateTax.toFixed(2);
+							var taxState = 'KS';
+
+						console.log('Total Charge: ', totalCharge);
+						console.log('Work Order Charge: ', workCharge);
+						console.log('Tax Amount: ', stateTax);
+
+							var transaction = {
+						  amount: totalCharge,
+						  tax: {
+						    amount: stateTax,
+						    name: 'State Tax',
+						    description: taxState
+						  },
+						  // shipping: {
+						  //   amount: 5.00,
+						  //   name: 'FedEx Ground',
+						  //   description: 'No Free Shipping Option'
+						  // },
+							  customerProfileId: req.body.offender.merchantCustomerId,
+							  customerPaymentProfileId: req.body.offender.paymentProfileId,
+						  order: {
+						    invoiceNumber: Date.now(),
+						    description: 'Payment made from portal...'
+						  },
+						  billTo: {
+						  	firstName: req.body.offender.firstName,
+						  	lastName: req.body.offender.lastName,
+						  	address: req.body.offender.billingAddress
+						  }
+						};
+
+							AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, CaptureOnly, PriorAuthCapture */, transaction, function(err, response) {
+							if(err){
+								console.log('Error Charging Card', err);
+								res.status(400).send('ERROR: '+err);
+							}
+							if(response){
+								console.log('Card has been charged!!', response);
+
+
+
+								res.status(200).send(response);
+							}
+						});
+
+						} else {
+							res.status(200).send('Work Order Authorization has been approved by customer...');
+						}
+					
+				}
+			});
+		}else{
+			console.log('Creating a New Auth.net profile');
+		
+	  		createAuthProfile(req.body.offender, function(err, resp){
+
+	  		if(err) {
+
+	  			console.log('Error Addint Customer Auth Profile');
+	  			res.status(333).send('Card Information Update ERROR');
+	  		}else{
+	  			console.log('Response from creating Auth PRofile', resp);
+	  			res.status(200).send('Card Information Updated');
+	  			
+	  		}
+
+
+	  	});
+		// updateCCInfo(req, res);
+
+
+
+	}
+}
+
+};
+
+
 exports.runAuth = function(req, res) {
 	console.log('Running Authorization for Auth.net', req.body);
-	// var cus = req.offender;
-	// console.log('Offender?', req.offender);
+	if(req.body.setupProfile){
+		console.log('Need to Setup the Payment Profile first');
+		updateCCInfo(req, res);
+
+
+
+	}
+
+
 	console.log('Workorder?', req.workorder);
 	var cus = req.body.offender;
 	// if(cus.merchantCustomerId && cus.merchantCustomerId){
@@ -614,17 +960,7 @@ exports.runAuth = function(req, res) {
 	// 	res.status(333).send('WE cannot charge that card'+err);
 	// }
 	var workCharge = req.workorder.amount;
-	// if(req.workorder.type==='New Install') {
-	// 	workCharge =  req.workorder.amount || 89;
 	
-	// }
-	// else if(req.workorder.type==='Reset') {
-	// 	workCharge = 50;
-	
-	// }else if(req.workorder.type==='Removal') {
-	// 	workCharge = 75;
-	
-	// }
 	var totalCharge = 0;
 	if(workCharge > 0){
 
@@ -1330,6 +1666,12 @@ exports.viewOrder = function(req, res){
 
 		//Page 3
 		doc.image('images/cusAgreementPg3.png', 0, 0,{width: 600});
+		//Device Serial Number
+		doc.y = 460;
+		doc.x = 355;
+		doc.fontSize(14);
+		doc.text(req.body.workinfo.deviceSN || 'TBD');
+
 		doc.addPage();
 
 		//Page 4

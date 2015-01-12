@@ -35,10 +35,18 @@ h1, h2, h3{
 }
 .strike {
   text-decoration: line-through;
+
 }
 .done-true  {
-    color: #777777;
+    color: #ff0000;
+     /*background-color: #555;*/
     text-decoration: line-through;
+}
+.scroll{
+overflow: scroll;  
+height: auto; 
+min-height: 100px; 
+max-height: 300px;
 }
 </style>
 	<div class="main-body">
@@ -52,7 +60,12 @@ h1, h2, h3{
 	    	<div ng-show="workorder.completed" class="text-center bg-danger">
 	    	<h3>Order Complete</h3>
 	    	</div>
+	    	<div ng-hide="workorder.completed" data-ng-show="offender.pendingWorkOrder" class="text-center">
+	    	<h4>Order Progress</h4>
+	    	<progressbar class="progressbar-lg" value="progress" type="success"></progressbar>
+	    	</div>
 		<div class="panel panel-primary">
+		
 	     
 	       	    	<div class="col-md-4" data-ng-hide="offender.pendingWorkOrder">
 	            <div class="panel panel-profile">
@@ -738,15 +751,37 @@ h1, h2, h3{
 	    	
     <script type="text/ng-template" id="checkOutDevice.html">
        
-        <div class="modal-header">
-
+        <div class="modal-header" data-ng-init="getDevices()">
+        <h2>
             Inventory Device for {{offender.firstName}} {{offender.lastName}}
+            </h2>
         </div>
         <div class="modal-body">
-      	<p>Please enter the Serial Number of the device that you are installing here</p>        
-         <label>Device Serial Number</label>
+        <h3>Please verify that the device you removed from the vehicle matches the Serial Number: {{offender.deviceSN}}</h3>
+
+        <br>
+
+        
         	  
-        	    <input type="text" data-ng-model="deviceSN" class="form-control" placeholder="Serial Number" >
+       <div class="scroll" data-ng-hide="deviceChosen" >
+
+        <h3>Choose Device to Install</h3>
+            <div class="alert alert-warning text-center" data-ng-hide="!availableDevices.$resolved || availableDevices.length">No Available Devices in Inventory
+        </div>
+            <table class="table"  >
+            <tr data-ng-repeat="device in availableDevices track by $index"><td>
+            {{device.type}} </td>
+            <td>{{device.serialNumber}} </td>
+            <td>{{device.status}}</td>
+            <td colspan="2">       <button class="btn btn-secondary"  ng-click="addDevice($index)">Select</button>            </td>
+            </tr>
+            </table>
+            
+        </div>
+        	   
+
+
+
         	   
 
 <br>
@@ -937,6 +972,204 @@ h1, h2, h3{
            <button class="btn btn-warning" ng-click="eSignHere()">eSign Here</button>
             <button class="btn btn-info" ng-click="printAuth()">Print Authorization</button>
 
+        </div>
+    </script>
+
+
+
+    <script type="text/ng-template" id="pmtModalContent.html"  data-ng-init="getPayments()">
+       
+        <div class="modal-header">
+            New Payment for {{offender.firstName}} {{offender.lastName}}
+        </div>
+        <div class="modal-body">
+        	<div class="col-md-12 scroll">
+        	<span data-ng-show="!hide">
+        	   <br>
+        	   <h3>What are we paying for?</h3>
+        	  
+        	   <div class="panel-primary">
+        	   <div class="content">
+       		 <table class="table table-bordered table-striped table-responsive">
+	                <thead>
+	                    <tr>
+	                    <th>
+	                            <div class="th">
+	                                Due Date
+	                             </div>
+	                        </th>
+	                       
+	                        <th>
+	                            <div class="th">
+	                                Charge 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Status 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Notes 
+	                        </div>
+	                        </th>
+
+	                                  </tr> 
+	                </thead>
+	                <tbody>
+	                    <tr data-ng-repeat="wo in payments track by $index" data-ng-click="chooseRow($index)">
+	                    <td>{{wo.dueDate | date: 'short'}}</td>
+	                   
+	                    <td>${{wo.amount | number: '2'}}</td>
+	                    <td>{{wo.status}}</td>
+	                    <td>{{wo.notes}}</td>
+	                    
+	                    </tr>
+
+	                  
+
+	                    </tbody>
+	                    </table>
+	                    </div>
+	                   </div>
+      
+        </span>
+
+        	</div>
+
+        	  <span data-ng-show="hide" >
+        	 
+        	 <br>
+        	  <div class="row">
+        	   <div class="col-md-6"> 
+        	   <label>Payment Creation Date:</label> {{pmtchosen.created | date: 'MM/dd/yyyy'}}<br>
+        	   <label>Due Date: </label> {{pmtchosen.dueDate | date: 'MM/dd/yyyy'}}<br>
+        	   <label>Amount Due: </label>  {{pmtchosen.amount | currency}}<br>
+
+        	   
+
+        	   
+        	   <br>
+        	   </div>
+
+        	    <div class="col-md-6"> 
+        	    Work Order ID: {{wochosen._id}}<br>
+        	    Service Center: {{serviceCenter.name}}<br>
+        	    Address: {{serviceCenter.address}} 
+        	   {{serviceCenter.city}}, {{serviceCenter.state}}
+
+        	   
+
+        	   
+        	   <br>
+        	   </div>
+        	   </div>
+        	  
+        	   </span>
+       
+
+        <div class="row">
+        <div class="col-md-6"> 
+        	    <label>Amount: </label>
+        	  <input type="text" data-ng-model="pmtAmount"  id="" class="form-control" placeholder="Amount" >
+        	
+        	    </div>
+        	   
+
+        	   <div class="col-md-6"> 
+        	
+
+			<label>Payment Type:</label>
+        	  <select class="form-control" data-ng-model="pmtOpt"  data-ng-options="item for item in pmtOpts" ><option value=""></option></select>
+
+        	  </div>
+        	  </div>
+
+        	 
+        	 
+        	 <br>
+        	  <div class="row">
+        	  
+
+
+        	    <span data-ng-show="pmtOpt==='Check'" >
+        	     <div class="col-md-6"> 
+ <label>Check Number: </label>
+        	  <input type="text" data-ng-model="checkNum"  id="" class="form-control" placeholder="Check Number" >
+        	
+        	   </div>
+        	  
+
+        	   </span>
+
+
+        	    </div>
+        	   
+        	            	     <div data-ng-show="pmtOpt==='Credit Card'" >
+        	            	     <br>
+        	     	<div class="panel-primary">
+        	     	    
+        	            	     	 
+
+                        
+                          <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Credit Card Number</label>
+                                <div class="controls">
+                                           <input type="text" data-ng-model="offenderCC" id="offenderEmail" class="form-control" placeholder="Credit Card Number" maxlength="16">
+
+                                </div>
+                            </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">Expiration Month</label>
+                            <div class="controls">
+                                    <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
+
+
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">Expiration Year</label>
+                            <div class="controls">
+                                     <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">CCV Number</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="creditCardCCV" name="creditcardCCV" id="creditcardCCV" class="form-control" placeholder="CCV" >
+
+                            </div>
+                        </div>
+
+
+                        <br>
+                   <br>  <a class="btn btn-primary btn-sm" style="color: #fff;" >
+				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Use Card On-File
+			</a>
+        	  
+        	  </div>
+        	  
+        	  <br>
+        	   </div>
+
+
+        	   <br>
+        	   <div class="row">
+        	   <div class="col-md-12">
+        	   <label>Payment Notes</label>
+        	    <textarea type="text" data-ng-model="payment.notes"  id="notes" class="form-control" placeholder="Notes..." >
+
+        	    </textarea>
+        	    </div>
+        	   </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-primary"  ng-click="makePmt()">Confirm Payment</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
 

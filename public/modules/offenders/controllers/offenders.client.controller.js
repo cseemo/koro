@@ -20,13 +20,14 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		{item: 'Inventory Device', click: 'checkOutDevice'},
 		{item: 'Have Customer Watch Training Video', click: 'customerVideo'},
 		{item: $scope.signedUpStatus, click: 'installPaperwork'},
-		{item: 'Collect Payment', click: 'getMoney'},
+
+		{item: 'Collect Payment', click: 'openpmt'},
 		{item: 'Complete Service', click: 'complete'}
 		];
 
 		$scope.checklist2 = [
 		{item: 'Schedule a New Service', click: 'setNewWO'},
-		{item: 'Accept Customer Payment', click: 'getMoney'},
+		{item: 'Accept Customer Payment', click: 'openpmt'},
 		// {item: 'Inspect Vehicle', click: 'inspected'},
 		// {item: 'Inventory Device', click: 'checkOutDevice'},
 		// {item: 'Have Customer Watch Training Video', click: 'customerVideo'},
@@ -178,6 +179,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			if(data==='customerVideo') $scope.customerVideo();
 			if(data==='installPaperwork') $scope.getAuth();
 			if(data==='setNewWO') $scope.setNewWO();
+			if(data==='openpmt') $scope.openPmt();
+
+			$scope.progress=$scope.progress+10;
 			
 
 			// console.log('Offender: ', $scope.offender);
@@ -622,6 +626,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 		$scope.oneAtATime = true;
 
+
+
   $scope.groups = [
     {
       title: 'Dynamic Group Header - 1',
@@ -941,12 +947,13 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 							$scope.signedUpStatus = 'Get'+$scope.workorder.type+' Authorization Signed';
 							console.log('Signedup Status: ', $scope.signedUpStatus);
-					
+							var progress = 0;
 
 							if($scope.workorder.apptDate){
 								console.log('This baby has an Appointment Date already!!');
 								console.log("STuff: ", $scope.checklist[0]);
 								$scope.checklist[0]['strike'] = "done-true" ;
+								progress = progress+15;
 
 
 							}
@@ -954,43 +961,51 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 								console.log('This baby has been checked in already!!');
 								console.log("STuff: ", $scope.checklist[1]);
 								$scope.checklist[1]['strike'] = "done-true" ;
+								$scope.checklist[1].selected;
+								progress = progress+15;
 							}
 
 							if($scope.workorder.inspected){
 								console.log('This baby has been inspected already!!');
 								console.log("STuff: ", $scope.checklist[2]);
 								$scope.checklist[2]['strike'] = "done-true" ;
+								progress = progress+15;
 							}
 
 							if($scope.workorder.customerVideo){
 								console.log('Customer Video Already Watched!!');
 								console.log("STuff: ", $scope.checklist[4]);
 								$scope.checklist[4]['strike'] = "done-true" ;
+								progress = progress+15;
 							}
 							if($scope.workorder.authSigned){
 
 								console.log('Install Agreement Already Signed');
 								console.log("STuff: ", $scope.checklist[5]);
 								$scope.checklist[5]['strike'] = "done-true" ;
+								progress = progress+15;
 							}
 
-							if($scope.workorder.deviceSN){
+							if($scope.workorder.deviceSN || $scope.workorder.type!=='New Install'){
 								console.log('Workorder Already has Serial Number Assigned');
 								console.log("STuff: ", $scope.checklist[3]);
 								$scope.checklist[3]['strike'] = "done-true" ;
+								progress = progress+15;
 							}
-							if($scope.workorder.authCode){
+							if($scope.workorder.authCode || $scope.workorder.amount==='0'){
 								console.log('Workorder Alrady Paid For');
 								console.log("STuff: ", $scope.checklist[6]);
 								$scope.checklist[6]['strike'] = "done-true" ;
+								progress = progress+15;
 							}
 							if($scope.workorder.completed){
 								console.log('Workorder Alrady Completed');
 								console.log("STuff: ", $scope.checklist[7]);
 								$scope.checklist[7]['strike'] = "done-true" ;
+								progress = progress+15;
 							}
 
-							
+							$scope.progress = progress;
 
 							}
 						});
@@ -1019,9 +1034,50 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
   ]).controller('ModalInstanceCtrl', [
-    '$scope', '$modalInstance', 'items', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location',  function($scope, $modalInstance, items, offender, Authentication, $http, Workorders, Shops, workorder, $location) {
+    '$scope', '$modalInstance', 'items', 'offender', 'Devices', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location',  function($scope, $modalInstance, items, offender, Devices, Authentication, $http, Workorders, Shops, workorder, $location) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
+     $scope.offender = offender;
+
+     $scope.getDevices = function(){
+     	console.log('Finding Devices in Shop Inventory');
+     	 $scope.availableDevices = Devices.query({status: 'Pending Deployment', shopId: Authentication.user.shop});
+
+     	$scope.availableDevices.$promise.then(function(){
+     		console.log('Got Pending Devices for this Shop', $scope.availableDevices);
+
+     		 // $scope.availableDevices = $filter('filter')($scope.devices, {status: 'Available'});
+     		 // console.log('$scope.availableDevices', $scope.availableDevices);
+
+     	})
+
+
+     };
+
+     $scope.addDevice = function(row) {
+     	console.log('Adding device to Offender:' , offender);
+     	$scope.deviceChosen = true;
+     	var device = $scope.availableDevices[row];
+     	console.log('Device: ', device);
+     	$scope.offender.deviceSN = $scope.availableDevices[row]['serialNumber'];
+     	$scope.offender.device = $scope.availableDevices[row]['_id'];
+     	console.log('Offender: ', $scope.offender);
+     	$scope.availableDevices.splice(row, 1);
+     	$scope.offender.$update();
+     	
+     	device.status = 'Deployed';
+        $scope.deviceSN = device.serialNumber;
+       console.log('Device: ', device);
+       
+  
+        // $modalInstance.dismiss('Device Incentoried');
+      
+
+
+
+     };
+
+    
     
 
 
@@ -1864,7 +1920,7 @@ $scope.mytime = $scope.dt;
 					toastr.success('Success! Email was sent to '+$scope.offender.offenderEmail);
 					$scope.myresults = 'Email Sent!';
 					$modalInstance.close('New Work Order');
-					
+
 					$location.path('/pending');
 						
 						
@@ -2222,6 +2278,82 @@ $scope.makePmt = function(){
 				
 
 
+		};
+
+				//Charge Credit Card for Work order
+		$scope.chargeCard = function (){
+			console.log('Charging Credit Card Now', $scope.offender);
+			console.log('Payment: ', $scope.pmtchosen);
+			var pmt = $scope.pmtchosen;
+			var wo;
+			if($scope.pmtchosen.workorder){
+				wo = Workorders.query({_id: $scope.pmtchosen.workorder});
+
+			}else{
+				wo = null;
+			}
+			wo.$promise.then(function(){
+				console.log('Work Order: ', wo);
+
+			var off = $scope.offender;
+        	var cardNum = $scope.offenderCC ,
+        	cardExp = $scope.expYear+'-'+$scope.expMonth,
+        	cardCCV = $scope.creditCardCCV;
+
+        	
+
+
+						$http({
+					    method: 'post',
+					    url: '/chargeCCard',
+					    data: {
+					    	offender: off,
+					    	setupProfile: true,
+					    	workinfo: wo,
+					    	cardNum: cardNum,
+					    	cardExp: cardExp,
+					    	expMonth: $scope.expMonth,
+					    	expYear: $scope.expYear,
+					    	ccv: cardCCV,
+					    	cardZip: $scope.cardZip,
+					    	cardName: $scope.cardName,
+					    	pmt: pmt
+					    }
+					    
+		
+					  })
+					.error(function(data) {
+						console.log('Error!! ', data);
+						toastr.error(data);
+					})
+					.success(function(data, status, headers, config) {
+						console.log('Data From Charge: ', data.directResponse);
+						var resp = data.directResponse.split(',');
+						console.log('4', resp[4]);
+						console.log('Trans Type (11)', resp[11]);
+						console.log('Trans Type (12)', resp[12]);
+						console.log('OR -- Trans Type (13)', resp[13]);
+						var amount = resp[9];
+						var description = resp[3];
+						var authCode = resp[4];
+						toastr.success(description+' on '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
+   						wo.authCode = authCode;
+   						wo.pmtStatus = 'Paid';
+   						wo.amount = amount;
+   						wo.$update();
+
+   						console.log('Do we still have payment? - can we Add AuthCode and update status', pmt);
+   						pmt.status = 'Paid';
+   						pmt.authCode = authCode;
+   						pmt.$update();
+   					});
+
+			
+
+
+
+			})
+			
 		};
 
 
