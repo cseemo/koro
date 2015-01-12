@@ -312,7 +312,7 @@ exports.email = function(req, res){
 		doc.fontSize(30);
 		doc.font('Times-Roman');
 		doc.fillColor('#1b3959');
-		doc.text(req.body.workinfo.type+' Authorization Request',{
+		doc.text('Service Authorization Request',{
 			align: 'center'
 		});
 
@@ -501,11 +501,11 @@ doc.on('end', function(){
 				},
 				{
 					'name': 'workType',
-					'content': req.body.workinfo.type
+					'content': 'Service'
 				},
 				{
 					'name': 'toName',
-					'content': req.body.workinfo.toWhomName
+					'content': req.body.offender.firstName+' '+req.body.offender.lastName
 				},
 				{
 					'name': 'serviceCenter',
@@ -1615,7 +1615,7 @@ exports.signAuth = function(req, res){
 		doc.fontSize(30);
 		doc.font('Times-Roman');
 		doc.fillColor('#1b3959')
-		doc.text(req.body.workinfo.type+' Authorization Request',{
+		doc.text('Service Authorization Request',{
 			align: 'center'
 		});
 
@@ -1771,7 +1771,7 @@ doc.on('end', function(){
 			var message = {
 	'html': '<p>Approval Copy for </p>',
 	
-	'subject': 'For Your Records -- Budget IID Approval for '+req.body.workinfo.type,
+	'subject': 'For Your Records -- Budget IID Approval for Service',
 	'from_email': 'admin@budgetiid.com',
 	'from_name': req.body.offender.user.displayName,
 	'to': [{
@@ -1808,7 +1808,7 @@ doc.on('end', function(){
 				},
 				{
 					'name': 'workType',
-					'content': req.body.workinfo.type
+					'content': 'Service'
 				},
 				{
 					'name': 'toName',
@@ -2045,7 +2045,7 @@ exports.viewOrder = function(req, res){
 		doc.fontSize(30);
 		doc.font('Times-Roman');
 		doc.fillColor('#1b3959')
-		doc.text(req.body.workinfo.type+' Authorization Request',{
+		doc.text('Service Authorization Request',{
 			align: 'center'
 		});
 
@@ -2209,7 +2209,7 @@ doc.on('end', function(){
 			var message = {
 	'html': '<p>Approval Copy for </p>',
 	
-	'subject': 'For Your Records -- Budget IID Approval for '+req.body.workinfo.type,
+	'subject': 'For Your Records -- Budget IID Approval for Service',
 	'from_email': 'admin@budgetiid.com',
 	'from_name': req.body.offender.user.displayName,
 	'to': [{
@@ -2246,7 +2246,7 @@ doc.on('end', function(){
 				},
 				{
 					'name': 'workType',
-					'content': req.body.workinfo.type
+					'content': 'Service'
 				},
 				{
 					'name': 'toName',

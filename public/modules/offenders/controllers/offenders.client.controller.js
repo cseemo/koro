@@ -815,7 +815,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		// Update existing Offender
 		$scope.update = function() {
 			var offender = $scope.offender ;
-
+			offender.displayName = offender.firstName+' '+offender.lastName;
 			offender.$update(function() {
 				$location.path('offenders/' + offender._id);
 			}, function(errorResponse) {
