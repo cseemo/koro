@@ -502,6 +502,7 @@ max-height: 300px;
 
 
 
+
     <script type="text/ng-template" id="pmtModalContent.html"  data-ng-init="getPayments()">
        
         <div class="modal-header">
@@ -584,7 +585,7 @@ max-height: 300px;
         	    Address: {{serviceCenter.address}} 
         	   {{serviceCenter.city}}, {{serviceCenter.state}}
 
-        	   
+        	   {{workorder}}
 
         	   
         	   <br>
@@ -635,7 +636,11 @@ max-height: 300px;
         	            	     <br>
         	     	<div class="panel-primary">
         	     	    
-        	            	     	 
+        	            	     	 	 <label>Test Credit Card Numbers:</label> <br>
+                        Visa: 4007000000027 or 4012888818888</br>
+                        Mastercard: 5424000000000015</br>
+                        Amex: 370000000000002</br>
+                        Discover: 6011000000000012</br>
 
                         
                           <div class="form-group col-md-4" >
@@ -669,12 +674,34 @@ max-height: 300px;
 
                             </div>
                         </div>
+                           <div class="form-group col-md-6" >
+                                <label class="control-label" for="name">Name on Card</label>
+                                <div class="controls">
+                                           <input type="text" data-ng-model="cardName" id="cardName" class="form-control" placeholder="Name on Card" maxlength="16">
+
+                                </div>
+                            </div>
+
+                         <div class="form-group col-md-6" >
+                            <label class="control-label" for="name">Zip Code</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="cardZip" name="cardZip" id="creditcardCCV" class="form-control" placeholder="Card Zipcode" >
+
+                            </div>
+                        </div>
 
 
                         <br>
-                   <br>  <a class="btn btn-primary btn-sm" style="color: #fff;" >
+                        <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="chargeCard('new')">
+				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Charge Card
+			</a>
+                   <br>  
+                   <span data-ng-show="offender.cardNumber">
+                   {{offender.cardNumber}}
+                   <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="chargeCard('onfile')">
 				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Use Card On-File
 			</a>
+			</span>
         	  
         	  </div>
         	  
@@ -697,6 +724,7 @@ max-height: 300px;
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
+
 
 
 
