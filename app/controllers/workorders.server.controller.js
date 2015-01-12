@@ -22,6 +22,29 @@ var mongoose = require('mongoose'),
 	  });
 
 	   var async = require('async');
+
+
+	   //Download a Signed Agreement
+	   	exports.getSignedDoc = function(req, res){
+	   		console.log('Getting Signed Docs');
+	   		// console.log(req.body);
+	   		// console.log(req.query);var offId = req.body.offender._id;
+	   		console.log('Offender ID: ', req.offender);
+
+
+		// console.log('got here', req.deal);
+		// 'signedCustomer'+req.body.workinfo._id+'.pdf';
+		res.download('signedCustomer'+req.offender._id+'.pdf', 'signedCustomer'+req.offender._id+'.pdf', function(err){
+			if(err){
+				console.log('ERROR Downloading PDF - Line 37 WorkordesServerController!!!');
+			} else {
+				console.log('No Errors Downloading', req.offender._id);
+			}
+			return;
+		});
+		
+
+	};
 /**
  * Create a Workorder
  */
@@ -178,6 +201,8 @@ exports.email = function(req, res){
 	req.body.workinfo.apptDate = req.body.workinfo.apptDate  || '';
 	var apptDate = moment(req.body.workinfo.apptDate).format("MM/DD/YYYY");
 	var today = moment().format("MMM DD, YYYY");
+	var waiverTerm = 'By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to have the services requested performed on my vehicle, by '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.';
+	
 	// if(req.body.workinfo.type==='New Install') {
 	// 	workCharge =  req.body.workinfo.amount || 89;
 	
@@ -395,8 +420,8 @@ exports.email = function(req, res){
 		doc.fontSize(10)
 		doc.fillColor('black');
 		doc.font('Times-Roman');
-		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Budget Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.',
-			{
+		doc.text(waiverTerm, 
+		{
 				align: 'center',
 				width: 500
 			});
@@ -1402,11 +1427,13 @@ exports.signAuth = function(req, res){
 	var buffers = [];
 
 
-		var myfileName = 'Signed_Work_Auth'+req.body.workinfo._id+'.pdf';
+		var myfileName;
 		if(req.body.workinfo.type==='New Install'){
-			myfileName = 'cusAgreement'+req.body.workinfo._id+'.pdf';
+			myfileName = 'signedCustomer'+req.body.offender._id+'.pdf';
+			doc.pipe( fs.createWriteStream(myfileName) );
+			console.log('Piping that shit...', myfileName);
 		}
-	doc.pipe( fs.createWriteStream(myfileName) );
+	
 	 
 	var today = new moment();
 	var convertedPretty = moment(today).format("MM/DD/YYYY");
@@ -1424,6 +1451,8 @@ exports.signAuth = function(req, res){
 	// var bg2 = doc.image('LDLOA.png', 0, 0,{width: 600});
 	//doc.image('FCTicket.jpg', 0, 0, 600, 800);
 
+	var waiverTerm = 'By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to have the services requested performed on my vehicle, by '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.';
+	
 	if(req.body.workinfo.type==='New Install'){
 			//Generate New Install Agreement
 
@@ -1709,7 +1738,7 @@ exports.signAuth = function(req, res){
 		doc.fontSize(10)
 		doc.fillColor('black');
 		doc.font('Times-Roman');
-		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Budget Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.',
+		doc.text(waiverTerm,
 			{
 				align: 'center',
 				width: 500
@@ -1921,6 +1950,9 @@ exports.viewOrder = function(req, res){
 		workCharge = 75;
 	
 	}
+
+	var waiverTerm = 'By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to have the services requested performed on my vehicle, by '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.';
+	
 
 	// //console.log('Quote Date: ',prepDate)
 
@@ -2136,8 +2168,7 @@ exports.viewOrder = function(req, res){
 		doc.fontSize(10)
 		doc.fillColor('black');
 		doc.font('Times-Roman');
-		doc.text('By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to waive all liabilities to Budget Ignition Interlock. I agree that I am trusting my vehicle, and therefor ultimately my life, with '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.',
-			{
+		doc.text(waiverTerm, {
 				align: 'center',
 				width: 500
 			});

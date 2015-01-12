@@ -18,6 +18,10 @@ h1, h2, h3{
 .main-body{
 	background-color: #555;
 }
+.link {
+	text-decoration: none;
+	cursor: pointer;
+}
 </style>
 	<div class="main-body">
 	    <div class="container">
@@ -244,6 +248,11 @@ h1, h2, h3{
 				     			         <table class="table table-bordered table-striped table-responsive" data-ng-init="getWorkOrders()">
 	                <thead>
 	                    <tr>
+	                     <th>
+	                            <div class="th">
+	                                Edit
+	                             </div>
+	                        </th>
 	                    <th>
 	                            <div class="th">
 	                                Date
@@ -274,17 +283,26 @@ h1, h2, h3{
 	                                Notes 
 	                        </div>
 	                        </th>
+	                         <th>
+	                            <div class="th">
+	                                Signed Agreement 
+	                        </div>
+	                        </th>
 
 	                                  </tr> 
 	                </thead>
 	                <tbody>
-	                    <tr data-ng-click="pickWO($index)" data-ng-repeat="wo in workorders track by $index">
+	                    <tr data-ng-repeat="wo in workorders track by $index">
+	                    <td class="link" data-ng-click="pickWO($index)">Edit</td>
 	                    <td>{{wo.apptDate | date: 'short'}}</td>
 	                    <td>{{wo.type}}</td>
 	                    <td>{{wo.serviceCenter}}</td>
 	                    <td>${{wo.amount | number: '2'}}</td>
 	                    <td>{{wo.status}}</td>
 	                    <td>{{wo.orderNotes}}</td>
+	                     <td ><span class="link" data-ng-show="wo.type==='New Install' && wo.authSigned">
+	                     <a data-ng-click="getSignedAgreement($index)">Get Signed Agreement</a></span>
+	                     </td>
 	                    
 	                    </tr>
 

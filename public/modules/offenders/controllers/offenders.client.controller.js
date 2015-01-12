@@ -2,8 +2,8 @@
 
 
 // Offenders controller
-angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', 
-	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http) {
+angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', '$sce', 
+	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http, $sce) {
 		$scope.authentication = Authentication;
 		$scope.pendingOrder = true;
 		// Create new Offender
@@ -116,6 +116,41 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
             });
          
         
+		};
+
+		$scope.getSignedAgreement = function(row){
+			console.log('Getting Signed Agreements ', row);
+			var workorder = $scope.workorders[row];
+			console.log('Work Order: ', workorder);
+			console.log('OffenderID:::: ', $scope.offender._id);
+
+						$http({
+					    method: 'GET',
+					    url: '/getSignedDoc/'+$scope.offender._id, 
+					    
+					  
+					    responseType: 'arraybuffer',
+					    // headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+		
+					  })
+					.error(function(data) {
+						console.log('Error!! ', data);
+					})
+					.success(function(data, status, headers, config) {
+						toastr.success('Downloading Signed Agreement Now');
+						console.log('Got pdf');
+						console.log('Step = ',$scope.step);
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		
+			     		// $scope.mycontent = $sce.trustAsResourceUrl(fileURL);
+			     		window.open(fileURL);
+   					});
+
+
+			
+
+
 		};
 
 		$scope.getPmtDetail = function(id) {
@@ -463,6 +498,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			var offender = new Offenders ({
 				firstName: this.firstName,
 				lastName: this.lastName,
+				mInitial: this.mInitial,
 				mainPhone: mainPhone, 
 				altPhone: altPhone, 
 				offenderEmail: this.offenderEmail, 

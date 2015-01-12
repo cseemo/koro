@@ -281,7 +281,7 @@ exports.delete = function(req, res) {
 /**
  * List of Offenders
  */
-exports.list = function(req, res) { Offender.find().sort('-created').populate('user', 'displayName').exec(function(err, offenders) {
+exports.list = function(req, res) { Offender.find(req.query).sort('-created').populate('user', 'displayName').exec(function(err, offenders) {
 		if (err) {
 			return res.status(400).send({
 				message: err //errorHandler.getErrorMessage(err)

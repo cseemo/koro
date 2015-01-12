@@ -18,7 +18,12 @@ var OffenderSchema = new Schema({
 	},
 		lastName: {
 		type: String,
-		required: 'Please include first name',
+		required: 'Please include last name',
+		trim: true
+		
+	},
+		mInitial: {
+		type: String,
 		trim: true
 		
 	},

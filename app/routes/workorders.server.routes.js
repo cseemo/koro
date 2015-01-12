@@ -3,6 +3,7 @@
 module.exports = function(app) {
 	var users = require('../../app/controllers/users');
 	var workorders = require('../../app/controllers/workorders');
+	var offenders = require('../../app/controllers/offenders');
 
 	// Workorders Routes
 	app.route('/work/order')
@@ -24,6 +25,10 @@ module.exports = function(app) {
 		app.route('/chargeCard/:workorderId')
 		.post(workorders.runAuth);
 
+		
+		app.route('/getSignedDoc/:offenderId')
+		.get(workorders.getSignedDoc);
+
 
 
 		app.route('/viewWorkOrder/:workorderId')
@@ -42,5 +47,6 @@ module.exports = function(app) {
 	// Finish by binding the Workorder middleware
 	app.param('workorderId', workorders.workorderByID);
 	app.param('offId', workorders.offenderByID);
+	app.param('offenderId', offenders.offenderByID);
 };
 
