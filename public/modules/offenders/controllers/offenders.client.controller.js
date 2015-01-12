@@ -2223,6 +2223,13 @@ $scope.mytime = $scope.dt;
 							console.log('Return Payments Modal: ', data);
 
 							$scope.paymentProfiles = data.profile.paymentProfiles;
+							if($scope.paymentProfiles){
+								console.log('Got Payment Profiles', $scope.paymentProfiles);
+
+							}else {
+								console.log('Ain\'t Got any  Payment Profiles', $scope.paymentProfiles);
+								$scope.paymentProfiles = null;
+							}
 						// 	var i = 0;
 						// 	angular.forEach($scope.paymentProfiles, function(item){
 						// 	console.log('Item: ', item);
@@ -2498,6 +2505,7 @@ $scope.makePmt = function(){
    						var payment = Payments.get( {paymentId: pmt._id}).$promise.then(function(payment){
 
    							console.log('Payment about to be saved', payment);
+   							$scope.payment = payment;
    							payment.status = 'Paid';
    							payment.authCode = authCode;
    							payment.pmtOpt = 'Credit Card via Portal';

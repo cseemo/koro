@@ -653,7 +653,7 @@ h1, h2, h3{
         	            	     <div data-ng-show="pmtOpt==='Credit Card'" >
         	            	     <br>
         	     	<div class="panel-primary">
-        	     	<span data-ng-hide="newCard">
+        	     	<span data-ng-hide="newCard || !paymentProfiles">
         	     	<h3>Charge a Credit Card Already On-File...</h3>
 
         	     	<div class="form-group">
@@ -692,7 +692,7 @@ h1, h2, h3{
 	                </thead>
 	                <tbody>
 	                    <tr data-ng-repeat="item in paymentProfiles track by $index" >
-	                    Item: {{item}}<br>
+	                   
 	                    <td>{{item.billTo.firstName}} {{item.billTo.lastName}}</td>
 	                    <td>{{item.billTo.zip}}</td>
 	                    <td>{{item.payment.creditCard.cardNumber}}</td>
@@ -711,7 +711,7 @@ h1, h2, h3{
 	                    </div>
 	                    </span>
 	                    <span data-ng-hide="onFile">
-	                     <h3>...Or Input a New Credit Card Number</h3>
+	                     <h3>Input a New Credit Card Number</h3>
 
         	     	    
         	            	     	 	 <label>Test Credit Card Numbers:</label> <br>
