@@ -153,7 +153,7 @@ $scope.approveWorkOrderPayment = function(){
 				pmtType: wo.type,
 				pmtOpt: 'Credit Card', 
 				offender: off._id,
-				status: 'Pending',
+				status: 'Due',
 				notes: 'Auto-Pay thru Portal', 
 				amount: wo.amount
 				
