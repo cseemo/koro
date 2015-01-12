@@ -173,6 +173,9 @@ exports.email = function(req, res){
 	var termLength = req.body.offender.term;
 	var workCharge =req.body.workinfo.amount;
 	console.log('Charge for Service: ', workCharge);
+	req.body.workinfo.apptDate = req.body.workinfo.apptDate  || '';
+	var apptDate = moment(req.body.workinfo.apptDate).format("MM/DD/YYYY");
+	var today = moment().format("MMM DD, YYYY");
 	// if(req.body.workinfo.type==='New Install') {
 	// 	workCharge =  req.body.workinfo.amount || 89;
 	
@@ -475,7 +478,7 @@ doc.on('end', function(){
 					'content': req.body.workinfo.serviceCenter
 				},
 				{
-					'name': 'serviceCenterAddress',
+					'name': 'svcAddress',
 					'content': req.body.workinfo.svcAddress
 				},
 				{
@@ -485,7 +488,7 @@ doc.on('end', function(){
 
 				{
 					'name': 'date',
-					'content': new Date()
+					'content': today
 				},
 
 				{
@@ -515,7 +518,7 @@ doc.on('end', function(){
 				},
 				{
 					'name': 'apptDate',
-					'content': req.body.workinfo.apptDate
+					'content': apptDate
 				}
 
 
