@@ -148,6 +148,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         modalInstance = $modal.open({
           templateUrl: 'pmtModalContent.html',
           controller: 'paymentCtrl',
+          size: 'lg',
           resolve: {
             offender: function() {
               return $scope.offender;
@@ -2099,7 +2100,96 @@ $scope.mytime = $scope.dt;
       		
       };
 
+      	$scope.choosePmt = function(row){
+      		$scope.onFile = true;
+      		$scope.error = false;
+
+      		console.log('Choosing Payment  Profile', $scope.paymentProfiles[row]);
+      		console.log('Offender ', $scope.offender);
+      		console.log('Do We have a  Workorder ', $scope.pmtchosen.workorder);
+      		var wo = $scope.pmtchosen.workorder;
+
+      							$http({
+					    method: 'post',
+					    url: '/chargeCCard',
+					    data: {
+					    	paymentProfile: $scope.paymentProfiles[row],
+					    	offender: $scope.offender, 
+					    	pmt: $scope.pmtchosen
+
+					    }
+					    
+		
+					  })
+					.error(function(data) {
+						console.log('Error!! ', data);
+						toastr.error(data);
+						$scope.error = data.error.message;
+					})
+					.success(function(data, status, headers, config) {
+						$scope.chargeComplete = true;
+						console.log('Data From Charge: ', data.directResponse);
+						var resp = data.directResponse.split(',');
+						console.log('4', resp[4]);
+						console.log('Trans Type (11)', resp[11]);
+						console.log('Trans Type (12)', resp[12]);
+						console.log('OR -- Trans Type (13)', resp[13]);
+						var amount = resp[9];
+						var description = resp[3];
+						var authCode = resp[4];
+						$scope.responseNotes = description+' '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+						
+						// $modalInstance.close();
+
+						// if(wo){
+   			// 				console.log('This is for a work order...', wo);
+   			// 				console.log('Need One Workorder ', $scope.pmtchosen.workorder);
+   			// 				var ourId = $scope.pmtchosen.workorder;
+   			// 				console.log('WO[0] -- why??? ', wo[0]);
+   			// 				console.log('Our ID: ', ourId);
+
+   			// 				var wos = Workorders.query({_id: ourId});
+   							
+
+   			// 				wos.$promise.then(function(){
+   			// 					var workOrder = wos[0];
+   			// 					console.log('Workorder ready to save: , ', workOrder);
+   			// 					workOrder.authCode = authCode;
+		   	// 					workOrder.pmtStatus = 'Paid';
+
+		   	// 					workOrder.amount = amount;
+		   	// 					workOrder.$update();
+
+   			// 				});
+   							
+
+   			// 			}	else {
+   			// 				console.log('No work order associated with this payment');
+   			// 			}
+
+						console.log('Payment Object: ',$scope.pmtchosen);
+						var payment = Payments.get({paymentId: $scope.pmtchosen._id}, function(ret){
+							$scope.payment = payment;
+							console.log('Return?? :', ret);
+							payment.authCode = authCode;
+							payment.pmtOpt = 'Credit Card via Portal';
+							payment.paidDate = Date.now();
+							payment.status = 'Paid';
+							payment.notes = resp[51]+'-'+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+							payment.$update();
+							console.log('Payment Chosen: ', payment);
+							toastr.success(resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
+
+						})
+						
+						
+   						
+					});
+
+      	};
+
             $scope.getPayments = function(){
+      	
      	console.log('Getting Modal Payments for: ', offender._id);
      	
      			$http({
@@ -2117,6 +2207,36 @@ $scope.mytime = $scope.dt;
 							$scope.payments = data;
 							}
 				});
+
+
+					$http({
+					method: 'post',
+					url: '/getPaymentProfiles/',
+					 data: {
+					    	offender: offender,
+				
+					    }
+					})
+					.success(function(data, status) {
+							if(status === 200) {
+								
+							console.log('Return Payments Modal: ', data);
+
+							$scope.paymentProfiles = data.profile.paymentProfiles;
+						// 	var i = 0;
+						// 	angular.forEach($scope.paymentProfiles, function(item){
+						// 	console.log('Item: ', item);
+						// 	console.log('Item [i]', item[i]);
+						// 	console.log('i', i);
+						// 	i++;
+						// })
+						// 	console.log('Payment Profiles: ', $scope.paymentProfiles );
+						// 	console.log('BillTo: ',$scope.paymentProfiles .billTo );
+							console.log('Payment InfO: ',$scope.paymentProfiles  );
+							}
+				});
+
+					
 
      	
 				
@@ -2173,7 +2293,7 @@ $scope.chooseRow = function(row) {
 };
 
 $scope.makePmt = function(){
-	console.log('Making Payment');
+	console.log('Making Payment', $scope.pmtOpt);
 	console.log('Payment Amount: ', $scope.pmtAmount);
 	console.log('Work Order Assigned: ', $scope.payment);
 
@@ -2182,9 +2302,12 @@ $scope.makePmt = function(){
 			});
 	payment.$promise.then(function(){
 
-		console.log('Got the payment - ready to update');
+		console.log('Got the payment - ready to update', payment);
+
 		payment.status = 'Paid';
+		payment.notes = $scope.payment.notes;
 		payment.paidDate = Date.now();
+		payment.pmtOpt = payment.pmtOpt || $scope.pmtOpt;
 		payment.$update();
 		 $modalInstance.dismiss('paid');
 		 toastr.success('Payment applied');
@@ -2282,6 +2405,8 @@ $scope.makePmt = function(){
 
 				//Charge Credit Card for Work order
 		$scope.chargeCard = function (type){
+			$scope.newCard = true;
+			$scope.error = false;
 			console.log('Charge on file or new: ', type);
 			console.log('Charging Credit Card Now', $scope.offender);
 			console.log('Payment: ', $scope.pmtchosen);
@@ -2327,9 +2452,11 @@ $scope.makePmt = function(){
 					.error(function(data) {
 						console.log('Error!! ', data);
 						toastr.error(data);
+						$scope.error = data;
 					})
 					.success(function(data, status, headers, config) {
 						console.log('Data From Charge: ', data.directResponse);
+						$scope.chargeComplete = true;
 						var resp = data.directResponse.split(',');
 						console.log('4', resp[4]);
 						console.log('Trans Type (11)', resp[11]);
@@ -2338,7 +2465,9 @@ $scope.makePmt = function(){
 						var amount = resp[9];
 						var description = resp[3];
 						var authCode = resp[4];
-						$modalInstance.close();
+						// $modalInstance.close();
+						$scope.chargeComplete = true;
+						$scope.responseNotes = description+' '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
 						toastr.success(description+' on '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
    						if(wo){
    							console.log('This is for a work order...', wo);
@@ -2355,6 +2484,7 @@ $scope.makePmt = function(){
    								console.log('Workorder ready to save: , ', workOrder);
    								workOrder.authCode = authCode;
 		   						workOrder.pmtStatus = 'Paid';
+
 		   						workOrder.amount = amount;
 		   						workOrder.$update();
 
@@ -2370,7 +2500,9 @@ $scope.makePmt = function(){
    							console.log('Payment about to be saved', payment);
    							payment.status = 'Paid';
    							payment.authCode = authCode;
-   							payment.padiDate = Date.now();
+   							payment.pmtOpt = 'Credit Card via Portal';
+   							payment.paidDate = Date.now();
+   							payment.notes = 'Auth Code: '+authCode+' - '+$scope.authentication.user.displayName;
    							console.log('Payment Before Save: ', payment);
    							payment.$update();
    							console.log('Here is our Offender before we go: ----> ', $scope.offender);

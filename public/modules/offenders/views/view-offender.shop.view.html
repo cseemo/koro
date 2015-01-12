@@ -503,7 +503,8 @@ max-height: 300px;
 
 
 
-    <script type="text/ng-template" id="pmtModalContent.html"  data-ng-init="getPayments()">
+
+    <script type="text/ng-template" id="pmtModalContent.html">
        
         <div class="modal-header">
             New Payment for {{offender.firstName}} {{offender.lastName}}
@@ -635,6 +636,63 @@ max-height: 300px;
         	            	     <div data-ng-show="pmtOpt==='Credit Card'" >
         	            	     <br>
         	     	<div class="panel-primary">
+        	     	<h3>Which Credit Card?</h3>
+
+        	     	<div class="form-group">
+
+                          		 <table class="table table-bordered table-striped table-responsive">
+	                <thead>
+	                    <tr>
+	                    <th>
+	                            <div class="th">
+	                                Name
+	                             </div>
+	                        </th>
+	                       
+	                        <th>
+	                            <div class="th">
+	                               Zip Code
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Card Number
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Exipration Date
+	                        </div>
+	                        </th>
+	                         <th>
+	                            <div class="th">
+	                                Charge Card
+	                        </div>
+	                        </th>
+
+	                                  </tr> 
+	                </thead>
+	                <tbody>
+	                    <tr data-ng-repeat="item in paymentProfiles track by $index" >
+	                    Item: {{item}}<br>
+	                    <td>{{item.billTo.firstName}} {{item.billTo.lastName}}</td>
+	                    <td>{{item.billTo.zip}}</td>
+	                    <td>{{item.payment.creditCard.cardNumber}}</td>
+	                     <td>{{item.payment.creditCard.expirationDate}}</td>
+	                     <td> <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="choosePmt($index)">
+				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Charge {{item.payment.creditCard.cardNumber}}
+			</a></td>
+
+	                    
+	                    </tr>
+
+	                  
+
+	                    </tbody>
+	                    </table>
+	                    </div>
+	                     <h3>Input a New Credit Card Number</h3>
+
         	     	    
         	            	     	 	 <label>Test Credit Card Numbers:</label> <br>
                         Visa: 4007000000027 or 4012888818888</br>
@@ -642,11 +700,12 @@ max-height: 300px;
                         Amex: 370000000000002</br>
                         Discover: 6011000000000012</br>
 
-                        
+                       
                           <div class="form-group col-md-4" >
+                          
                                 <label class="control-label" for="name">Credit Card Number</label>
                                 <div class="controls">
-                                           <input type="text" data-ng-model="offenderCC" id="offenderEmail" class="form-control" placeholder="Credit Card Number" maxlength="16">
+                                           <input type="text" data-ng-model="offenderCC" id="offenderCC" class="form-control" placeholder="Credit Card Number" maxlength="16">
 
                                 </div>
                             </div>
@@ -677,7 +736,7 @@ max-height: 300px;
                            <div class="form-group col-md-6" >
                                 <label class="control-label" for="name">Name on Card</label>
                                 <div class="controls">
-                                           <input type="text" data-ng-model="cardName" id="cardName" class="form-control" placeholder="Name on Card" maxlength="16">
+                                           <input type="text" data-ng-model="cardName" id="cardName" class="form-control" placeholder="Name on Card" >
 
                                 </div>
                             </div>
@@ -685,23 +744,23 @@ max-height: 300px;
                          <div class="form-group col-md-6" >
                             <label class="control-label" for="name">Zip Code</label>
                             <div class="controls">
-                                      <input type="text" data-ng-model="cardZip" name="cardZip" id="creditcardCCV" class="form-control" placeholder="Card Zipcode" >
+                                      <input type="text" data-ng-model="cardZip" name="cardZip" id="creditcardCCV" class="form-control" minlength="5" maxlength="9" placeholder="Card Zipcode" >
 
                             </div>
                         </div>
 
 
                         <br>
-                        <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="chargeCard('new')">
+                        <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-disabled="!offenderCC || !creditCardCCV || !cardName || !cardZip" data-ng-click="chargeCard('new')">
 				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Charge Card
 			</a>
                    <br>  
-                   <span data-ng-show="offender.cardNumber">
-                   {{offender.cardNumber}}
-                   <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="chargeCard('onfile')">
-				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Use Card On-File
-			</a>
-			</span>
+                 
+
+
+
+
+                  
         	  
         	  </div>
         	  
@@ -724,7 +783,6 @@ max-height: 300px;
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
-
 
 
 
@@ -1002,205 +1060,6 @@ max-height: 300px;
 
         </div>
     </script>
-
-
-
-    <script type="text/ng-template" id="pmtModalContent.html"  data-ng-init="getPayments()">
-       
-        <div class="modal-header">
-            New Payment for {{offender.firstName}} {{offender.lastName}}
-        </div>
-        <div class="modal-body">
-        	<div class="col-md-12 scroll">
-        	<span data-ng-show="!hide">
-        	   <br>
-        	   <h3>What are we paying for?</h3>
-        	  
-        	   <div class="panel-primary">
-        	   <div class="content">
-       		 <table class="table table-bordered table-striped table-responsive">
-	                <thead>
-	                    <tr>
-	                    <th>
-	                            <div class="th">
-	                                Due Date
-	                             </div>
-	                        </th>
-	                       
-	                        <th>
-	                            <div class="th">
-	                                Charge 
-	                        </div>
-	                        </th>
-	                        <th>
-	                            <div class="th">
-	                                Status 
-	                        </div>
-	                        </th>
-	                        <th>
-	                            <div class="th">
-	                                Notes 
-	                        </div>
-	                        </th>
-
-	                                  </tr> 
-	                </thead>
-	                <tbody>
-	                    <tr data-ng-repeat="wo in payments track by $index" data-ng-click="chooseRow($index)">
-	                    <td>{{wo.dueDate | date: 'short'}}</td>
-	                   
-	                    <td>${{wo.amount | number: '2'}}</td>
-	                    <td>{{wo.status}}</td>
-	                    <td>{{wo.notes}}</td>
-	                    
-	                    </tr>
-
-	                  
-
-	                    </tbody>
-	                    </table>
-	                    </div>
-	                   </div>
-      
-        </span>
-
-        	</div>
-
-        	  <span data-ng-show="hide" >
-        	 
-        	 <br>
-        	  <div class="row">
-        	   <div class="col-md-6"> 
-        	   <label>Payment Creation Date:</label> {{pmtchosen.created | date: 'MM/dd/yyyy'}}<br>
-        	   <label>Due Date: </label> {{pmtchosen.dueDate | date: 'MM/dd/yyyy'}}<br>
-        	   <label>Amount Due: </label>  {{pmtchosen.amount | currency}}<br>
-
-        	   
-
-        	   
-        	   <br>
-        	   </div>
-
-        	    <div class="col-md-6"> 
-        	    Work Order ID: {{wochosen._id}}<br>
-        	    Service Center: {{serviceCenter.name}}<br>
-        	    Address: {{serviceCenter.address}} 
-        	   {{serviceCenter.city}}, {{serviceCenter.state}}
-
-        	   
-
-        	   
-        	   <br>
-        	   </div>
-        	   </div>
-        	  
-        	   </span>
-       
-
-        <div class="row">
-        <div class="col-md-6"> 
-        	    <label>Amount: </label>
-        	  <input type="text" data-ng-model="pmtAmount"  id="" class="form-control" placeholder="Amount" >
-        	
-        	    </div>
-        	   
-
-        	   <div class="col-md-6"> 
-        	
-
-			<label>Payment Type:</label>
-        	  <select class="form-control" data-ng-model="pmtOpt"  data-ng-options="item for item in pmtOpts" ><option value=""></option></select>
-
-        	  </div>
-        	  </div>
-
-        	 
-        	 
-        	 <br>
-        	  <div class="row">
-        	  
-
-
-        	    <span data-ng-show="pmtOpt==='Check'" >
-        	     <div class="col-md-6"> 
- <label>Check Number: </label>
-        	  <input type="text" data-ng-model="checkNum"  id="" class="form-control" placeholder="Check Number" >
-        	
-        	   </div>
-        	  
-
-        	   </span>
-
-
-        	    </div>
-        	   
-        	            	     <div data-ng-show="pmtOpt==='Credit Card'" >
-        	            	     <br>
-        	     	<div class="panel-primary">
-        	     	    
-        	            	     	 
-
-                        
-                          <div class="form-group col-md-4" >
-                                <label class="control-label" for="name">Credit Card Number</label>
-                                <div class="controls">
-                                           <input type="text" data-ng-model="offenderCC" id="offenderEmail" class="form-control" placeholder="Credit Card Number" maxlength="16">
-
-                                </div>
-                            </div>
-
-                          <div class="form-group col-md-2" >
-                            <label class="control-label" for="name">Expiration Month</label>
-                            <div class="controls">
-                                    <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
-
-
-                            </div>
-                        </div>
-
-                          <div class="form-group col-md-2" >
-                            <label class="control-label" for="name">Expiration Year</label>
-                            <div class="controls">
-                                     <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
-                            </div>
-                        </div>
-
-                          <div class="form-group col-md-2" >
-                            <label class="control-label" for="name">CCV Number</label>
-                            <div class="controls">
-                                      <input type="text" data-ng-model="creditCardCCV" name="creditcardCCV" id="creditcardCCV" class="form-control" placeholder="CCV" >
-
-                            </div>
-                        </div>
-
-
-                        <br>
-                   <br>  <a class="btn btn-primary btn-sm" style="color: #fff;" >
-				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Use Card On-File
-			</a>
-        	  
-        	  </div>
-        	  
-        	  <br>
-        	   </div>
-
-
-        	   <br>
-        	   <div class="row">
-        	   <div class="col-md-12">
-        	   <label>Payment Notes</label>
-        	    <textarea type="text" data-ng-model="payment.notes"  id="notes" class="form-control" placeholder="Notes..." >
-
-        	    </textarea>
-        	    </div>
-        	   </div>
-
-        <div class="modal-footer">
-            <button class="btn btn-primary"  ng-click="makePmt()">Confirm Payment</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
-
 
 
     <script type="text/ng-template" id="completeOrder.html">

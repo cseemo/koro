@@ -26,6 +26,20 @@ var mongoose = require('mongoose'),
 // var Workorder = require('Workorder');
 // var workorders = require('../../app/controllers/workorders');
 
+	exports.getPaymentProfiles = function(req, res){
+		console.log('Getting Payment Profiles');
+			AuthorizeCIM.getCustomerProfile(req.body.offender.merchantCustomerId, function(err, response) {
+				if(err) console.log('Error getting Profile for ', req.body.offender.merchantCustomerId);
+
+				console.log('Profile Response: ', response);
+				console.log('Payment Profiles', response.profile.paymentProfiles);
+				res.status(200).send(response);
+
+
+			});
+
+
+	};
 
 		exports.checkPastDue = function(req, res) {
 			console.log('Checking Past Due: ', req.body);
@@ -134,7 +148,7 @@ var mongoose = require('mongoose'),
 var CronJob = require('cron').CronJob;
 
 var job = new CronJob({
-  cronTime: '0 0 */1 * * 0-6',
+  cronTime: '0 30 14 * * 0-6',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Ontick called');

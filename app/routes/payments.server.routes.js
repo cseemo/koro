@@ -23,6 +23,11 @@ module.exports = function(app) {
 		app.route('/chargeCCard')
 		.post(workorders.chargeCCard);
 
+		app.route('/getPaymentProfiles')
+		.post(payments.getPaymentProfiles);
+
+
+		
 		
 		// .put(payments.update);
 

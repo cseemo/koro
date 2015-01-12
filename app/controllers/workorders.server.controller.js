@@ -21,6 +21,7 @@ var mongoose = require('mongoose'),
 	    sandbox: true // false
 	  });
 
+	   var async = require('async');
 /**
  * Create a Workorder
  */
@@ -597,26 +598,29 @@ return;
 
 //Create Payment Profile 
 
-var createPaymentProfile = function(customerId, data, card, next){
-	var cus = data.offender;
-	console.log('Data: ', data);
+var createPaymentProfile = function(customerId, body, card, next){
+	
+	console.log('Customer ID: ', customerId);
+	console.log('Body: ', body);
+	var cus = body.offender;
 	console.log('Cus: ', cus);
 	console.log('Card: ', card);
-	var cardZip = data.cardZip || cus.billingZipcode;
-	if(data.cardName){
-		console.log('Card Name', data.cardName);
-		var name =  data.cardName.split(" ");
+
+	var cardZip = body.cardZip || cus.billingZipcode;
+	if(body.cardName){
+		console.log('Card Name', body.cardName);
+		var name =  body.cardName.split(" ");
 		var fName = name[0];
-		console.log('Fname: ', fName);
+		console.log('FirstName: ', fName);
 		var lName = name[1];
-		console.log('Fname: ', fName);
+		console.log('LastName: ', lName);
 	}else{
 	var fName = cus.firstName;
 	var lName = cus.lastName;
 	}
 	
-	if(data.cardZip){
-		console.log('Data Card Zip: ', data.cardZip);
+	if(body.cardZip){
+		console.log('Data Card Zip: ', body.cardZip);
 	}
 	
 	console.log('Creating Payment Profile.....Cusomer Details?', cus);
@@ -624,7 +628,7 @@ var createPaymentProfile = function(customerId, data, card, next){
 	cus.merchantCustomerId = customerId;
 
 	var cardExp = cus.expYear+'-'+cus.expMonth;
-	console.log('Card Details to Charge : ', data.cardNum);
+	console.log('Card Details to Charge : ', body.cardNum);
 
 var options = {
   customerType: 'individual',
@@ -639,9 +643,9 @@ var options = {
   },
   payment: {
     creditCard: new Authorize.CreditCard({
-      cardNumber: data.cardNum,
-      expirationDate: data.cardExp,
-      cardCode: data.ccv
+      cardNumber: body.cardNum,
+      expirationDate: body.cardExp,
+      cardCode: body.ccv
     })
   }
 }
@@ -975,79 +979,266 @@ var chargeIt = function(req, res, number){
 
 };
 
+var chargeCreditCard = function(req, res, paymentProfile){
+	console.log('Charging Card',paymentProfile );
+
+		var workCharge = req.body.pmt.amount || 0;
+		var totalCharge = 0;
+
+		if(workCharge > 0){
+
+		totalCharge = workCharge*1.0985;
+		totalCharge = totalCharge.toFixed(2);
+		var invoiceNumber = 6544;
+		var stateTax = +totalCharge-workCharge;
+		stateTax = stateTax.toFixed(2);
+		var taxState = 'KS';
+
+		console.log('Total Charge: ', totalCharge);
+		console.log('Work Order Charge: ', workCharge);
+		console.log('Tax Amount: ', stateTax);
+
+		var transaction = {
+			  amount: totalCharge,
+			  tax: {
+			    amount: stateTax,
+			    name: 'State Tax',
+			    description: taxState
+			  },
+				  // shipping: {
+				  //   amount: 5.00,
+				  //   name: 'FedEx Ground',
+				  //   description: 'No Free Shipping Option'
+				  // },
+					  customerProfileId: req.body.offender.merchantCustomerId,
+					  customerPaymentProfileId: paymentProfile.customerPaymentProfileId,
+				  order: {
+				    invoiceNumber: Date.now(),
+				    description: 'Payment made from portal...'
+				  },
+				  billTo: {
+				  	firstName: req.body.offender.firstName,
+				  	lastName: req.body.offender.lastName,
+				  	address: req.body.offender.billingAddress
+				  }
+		};
+
+		AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, CaptureOnly, PriorAuthCapture */, transaction, function(err, response) {
+			if(err){
+				console.log('Error Charging Card', err);
+				res.status(400).send('ERROR: '+err);
+			}
+			if(response){
+				console.log('Card has been charged!!', response);
+
+
+
+				res.status(200).send(response);
+			}
+		});
+	}
+
+
+};
+
+var chargeNewCard = function(req, res){
+	console.log('Creating New Payment Profile', req.body);
+
+		//Create New Auth Pyament PRofile
+		if(req.body.cardName){
+		console.log('Card Name', req.body.cardName);
+		var name =  req.body.cardName.split(" ");
+		var fName = name[0];
+		console.log('Fname: ', fName);
+		var lName = name[1];
+		console.log('Lname: ', lName);
+	}else{
+	var fName = req.body.offender.firstName;
+	var lName = req.body.offender.lastName;
+	}
+
+		var options = {
+		  customerType: 'individual',
+		  billTo: {
+		  		firstName: fName,
+		  		lastName: lName,
+		  		address: req.body.offender.billingAddress,
+		  		city: req.body.offender.billingCity,
+		  		state: req.body.offender.billingState,
+		  		zip: req.body.cardZip,
+		  		phoneNumber: req.body.offender.mainPhone
+		  },
+		  payment: {
+		    creditCard: new Authorize.CreditCard({
+		      cardNumber: req.body.cardNum,
+		      expirationDate: req.body.cardExp,
+		      cardCode: req.body.ccv
+		    })
+		  }
+		}
+
+		console.log('Payment PRofile Details: ', options);
+		var paymentProfileId;
+		AuthorizeCIM.createCustomerPaymentProfile({
+		  customerProfileId: req.body.offender.merchantCustomerId,
+		  paymentProfile: options
+		}, function(err, response) {
+			if(err) {
+				console.log('ERROR:::', err);
+				console.log('Error Creating Payment Profile Line 1089', err);
+				res.status(400).send(err.message);
+			} else {
+				console.log('Response from Payment Profile, ', response);
+				paymentProfileId = response.customerPaymentProfileId;
+				console.log('Payment Profile ID: ', paymentProfileId);
+
+				var workCharge = req.body.pmt.amount || 0;
+				var totalCharge = 0;
+
+				if(workCharge > 0){
+
+				totalCharge = workCharge*1.0985;
+				totalCharge = totalCharge.toFixed(2);
+				var invoiceNumber = 6544;
+				var stateTax = +totalCharge-workCharge;
+				stateTax = stateTax.toFixed(2);
+				var taxState = 'KS';
+
+				console.log('Total Charge: ', totalCharge);
+				console.log('Work Order Charge: ', workCharge);
+				console.log('Tax Amount: ', stateTax);
+
+				var transaction = {
+					  amount: totalCharge,
+					  tax: {
+					    amount: stateTax,
+					    name: 'State Tax',
+					    description: taxState
+					  },
+						  // shipping: {
+						  //   amount: 5.00,
+						  //   name: 'FedEx Ground',
+						  //   description: 'No Free Shipping Option'
+						  // },
+							  customerProfileId: req.body.offender.merchantCustomerId,
+							  customerPaymentProfileId: paymentProfileId,
+						  order: {
+						    invoiceNumber: Date.now(),
+						    description: 'Payment made from portal...'
+						  },
+						  billTo: {
+						  	firstName: req.body.offender.firstName,
+						  	lastName: req.body.offender.lastName,
+						  	address: req.body.offender.billingAddress
+						  }
+				};
+
+				AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, CaptureOnly, PriorAuthCapture */, transaction, function(err, response) {
+					if(err){
+						console.log('Error Charging Card', err);
+						res.status(400).send('ERROR: '+err);
+					} else {
+
+						console.log('Card has been charged!!', response);
+						res.status(200).send(response);
+					}
+				});
+			}
+
+		}
+		})
+
+};
+
 exports.chargeCCard = function(req, res) {
 	console.log('Charging Card via Auth.net', req.body);
-	if(req.body.setupProfile){
-		console.log('Need to Setup the Payment Profile first');
-
-		// console.log('This customer seems to have no CC Info Setup', req.body.offender);
-			req.body.offender.cardNumber = req.body.cardNum;
-      		req.body.offender.expYear = req.body.expYear;
-      		req.body.offender.expMonth = req.body.expMonth;
-      		var expDate = req.body.expYear+'-'+req.body.expMonth;
-      		// testCharge(req.body.cardNum, expDate, req.body.ccv);
-      		req.body.offender.cardCVV = req.body.ccv;
-      		var cardDetails = {
-				cardNumber: req.body.cardNumber,
-				cardExp: req.body.cardExp,
-				cardCVV: req.body.cardCVV
-			};
-
-		if(req.body.offender.merchantCustomerId && req.body.offender.paymentProfileId){
-			console.log('Customer is ready to go -- just need to charge teh card');
-			chargeIt(req, res);
-
-		}else 
-		if(req.body.offender.merchantCustomerId){
-			console.log('Already setup with Authorize.net - creating new Payment Profile now');
-			
-			createPaymentProfile(req.body.offender.merchantCustomerId, req.body, cardDetails, function(err, data){
-				if(err){
-					console.log('Error from Create Payment Profile: ', err);
-					if(err.code==='E00039'){
-						//Duplicate -- So We Need to Charge
-						console.log('Duplicate Payment Profile - just charge it');
-						chargeIt(req, res);
-					}else{
-						res.status(402).send(err.message);
-					}
-					
-				}else{
-					console.log('Response line 1005: ', data);
-					chargeIt(req, res, data);
-					
-				}
-			});
-		}else{
-			console.log('No Authorize.net Profile');
-			console.log('Creating a New Auth.net profile');
-		
-	  		createAuthProfile(req.body.offender, function(err, resp){
-
-	  		if(err) {
-	  			console.log('Error Line 981',err);
-	  			if(err.code==='E00039'){
-						//Duplicate -- So We Need to Charge
-						console.log('Duplicate Payment Profile - just charge it');
-						chargeIt(req, res);
-					}else{
-						console.log('Error of another sort');
-						res.status(402).send(err.message);
-					}
-	  		}else{
-	  			console.log('Response from creating Auth PRofile', resp);
-	  			res.status(200).send('Card Information Updated');
-	  			
-	  		}
-
-
-	  	});
-		// updateCCInfo(req, res);
-
-
+	if(req.body.paymentProfile){
+		console.log('We have a profile to charge against...', req.body.paymentProfile);
+		chargeCreditCard(req, res, req.body.paymentProfile);
 
 	}
-}
+	if(req.body.type==='new'){
+		console.log('Running New Card');
+		chargeNewCard(req, res);
+	}
+
+
+
+// 	if(req.body.setupProfile){
+// 		console.log('Need to Setup the Payment Profile first');
+
+// 		// console.log('This customer seems to have no CC Info Setup', req.body.offender);
+// 			req.body.offender.cardNumber = req.body.cardNum;
+//       		req.body.offender.expYear = req.body.expYear;
+//       		req.body.offender.expMonth = req.body.expMonth;
+//       		var expDate = req.body.expYear+'-'+req.body.expMonth;
+//       		// testCharge(req.body.cardNum, expDate, req.body.ccv);
+//       		req.body.offender.cardCVV = req.body.ccv;
+//       		var cardDetails = {
+// 				cardNumber: req.body.cardNumber,
+// 				cardExp: req.body.cardExp,
+// 				cardCVV: req.body.cardCVV
+// 			};
+
+// 		if(req.body.offender.merchantCustomerId && req.body.offender.paymentProfileId){
+// 			console.log('Customer is ready to go -- just need to charge teh card');
+// 			chargeIt(req, res);
+
+// 		}else 
+// 		if(req.body.offender.merchantCustomerId){
+// 			console.log('Already setup with Authorize.net - creating new Payment Profile now');
+// 			// AuthorizeCIM.getCustomerProfile(req.body.offender.merchantCustomerId, function(err, response) {
+// 			// 	if(err) console.log('Error getting Profile for ', req.body.offender.merchantCustomerId);
+
+// 			// 	console.log('Profile Response: ', response);
+// 			// });
+// 			createPaymentProfile(req.body.offender.merchantCustomerId, req.body, cardDetails, function(err, data){
+// 				if(err){
+// 					console.log('Error from Create Payment Profile: ', err);
+// 					if(err.code==='E00039'){
+// 						//Duplicate -- So We Need to Charge
+// 						console.log('Duplicate Payment Profile - just charge it');
+// 						chargeIt(req, res);
+// 					}else{
+// 						res.status(402).send(err.message);
+// 					}
+					
+// 				}else{
+// 					console.log('Response line 1005: ', data);
+// 					chargeIt(req, res, data);
+					
+// 				}
+// 			});
+// 		}else{
+// 			console.log('No Authorize.net Profile');
+// 			console.log('Creating a New Auth.net profile');
+		
+// 	  		createAuthProfile(req.body.offender, function(err, resp){
+
+// 	  		if(err) {
+// 	  			console.log('Error Line 981',err);
+// 	  			if(err.code==='E00039'){
+// 						//Duplicate -- So We Need to Charge
+// 						console.log('Duplicate Payment Profile - just charge it');
+// 						chargeIt(req, res);
+// 					}else{
+// 						console.log('Error of another sort');
+// 						res.status(402).send(err.message);
+// 					}
+// 	  		}else{
+// 	  			console.log('Response from creating Auth PRofile', resp);
+// 	  			res.status(200).send('Card Information Updated');
+	  			
+// 	  		}
+
+
+// 	  	});
+// 		// updateCCInfo(req, res);
+
+
+
+// 	}
+// }
 
 };
 
@@ -1129,7 +1320,7 @@ console.log('Tax Amount: ', stateTax);
 	AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, CaptureOnly, PriorAuthCapture */, transaction, function(err, response) {
 	if(err){
 		console.log('Error Charging Card', err);
-		res.status(400).send('ERROR: '+err);
+		res.status(400).send(err);
 	}
 	if(response){
 		console.log('Card has been charged!!', response);
