@@ -1,0 +1,140 @@
+   <div class="container">
+
+   <style>
+.form-group{
+    padding: 17px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+
+h2{
+    color: #555;
+}
+.giant{
+    height: 100px !important;
+    width: 500px !important;
+    padding-left: 20px !important;
+    font-size: 3em !important;
+}
+</style>
+
+<section data-ng-controller="OffendersController" data-ng-init="openShopModal()">
+ 
+      
+               <div class="panel panel-primary text-center">
+                  <div class="panel-body ">
+                  
+                    <h2>Lookup Customer</h2>
+
+                     <form data-ng-submit="findClient()" class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                           
+                            <input 
+                                   type="text"
+                                   class="giant"
+                                   data-ng-model="dLNumber"
+                                   placeholder="Driver License Number"
+                                   >
+
+                                    <!--  <input 
+                                   type="text"
+                                   class="giant"
+                                   data-ng-model="credentials.username"
+                                   pla ceholder="Zipcode"
+                                   >-->
+                        </div>
+                       
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-lg btn-round">Search</button>
+                        </div>
+                        <div data-ng-show="error" class="text-center text-danger">
+                            <strong data-ng-bind="error"></strong>
+                        </div>
+                    </fieldset>
+                </form>
+
+
+                    
+                  
+                 </div>
+             </div>
+        
+
+
+
+    <script type="text/ng-template" id="shopModalContent.html">
+       
+        <div class="modal-header">
+
+            New Work Order for {{offender.firstName}} {{offender.lastName}}
+        </div>
+        <div class="modal-body">
+      
+        
+         <label>Work Order Type</label>
+            <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
+          
+<br>
+<span data-ng-show="chosen==='New Install'">
+         <label>Install Fee</label>
+            <input type="text" data-ng-model="installFee"  id="installFee" class="form-control" placeholder="80" >
+          <br>
+           <label>Term of Service</label>
+            <select class="form-control" data-ng-model="term" name="term" data-ng-options="term for term in termoptions"> <option value=""></option></select>
+<br> 
+
+</span>
+             <label>Submitting To</label>
+            <select class="form-control" data-ng-model="sendTo" name="sendTo" data-ng-options="sendto for sendto in sendToOptions" data-ng-change="changeWho()"> <option value=""></option></select>
+<br>
+        <span data-ng-show="!whomCus">
+        <label>Recipient Name</label>
+              <input type="text" data-ng-model="toWhoName"  id="toWhoName" class="form-control" placeholder="Name" >
+              <br></span>
+
+
+
+        <label>Service Center</label>
+        <select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"></select>
+             
+
+<br>
+             <label>Email Address</label>
+              <input type="text" data-ng-model="emailAddress"  id="emailAddress" class="form-control" placeholder="Email Address" >
+
+<br>
+              <label>Email Subject</label>
+              <input type="text" data-ng-model="emailSubject"  id="emailSubject" class="form-control" placeholder="{{chosen}} Authorization" >
+<br>
+              <label>Email Text</label>
+              <textarea type="text" data-ng-model="emailText"  id="emailText" class="form-control" placeholder="Hi {{offender.firstName}}..." >
+
+              </textarea>
+                                <br>
+              <label>Email Signature</label>
+             <br>
+              {{authentication.user.displayName}}<br/>
+               {{authentication.user.telephone}}<br/>
+                {{authentication.user.email}}<br/>
+                
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" nd-disabled="!serviceCenter|| !term " ng-click="ok()">Send Form</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+ 
+
+</section>
+ </div>
+
