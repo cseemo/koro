@@ -29,14 +29,15 @@ var mongoose = require('mongoose'),
 	   		console.log('Getting Signed Docs');
 	   		// console.log(req.body);
 	   		// console.log(req.query);var offId = req.body.offender._id;
-	   		console.log('Offender ID: ', req.offender);
+	   		console.log('Offender ID: ', req.offender._id);
+	   		console.log('Document to get: ', 'signedCustomer'+req.offender._id+'.pdf');
 
 
 		// console.log('got here', req.deal);
 		// 'signedCustomer'+req.body.workinfo._id+'.pdf';
 		res.download('signedCustomer'+req.offender._id+'.pdf', 'signedCustomer'+req.offender._id+'.pdf', function(err){
 			if(err){
-				console.log('ERROR Downloading PDF - Line 37 WorkordesServerController!!!');
+				console.log('ERROR Downloading PDF - Line 37 WorkordesServerController!!!', err);
 			} else {
 				console.log('No Errors Downloading', req.offender._id);
 			}
