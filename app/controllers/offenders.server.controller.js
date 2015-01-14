@@ -52,10 +52,11 @@ exports.deletePaymentProfile = function(req, res){
 };
 
 
-var createPaymentProfile = function(customerId, cus, cb){
+var createPaymentProfile = function(customerId, cus, cardExp, cb){
 	console.log('What is cus?', cus);
+	console.log('Merchange ID: ', customerId);
 	cus.merchantCustomerId = customerId;
-	var cardExp = cus.expYear+'-'+cus.expMonth;
+	// var cardExp = cus.expYear+'-'+cus.expMonth;
 	console.log('Card Expirations: ', cardExp);
 var options = {
   customerType: 'individual',
@@ -71,7 +72,7 @@ var options = {
   payment: {
     creditCard: new Authorize.CreditCard({
       cardNumber: cus.cardNumber,
-      expirationDate: cus.cardExp,
+      expirationDate: cardExp,
       cardCode: cus.cardCVV
     })
   }
@@ -199,13 +200,21 @@ var createAuthProfile = function(off, cb) {
 //Update Credit Card Info
 exports.updateCCInfo = function (req, res) {
 	console.log('Updating the CC Info');
-	console.log(req.offender);
+	// console.log(req.offender);
 	console.log('Credit Info: ', req.body);
 	 // var customerID2 = req.offender._id.toString();
 	  // var customerID = customerID2.substring(3, 23);
 	  // var cardExp = req.offender.expYear+'='+req.offender.expMonth;
 	  // console.log('Customer ID: ', customerID);
+
+	  //If customer already has Merchant ID and Payment Profile ID 
+	  //Update or Delete or Create New 
+
 	  if(req.offender.paymentProfileId && req.offender.merchantCustomerId){
+	  	//Customer already has at least one card on File - Check to see which one we are updating
+	  	var paymentProfileId = req.body.updateProfile;
+	  	console.log('We are supposed to update: ', paymentProfileId);
+	  	console.log('Line 215 Offender: ', req.offender);
 	  		  var options = {
 				  customerType: 'individual',
 				   customerPaymentProfileId: req.offender.paymentProfileId,
@@ -240,7 +249,7 @@ exports.updateCCInfo = function (req, res) {
 						}, function(err, response) {
 							if(err){
 							console.log('ERROR Validating Card', err);
-							res.status(409).send('Error: '+err);
+							res.status(409).send('Error: Line 250'+err);
 						}else{
 							console.log('Card Validated ', response);
 							res.status(200).send('Card Information Updated & Validated');
@@ -250,25 +259,55 @@ exports.updateCCInfo = function (req, res) {
 					}
 	});
 	  }else {
-	  	console.log('This customer seems to have no CC Info Setup');
-	  	createAuthProfile(req.offender, function(err, resp){
-	  		if(err) {
+	  	//If customer doesnt have Payment Profile ID and Merchant ID
+	  	//Check if it has the Merchant ID
+	  	if(req.offender.merchantCustomerId){
+	  		//Customer has Merchant ID
+	  		console.log('Line 264 -- Has merchant ID but no profile ID', req.offender.merchantCustomerId);
+	  		console.log('Offender: ', req.offender);
+	  		console.log('Card Exp: ', req.body.expDate);
+	  		req.offender.cardNumber = req.body.cardNumber;
+	  		req.offender.cardCVV = req.body.cardCVV;
+	  		console.log('271::::::: ', req.offender);
+	  		createPaymentProfile(req.offender.merchantCustomerId, req.offender, req.body.expDate, function(err, data){
+					if(err){
+						console.log('Error Line 118', err);
+						req.offender.save(function(err) {
+						if(err) console.log('Error Saving Customer', err);
+						});
+						res.status(409).send('Error Line 272: '+err);
+					}else {
+					console.log('Line 120 - response From createPaymentProfile', data);
 
-	  			console.log('Error Addint Customer Auth Profile');
-	  			res.status(333).send('Card Information Update ERROR');
-	  		}else{
-	  			console.log('Response from creating Auth PRofile', resp);
-	  			res.status(200).send('Card Information Updated');
-	  			delCardInfo(req.offender);
-	  		}
-
-
-	  	});
+						res.status(409).send('Error: Line 276'+err);
+					}
+				});
+	  }else{
+	  	//Customer doesnot have Any Profile Create customer Profile 
+	  	console.log('Line 281 -- Got No Credit Card Info on this guy...Offender: ', req.offender);
+	  	var authNetResult;
+	  	createAuthProfile(req.offender, function(err, data){
+					if(err){
+						console.log('Error creatingAuthProfile', err);
+						// res.jsonp({ 'authNet': 'Error', 'authNetErr': err});
+						res.status(200).send('Line 287 -- Card Information Updated & Validated');
+					}else{
+						console.log('Tried to do Auth.net stuff', data);
+						if(data.paymentProfile){
+							console.log('We only did payment profile');
+							authNetResult = 'ProfileOnly';
+							res.status(200).send('Line 293 Card Information Updated & Validated');
+						}else{
+							authNetResult = 'Success';
+							res.jsonp({'authNet': authNetResult, 'authNetData': data});
+							res.status(200).send('Line 297  == Card Information Updated & Validated');
 
 	  }
+	  }
 	
-
-
+	});
+	  }
+	}
 
 };
 
@@ -288,29 +327,27 @@ exports.create = function(req, res) {
 				message: err //errorHandler.getErrorMessage(err)
 			});
 		} else {
-				var authNetResult;
-				createAuthProfile(offender, function(err, data){
-					if(err){
-						console.log('Error creatingAuthProfile', err);
-						res.jsonp({'offender': offender, 'authNet': 'Error', 'authNetErr': err});
-					}else{
-						console.log('Tried to do Auth.net stuff', data);
-						if(data.paymentProfile){
-							console.log('We only did payment profile');
-							authNetResult = 'ProfileOnly';
-						}else{
-							authNetResult = 'Success';
-						}
-						res.jsonp({'offender': offender, 'authNet': authNetResult, 'authNetData': data});
+				// var authNetResult;
+				// createAuthProfile(offender, function(err, data){
+				// 	if(err){
+				// 		console.log('Error creatingAuthProfile', err);
+				// 		res.jsonp({'offender': offender, 'authNet': 'Error', 'authNetErr': err});
+				// 	}else{
+				// 		console.log('Tried to do Auth.net stuff', data);
+				// 		if(data.paymentProfile){
+				// 			console.log('We only did payment profile');
+				// 			authNetResult = 'ProfileOnly';
+				// 		}else{
+				// 			authNetResult = 'Success';
+				// 		}
+						// res.jsonp({'offender': offender, 'authNet': authNetResult, 'authNetData': data});
+						res.jsonp(offender);
 					}
 					
 					
 				});
 	
-			
-			
-		}
-	});
+		
 };
 
 /**

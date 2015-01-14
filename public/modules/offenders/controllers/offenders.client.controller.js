@@ -2,8 +2,8 @@
 
 
 // Offenders controller
-angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', '$sce', 
-	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http, $sce) {
+angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', '$sce', '$timeout', 
+	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http, $sce, $timeout) {
 		$scope.authentication = Authentication;
 		$scope.pendingOrder = true;
 		// Create new Offender
@@ -430,35 +430,43 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
           $log.info('Modal dismissed at: ' + new Date());
         });
       };
+      $scope.isCollapsed = true;
 
-      $scope.updateCCInfo = function() {
-      	console.log('Updating Credit Card Info');
+      $scope.updateCCInfo = function(off) {
 
+      	console.log('Updating Credit Card Info', $scope);
+      	console.log('This is: ', this.cardName);
+      	var cardName = this.cardName;
+      	var cardZip = this.cardZip;
+      	var cardNum = this.cardNumber;
+      	var cardCVV = this.cardCVV;
+      	console.log('cardName: ', cardName);
+      
       	$scope.offender.$promise.then(function() {
 
-      		console.log('Credit Card:', $scope.offender);
-	      	$scope.offender.cardExp =  $scope.expYear+'-'+$scope.expMonth;
-	      	// $scope.offender.cardExp = $scope.cardExp;
-			// $scope.offender.cardCVV = $scope.cardCVV;
-			// $scope.offender.cardNumber = $scope.cardNumber;
-			$scope.offender.last4 = $scope.cardNumber.slice(-4);
+	      		// console.log('Offender info to send: ', $scope.offender);
+	      		// console.log('Info: '+this.cardNumber+$scope.expYear+'-'+$scope.expMonth+this.cardCVV);
+	      		// console.log('Name: ', this.cardName);
+	      		// console.log('Zip: ', this.cardZip);
 
-			// console.log
-			console.log('OFfender Updating: ', $scope.offender);
-	      	$scope.offender.$update(function() {
-	      		console.log('Offender info to send: ', $scope.offender);
      			$http({
 					method: 'post',
 					url: '/updateCCInfo/'+$scope.offender._id,
-					
 					data: {
-						cardNumber: $scope.cardNumber,
-						CVV: $scope.cardCVV,
-						expDate: $scope.expYear+'-'+$scope.expMonth
+						cardNumber: cardNum,
+						cardCVV: cardCVV,
+						expDate: $scope.expYear+'-'+$scope.expMonth,
+						cardName: cardName,
+						cardZip: cardZip
 					}
-				})
-					.success(function(data, status) {
+				}).success(function(data, status) {
 							if(status === 200) {
+								if(data.authNet==='Error'){
+					
+						$scope.authNetErr = data.authNetErr;
+						
+					}
+
 								
 							console.log('Return Data: ', data);
 							toastr.success(data);
@@ -468,10 +476,16 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 							$scope.cardCVV = '';
 							$scope.cardNumber = '';
 
+							$scope.authNetResults = data;
 
+							$timeout(function(){
+								$scope.authNetResults = null;
+								$scope.offender.cardNumber = 'XXXXXXXXXXXXX';
 
-
-							}
+							},2500);
+							// $scope.offender.cardNumber = 'XXXXXXXXXX';
+							// $scope.offender.$update();
+						}
 				}).error(function(err, data){
 					toastr.error(err);
 					console.log('Data from Error Validating or Updating Creidt Card');
@@ -479,9 +493,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 				});
 });
-     	});
+     	
 
       };
+
+
+
 
       var validateCard = function(id){
       	console.log('Validate Card With Authorize.net');
@@ -491,22 +508,22 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       };
 
 		$scope.create = function() {
-			// Create new Offender object
+			console.log('Create new Offender object');
 			$scope.authNetErr = null;
 			// $scope.authNetData = null;
-			console.log('This: ', this);
+			// console.log('This: ', this);
 		var mainPhone = $filter('tel')(this.mainPhone);
 		var altPhone = $filter('tel')(this.altPhone);
-		var cardExp;
-		var last4;
+		// var cardExp;
+		// var last4;
 
-		if($scope.offenderCC){
+		// if($scope.offenderCC){
 				
-				cardExp =  $scope.expYear+'-'+$scope.expMonth;
+		// 		cardExp =  $scope.expYear+'-'+$scope.expMonth;
 				
-				last4 = $scope.offenderCC.slice(-4);
+		// 		last4 = $scope.offenderCC.slice(-4);
 
-				}
+		// 		}
 
 
 			var offender = new Offenders ({
@@ -525,68 +542,69 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				vehicleYear: $scope.vehicleYear,
 				vehicleModel: $scope.vehicleModel,
 				driverNumber: $scope.driverNumber, 
-				cardNumber: $scope.offenderCC,
-				cardCVV: $scope.creditCardCCV,
-				cardExp: cardExp,
+				
 				dobMO: $scope.dobMO,
 				dobDAY: $scope.dobDAY,
 				dobYR: $scope.dobYR,
-				last4: last4
+				
 			});
 
-			if($scope.skipCard===true){
-			console.log('Skip running the card');
-			offender.cardNumber = null
-			offender.cardCVV = null;
-			offender.last4 = null;
-			offender.cardExp = null;
-			console.log('Offender Erased', offender);
-		}
+		// 	if($scope.skipCard===true){
+		// 	console.log('Skip running the card');
+		// 	offender.cardNumber = null
+		// 	offender.cardCVV = null;
+		// 	offender.last4 = null;
+		// 	offender.cardExp = null;
+		// 	// console.log('Offender Erased', offender);
+		// }
 
 			// Redirect after save
 			offender.$save(function(response) {
-					console.log('Offender and Auth.net Info', response);
-						console.log('Offender Info: ', response.offender._id);
-						console.log('Got Response - ready to make moves');
-						console.log('Response.authen: ', response.authNet);
-						if(response.authNet==='Error'){
-						console.log('Authnet Error');
-						$scope.numErrs++;
-						$scope.authNetErr = response.authNetErr;
-						offender.authNetErr = response.authNetErr;
-						if($scope.numErrs>1){
-							$scope.showBypass = true;
-						}
-					}else  {
-						var message; 
-						if(response.authNet==='ProfileOnly'){
-							 message = 'Customer Profile Completed - No Card on Auto Pay';
-						}else{
-							console.log('AuthnetData', response.authNetData);
-						var resp = response.authNetData.directResponse.split(',');
-						console.log('4', resp[4]);
-						console.log('Trans Type (11)', resp[11]);
-						console.log('Trans Type (12)', resp[12]);
-						console.log('OR -- Trans Type (13)', resp[13]);
-						var amount = resp[9];
-						var description = resp[3];
-						var authCode = resp[4];
+					// console.log('Offender and Auth.net Info', response);
+					// 	console.log('Offender Info: ', response.offender._id);
+					// 	console.log('Got Response - ready to make moves');
+					// 	console.log('Response.authen: ', response.authNet);
+						// if(response.authNet==='Error'){
+						// // console.log('Authnet Error');
+						// $scope.numErrs++;
+						// $scope.authNetErr = response.authNetErr;
+						// offender.authNetErr = response.authNetErr;
+						// if($scope.numErrs>1){
+						// 	$scope.showBypass = true;
+						// }
+						$location.path('offenders/'+response._id);
+					// }else  {
+					// 	var message; 
+					// 	if(response.authNet==='ProfileOnly'){
+					// 		 message = 'Customer Profile Completed - No Card on Auto Pay';
+					// 	}else{
+					// 		console.log('AuthnetData', response.authNetData);
+					// 	var resp = response.authNetData.directResponse.split(',');
+					// 	// console.log('4', resp[4]);
+					// 	// console.log('Trans Type (11)', resp[11]);
+					// 	// console.log('Trans Type (12)', resp[12]);
+					// 	// console.log('OR -- Trans Type (13)', resp[13]);
+					// 	var amount = resp[9];
+					// 	var description = resp[3];
+					// 	var authCode = resp[4];
 
-							 message = description+' '+resp[51]+'. Card Type: '+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+					// 		 message = description+' '+resp[51]+'. Card Type: '+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
 					
-						}
+					// 	}
 
-						console.log('Authnet is good');
+					// 	// console.log('Authnet is good');
 					
 
-							console.log('Message: ', message);
-						$scope.authNetResults = message;
+					// 		// console.log('Message: ', message);
+					// 	$scope.authNetResults = message;
+						
+					// 	$timeout(function(){
+					// 		console.log('Moving On...', response.offender._id);
+					// 		$location.path('offenders/'+response.offender._id);
+						
 
-						setTimeout(function(){
-							console.log('Moving On...');
-
-						}, 1500);
-					}
+					// 	}, 2500);
+					// }
 				
 						
 				
@@ -879,6 +897,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 		// Update existing Offender
 		$scope.update = function() {
+			console.log('Update Offender');
 			var offender = $scope.offender ;
 			offender.displayName = offender.firstName+' '+offender.lastName;
 			offender.$update(function() {

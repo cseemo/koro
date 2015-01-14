@@ -185,12 +185,20 @@ z-index: 999;
                             </div>
                             <div class="clearfix"></div>
                             <div class="row">
-                            <center>
+
+                              <center class="makeMed">
+                            <a data-ng-click="create()" class="nostyle bigPad" >
+                            <i class="glyphicon glyphicon-check" aria-hidden="true" ></i>Add New Client</a> 
+                           
+                        </center>
+
+                        
+                            <!-- <center>
                             <span  class="makeMed ">
                             <a class="nostyle" data-ng-click="goStep(2)">
                             <i class="glyphicon glyphicon-arrow-right" aria-hidden="true"></i>Next Step</a> 
                         </span>
-                        </center>
+                        </center> -->
                         </div>
 
    
@@ -202,7 +210,7 @@ z-index: 999;
 
                        </div>
      <div ng-show="step===2">
-                        <fieldset>
+                      <!--   <fieldset>
                         <h2>Add Credit/Debit Card Information</h2>
                         <div class="row">
                          <label class="form-label" style="font-size: 24px;" for="address">Credit Card Information (Optional):</label><i></i>
@@ -250,13 +258,10 @@ z-index: 999;
                             </span>
 
                             <center class="makeMed">
-                            <a data-ng-click="create()" class="nostyle bigPad">
-                            <i class="glyphicon glyphicon-check" aria-hidden="true"></i>Add New Client</a> 
-
-                        <span data-ng-show="showBypass">
-                        <br>
-                        <button type="submit" class="form-controls" data-ng-click="skipCard=true">Skip Credit Card</button>
-                        </center>
+                            <a data-ng-click="create()" class="nostyle bigPad" >
+                            <i class="glyphicon glyphicon-check" aria-hidden="true" ></i>Add New Client</a> 
+                           
+                        </center> 
                             
                         </div></div>
 
@@ -265,10 +270,20 @@ z-index: 999;
                  {{error}}               
                             </strong>
         				</div>
+
+
+-->
+
+
+
+
+
+
+
                         <div class="col-md-6 col-md-offset-3">
                          <center>
                          
-                         <table class="table responsive table-hover">
+                         <table class="table responsive table-striped table-hover">
                          <h3>Test Credit Card Numbers</h3>
                          
                          <thead>

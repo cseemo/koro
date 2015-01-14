@@ -23,6 +23,136 @@ h1, h2, h3{
 	cursor: pointer;
 }
 </style>
+<div class="col-md-12 stickyTop" data-ng-show="authNetResults">
+                            <span >
+                            <alert class="text-center" type="success" >
+                            {{authNetResults}}
+                            </alert>
+                            </span>
+                            </div>
+<div class="col-md-12 stickyTop" data-ng-show="!offender.cardNumber">
+                            <span >
+                            <alert class="text-center" type="info" >
+       <button class="btn btn-lg" data-ng-click="isCollapsed=!isCollapsed">Add Credit Card Information</button>
+       <br>
+        <div collapse="isCollapsed">
+       <div class="well well-md">
+       
+       <div class="panel">
+       <div class="row">
+        <h3>Input a New Credit Card Number</h3>
+
+        	     	    	</div>
+        	            	     	 	
+
+                       <div class="row">
+                          <div class="form-group col-md-5" >
+                          
+                                <label class="control-label" for="name">Credit Card Number</label>
+                                <div class="controls">
+                                           <input type="text" data-ng-model="cardNumber" id="ccnumber" class="form-control" placeholder="Credit Card Number" maxlength="16">
+
+                                </div>
+                            </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">Expiration Month</label>
+                            <div class="controls">
+                                    <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
+
+
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">Expiration Year</label>
+                            <div class="controls">
+                                     <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-2" >
+                            <label class="control-label" for="name">CCV Number</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="cardCVV" name="cvv" id="creditcardCCV" class="form-control" placeholder="CCV" >
+
+                            </div>
+                        </div>
+                        	</div>
+                        	<div class="row">
+                           <div class="form-group col-md-4" >
+                                <label class="control-label" for="name">Name on Card</label>
+                                <div class="controls">
+                                           <input type="text" data-ng-model="cardName" id="ccname" class="form-control" placeholder="Name on Card" >
+
+                                </div>
+                            </div>
+
+                         <div class="form-group col-md-4" >
+                            <label class="control-label" for="name">Zip Code</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="cardZip" name="ccname" id="creditcardCCV" class="form-control" minlength="5" maxlength="9" placeholder="Card Zipcode" >
+
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-4" >
+                       <label class="control-label"></label>
+                        <div class="controls">
+                        <a class="btn btn-primary btn-lg" style="color: #fff;" data-ng-disabled="!cardNumber || !cardCVV || !cardName || !cardZip" data-ng-click="updateCCInfo('new')">
+				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Validate Card
+			</a>
+			</div>
+			</div>
+               
+
+
+
+
+               </div>
+               </div>
+               </div>
+               
+                 <div class="col-md-6 col-md-offset-3">
+                         <center>
+                         
+                         <table class="table responsive table-striped table-hover">
+                         <h3>Test Credit Card Numbers</h3>
+                         
+                         <thead>
+                         <th>Card Type</th>
+                         <th>Card Number</th>
+                         </thead>
+                         <tbody>
+                         <tr>
+                         <td>Visa</td>
+                         <td >4012888818888 or 4007000000027</td>
+                         </tr>
+                         <tr>
+                         <td >Mastercard</td>
+                         <td>5424000000000015</td> </tr>
+                         <tr><td>Amex</td>
+                         <td>370000000000002</td> </tr>
+                        <tr> <td>Discover</td>
+                         <td>6011000000000012</td>
+                         </tr>
+                         </tbody>
+                         </table>
+
+                        </center>
+                        </div>
+
+
+                        </div>
+
+                
+        </alert>
+
+                            </span>
+                            </div>
+
+
+
 
 	<div class="main-body">
 	
@@ -547,6 +677,7 @@ h1, h2, h3{
 
 
 
+
     <script type="text/ng-template" id="pmtModalContent.html">
        
         <div class="modal-header">
@@ -897,3 +1028,7 @@ h1, h2, h3{
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
+
+
+
+
