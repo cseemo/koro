@@ -184,6 +184,11 @@ var OffenderSchema = new Schema({
 		default: null
 
 	}, 
+	authNetErr: {
+		type: String,
+		trim: true,
+		default: null
+	}
 
 
 });

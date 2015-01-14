@@ -1,6 +1,6 @@
 <section data-ng-controller="OffendersController">
-<!--<style>
-.form-group{
+<style>
+/*.form-group{
     padding: 17px;
 
 }
@@ -10,18 +10,59 @@
 }
 fieldset{
     padding: 3px;
+}*/
+.makeMed {
+    font-size: 2em;
+}
+.nostyle:hover, .nostyle:visited, .nostyle:link, .nostyle:active{
+    text-decoration: none;
+    cursor: pointer;
+}
+.bigPad{
+    padding-left: 15px;
+}
+h1, h2, h3{
+    color: #333;
+}
+.stickyTop{
+position: absolute;
+top: 0px;
+left: 0px;
+right: 00px;
+z-index: 999;
+
 }
 </style>
--->
+ <div class="col-md-12 stickyTop" data-ng-show="authNetErr">
+                            <span >
+                            <alert class="text-center" type="danger" >
+       {{authNetErr.message}}
+        </alert>
+
+                            </span>
+                            </div>
+
+                            <div class="col-md-12" data-ng-show="authNetResults">
+                            <span >
+                            <alert class="text-center" type="success" >
+       {{authNetResults}}
+        </alert>
+                            </span>
+                            </div>
 <div class="row">
+
+ <form class="form-horizontal" data-ng-submit="create()" novalidate>
+                        
+
     <div class="container">
-      
+     
                <div class="panel panel-primary">
                   <div class="panel-body">
-                    <h2>Add New Offender</h2>
-                    <form class="form-horizontal" data-ng-submit="create()" novalidate>
+                    <div ng-show="step===1">
+                    
                         <fieldset>
                         <div class="form-group">
+                         <h2>Add New Client</h2>
                         <label class="form-label" style="font-size: 24px;" for="address">Personal Information:</label><i></i>
                         </div>
                             <div class="form-group col-md-3" >
@@ -71,9 +112,9 @@ fieldset{
                             </div>
                             <div class="form-group col-md-4" >
                                 <label class="control-label" for="name">Date of Birth</label>
-                                                    <input type="text" maxlength="2" style="width:50px" ng-model="dobMO"></input>/
-                                                    <input type="text" maxlength="2" style="width:50px" ng-model="dobDAY"></input>/
-                                                    <input type="text" maxlength="4" style="width:75px" ng-model="dobYR"></input>
+                                    <input type="text" maxlength="2" style="width:50px" ng-model="dobMO">/
+                                 <input type="text" maxlength="2" style="width:50px" ng-model="dobDAY">/
+                                <input type="text" maxlength="4" style="width:75px" ng-model="dobYR">
                             </div>
 
                         </fieldset>
@@ -102,55 +143,7 @@ fieldset{
                             
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                         <label>Zip Codes to Generate Errors:</label> 
-                         <ul>
-                         <li>General Decline: 46282</li>
-                         <li>Not of US Origin: 46204</li>
-                         <li>Address & Zip Mismatch: 46205</li>
-                         <li>Address Match/Zip Mismatch: 46201</li>
-                         <li>Address Mismatch/Zip Match: 46217  </li>
-                        </ul>
-                        <br>
-
-                        <label>Test Credit Card Numbers:</label> <br>
-                        Visa: 4007000000027 or 4012888818888</br>
-                        Mastercard: 5424000000000015</br>
-                        Amex: 370000000000002</br>
-                        Discover: 6011000000000012</br>
-                        </div>
                         
-                          <div class="form-group col-md-4" >
-                                <label class="control-label" for="name">Credit Card Number</label>
-                                <div class="controls">
-                                           <input type="text" data-ng-model="offenderCC" id="offenderEmail" class="form-control" placeholder="Credit Card Number" maxlength="16">
-
-                                </div>
-                            </div>
-
-                          <div class="form-group col-md-2" >
-                            <label class="control-label" for="name">Expiration Month</label>
-                            <div class="controls">
-                                    <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
-
-
-                            </div>
-                        </div>
-
-                          <div class="form-group col-md-2" >
-                            <label class="control-label" for="name">Expiration Year</label>
-                            <div class="controls">
-                                     <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
-                            </div>
-                        </div>
-                          <div class="form-group col-md-2" >
-                            <label class="control-label" for="name">CCV Number</label>
-                            <div class="controls">
-                                      <input type="text" data-ng-model="creditCardCCV" name="creditcardCCV" id="creditcardCCV" class="form-control" placeholder="CCV" >
-
-                            </div>
-                        </div>
-
                         </fieldset>
 
 
@@ -190,26 +183,126 @@ fieldset{
                                       
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
+                            <div class="row">
+                            <center>
+                            <span  class="makeMed ">
+                            <a class="nostyle" data-ng-click="goStep(2)">
+                            <i class="glyphicon glyphicon-arrow-right" aria-hidden="true"></i>Next Step</a> 
+                        </span>
+                        </center>
+                        </div>
+
+   
 
                           
                        
-                        </div>
+                        
                         </fieldset>
-                        <fieldset>
 
-                        <div class="form-group col-md-3 col-md-offset-4">
-                                <button type="submit"  data-ng-click="create()" class="btn btn-secondary btn-lg btn-block text-center">Add Offender</button>
+                       </div>
+     <div ng-show="step===2">
+                        <fieldset>
+                        <h2>Add Credit/Debit Card Information</h2>
+                        <div class="row">
+                         <label class="form-label" style="font-size: 24px;" for="address">Credit Card Information (Optional):</label><i></i>
+                        <br>
+                        <div class="form-group" >
+                          <div class="col-md-4" >
+                                <label class="control-label" for="name">Credit Card Number</label>
+                                <div class="controls">
+                                           <input type="text" data-ng-model="offenderCC" id="offenderEmail" class="form-control" placeholder="Credit Card Number" maxlength="16">
+
+                                </div>
                             </div>
+
+                          <div class="col-md-2" >
+                            <label class="control-label" for="name">Expiration Month</label>
+                            <div class="controls">
+                                    <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
+
+
+                            </div>
+                        </div>
+
+                          <div class=" col-md-2" >
+                            <label class="control-label" for="name">Expiration Year</label>
+                            <div class="controls">
+                                     <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
+                            </div>
+                        </div>
+                          <div class="col-md-2" >
+                            <label class="control-label" for="name">CCV Number</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="creditCardCCV" name="creditcardCCV" id="creditcardCCV" class="form-control" placeholder="CCV" maxlength="4">
+
+                            </div>
+                        </div>
+                         
+
+                         <div class="clearfix"></div>
+
+                            <div class="row col-md-6 col-md-offset-2 ">
+                          
+                            <span  class="makeMed pull-left">
+                            <a class="nostyle" data-ng-click="goStep(1)">
+                            <i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i>Back</a> 
+                            </span>
+
+                            <center class="makeMed">
+                            <a data-ng-click="create()" class="nostyle bigPad">
+                            <i class="glyphicon glyphicon-check" aria-hidden="true"></i>Add New Client</a> 
+
+                        <span data-ng-show="showBypass">
+                        <br>
+                        <button type="submit" class="form-controls" data-ng-click="skipCard=true">Skip Credit Card</button>
+                        </center>
+                            
+                        </div></div>
+
         				<div data-ng-show="error" class="text-danger">
-        					<strong data-ng-bind="error"></strong>
+        					<strong data-ng-bind="error">
+                 {{error}}               
+                            </strong>
         				</div>
+                        <div class="col-md-6 col-md-offset-3">
+                         <center>
+                         
+                         <table class="table responsive table-hover">
+                         <h3>Test Credit Card Numbers</h3>
+                         
+                         <thead>
+                         <th>Card Type</th>
+                         <th>Card Number</th>
+                         </thead>
+                         <tbody>
+                         <tr>
+                         <td>Visa</td>
+                         <td >4012888818888 or 4007000000027</td>
+                         </tr>
+                         <tr>
+                         <td >Mastercard</td>
+                         <td>5424000000000015</td> </tr>
+                         <tr><td>Amex</td>
+                         <td>370000000000002</td> </tr>
+                        <tr> <td>Discover</td>
+                         <td>6011000000000012</td>
+                         </tr>
+                         </tbody>
+                         </table>
+
+                        </center>
+                        </div>
+                        </div>
+
+                    </div>
                         </fieldset>
+                        </div>
+                        </div></div>
+                         
                     </form>
                   </div>
+                  </div>
+                  </div>
              
-                 </div>
-             </div>
-        </div>
-   
-    </div>
-</div> 
+         </section>

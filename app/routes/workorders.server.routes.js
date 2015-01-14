@@ -29,6 +29,9 @@ module.exports = function(app) {
 		app.route('/getSignedDoc/:offenderId')
 		.get(workorders.getSignedDoc);
 
+			app.route('/sendICS')
+		.post(workorders.sendICS);
+
 
 
 		app.route('/viewWorkOrder/:workorderId')

@@ -12,7 +12,9 @@ var mongoose = require('mongoose'),
 	   _AuthorizeCIM = require('auth-net-cim'),
 	  	AuthorizeCIM = new _AuthorizeCIM({
 	    api: '78HDftF7Gs',
-	    key: '83H8U65tX3ekuFrD',
+	    key: '83H8U65tX3ekuFrD', //Chads TEst API
+	    // api: '5hB56Vus',
+	    // key: '37HmG92v4J2yDsMp', //Budget Actual API
 	    sandbox: true // false
 	  });
 
@@ -28,8 +30,29 @@ var delCardInfo = function(off){
 
 };
 
+exports.deletePaymentProfile = function(req, res){
 
-var createPaymentProfile = function(customerId, cus){
+// customerProfileId: req.offender.merchantCustomerId,
+// 						  customerPaymentProfileId: req.offender.paymentProfileId,
+
+	//Delete Payment Profile
+	AuthorizeCIM.deleteCustomerPaymentProfile({
+		customerProfileId: req.offender.merchantCustomerId,
+		customerPaymentProfileId: req.offender.paymentProfileId
+	}, function(err, response){
+		if(err) {
+			console.log('Error Deleting Profile', err);
+		}else{
+			res.status(405).send(err);
+		res.status(200).send(response);
+	}
+	});
+	
+
+};
+
+
+var createPaymentProfile = function(customerId, cus, cb){
 	console.log('What is cus?', cus);
 	cus.merchantCustomerId = customerId;
 	var cardExp = cus.expYear+'-'+cus.expMonth;
@@ -58,37 +81,57 @@ AuthorizeCIM.createCustomerPaymentProfile({
   customerProfileId: customerId,
   paymentProfile: options
 }, function(err, response) {
-	if(err) console.log(err);
-	console.log('Response from Payment Profile, ', response);
-	cus.cardNumber = 'XXXXXXXX'+cus.last4;;
-	cus.cardExp = '';
-	cus.cardCVV = '';
-	console.log('Here is payment infO: ', response.customerPaymentProfileId);
-	cus.paymentProfileId = response.customerPaymentProfileId;
-	console.log('???', cus.paymentProfileId );
-	cus.save(function(err) {
-		if(err) console.log('Error Saving Customer', err);
-		console.log('Customer: ', cus);
+	if(err) {
+		console.log('Error Line 62 - OffenderServer Controller', err);
+		cb(err, null);
+	}else{
+		console.log('Response from Payment Profile, ', response);
+		cus.cardNumber = 'XXXXXXXX'+cus.last4;;
+		cus.cardExp = '';
+		cus.cardCVV = '';
+		console.log('Here is payment infO: ', response.customerPaymentProfileId);
+		cus.paymentProfileId = response.customerPaymentProfileId;
+		console.log('???', cus.paymentProfileId );
+		cus.save(function(err) {
+			if(err) console.log('Error Saving Customer', err);
+			console.log('Customer: ', cus);
+			// cb(null, 'Payment Profile ID: '+response.customerPaymentProfileId);
+				AuthorizeCIM.validateCustomerPaymentProfile({
+						  customerProfileId: cus.merchantCustomerId,
+						  customerPaymentProfileId: cus.paymentProfileId ,
+						  validationMode: 'liveMode' // liveMode
+						}, function(err, response) {
+							if(err){
+							console.log('ERROR Validating Card', err);
+							// res.status(409).send('Error: '+err);
+							cb(err,null);
+						}else{
+							console.log('Card Validated ', response);
+							// res.status(200).send('Card Information Updated & Validated');
+							cb(null, response);
+						}
+				});
 
 
 	});
+
+	}
+
 });
 	
 };
 
 //Create Customer Profile on Authorize.net
 var createAuthProfile = function(off, cb) {
-	console.log('Running Authorization for Auth.net');
-	
-
-	  console.log('Do we have Offender: ', off);
-	  var customerID2 = off._id.toString();
-	  var customerID = customerID2.substring(3, 23);
-	  console.log('Customer ID: ', customerID);
-	 var profile = {
-  merchantCustomerId: customerID,
-  description: off.firstName+' '+off.lastName,
-  email: off.offenderEmail,
+		console.log('Running Authorization for Auth.net');
+	 	console.log('Do we have Offender: ', off);
+	 	 var customerID2 = off._id.toString();
+		  var customerID = customerID2.substring(3, 23);
+		  console.log('Customer ID: ', customerID);
+		 var profile = {
+  		merchantCustomerId: customerID,
+ 		 description: off.firstName+' '+off.lastName,
+  		email: off.offenderEmail,
   
   // customerProfileId: 349494
 }
@@ -96,25 +139,50 @@ var createAuthProfile = function(off, cb) {
 
 
 	AuthorizeCIM.createCustomerProfile({customerProfile: profile}, function(err, response){
-		if(err) console.log('ERROR from Auth.net!', err);
-		console.log('Response from Auth.net', response);
-		// console.log('Customer id: ', response.$);
-		
-
-		if(response && off.cardNumber.length > 11) {
-			console.log('Customer Profile ID: ', response.customerProfileId);
+		if(err) {
 
 
-			createPaymentProfile(response.customerProfileId, off);
-		}else{
-			console.log('Customer has Profile - but not payment profile...no credit card number available');
-		off.merchantCustomerId = response.customerProfileId;
-		off.save(function(err) {
-		if(err) console.log('Error Saving Customer', err);
-		console.log('Customer: ', off);
-			});
+			console.log('ERROR from Auth.net!', err);
+			cb(err, null);
+
+		}else {
+			console.log('Response from Auth.net', response);
+			
+				console.log('Customer Profile ID: ', response.customerProfileId);
+				off.merchantCustomerId = response.customerProfileId;
+				
+				if(off.cardNumber && off.cardNumber.length>3){
+					createPaymentProfile(response.customerProfileId, off, function(err, data){
+					if(err){
+						console.log('Error Line 118', err);
+						off.save(function(err) {
+						if(err) console.log('Error Saving Customer', err);
+						});
+						cb(err, null);
+					}else {
+					console.log('Line 120 - response From createPaymentProfile', data);
+
+						cb(null, data);
+					}
+				});
+
+				}else{
+					off.save(function(err) {
+						if(err) {
+							console.log('Error Saving Customer', err);
+							cb(err, null);
+						}else{
+							console.log('Saving customer without creating payment profile');
+							cb(null, {'paymentProfile': response.customerProfileId});
+						}
+
+						});
+
+				}
+
+			
 		}
-
+		
 	
 
 
@@ -220,11 +288,27 @@ exports.create = function(req, res) {
 				message: err //errorHandler.getErrorMessage(err)
 			});
 		} else {
-			
-				createAuthProfile(offender);
+				var authNetResult;
+				createAuthProfile(offender, function(err, data){
+					if(err){
+						console.log('Error creatingAuthProfile', err);
+						res.jsonp({'offender': offender, 'authNet': 'Error', 'authNetErr': err});
+					}else{
+						console.log('Tried to do Auth.net stuff', data);
+						if(data.paymentProfile){
+							console.log('We only did payment profile');
+							authNetResult = 'ProfileOnly';
+						}else{
+							authNetResult = 'Success';
+						}
+						res.jsonp({'offender': offender, 'authNet': authNetResult, 'authNetData': data});
+					}
+					
+					
+				});
 	
 			
-			res.jsonp(offender);
+			
 		}
 	});
 };
@@ -241,11 +325,11 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var offender = req.offender;
-	if(offender.cardNumber && offender.cardNumber > 11){
-	offender.cardNumber = 'XXXXXXXX'+offender.last4;
-	offender.cardExp = '';
-	offender.cardCVV = '';
-	}
+	// if(offender.cardNumber && offender.cardNumber > 11){
+	// offender.cardNumber = 'XXXXXXXX'+offender.last4;
+	// offender.cardExp = '';
+	// offender.cardCVV = '';
+	// }
 	
 
 	offender = _.extend(offender , req.body);

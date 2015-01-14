@@ -23,7 +23,9 @@ h1, h2, h3{
 	cursor: pointer;
 }
 </style>
+
 	<div class="main-body">
+	
 	    <div class="container">
 	    	<div class="text-center bg-danger" data-ng-show="pastDue">
 	    	<h3>Past Due</h3>
@@ -336,7 +338,7 @@ h1, h2, h3{
 				             <div class=" clearfix"></div>
 				        </accordion-heading>
 
-				         <table class="table table-bordered table-striped table-responsive" data-ng-init="getPayments()">
+				         <table class="table table-bordered table-striped table-hover table-responsive" data-ng-init="getPayments()">
 	                <thead>
 	                    <tr>
 	                       <th>
@@ -490,7 +492,8 @@ h1, h2, h3{
         	  <input type="text" data-ng-model="installFee"  id="installFee" class="form-control" placeholder="80" >
         	<br>
            <label>Term of Service</label>
-        	  <select class="form-control" data-ng-model="term" name="term" data-ng-options="term for term in termoptions"> <option value=""></option></select>
+           <input type="text" class="form-control"  data-ng-model="term" placeholder="Term of Service Agreement" maxlength="3">
+        	 
 <br> 
 
 </span>

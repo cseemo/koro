@@ -180,10 +180,13 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 
+
 exports.email = function(req, res){
 
 	console.log('Emailing Now');
 	// console.log(req.body);
+
+
 	// console.log(req.query);
 	// console.log(req.params);
 	// console.log('Did we find Workorder Info, Offender Info, and User info?');
@@ -445,8 +448,9 @@ doc.on('data', function(chunk){
 doc.end();
 
 doc.on('end', function(){
-	////console.log(callback);
-	////console.log('DId you get a callback?');
+
+
+
 	var mypdf = Buffer.concat(chunks);
 	//.concat(buffers);
 	var content = mypdf.toString('base64');
@@ -579,7 +583,20 @@ doc.on('end', function(){
 		'type': 'application/pdf; name=Buget_IID_WorkOrder.pdf',
 		'name': 'BudgetWorkOrder.pdf',
 		'content': content
-	}]
+	}, 
+	// { 
+ //                "type": "text/calendar",
+ //                "name": "meeting.ics",
+ //                "content": "QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOi0vL01lZXRlci9tZWV0ZXIvL05PTlNHTUwgdjEuMC8vRU4NCkNBTFNDQUxFOkdSRUdPUklBTg0KTUVUSE9EOlJFUVVFU1QNCkJFR0lOOlZFVkVOVA0KRFRTVEFSVDoyMDE0MTAxOFQyMDMwMDBaDQpEVEVORDoyMDE0MTAxOFQyMTAwMDBaDQpVSUQ6MjAxNDEwMTVUMDAyODEzLTIyMzc4ODg2OEBtZWV0ZXIuY29tDQpEVFNUQU1QOjIwMTQxMDE0VDIxMjgxM1oNCk9SR0FOSVpFUjtDTj0ic25hZ2dzQGdtYWlsLmNvbSI7U0VOVC1CWT0iTUFJTFRPOnNvbWVhcHBAZ21haWwuY29tIjtMQU5HVUFHRT1zZTpNQUlMVE86c25hZ2dzQGdtYWlsLmNvbQ0KQVRURU5ERUU7Q1VUWVBFPUlORElWSURVQUw7Uk9MRT1SRVEtUEFSVElDSVBBTlQ7UEFSVFNUQVQ9TkVFRFMtQUNUSU9OO1JTVlA9VFJVRTtDTj1GZXNzeSBNO1gtTlVNLUdVRVNUUz0wOk1BSUxUTzpzbmFnZ3MyQGdtYWlsLmNvbQ0KREVTQ1JJUFRJT046ZGRkZCBtYW5kcmlsbA0KTE9DQVRJT046ZGRkZGRkIG1hbmRyaWxsDQpTVU1NQVJZOkNhbiBJIGxheSBsb3c/IENvb2sgc29tZSB5YXkteW8gMg0KVFJBTlNQOk9QQVFVRQ0KU0VRVUVOQ0U6MA0KU1RBVFVTOkNPTkZJUk1FRA0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg=="
+ //            },
+            // { 
+            //     "type": "text/calendar",
+            //     "name": "meeting.ics",
+            //     "content": test
+            // }
+
+
+            ]
 	
 };
 
@@ -606,10 +623,21 @@ mandrill_client.messages.sendTemplate({
 }, function(result){
 	timesrun++;
 	console.log('Results from Mandrill', result);
-	res.status(200).send(mypdf);
+	// console.log('Result.message', result.message);
+	var id = result[0]['_id'];
+	console.log('Result[0]', result[0]['_id']);
+	console.log('Email ID: ', id);
+
+	
+		res.status(200).send(mypdf);
+	
+	
 },
 function(e){
 	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	
+
+
 });
 
 // res.status(200).send(mypdf);
@@ -622,6 +650,304 @@ function(e){
 return;
 };
 
+
+
+exports.sendICS = function(req, res){
+
+	console.log('Emailing Now');
+	// console.log(req.body);
+
+
+	// console.log(req.query);
+	// console.log(req.params);
+	// console.log('Did we find Workorder Info, Offender Info, and User info?');
+	console.log('WorkOrder: ', req.body.workinfo);
+	console.log('Offender: ', req.body.offender);
+	console.log('User: ', req.body.user);
+	console.log('Service Center: '+req.body.workinfo.serviceCenter+' - '+req.body.workinfo.svcAddress);
+	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress,
+	timesrun = 0;
+	var date = new Date(Date.now());
+	var d = date.getDate();
+	var m = date.getMonth()+1;
+	var y = date.getYear()-100;
+	var prepDate = m+'/'+d+'/'+y;
+	// //console.log('Quote Date: ',prepDate)
+	var termLength = req.body.offender.term;
+	var workCharge =req.body.workinfo.amount;
+	console.log('Charge for Service: ', workCharge);
+	req.body.workinfo.apptDate = req.body.workinfo.apptDate  || '';
+	var apptDate = moment(req.body.workinfo.apptDate).format("MM/DD/YYYY at hh:mm a");
+	var today = moment().format("MMM DD, YYYY");
+
+
+	var testDate = Date.now();
+	var apptDateStart = moment(req.body.workinfo.apptDate).format("YYYYMMDTHHmmss");
+	var apptDateEnd = moment(req.body.workinfo.apptDate).add(1, 'hours').format("YYYYMMDTHHmmss");
+	console.log('Appointment Begin: ', apptDateStart);
+	console.log('Appointmetn End: ', apptDateEnd);
+
+
+
+ 
+ var testCalendar = 'BEGIN:VCALENDAR\r\n'+
+'VERSION:2.0\r\n'+
+'PRODID:-//BudgetIID/TechSolutions//NONSGML v1.0//EN\r\n'+
+'CALSCALE:GREGORIAN\r\n'+
+'METHOD:REQUEST\r\n'+
+'BEGIN:VEVENT\r\n'+
+'DTSTART:'+apptDateStart+'\r\n'+
+'DTEND:'+apptDateEnd+'\r\n'+
+// 'UID:20141015T002813-223744868@meeter.com\r\n'+
+// 'UID:20141015T002813-cseymour@budgetiid.com\r\n'+
+
+// "UID:20141015T002813-223788868@meeter.com\r\n" +
+'UID:'+apptDateStart+'-cseymour@budgetiid.com\r\n'+
+// 'UID: 20150119T212813Z-'+req.body.workinfo._id+'@budgetiid.com\r\n'+
+'DTSTAMP:'+apptDateStart+'\r\n'+
+'ORGANIZER;CN=mailto:cseymour@budgetiid.com;SENT-BY=MAILTO:cseymour@budgetiid.com;LANGUAGE=se:MAILTO:'+req.body.offender.offenderEmail+'\r\n'+
+'ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=Budget IID;X-NUM-GUESTS=0:MAILTO:'+req.body.offender.offenderEmail+'\r\n'+
+'DESCRIPTION:Ignition Interlock Appointment\r\n'+
+'LOCATION: '+req.body.workinfo.svcAddress+'\r\n'+
+'SUMMARY: Interlock Service Appointment\r\n'+
+'BEGIN:VALARM\r\n'+
+'TRIGGER:-PT1H\r\n'+
+// 'REPEAT:1\r\n'+
+// 'DURATION:PT15M\r\n'+
+// 'ACTION:DISPLAY\r\n'+
+// 'DESCRIPTION:Reminder\r\n'+
+'END:VALARM\r\n'+
+'TRANSP:OPAQUE\r\n'+
+'SEQUENCE:0\r\n'+
+'STATUS:CONFIRMED\r\n'+
+'END:VEVENT\r\n'+
+'END:VCALENDAR\r\n';
+
+
+
+ 
+ var testCalenda2r = 'BEGIN:VCALENDAR\r\n'+
+'VERSION:2.0\r\n'+
+'PRODID:-//BudgetIID/TechSolutions//NONSGML v1.0//EN\r\n'+
+'CALSCALE:GREGORIAN\r\n'+
+'METHOD:REQUEST\r\n'+
+'BEGIN:VEVENT\r\n'+
+'DTSTART:'+apptDateStart+'\r\n'+
+'DTEND:'+apptDateEnd+'\r\n'+
+// 'UID:20141015T002813-223744868@meeter.com\r\n'+
+// 'UID:20141015T002813-cseymour@budgetiid.com\r\n'+
+
+// "UID:20141015T002813-223788868@meeter.com\r\n" +
+'UID:'+apptDateStart+'-cseymour@budgetiid.com\r\n'+
+// 'UID: 20150119T212813Z-'+req.body.workinfo._id+'@budgetiid.com\r\n'+
+'DTSTAMP:'+testDate+'\r\n'+
+'ORGANIZER;CN=mailto:cseymour@budgetiid.com;SENT-BY=MAILTO:cseymour@budgetiid.com;LANGUAGE=se:MAILTO:'+req.body.offender.offenderEmail+'\r\n'+
+'ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=Budget IID;X-NUM-GUESTS=0:MAILTO:'+req.body.offender.offenderEmail+'\r\n'+
+'DESCRIPTION:Ignition Interlock Appointment\r\n'+
+'LOCATION: '+req.body.workinfo.svcAddress+'\r\n'+
+'SUMMARY: Interlock Service Appointment\r\n'+
+'BEGIN:VALARM\r\n'+
+'TRIGGER:-PT20M\r\n'+
+// 'REPEAT:1\r\n'+
+// 'DURATION:PT15M\r\n'+
+// 'ACTION:DISPLAY\r\n'+
+// 'DESCRIPTION:Reminder\r\n'+
+'END:VALARM\r\n'+
+'TRANSP:OPAQUE\r\n'+
+'SEQUENCE:0\r\n'+
+'STATUS:CONFIRMED\r\n'+
+'END:VEVENT\r\n'+
+'END:VCALENDAR\r\n';
+
+var test = new Buffer(testCalendar).toString('base64');
+	console.log('Test: ', test);
+
+	
+
+			var message = {
+	'html': '<p>Appointment Reminder</p>',
+	
+	'subject': 'Ignition Interlock Appointment Reminder',
+	'from_email': req.body.user.email,
+	'from_name': req.body.user.displayName,
+	'to': [{
+		'email': req.body.offender.offenderEmail,
+		'name': req.body.offender.displayName,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': req.body.user.email
+	},
+	'merge': true,
+	'global_merge_vars': [{
+		'name': 'merge1',
+		'content': 'merge1 content'
+	}],
+	'merge_vars': [{
+			'rcpt': req.body.offender.offenderEmail,
+			'vars': [{
+					'name': 'serviceCenter',
+					'content': req.body.workinfo.serviceCenter
+				},
+				{
+					'name': 'fName',
+					'content': req.body.offender.firstName
+				},
+				{
+					'name': 'repname',
+					'content': req.body.user.displayName
+				},
+				{
+					'name': 'repemail',
+					'content': req.body.user.email
+				},
+				{
+					'name': 'repphone',
+					'content': req.body.user.telephone
+				},
+				{
+					'name': 'signip',
+					'content': ip
+				},
+				{
+					'name': 'workOrderId',
+					'content': req.body.workinfo.id
+				},
+				{
+					'name': 'workType',
+					'content': 'Service'
+				},
+				{
+					'name': 'toName',
+					'content': req.body.offender.firstName+' '+req.body.offender.lastName
+				},
+				{
+					'name': 'serviceCenter',
+					'content': req.body.workinfo.serviceCenter
+				},
+				{
+					'name': 'svcAddress',
+					'content': req.body.workinfo.svcAddress
+				},
+				{
+					'name': 'customContent',
+					'content': req.body.workinfo.content || ''
+				},
+
+				{
+					'name': 'date',
+					'content': today
+				},
+
+				{
+					'name': 'vehicleYear',
+					'content': req.body.offender.vehicleYear
+				},
+
+				{
+					'name': 'offenderName',
+					'content': req.body.offender.firstName+' '+req.body.offender.lastName
+				},
+				{
+					'name': 'vehicleMake',
+					'content': req.body.offender.vehicleMake
+				},
+				{
+					'name': 'vehicleModel',
+					'content': req.body.offender.vehicleModel
+				},
+				{
+					'name': 'driverNumber',
+					'content': req.body.offender.driverNumber
+				},
+				{
+					'name': 'workorderid',
+					'content': req.body.workinfo._id
+				},
+				{
+					'name': 'apptDate',
+					'content': apptDate
+				}
+
+
+
+
+
+				]
+	}],
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': true,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null,
+'attachments': [{
+		
+                "type": "text/calendar",
+                "name": "meeting.ics",
+                "content": test
+            }
+
+
+            ]
+	
+};
+
+var template_name = 'budget-newinstallcalendar';
+
+// if(req.body.workinfo.type==='New Install') {
+// 		template_name='carefree-newclient';
+	
+// 	}
+// 	else{
+// 		template_name='carefree-iid-workauth';
+// 	}
+
+
+
+var async = false;
+if(timesrun < 2){
+
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
+	timesrun++;
+	console.log('Results from Mandrill', result);
+	// console.log('Result.message', result.message);
+	var id = result[0]['_id'];
+	console.log('Result[0]', result[0]['_id']);
+	console.log('Email ID: ', id);
+
+	
+		res.status(200).send(result);
+	
+	
+},
+function(e){
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	
+
+
+});
+
+// res.status(200).send(mypdf);
+}
+
+
+return;
+};
+
+//Send Appointment Notification
 //Create Payment Profile 
 
 var createPaymentProfile = function(customerId, body, card, next){

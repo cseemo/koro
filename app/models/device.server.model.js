@@ -76,6 +76,10 @@ var DeviceSchema = new Schema({
 		ref: 'Shop'
 		
 	},
+	offender: {
+		type: Schema.ObjectId,
+		ref: 'Offender'
+	},
 	
 });
 

@@ -7,6 +7,13 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		$scope.authentication = Authentication;
 		$scope.pendingOrder = true;
 		// Create new Offender
+		$scope.step=1;
+		$scope.numErrs=0;
+		$scope.goStep = function(i){
+			console.log('i is: ', i);
+			return $scope.step = i;
+
+		};
 		$scope.pastDue = false;
 		$scope.signedUpStatus = 'Get Authorization Signed';
 		
@@ -476,11 +483,18 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
       };
 
+      var validateCard = function(id){
+      	console.log('Validate Card With Authorize.net');
 
+
+
+      };
 
 		$scope.create = function() {
 			// Create new Offender object
-
+			$scope.authNetErr = null;
+			// $scope.authNetData = null;
+			console.log('This: ', this);
 		var mainPhone = $filter('tel')(this.mainPhone);
 		var altPhone = $filter('tel')(this.altPhone);
 		var cardExp;
@@ -520,13 +534,64 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				last4: last4
 			});
 
+			if($scope.skipCard===true){
+			console.log('Skip running the card');
+			offender.cardNumber = null
+			offender.cardCVV = null;
+			offender.last4 = null;
+			offender.cardExp = null;
+			console.log('Offender Erased', offender);
+		}
+
 			// Redirect after save
 			offender.$save(function(response) {
-				$location.path('offenders/' + response._id);
+					console.log('Offender and Auth.net Info', response);
+						console.log('Offender Info: ', response.offender._id);
+						console.log('Got Response - ready to make moves');
+						console.log('Response.authen: ', response.authNet);
+						if(response.authNet==='Error'){
+						console.log('Authnet Error');
+						$scope.numErrs++;
+						$scope.authNetErr = response.authNetErr;
+						offender.authNetErr = response.authNetErr;
+						if($scope.numErrs>1){
+							$scope.showBypass = true;
+						}
+					}else  {
+						var message; 
+						if(response.authNet==='ProfileOnly'){
+							 message = 'Customer Profile Completed - No Card on Auto Pay';
+						}else{
+							console.log('AuthnetData', response.authNetData);
+						var resp = response.authNetData.directResponse.split(',');
+						console.log('4', resp[4]);
+						console.log('Trans Type (11)', resp[11]);
+						console.log('Trans Type (12)', resp[12]);
+						console.log('OR -- Trans Type (13)', resp[13]);
+						var amount = resp[9];
+						var description = resp[3];
+						var authCode = resp[4];
 
-				// Clear form fields
-				$scope.name = '';
+							 message = description+' '+resp[51]+'. Card Type: '+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+					
+						}
+
+						console.log('Authnet is good');
+					
+
+							console.log('Message: ', message);
+						$scope.authNetResults = message;
+
+						setTimeout(function(){
+							console.log('Moving On...');
+
+						}, 1500);
+					}
+				
+						
+				
 			}, function(errorResponse) {
+				console.log('Error....', errorResponse);
 				$scope.error = errorResponse.data.message;
 			});
 		};
@@ -1234,7 +1299,37 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				wo.$update(function(){
 					console.log('Update complete!', wo);
 
-				});
+					//Send Calendar Invite
+				console.log('Client: ', $scope.offender);
+        
+        
+				        
+				        
+				        	$http({
+									method: 'post',
+									
+									url: '/sendICS', 
+									data: {
+										'user': $scope.authentication.user,
+										'offender': $scope.offender,
+										'workinfo': wo
+										
+												},
+												
+										})
+									.success(function(data, status) {
+									
+									$scope.sending = false;
+									$scope.results = true;
+									//////console.log('Data from LOA?? %o',data);
+									toastr.success('Success! Email was sent...');
+										$scope.myresults = 'Email Sent!';
+										});
+
+							}, function(errorResponse) {
+								$scope.error = errorResponse.data.message;
+							});
+        				
 				
   		};
 
@@ -1342,7 +1437,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		  				var d = new Date();
 						var n = d.getDate();
 		  				console.log('n is: ', n);
-		  				$scope.offender.billDate = n;
+		  				$scope.offender.billDate = n+1;
+
 
 		  			}
 		  			
@@ -1498,7 +1594,53 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
       };
 
+      $scope.sendICS = function() {
+      	 $modalInstance.close();
+        
+        console.log('Client: ', $scope.offender);
+        
+        
+        var workorder = Workorders.query();
+        workorder.$promise.then(function(){
+        	$http({
+					method: 'post',
+					
+					url: '/sendICS', 
+					data: {
+						'user': $scope.authentication.user,
+						'offender': $scope.offender,
+						'workinfo': workorder
+						
+								},
+								
+						})
+					.success(function(data, status) {
+					
+					$scope.sending = false;
+					$scope.results = true;
+					//////console.log('Data from LOA?? %o',data);
+					toastr.success('Success! Email was sent...');
+						$scope.myresults = 'Email Sent!';
+						});
 
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+
+
+
+       
+        	
+
+
+  
+
+
+      };
+
+
+
+      
       $scope.ok = function() {
         $modalInstance.close($scope.selected.item);
         $scope.offender.assignedShop = $scope.serviceCenter._id;
@@ -1559,7 +1701,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
-        			workorder.email = $scope.offender.offenderEmail;
+        			workorder.email = $scope.emailAddress;
         			workorder.subject = $scope.emailSubject;
 
 
@@ -2252,6 +2394,11 @@ $scope.mytime = $scope.dt;
 					    	offender: offender,
 				
 					    }
+					})
+					.error(function(data) {
+						console.log('Error!! ', data);
+						toastr.error(data);
+						$scope.error = data;
 					})
 					.success(function(data, status) {
 							if(status === 200) {
