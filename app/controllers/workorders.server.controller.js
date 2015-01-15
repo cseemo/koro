@@ -16,9 +16,11 @@ var mongoose = require('mongoose'),
 	var Authorize = require('auth-net-types')
 	  , _AuthorizeCIM = require('auth-net-cim')
 	  , AuthorizeCIM = new _AuthorizeCIM({
-	    api: '78HDftF7Gs',
-	    key: '83H8U65tX3ekuFrD',
-	    sandbox: true // false
+	    // api: '78HDftF7Gs',
+	    // key: '83H8U65tX3ekuFrD', //Chads TEst API
+	    api: '5hB56Vus',
+	    key: '37HmG92v4J2yDsMp', //Budget Actual API
+	    sandbox: false //true // false
 	  });
 
 	   var async = require('async');
@@ -584,7 +586,6 @@ exports.email = function(req, res){
 
 
 
-
 		doc.y = 662;
 		doc.x = 105;
 		doc.fontSize(12);
@@ -964,6 +965,8 @@ var apple = 'BEGIN:VCALENDAR\r\n'+
 // 'ORGANIZER;CN=Dustin Creek;EMAIL=dustin@trucom.com:mailto:'+
 //  '2_VPKHVFS6MGR36Q6ZO4AVN3YCQ6FTWB3QTABX5AJ56KUDY67Q3V6GAUJPS2H3BARFQQNFHJZM'+
 //  'MPEQ2@imip.me.com\r\n'+
+
+'CLASS:PUBLIC\r\n'+
 'END:VEVENT\r\n'+
 'END:VCALENDAR\r\n';
 

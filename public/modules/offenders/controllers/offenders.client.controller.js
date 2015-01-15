@@ -55,6 +55,15 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		
 		$scope.findClient = function() {
 			console.log('Looking for client', $scope.dLNumber);
+			var offenderList = Offenders.query({
+				driverNumber: $scope.dLNumber
+			});
+			offenderList.$promise.then(function(){
+				console.log('Offender List: ', offenderList);
+				$scope.offenderList = offenderList;
+
+			});
+
 			$http({
 					method: 'post',
 					
@@ -96,7 +105,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
         modalInstance = $modal.open({
           templateUrl: 'shopModalContent.html',
-          controller: 'ModalInstanceCtrl',
+          controller: 'clientLookUpController',
           resolve: {
             items: function() {
               return $scope.workOrderTypes;
@@ -105,10 +114,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
              	console.log('Sending workorder info');
 	              return null
 	            },
-            offender: function() {
-		      	return MYoffender
-		      	
-		      }
+            
+		      offenderList: function() {
+            	console.log('OffenderList Getting Pas', offenderList);
+				return offenderList;
+
+		      	}
 
             },
             
@@ -1154,7 +1165,23 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
 
-  ]).controller('ModalInstanceCtrl', [
+  ]).controller('clientLookUpController', [
+    '$scope', '$modalInstance', 'items', 'offenderList', 'Devices', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location',  function($scope, $modalInstance, items, offenderList, Devices, Authentication, $http, Workorders, Shops, workorder, $location) {
+     $scope.authentication = Authentication;
+     $scope.shops = Shops.query();
+     $scope.offenderList = offenderList;
+     $scope.workorders = Workorders.query();
+
+     $scope.serviceTypes = ['Calibration', 'Reset', 'Removal'];
+      
+
+     $scope.pickClient = function(row){
+     	console.log('Choosing: ', $scope.offenderList[row]);
+     	return $scope.offender = $scope.offenderList[row];
+     };
+
+
+ }]).controller('ModalInstanceCtrl', [
     '$scope', '$modalInstance', 'items', 'offender', 'Devices', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location',  function($scope, $modalInstance, items, offender, Devices, Authentication, $http, Workorders, Shops, workorder, $location) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
