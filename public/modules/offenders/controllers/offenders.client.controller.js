@@ -1236,7 +1236,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       $scope.sendToOptions = ['Customer', 'Service Center', 'Court', 'Attorney', 'Other'];
       $scope.sendTo = $scope.sendToOptions[0];
       // console.log('Our Offender Is: ', offender);
-      $scope.emailSubject = $scope.chosen+$scope.subjectText;
+
+      $scope.emailSubject = 'Welcome to Budget Ignition Interlock';
+      	
+      
       $scope.offender = offender;
       $scope.emailAddress = offender.offenderEmail;
       $scope.toWhomName = $scope.offender.firstName+' '+$scope.offender.lastName;
@@ -1286,10 +1289,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
             $scope.changeType = function(){
       	console.log('Changing Type', $scope.chosen);
+      	if($scope.chosen==='New Install'){
+      		$scope.emailSubject = 'Welcome to Budget Ignition Interlock';
+      	}else{
 
+      	}
       	$scope.emailSubject = $scope.chosen+' Authorization from Budget Ignition Interlock';
-
-
       };
 
 
@@ -1723,13 +1728,20 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         			workorder.email = $scope.emailAddress;
         			workorder.subject = $scope.emailSubject;
 
+        			var restURL;
+        			if(workorder.type==='New Install'){
+        				restURL = '/welcomeEmail';
+        			}else{
+        				restURL = '/work/order';
+        			
+        			}
 
-			console.log('Work order status...', $scope.workOrder);
+				console.log('Work order status...', $scope.workOrder);
 
         			$http({
 					method: 'post',
 					responseType: 'arraybuffer',
-					url: '/work/order', 
+					url: restURL, 
 					data: {
 						'user': $scope.authentication.user,
 						'offender': $scope.offender,
@@ -1748,9 +1760,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 						
 						
 
-						var file = new Blob([data], {type: 'application/pdf'});
-			     		var fileURL = URL.createObjectURL(file);
-			     		window.open(fileURL);
+						// var file = new Blob([data], {type: 'application/pdf'});
+			   //   		var fileURL = URL.createObjectURL(file);
+			   //   		window.open(fileURL);
 			     		
 			     		
 

@@ -10,6 +10,9 @@ module.exports = function(app) {
 		.get(workorders.email)
 		.post(workorders.email);
 
+		app.route('/welcomeEmail')
+		.post(workorders.welcomeEmail);
+
 		app.route('/approve/workorder/:workorderId')
 		.get(workorders.signAuth)
 		.post(workorders.signAuth);

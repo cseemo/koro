@@ -180,6 +180,200 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 
+//Send WElcome Email
+
+exports.welcomeEmail = function(req, res){
+	console.log('Sending Welcome Email');
+	console.log('WorkOrder: ', req.body.workinfo);
+	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress,
+	timesrun = 0;
+	
+	
+	var today = moment().format("MMM DD, YYYY");
+
+	var message = {
+	'html': '<p>Welcome Email</p>',
+	
+	'subject': req.body.workinfo.subject,
+	'from_email': req.body.user.email,
+	'from_name': req.body.user.displayName,
+	'to': [{
+		'email': req.body.workinfo.email,
+		'name': req.body.workinfo.toWhomName,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': req.body.user.email
+	},
+	'merge': true,
+	'global_merge_vars': [{
+		'name': 'merge1',
+		'content': 'merge1 content'
+	}],
+	'merge_vars': [{
+			'rcpt': req.body.workinfo.email,
+			'vars': [{
+					'name': 'serviceCenter',
+					'content': req.body.workinfo.serviceCenter
+				},
+				{
+					'name': 'fName',
+					'content': req.body.offender.firstName
+				},
+				{
+					'name': 'repname',
+					'content': req.body.user.displayName
+				},
+				{
+					'name': 'repemail',
+					'content': req.body.user.email
+				},
+				{
+					'name': 'repphone',
+					'content': req.body.user.telephone
+				},
+				{
+					'name': 'signip',
+					'content': ip
+				},
+				{
+					'name': 'workOrderId',
+					'content': req.body.workinfo.id
+				},
+				{
+					'name': 'workType',
+					'content': 'Service'
+				},
+				{
+					'name': 'toName',
+					'content': req.body.offender.firstName+' '+req.body.offender.lastName
+				},
+				{
+					'name': 'serviceCenter',
+					'content': req.body.workinfo.serviceCenter
+				},
+				{
+					'name': 'svcAddress',
+					'content': req.body.workinfo.svcAddress
+				},
+				{
+					'name': 'customContent',
+					'content': req.body.workinfo.content || ''
+				},
+
+				{
+					'name': 'date',
+					'content': today
+				},
+
+				{
+					'name': 'vehicleYear',
+					'content': req.body.offender.vehicleYear
+				},
+
+				{
+					'name': 'offenderName',
+					'content': req.body.offender.firstName+' '+req.body.offender.lastName
+				},
+				{
+					'name': 'vehicleMake',
+					'content': req.body.offender.vehicleMake
+				},
+				{
+					'name': 'vehicleModel',
+					'content': req.body.offender.vehicleModel
+				},
+				{
+					'name': 'driverNumber',
+					'content': req.body.offender.driverNumber
+				},
+				{
+					'name': 'workorderid',
+					'content': req.body.workinfo._id
+				},
+			
+
+
+
+
+
+				]
+	}],
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': true,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null,
+'attachments': [{
+	// 	'type': 'application/pdf; name=Buget_IID_WorkOrder.pdf',
+	// 	'name': 'BudgetWorkOrder.pdf',
+	// 	'content': content
+	// }, 
+	// // { 
+ // //                "type": "text/calendar",
+ // //                "name": "meeting.ics",
+ // //                "content": "QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOi0vL01lZXRlci9tZWV0ZXIvL05PTlNHTUwgdjEuMC8vRU4NCkNBTFNDQUxFOkdSRUdPUklBTg0KTUVUSE9EOlJFUVVFU1QNCkJFR0lOOlZFVkVOVA0KRFRTVEFSVDoyMDE0MTAxOFQyMDMwMDBaDQpEVEVORDoyMDE0MTAxOFQyMTAwMDBaDQpVSUQ6MjAxNDEwMTVUMDAyODEzLTIyMzc4ODg2OEBtZWV0ZXIuY29tDQpEVFNUQU1QOjIwMTQxMDE0VDIxMjgxM1oNCk9SR0FOSVpFUjtDTj0ic25hZ2dzQGdtYWlsLmNvbSI7U0VOVC1CWT0iTUFJTFRPOnNvbWVhcHBAZ21haWwuY29tIjtMQU5HVUFHRT1zZTpNQUlMVE86c25hZ2dzQGdtYWlsLmNvbQ0KQVRURU5ERUU7Q1VUWVBFPUlORElWSURVQUw7Uk9MRT1SRVEtUEFSVElDSVBBTlQ7UEFSVFNUQVQ9TkVFRFMtQUNUSU9OO1JTVlA9VFJVRTtDTj1GZXNzeSBNO1gtTlVNLUdVRVNUUz0wOk1BSUxUTzpzbmFnZ3MyQGdtYWlsLmNvbQ0KREVTQ1JJUFRJT046ZGRkZCBtYW5kcmlsbA0KTE9DQVRJT046ZGRkZGRkIG1hbmRyaWxsDQpTVU1NQVJZOkNhbiBJIGxheSBsb3c/IENvb2sgc29tZSB5YXkteW8gMg0KVFJBTlNQOk9QQVFVRQ0KU0VRVUVOQ0U6MA0KU1RBVFVTOkNPTkZJUk1FRA0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg=="
+ // //            },
+ //            // { 
+ //            //     "type": "text/calendar",
+ //            //     "name": "meeting.ics",
+ //            //     "content": test
+ //            // }
+
+
+            }]
+        };
+
+var template_name='budget-newcustomerwelcome';
+	
+
+
+
+var async = false;
+if(timesrun < 2){
+
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
+	timesrun++;
+	console.log('Results from Mandrill', result);
+	// console.log('Result.message', result.message);
+	var id = result[0]['_id'];
+	console.log('Result[0]', result[0]['_id']);
+	console.log('Email ID: ', id);
+
+	
+		res.status(200).send('Welcom Email SEnt', id);
+	
+	
+},
+function(e){
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	
+
+
+});
+
+// res.status(200).send(mypdf);
+}
+
+
+
+
+
+};
+
 
 exports.email = function(req, res){
 
@@ -382,7 +576,7 @@ exports.email = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+req.body.workinfo.amount+'.00 plus tax for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+', located at '+req.body.workinfo.svcAddress+'. Your account will be billed $'+req.body.workinfo.amount+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -738,15 +932,15 @@ var apple = 'BEGIN:VCALENDAR\r\n'+
 'BEGIN:VEVENT\r\n'+
 'TRANSP:OPAQUE\r\n'+
 'DTEND;TZID=America/Denver:'+apptDateEnd+'\r\n'+
-'X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Lake Shore WA;'+
- 'X-APPLE-RADIUS=229.0073853786326;X-TITLE=Lake Place:geo:'+
- '45.680780,-122.689306\r\n'+
+// 'X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Lake Shore WA;'+
+//  'X-APPLE-RADIUS=229.0073853786326;X-TITLE=Lake Place:geo:'+
+//  '45.680780,-122.689306\r\n'+
 // 'UID:6D4DC244-09FF-4970-B5DA-2EA0611B574B\r\n'+
 
 'UID:'+apptDateStart+'-cseymour@budgetiid.com\r\n'+
 'LOCATION:'+req.body.workinfo.svcAddress+'\r\n'+
 'SEQUENCE:0\r\n'+
-'SUMMARY:  FINGERS CROSSED @ '+apptDate+'!!!!\r\n'+ //Ignition Interlock Service Appointment at '+req.body.workinfo.serviceCenter+'\r\n'+
+'SUMMARY: Ignition Interlock Appointment @ '+apptDate+'!!!!\r\n'+ //Ignition Interlock Service Appointment at '+req.body.workinfo.serviceCenter+'\r\n'+
 'DTSTART;TZID=America/Phoenix:'+apptDateStart+'\r\n'+
 'CREATED:20150114T224808Z\r\n'+
 // 'ATTENDEE;CN=Dustin Creek;CUTYPE=INDIVIDUAL;PARTSTAT=ACCEPTED;ROLE=CHAIR;'+
@@ -2136,7 +2330,7 @@ exports.signAuth = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+req.body.workinfo.amount+'.00 plus tax for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+', located at '+req.body.workinfo.svcAddress+'. Your account will be billed $'+req.body.workinfo.amount+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500
@@ -2566,7 +2760,7 @@ exports.viewOrder = function(req, res){
 		doc.x = 40;
 		doc.fontSize(14)
 		doc.fillColor('black');
-		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+'. Your account will be billed $'+req.body.workinfo.amount+'.00 plus tax for this service.',
+		doc.text('This form is your invoice, proving that you have approval to have the work completed. This authorization is only good for '+req.body.offender.firstName+' '+req.body.offender.lastName+' at '+req.body.workinfo.serviceCenter+', located at '+req.body.workinfo.svcAddress+'. Your account will be billed $'+req.body.workinfo.amount+'.00 plus tax for this service.',
 			{
 				align: 'center',
 				width: 500

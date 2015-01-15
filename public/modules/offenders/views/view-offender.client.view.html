@@ -23,6 +23,14 @@ h1, h2, h3{
 	cursor: pointer;
 }
 </style>
+ <div class="col-md-12 stickyTop" data-ng-show="authNetErr">
+                            <span >
+                            <alert class="text-center" type="danger" >
+       {{authNetErr.message}}
+        </alert>
+
+                            </span>
+                            </div>
 <div class="col-md-12 stickyTop" data-ng-show="authNetResults">
                             <span >
                             <alert class="text-center" type="success" >
@@ -621,7 +629,7 @@ h1, h2, h3{
          <label>Install Fee</label>
         	  <input type="text" data-ng-model="installFee"  id="installFee" class="form-control" placeholder="80" >
         	<br>
-           <label>Term of Service</label>
+           <label>Term of Service <em>(in Months)</em></label>
            <input type="text" class="form-control"  data-ng-model="term" placeholder="Term of Service Agreement" maxlength="3">
         	 
 <br> 
