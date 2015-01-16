@@ -114,7 +114,7 @@ var mongoose = require('mongoose'),
 					n = n-1;
 
 
-					if(item.billDate === n ){
+					if(item.billDate == n ){
 						console.log('Today is this customers bill date -- need to generate a charge');
 							var payment = new Payment({
 						    pmtType: 'Monthly Fee',
@@ -156,7 +156,7 @@ var mongoose = require('mongoose'),
 var CronJob = require('cron').CronJob;
 
 var job = new CronJob({
-  cronTime: '0 0 */1 * * 0-6',
+  cronTime: '0 0 5 * * 0-6',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Ontick called');
