@@ -23,7 +23,22 @@ h1, h2, h3{
 	cursor: pointer;
 }
 </style>
- <div class="col-md-12 stickyTop" data-ng-show="authNetErr">
+
+<div class="col-md-12 stickyTop" >
+<!-- data-ng-show="!offender.cardNumber" -->
+                            
+                            <alert class="text-center" type="info" >
+       <button class="btn btn-lg" data-ng-click="isCollapsed=!isCollapsed">Add Credit Card Information</button>
+       <br>
+        <div collapse="isCollapsed">
+       <div class="well well-md">
+      
+       <div class="panel">
+       <div class="row">
+        <h3>Input a New Credit Card Number</h3>
+        
+        	     	    	</div>
+        	            	     	  <div class="col-md-12 stickyTop" data-ng-show="authNetErr">
                             <span >
                             <alert class="text-center" type="danger" >
        {{authNetErr.message}}
@@ -37,24 +52,10 @@ h1, h2, h3{
                             {{authNetResults}}
                             </alert>
                             </span>
-                            </div>
-<div class="col-md-12 stickyTop" data-ng-show="!offender.cardNumber">
-                            <span >
-                            <alert class="text-center" type="info" >
-       <button class="btn btn-lg" data-ng-click="isCollapsed=!isCollapsed">Add Credit Card Information</button>
-       <br>
-        <div collapse="isCollapsed">
-       <div class="well well-md">
-       
-       <div class="panel">
-       <div class="row">
-        <h3>Input a New Credit Card Number</h3>
-
-        	     	    	</div>
-        	            	     	 	
+                            </div>	
 
                        <div class="row">
-                          <div class="form-group col-md-5" >
+                          <div class="form-group col-md-5 col-sm-5" >
                           
                                 <label class="control-label" for="name">Credit Card Number</label>
                                 <div class="controls">
@@ -63,7 +64,7 @@ h1, h2, h3{
                                 </div>
                             </div>
 
-                          <div class="form-group col-md-2" >
+                          <div class="form-group col-md-2 col-sm-2" >
                             <label class="control-label" for="name">Expiration Month</label>
                             <div class="controls">
                                     <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
@@ -72,39 +73,64 @@ h1, h2, h3{
                             </div>
                         </div>
 
-                          <div class="form-group col-md-2" >
+                          <div class="form-group col-md-2 col-sm-2" >
                             <label class="control-label" for="name">Expiration Year</label>
                             <div class="controls">
                                      <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
                             </div>
                         </div>
 
-                          <div class="form-group col-md-2" >
+                          <div class="form-group col-md-2 col-sm-2" >
                             <label class="control-label" for="name">CCV Number</label>
                             <div class="controls">
-                                      <input type="text" data-ng-model="cardCVV" name="cvv" id="creditcardCCV" class="form-control" placeholder="CCV" >
+                                      <input type="text" data-ng-model="cardCVV" name="cvv" id="creditcardCCV" class="form-control" maxlength="4" Updaplaceholder="CCV" >
 
                             </div>
                         </div>
                         	</div>
                         	<div class="row">
-                           <div class="form-group col-md-4" >
+
+                           <div class="form-group col-md-3 col-sm-6 col-xs-6" >
                                 <label class="control-label" for="name">Name on Card</label>
                                 <div class="controls">
                                            <input type="text" data-ng-model="cardName" id="ccname" class="form-control" placeholder="Name on Card" >
 
                                 </div>
                             </div>
+                          
 
-                         <div class="form-group col-md-4" >
-                            <label class="control-label" for="name">Zip Code</label>
+                              <div class="form-group col-md-4 col-sm-6 col-xs-6" >
+                            <label class="control-label" for="name">Cardholder Address</label>
                             <div class="controls">
-                                      <input type="text" data-ng-model="cardZip" name="ccname" id="creditcardCCV" class="form-control" minlength="5" maxlength="9" placeholder="Card Zipcode" >
+                        <input type="text" data-ng-model="cardAddress" name="ccname" id="creditcardCCV" class="form-control"  placeholder="Address" >
+                            </div>
+                        </div>
+                          <div class="form-group col-md-3 col-sm-4 col-xs-6" >
+                            <label class="control-label" for="name">City </label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="cardCity" name="ccname" id="creditcardCCV" class="form-control" placeholder="City" >
+
+                            </div>
+                        </div>
+                          <div class="form-group col-md-1 col-sm-3 col-xs-6" >
+                            <label class="control-label" for="name">State</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="cardState" name="ccname" id="creditcardCCV" class="form-control" minlength="2" maxlength="2" placeholder="State" >
 
                             </div>
                         </div>
 
-                          <div class="form-group col-md-4" >
+                         <div class="form-group col-md-1 col-sm-3 col-xs-6" >
+                            <label class="control-label" for="name">Zip Code</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="cardZip" name="ccname" id="creditcardCCV" class="form-control" minlength="5" maxlength="9" placeholder="Zipcode" >
+
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+
+                          <div class="form-group text-center" >
                        <label class="control-label"></label>
                         <div class="controls">
                         <a class="btn btn-primary btn-lg" style="color: #fff;" data-ng-disabled="!cardNumber || !cardCVV || !cardName || !cardZip" data-ng-click="updateCCInfo('new')">
@@ -119,7 +145,8 @@ h1, h2, h3{
 
                </div>
                </div>
-               </div>
+              </div>
+              <div class="row">
                
                  <div class="col-md-6 col-md-offset-3">
                          <center>
@@ -148,16 +175,17 @@ h1, h2, h3{
                          </table>
 
                         </center>
-                        </div>
+                </div>
 
 
-                        </div>
+             </div>
 
-                
-        </alert>
 
-                            </span>
-                            </div>
+                    </div>
+                   
+    </alert>
+</div>		
+                           
 
 
 
@@ -464,6 +492,14 @@ h1, h2, h3{
 				            	<span data-ng-show="pastDue">
 				            Past Due Balance
 				            </span>
+				            </div>
+
+				            <div class="col-md-3" >
+				             	
+				          <a class="btn btn-primary btn-xs pull-right" style="color: #fff;" data-ng-click="openPmtInfo()">
+				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Update Payment Info
+			</a>
+
 				            </div>
 
 				             	<div class="col-md-3" >
@@ -988,6 +1024,248 @@ h1, h2, h3{
 	</div> 
 		
 </section>
+
+
+
+
+
+    <script type="text/ng-template" id="pmtInfoModalContent.html">
+       
+        <div class="modal-header">
+            <h3>Update Payment Methods for {{offender.firstName}} {{offender.lastName}}<h3>
+        </div>
+        <div class="modal-body">
+        	<div class="col-md-12">
+
+
+        <div class="row">
+        
+
+        	     	<div class="panel-primary">
+
+        	     	<span data-ng-hide="!paymentProfiles">
+        	     	<h3>Update a Credit Card Already On-File...</h3>
+
+        	     	<div class="form-group">
+
+                          		 <table class="table table-bordered table-striped table-responsive">
+	                <thead>
+	                    <tr>
+	                    <th>
+	                            <div class="th">
+	                                Edit/Update
+	                             </div>
+	                        </th>
+	                    <th>
+	                            <div class="th">
+	                                Name
+	                             </div>
+	                        </th>
+	                       
+	                        <th>
+	                            <div class="th">
+	                               Zip Code
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Card Number
+	                        </div>
+	                        </th>
+	                        
+	                         <th>
+	                            <div class="th">
+	                                Delete
+	                        </div>
+	                        </th>
+
+	                                  </tr> 
+	                </thead>
+	                <tbody>
+	                    <tr data-ng-repeat="item in paymentProfiles track by $index" >
+	                    <td> <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="updatePmtProfile($index)">
+				Edit Profile
+			</a></td>
+	                    <td>{{item.billTo.firstName}} {{item.billTo.lastName}}</td>
+	                    <td>{{item.billTo.zip}}</td>
+	                    <td>{{item.payment.creditCard.cardNumber}}</td>
+	                    
+	                     <td> <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="deletePmtProfile($index)">
+				Delete Profile
+			</a></td>
+
+	                    
+	                    </tr>
+
+	                  
+
+	                    </tbody>
+	                    </table>
+	                    </div>
+	                    </span>
+	                    <span data-ng-hide="onFile">
+	                     <h3>Input a New Credit Card Number</h3>
+
+        	     	    
+        	            	     	 	 <label>Test Credit Card Numbers:</label> <br>
+                        Visa: 4007000000027 or 4012888818888</br>
+                        Mastercard: 5424000000000015</br>
+                        Amex: 370000000000002</br>
+                        Discover: 6011000000000012</br>
+                        </div></div>
+
+
+                       <div class="row">
+                   			  <div class="form-group col-md-5 col-sm-5" >
+                          
+                                <label class="control-label" for="name">Credit Card Number</label>
+                                <div class="controls">
+                                           <input type="text" data-ng-model="paymentProfile.payment.creditCard.cardNumber" id="ccnumber" class="form-control" placeholder="Credit Card Number" maxlength="16">
+
+                                </div>
+                            </div>
+
+                          <div class="form-group col-md-2 col-sm-2" >
+                            <label class="control-label" for="name">Expiration Month</label>
+                            <div class="controls">
+                                    <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
+
+
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-2 col-sm-2" >
+                            <label class="control-label" for="name">Expiration Year</label>
+                            <div class="controls">
+                                     <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
+                            </div>
+                        </div>
+
+                          <div class="form-group col-md-2 col-sm-2" >
+                            <label class="control-label" for="name">CCV Number</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="cardCVV" name="cvv" id="creditcardCCV" class="form-control" maxlength="4" Updaplaceholder="CCV" >
+
+                            </div>
+                        </div>
+                        	</div>
+                        	<div class="row">
+
+                           <div class="form-group col-md-6 col-sm-6 col-xs-6" >
+                                <label class="control-label" for="name">First Name on Card</label>
+                                <div class="controls">
+                                           <input type="text" data-ng-model="paymentProfile.billTo.firstName" id="ccname" class="form-control" placeholder="Name on Card" >
+                                               
+
+                                </div>
+                            </div>
+                             <div class="form-group col-md-6 col-sm-6 col-xs-6" >
+                                <label class="control-label" for="name">Last Name on Card</label>
+                                <div class="controls">
+                                <input type="text" data-ng-model="paymentProfile.billTo.lastName" id="ccname" class="form-control" placeholder="Name on Card" >
+
+                               </div>
+                               </div>
+
+                          
+
+                              <div class="form-group col-md-3 col-sm-6 col-xs-6" >
+                            <label class="control-label" for="name">Cardholder Address</label>
+                            <div class="controls">
+                        <input type="text" data-ng-model="paymentProfile.billTo.address" name="ccname" id="creditcardCCV" class="form-control"  placeholder="Address" >
+                            </div>
+                        </div>
+                          <div class="form-group col-md-3 col-sm-4 col-xs-6" >
+                            <label class="control-label" for="name">City </label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="paymentProfile.billTo.city" name="ccname" id="creditcardCCV" class="form-control" placeholder="City" >
+
+                            </div>
+                        </div>
+                          <div class="form-group col-md-3 col-sm-3 col-xs-6" >
+                            <label class="control-label" for="name">State</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="paymentProfile.billTo.state" name="ccname" id="creditcardCCV" class="form-control" minlength="2" maxlength="2" placeholder="State" >
+
+                            </div>
+                        </div>
+
+                         <div class="form-group col-md-3 col-sm-3 col-xs-6" >
+                            <label class="control-label" for="name">Zip Code</label>
+                            <div class="controls">
+                                      <input type="text" data-ng-model="paymentProfile.billTo.zip" name="ccname" id="creditcardCCV" class="form-control" minlength="5" maxlength="9" placeholder="Zipcode" >
+
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+                   </div>
+                   <div class="row">
+
+                          <div class="form-group col-md-4" >
+                       <label class="control-label"></label>
+                        <div class="controls">
+                        <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-hide="!paymentProfile.payment.creditCard.expirationDate" data-ng-disabled="!paymentProfile.billTo.firstName ||!paymentProfile.billTo.lastName || !paymentProfile.billTo.zip || !paymentProfile.payment.creditCard.expirationDate || !paymentProfile.payment.creditCard.cardNumber" data-ng-click="updatePaymentProfile()">Update Payment</a>
+
+                         <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-hide="updateChosen" data-ng-disabled="!paymentProfile.billTo.firstName ||!paymentProfile.billTo.lastName || !paymentProfile.billTo.zip || !cardCVV || !paymentProfile.payment.creditCard.cardNumber" data-ng-click="newPmtProfile('new')">
+				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+				Add New Payment Profile</a>
+			
+			</div>
+			</div>
+			</span>
+
+                  
+        	  </div>
+        	  </div>
+        	  
+        	  <br>
+        	   </div>
+        	   <div class="col-md-12">
+        	    
+				            <span data-ng-show="error">
+				            <alert class="text-center" type="danger" >
+				             {{error}}
+	  
+	    </alert>
+				            </span>
+				            </div>
+
+        	   	<div class="col-md-12 text-success">
+        	   	 
+				            <span data-ng-show="responseNotes">
+				            <alert class="text-center" type="success" >
+	   {{responseNotes}}
+	    </alert>
+				            </span>
+				            </div>
+
+
+        	</div>
+
+        <div class="modal-footer">
+            <button class="btn btn-primary"  ng-click="close()">Close Window</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+
+
+	</div> 
+	</div></div>
+	     
+	    </div>
+	</div> 
+		
+</section>
+
+
+
 
 
 

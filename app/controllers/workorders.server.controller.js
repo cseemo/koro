@@ -16,11 +16,11 @@ var mongoose = require('mongoose'),
 	var Authorize = require('auth-net-types')
 	  , _AuthorizeCIM = require('auth-net-cim')
 	  , AuthorizeCIM = new _AuthorizeCIM({
-	    // api: '78HDftF7Gs',
-	    // key: '83H8U65tX3ekuFrD', //Chads TEst API
-	    api: '5hB56Vus',
-	    key: '37HmG92v4J2yDsMp', //Budget Actual API
-	    sandbox: false //true // false
+	    api: '78HDftF7Gs',
+	    key: '83H8U65tX3ekuFrD', //Chads TEst API
+	    // api: '5hB56Vus',
+	    // key: '37HmG92v4J2yDsMp', //Budget Actual API
+	    sandbox: true // false
 	  });
 
 	   var async = require('async');
@@ -1462,6 +1462,8 @@ var updateCCInfo = function(req, res){
 	  // var customerID = customerID2.substring(3, 23);
 	  // var cardExp = req.offender.expYear+'='+req.offender.expMonth;
 	  // console.log('Customer ID: ', customerID);
+
+
 	  if(req.offender.paymentProfileId && req.offender.merchantCustomerId){
 
 	  		  var options = {
@@ -1508,7 +1510,8 @@ var updateCCInfo = function(req, res){
 					}
 	});
 	  } else if(req.offender.merchantCustomerId){
-	  	console.log('Got Merhcant ID only');
+	  	//Customer has a Merchant ID but no Payment PRofile ID
+	  	console.log('Got Merhcant ID only -- need to create a Payment Profile');
 	  		createPaymentProfile(response.customerProfileId, off, function(err, data){
 						if(err){
 					console.log('Error from Create Payment Profile: ');
@@ -1517,7 +1520,7 @@ var updateCCInfo = function(req, res){
 
 				else{
 					
-						res.status(200).send('Credit Card Valid');
+					res.status(200).send('Credit Card Valid');
 				}
 				
 			});

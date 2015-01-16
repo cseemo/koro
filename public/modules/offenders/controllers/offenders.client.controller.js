@@ -222,6 +222,37 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         });
       };
 
+
+		      $scope.openPmtInfo = function() {
+      	console.log('Opening Modal');
+        var modalInstance;
+        var offender = $scope.offender;
+        modalInstance = $modal.open({
+          templateUrl: 'pmtInfoModalContent.html',
+          controller: 'paymentCtrl',
+          size: 'lg',
+          resolve: {
+            offender: function() {
+              return $scope.offender;
+            },
+             workorders: function() {
+              return $scope.workorders;
+            },
+             payments: function() {
+              return $scope.payments;
+            } 
+            
+          }
+        });
+        modalInstance.result.then(function(selectedItem, offender) {
+          $scope.selected = selectedItem;
+        }, function() {
+          $log.info('Modal dismissed at: ' + new Date());
+        });
+      };
+
+
+
 		$scope.clicked = function(data, index) {
 			console.log('Clicked; ', data);
 			console.log('Workorder: ', $scope.workorder);
@@ -443,63 +474,94 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       };
       $scope.isCollapsed = true;
 
-      $scope.updateCCInfo = function(off) {
-
+      $scope.updateCCInfo = function(updateType) {
+      	$scope.authNetErr  = null;
+      	console.log('Data passed in', updateType);
       	console.log('Updating Credit Card Info', $scope);
-      	console.log('This is: ', this.cardName);
+      	console.log('This is: ', this);
+      	console.log('This.cardName: ', this.cardName);
       	var cardName = this.cardName;
       	var cardZip = this.cardZip;
       	var cardNum = this.cardNumber;
       	var cardCVV = this.cardCVV;
       	console.log('cardName: ', cardName);
-      
-      	$scope.offender.$promise.then(function() {
+      	var expDate = $scope.expYear+'-'+$scope.expMonth;
+      	var names = cardName.split(" ");
+      	console.log('NamesLength', names.length);
+      	var firstName = names[0];
+      	var lastName;
+      	if(names.length > 2){
+      		console.log('Middle Initial alert');
+      		lastName = names[2];
+      	}else{
+      		lastName = names[1];
+      	}
+      	
+		var cardData = {	
+			cardNumber: this.cardNumber,
+			cardExp: expDate,
+			cardCVV: this.cardCVV,
+			cardAddress: this.cardAddress,
+			cardCity: this.cardCity, 
+			cardState: this.cardState,
+			cardZip: this.cardZip,
+			fName: firstName,
+			lName: lastName
+		};
 
-	      		// console.log('Offender info to send: ', $scope.offender);
-	      		// console.log('Info: '+this.cardNumber+$scope.expYear+'-'+$scope.expMonth+this.cardCVV);
-	      		// console.log('Name: ', this.cardName);
-	      		// console.log('Zip: ', this.cardZip);
+      
+
+      	$scope.offender.$promise.then(function() {
 
      			$http({
 					method: 'post',
 					url: '/updateCCInfo/'+$scope.offender._id,
 					data: {
-						cardNumber: cardNum,
-						cardCVV: cardCVV,
-						expDate: $scope.expYear+'-'+$scope.expMonth,
-						cardName: cardName,
-						cardZip: cardZip
+						type: updateType,
+						cardData: cardData,
+						// paymentProfileId: pmtProfileId, 
+						// customerProfileId: $scope.offender.merchantCustomerId
 					}
 				}).success(function(data, status) {
-							if(status === 200) {
+							
 								if(data.authNet==='Error'){
 					
 						$scope.authNetErr = data.authNetErr;
 						
 					}
-
+						// var amount = data.directResponse[9];
+						// var description = data.directResponse[3];
+						// var authCode = data.directResponse[4];
+						// var message = description+' '+data.directResponse[51]+'. Card Type: '+data.directResponse[50]+' for $'+amount+'. Authorization Code: '+authCode;
+					
 								
-							console.log('Return Data: ', data);
-							toastr.success(data);
+						// 	console.log('Return Data: ', data);
+						// 	// toastr.success(data);
 
-							console.log('Card info?? ', $scope.offender);
-							$scope.cardExp = '';
-							$scope.cardCVV = '';
-							$scope.cardNumber = '';
+						// 	console.log('Card info?? ', $scope.offender);
+						// 	$scope.cardExp = '';
+						// 	$scope.cardCVV = '';
+						// 	$scope.cardNumber = '';
+						var message = 'Credit Card has been Authorized and is no on file';
 
-							$scope.authNetResults = data;
-
+							$scope.authNetResults = message;
+							console.log('Message: ', message);
 							$timeout(function(){
 								$scope.authNetResults = null;
 								$scope.offender.cardNumber = 'XXXXXXXXXXXXX';
-
-							},2500);
+								$scope.cardNumber = '';
+								$scope.cardCVV = '';
+								$scope.isCollapsed=!$scope.isCollapsed;
+							},5000);
 							// $scope.offender.cardNumber = 'XXXXXXXXXX';
 							// $scope.offender.$update();
-						}
+						
 				}).error(function(err, data){
-					toastr.error(err);
-					console.log('Data from Error Validating or Updating Creidt Card');
+					// toastr.error(err);
+					console.log('Data from Error Validating or Updating Creidt Card', err);
+					// console.log('Data from Error', data);
+					console.log(err.message);
+					$scope.authNetErr = err;
 
 
 				});
@@ -2307,7 +2369,7 @@ $scope.mytime = $scope.dt;
         return $scope.mytime = null;
 };
 
-}]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', 'payments', '$resource',  function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments, payments, $resource) {
+}]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', 'payments', '$resource', 'authorizeCIM',  function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments, payments, $resource, authorizeCIM) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
     $scope.offender = offender;
@@ -2315,6 +2377,11 @@ $scope.mytime = $scope.dt;
     $scope.payments = payments;
 
   $scope.oneAtATime = true;
+
+  $scope.close = function(){
+  	$modalInstance.dismiss('closefd');
+
+  };
 
 	$scope.myShop = function(){
 		console.log('Getting our shop');
@@ -2444,53 +2511,164 @@ $scope.mytime = $scope.dt;
 							}
 				});
 
-
-					$http({
-					method: 'post',
-					url: '/getPaymentProfiles/',
-					 data: {
-					    	offender: offender,
-				
-					    }
+				authorizeCIM.getPaymentProfiles(offender)
+				.success(function(profiles){
+						console.log('Service return', profiles);
+						$scope.paymentProfiles = profiles.profile.paymentProfiles;
 					})
-					.error(function(data) {
-						console.log('Error!! ', data);
-						toastr.error(data);
-						$scope.error = data;
-					})
-					.success(function(data, status) {
-							if(status === 200) {
-								
-							console.log('Return Payments Modal: ', data);
-
-							$scope.paymentProfiles = data.profile.paymentProfiles;
-							if($scope.paymentProfiles){
-								console.log('Got Payment Profiles', $scope.paymentProfiles);
-
-							}else {
-								console.log('Ain\'t Got any  Payment Profiles', $scope.paymentProfiles);
-								$scope.paymentProfiles = null;
-							}
-						// 	var i = 0;
-						// 	angular.forEach($scope.paymentProfiles, function(item){
-						// 	console.log('Item: ', item);
-						// 	console.log('Item [i]', item[i]);
-						// 	console.log('i', i);
-						// 	i++;
-						// })
-						// 	console.log('Payment Profiles: ', $scope.paymentProfiles );
-						// 	console.log('BillTo: ',$scope.paymentProfiles .billTo );
-							console.log('Payment InfO: ',$scope.paymentProfiles  );
-							}
+				.error(function(error){
+					$scope.paymentProfiles = null;
 				});
 
+				
+					
 					
 
-     	
+
 				
+				
+
+				// 	$http({
+				// 	method: 'post',
+				// 	url: '/getPaymentProfiles/',
+				// 	 data: {
+				// 	    	offender: offender,
+				
+				// 	    }
+				// 	})
+				// 	.error(function(data) {
+				// 		console.log('Error!! ', data);
+				// 		toastr.error(data);
+				// 		$scope.error = data;
+				// 	})
+				// 	.success(function(data, status) {
+				// 			if(status === 200) {
+								
+				// 			console.log('Return Payments Modal: ', data);
+
+				// 			$scope.paymentProfiles = data.profile.paymentProfiles;
+				// 			if($scope.paymentProfiles){
+				// 				console.log('Got Payment Profiles', $scope.paymentProfiles);
+
+				// 			}else {
+				// 				console.log('Ain\'t Got any  Payment Profiles', $scope.paymentProfiles);
+				// 				$scope.paymentProfiles = null;
+				// 			}
+				// 		// 	var i = 0;
+				// 		// 	angular.forEach($scope.paymentProfiles, function(item){
+				// 		// 	console.log('Item: ', item);
+				// 		// 	console.log('Item [i]', item[i]);
+				// 		// 	console.log('i', i);
+				// 		// 	i++;
+				// 		// })
+				// 		// 	console.log('Payment Profiles: ', $scope.paymentProfiles );
+				// 		// 	console.log('BillTo: ',$scope.paymentProfiles .billTo );
+				// 			console.log('Payment InfO: ',$scope.paymentProfiles  );
+				// 			}
+				// });
+
+
+
 
 
 }();
+
+
+					$scope.updatePmtProfile = function(row){
+						console.log('Choosing Payment Profile #'+row);
+						console.log('Write code to Update Payment Profile %o', $scope.paymentProfiles[row]);
+						$scope.updateChosen = true;
+						return $scope.paymentProfile = $scope.paymentProfiles[row];
+
+					};
+
+					
+					$scope.deletePmtProfile = function(row){
+						console.log('Deleting Payment Profile #',row);
+						console.log($scope.paymentProfiles[row]);
+						
+						toastr.info('Write code to delete Profile');
+						authorizeCIM.deletePaymentProfile($scope.paymentProfiles[row], offender)
+						.success(function(response){
+							console.log('Deleted that motha ', response);
+							$scope.paymentProfiles.splice(row, 1);
+						})
+						.error(function(errror){
+							console.log('Error ');
+
+						});
+
+
+					};
+					
+					$scope.updatePaymentProfile = function(){
+						console.log('Updating Payment Profile #', $scope.paymentProfile);
+						toastr.info('Write code to Update Payment Profile');
+						
+				      	var expDate = $scope.expYear+'-'+$scope.expMonth;
+				      	
+						var cardData = {	
+							cardNumber: $scope.paymentProfile.payment.creditCard.cardNumber,
+							cardExp: expDate,
+							cardCVV: $scope.cardCVV,
+							cardAddress: $scope.paymentProfile.billTo.address,
+							cardCity: $scope.paymentProfile.billTo.city, 
+							cardState: $scope.paymentProfile.billTo.state,
+							cardZip: $scope.paymentProfile.billTo.zip,
+							fName: $scope.paymentProfile.billTo.firstName,
+							lName: $scope.paymentProfile.billTo.lastName
+						};
+      
+      					console.log('Card Data: ', cardData);
+
+
+						authorizeCIM.updatePaymentProfile($scope.paymentProfile, cardData, offender)
+						.success(function(response){
+								console.log('Serivce Return Update Profile', response);
+								// $scope.paymentProfiles = profiles.profile.paymentProfiles;
+								$scope.responseNotes = response.message;
+							})
+						.error(function(error){
+							console.log('Error ', error);
+							// $scope.paymentProfiles = null;
+							$scope.error = error.message;
+						});
+						
+
+					};
+
+					$scope.newPmtProfile = function(){
+						console.log('Adding New  Payment Profile #');
+						toastr.info('Write code to Add New  Payment Profile');
+						  	var expDate = $scope.expYear+'-'+$scope.expMonth;
+				      	
+						var cardData = {	
+							cardNumber: $scope.paymentProfile.payment.creditCard.cardNumber,
+							cardExp: expDate,
+							cardCVV: $scope.cardCVV,
+							cardAddress: $scope.paymentProfile.billTo.address,
+							cardCity: $scope.paymentProfile.billTo.city, 
+							cardState: $scope.paymentProfile.billTo.state,
+							cardZip: $scope.paymentProfile.billTo.zip,
+							fName: $scope.paymentProfile.billTo.firstName,
+							lName: $scope.paymentProfile.billTo.lastName
+						};
+
+						authorizeCIM.newPaymentProfile(cardData, offender)
+						.success(function(response){
+								console.log('Serivce Return Update Profile', response);
+								// $scope.paymentProfiles = profiles.profile.paymentProfiles;
+								$scope.responseNotes = response.message;
+							})
+						.error(function(error){
+							console.log('Error ', error);
+							// $scope.paymentProfiles = null;
+							$scope.error = error.message;
+						});
+						
+
+						};
+
 
       	$scope.expYears = function() {
 				var y = [];
