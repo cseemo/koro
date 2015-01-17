@@ -2528,8 +2528,16 @@ $scope.mytime = $scope.dt;
 				authorizeCIM.getPaymentProfiles(offender)
 				.success(function(profiles){
 						console.log('Service return', profiles);
+						if(profiles.profile.paymentProfiles.billTo){
+							console.log('Only received one item back', profiles.profile.paymentProfiles );
+							$scope.paymentProfiles = [{profiles.profile.paymentProfiles}];
+						}else{
+							console.log('Got mulitple profiles');
+
 						$scope.paymentProfiles = profiles.profile.paymentProfiles;
 						console.log('Payment Profiles: ', $scope.paymentProfiles );
+					}
+
 					})
 				.error(function(error){
 					$scope.paymentProfiles = null;
