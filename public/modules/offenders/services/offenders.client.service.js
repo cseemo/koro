@@ -44,7 +44,7 @@ angular.module('offenders').factory('Offenders', ['$resource',
 						console.log('Got Payment Profiles', paymentProfiles);
 						if(paymentProfiles.billTo){
 							console.log('Only found one payment profile....');
-							paymentProfiles = data.profile;
+							paymentProfiles = data.profile.paymentProfiles;
 
 						}else{
 							console.log('Found Many Payment Profiles');
