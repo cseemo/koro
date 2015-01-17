@@ -1334,7 +1334,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				
 
         			workorder.email = $scope.offender.offenderEmail;
-        			workorder.emailSubject = $scope.subject;
+        			workorder.subject = $scope.emailSubject;
         			console.log('$scope.workOrder.email: ', workorder.email );
 					console.log('Work order status...', workorder);
 
