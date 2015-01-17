@@ -1,0 +1,76 @@
+<style>
+.col-md-4{
+    padding: 10px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+h1, h2, h3{
+	color: #333;
+}
+.main-body{
+	background-color: #555;
+}
+.link {
+	text-decoration: none;
+	cursor: pointer;
+}
+</style>
+<section class="row" data-ng-controller="AuthenticationController">
+                     
+<div class="row">
+
+
+    <div class="container">
+               <div class="panel panel-primary">
+                  <div class="panel-body">
+	<h3 class="col-md-12 text-center">Sign Up for Access</h3>
+
+	<div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
+		<form data-ng-submit="signup('shop')" class="signin form-horizontal" novalidate autocomplete="off">
+			<fieldset>
+				<div class="form-group">
+					<label for="firstName">First Name</label>
+					<input type="text" required id="firstName" name="firstName" class="form-control input-lg input-round text-center" data-ng-model="credentials.firstName" placeholder="First Name">
+				</div>
+				<div class="form-group">
+					<label for="lastName">Last Name</label>
+					<input type="text" id="lastName" name="lastName" class="form-control input-lg input-round text-center" data-ng-model="credentials.lastName" placeholder="Last Name">
+				</div>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="text" id="email" name="email" class="form-control input-lg input-round text-center" data-ng-model="credentials.email" placeholder="Email">
+				</div>
+				<div class="form-group">
+					<label for="email">Telephone Number</label>
+					<input type="text" id="telephone" name="telephone" class="form-control input-lg input-round text-center" data-ng-model="credentials.telephoneNumber" placeholder="Telephone Number">
+				</div>
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input type="text" id="username" name="username" class="form-control input-lg input-round text-center" data-ng-model="credentials.username" placeholder="Username">
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" id="password" name="password" class="form-control input-lg input-round text-center" data-ng-model="credentials.password" placeholder="Password">
+					<input type="hidden" data-ng-model="credentials.roles" value="['user', 'shop']">
+				</div>
+				<div class="text-center form-group">
+					<button type="submit" class="btn btn-large btn-primary">Sign up</button>&nbsp; or&nbsp;
+					<a href="/#!/signin" class="show-signup">Sign in</a>
+				</div>
+				<div data-ng-show="error" class="text-center text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+</div>
+</div>
+</div>
+</section>
