@@ -2530,7 +2530,8 @@ $scope.mytime = $scope.dt;
 						console.log('Service return', profiles);
 						if(profiles.profile.paymentProfiles.billTo){
 							console.log('Only received one item back', profiles.profile.paymentProfiles );
-							$scope.paymentProfiles = [{profiles.profile.paymentProfiles}];
+							$scope.paymentProfiles = [];
+							$scope.paymentProfiles.push(profiles.profile.paymentProfiles);
 						}else{
 							console.log('Got mulitple profiles');
 
