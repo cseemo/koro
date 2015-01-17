@@ -37,14 +37,14 @@ angular.module('offenders').factory('Offenders', ['$resource',
 					if(status === 200) {
 
 					var paymentProfiles;
-					console.log('Return Payments Modal: ', data);
+					console.log('Return Payment Profiles: ', data);
 					paymentProfiles = data.profile.paymentProfiles;
 
 					if(paymentProfiles){
 						console.log('Got Payment Profiles', paymentProfiles);
 						if(paymentProfiles.billTo){
 							console.log('Only found one payment profile....');
-							paymentProfiles = data;
+							paymentProfiles = data.profile;
 
 						}else{
 							console.log('Found Many Payment Profiles');
