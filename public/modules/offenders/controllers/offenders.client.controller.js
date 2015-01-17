@@ -1242,19 +1242,147 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
   ]).controller('clientLookUpController', [
-    '$scope', '$modalInstance', 'items', 'offenderList', 'Devices', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location',  function($scope, $modalInstance, items, offenderList, Devices, Authentication, $http, Workorders, Shops, workorder, $location) {
+    '$scope', '$modalInstance', 'items', 'offenderList', 'Offenders', '$timeout',  'Devices', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location',  function($scope, $modalInstance, items, offenderList, Offenders, $timeout, Devices, Authentication, $http, Workorders, Shops, workorder, $location) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
      $scope.offenderList = offenderList;
      $scope.workorders = Workorders.query();
 
+
+     $scope.myShop = function(){
+		      		console.log('Getting myshop: ', $scope.authentication.user.shop);
+		      		var myShop = Shops.get({ 
+				shopId: $scope.authentication.user.shop
+					});
+		      	myShop.$promise.then(function(){
+		      		console.log('Shop Promise finished', myShop);
+		      		
+		      		$scope.myShopInfo = myShop;
+		      		$scope.serviceCenter = myShop;
+
+		      	});
+		      };
+
      $scope.serviceTypes = ['Calibration', 'Reset', 'Removal'];
-      
+      $scope.emailSubject = 'Ignition Interlock Service Appointment';
+      	
 
      $scope.pickClient = function(row){
      	console.log('Choosing: ', $scope.offenderList[row]);
-     	return $scope.offender = $scope.offenderList[row];
+     	$scope.offender = $scope.offenderList[row];
      };
+
+
+  		$scope.shopOrder = function() {
+        $modalInstance.close('Shop Order');
+        console.log('Shop Order For: ', $scope.offender);
+        
+	       
+        
+        console.log('Service Center Name: ', $scope.serviceCenter.name);
+        
+        var shopAddy = $scope.serviceCenter.address+' '+$scope.serviceCenter.city+' '+$scope.serviceCenter.state+' '+$scope.serviceCenter.zipcode;
+        console.log('Service Addy: ', shopAddy);
+        
+
+
+        console.log($scope);
+
+        	var chargeAmount = '0';
+
+        	if($scope.chosen==='New Install'){
+        		chargeAmount = $scope.installFee;
+        	} 
+        	if($scope.chosen==='Reset') {
+        		chargeAmount = '50';
+        	}
+        	if($scope.chosen==='Removal') {
+        		chargeAmount = '75';
+        	}
+        	if($scope.chosen==='Calibration') {
+        		chargeAmount = '0';
+        	}
+        	console.log('Charge Amount: ', chargeAmount);
+        	console.log('$scope.installFee = ', $scope.installFee);
+        	
+
+        	//Save New Work Order
+        		var workorder = new Workorders ({
+				serviceCenter: $scope.serviceCenter.name,
+				svcAddress: shopAddy,
+				offender: $scope.offender._id,
+				type: $scope.chosen,
+				shopId: $scope.serviceCenter._id, 
+				amount: chargeAmount
+				
+			});
+
+        		console.log('Work Order: ', workorder);
+			// Redirect after save
+			workorder.$save(function(response) {
+				console.log('Response from new work order', response);
+					workorder._id = response._id;
+					var offender = Offenders.get({offenderId: $scope.offender._id});
+					offender.$promise.then(function(){
+						offender.assignedShop = $scope.serviceCenter._id;
+						offender.pendingWorkOrder = response._id;
+		        		offender.pendingWorkType = $scope.chosen;
+		        		offender.$update();
+		        		console.log('Offender has been saved...', offender);
+					})
+					
+				
+
+        			workorder.email = $scope.offender.offenderEmail;
+        			console.log('$scope.workOrder.email: ', workorder.email );
+					console.log('Work order status...', workorder);
+
+        			$http({
+					method: 'post',
+					responseType: 'arraybuffer',
+					url: '/work/order', 
+					data: {
+						'user': $scope.authentication.user,
+						'offender': $scope.offender,
+						'workinfo': workorder
+						
+								},
+								
+						})
+					.success(function(data, status) {
+					
+					$scope.sending = false;
+					$scope.results = true;
+					//////console.log('Data from LOA?? %o',data);
+					toastr.success('Success! Email was sent...please schedule appointment with this client');
+					$scope.myresults = 'Email Sent!';
+
+					$timeout(function(){
+								console.log('Going to WOrkorder; ', $scope.offender._id);
+								$scope.myresults = '';
+								$location.path('customer/'+ $scope.offender._id);
+							},1500);
+					
+
+						
+						
+
+						// var file = new Blob([data], {type: 'application/pdf'});
+			   //   		var fileURL = URL.createObjectURL(file);
+			   //   		window.open(fileURL);
+			     		
+			     		
+
+
+								});
+
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		 
+		
+
+      };
 
 
  }]).controller('ModalInstanceCtrl', [
@@ -1630,9 +1758,11 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
   		};
 
   		$scope.shopOrder = function() {
-        $modalInstance.close($scope.selected.item);
+        $modalInstance.close('Shop Order');
+
         $scope.offender.assignedShop = $scope.serviceCenter._id;
         $scope.offender.pendingWorkType = $scope.chosen;
+        $scope.offender.save();
         console.log($scope.offender);
         console.log('Service Center Name: ', $scope.serviceCenter.name);
         var shopAddy = $scope.serviceCenter.address+' '+$scope.serviceCenter.city+' '+$scope.serviceCenter.state+' '+$scope.serviceCenter.zipcode;
