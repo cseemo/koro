@@ -492,7 +492,86 @@ exports.updateCCInfo = function (req, res) {
 					}
 				});
 
-	  }
+	  }else if(req.body.type==='new' && !req.offender.merchantCustomerId){
+	  	var args = {
+		  		offender: req.offender,
+		  		cardData: cardData,
+		  	};
+
+		  	createAuthProfile(args, function(err, data){
+		  		if(err){
+		  			console.log('Error: Line 503 ', err);
+		  			res.status(400).send({'message': 'Error Creating Payment Profile', 'error': err});
+		  		}else{
+		  			//Time to Create a Payment Profile
+		  			console.log('rsopnse From create Auth Profile', data);
+		  			req.offender.merchantCustomerId = data;
+		  			req.offender.save(function(err){
+		  				if(err){
+		  					console.log('Error Saving Offender: ', err);
+		  				}else{
+
+
+		  			
+		  			console.log('Creating New Payment Profile');
+				  	var args = {
+				  		offender: req.offender,
+				  		cardData: cardData,
+				  	};
+		  	
+				  	console.log('Args Sending to Create New Profile: ', args);
+			  		createPaymentProfile(args, function(err, data){
+							if(err){
+								console.log('Error Line 244', err);
+								res.status(409).send({'message': 'Error Creating Payment Profile', 'error': err});
+							}else {
+							console.log('Line 342 - response From createPaymentProfile', data);
+								// res.status(203).send({'message': 'Payment Profile Created '+data});
+								console.log('Payment Profile ID: ', data.customerPaymentProfileId);
+								var args2 = {
+							  		offender: req.offender,
+							  		cardData: cardData,
+							  		paymentProfileId: {
+							  		customerPaymentProfileId: data.customerPaymentProfileId
+							  		},
+							  		customerProfileId: req.offender.merchantCustomerId,
+							  	};
+							 
+								console.log('Response from Create Paymetn Profile', data);
+					  				var args = {
+								  		offender: req.offender,
+								  		cardData: cardData,
+								  	 	paymentProfileId: {
+								  	 		customerProfileId: data.customerPaymentProfileId,
+								  	 	},
+								  		
+								  	};
+
+					  			validatePaymentProfile(args, function(err, response){
+					  				if(err){
+					  					console.log('Error Validating Profile - line 510');
+					  					res.status(400).send({'message': 'Error Validating Payment - Please Verify', 'error': err});
+					  				}else{
+					  					console.log('Response from Validate PRofile', response);
+					  					res.status(200).send({'message': 'This payment method has been validated and saved', 'data': response});
+					  				}	
+					  				
+
+					  			});
+
+					  		}
+		  		
+
+		  	});
+
+	}
+	 });
+
+	}
+
+
+		  			});
+	  }else 
 
 	  if(req.body.type==='update' ){
 	  	console.log('Updating Payment Profile');
@@ -527,9 +606,7 @@ exports.updateCCInfo = function (req, res) {
 
 		  	});
 
-	  }
-
-	  	  if(req.body.type==='delete' ){
+	  } else if(req.body.type==='delete' ){
 	  	console.log('Delete Payment Profile', req.body);
 	  		var args = {
 		  		offender: req.offender,
@@ -552,8 +629,11 @@ exports.updateCCInfo = function (req, res) {
 
 		  			});
 
+		  		}else{
+		  			console.log('Luke weve got a problem...line 585');
 		  		}
-		  		
+
+		  	
 
 		  	};
 

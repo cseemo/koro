@@ -16,6 +16,10 @@ angular.module('offenders').factory('Offenders', ['$resource',
 
 	authorizeCIM.getPaymentProfiles = function(offender){
 		console.log('Runnign Service');
+
+		if(offender.merchantCustomerId){
+
+
 			return $http({
 			method: 'post',
 			url: '/getPaymentProfiles/',
@@ -27,7 +31,7 @@ angular.module('offenders').factory('Offenders', ['$resource',
 			.error(function(data) {
 				console.log('Error!! ', data);
 				toastr.error(data);
-				$scope.error = data;
+				// $scope.error = data;
 			})
 			.success(function(data, status) {
 					if(status === 200) {
@@ -58,6 +62,10 @@ angular.module('offenders').factory('Offenders', ['$resource',
 					return paymentProfiles;
 					}
 		});
+
+		} else{
+			console.log('No Merchant Id...');
+		}
 
 
 		

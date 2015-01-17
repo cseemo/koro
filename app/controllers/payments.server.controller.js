@@ -30,6 +30,7 @@ var mongoose = require('mongoose'),
 
 	exports.getPaymentProfiles = function(req, res){
 		console.log('Getting Payment Profiles');
+
 			AuthorizeCIM.getCustomerProfile(req.body.offender.merchantCustomerId, function(err, response) {
 				if(err) {
 					console.log('Error getting Profile for ', req.body.offender.merchantCustomerId);
@@ -156,7 +157,7 @@ var mongoose = require('mongoose'),
 var CronJob = require('cron').CronJob;
 
 var job = new CronJob({
-  cronTime: '0 10 18 * * 0-6',
+  cronTime: '0 0 01 * * 0-6',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Ontick called');

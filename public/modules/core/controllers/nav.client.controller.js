@@ -28,26 +28,6 @@ if(myurl==='/approve/'){
 
 
 
-		////console.log('Menu items: ', $scope.menu);
-		$scope.getLead = function() {
-			//window.alert('gettinglead');
-						$http({
-		method: 'get',
-		url: '/getnewlead',
-	})
-.success(function(data, status) {
-		if(status === 200) {
-			//$scope.currentPrice = data.price;
-//console.log('Data: ',data);
-//console.log('Data.Response: %o',data._id);
-	
-	$location.path('leads/' + data._id);
-		}
-	});
-			
-		};
-
-
 		$scope.toggleCollapsibleMenu = function() {
 			$scope.isCollapsed = !$scope.isCollapsed;
 		};
