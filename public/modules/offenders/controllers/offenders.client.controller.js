@@ -2529,6 +2529,7 @@ $scope.mytime = $scope.dt;
 				.success(function(profiles){
 						console.log('Service return', profiles);
 						$scope.paymentProfiles = profiles.profile.paymentProfiles;
+						console.log('Payment Profiles: ', $scope.paymentProfiles );
 					})
 				.error(function(error){
 					$scope.paymentProfiles = null;
