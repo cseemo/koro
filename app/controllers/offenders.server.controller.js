@@ -464,7 +464,7 @@ exports.updateCCInfo = function (req, res) {
 	  		createPaymentProfile(args, function(err, data){
 					if(err){
 						console.log('Error Line 244', err);
-						res.status(409).send({'message': 'Error Creating Payment Profile', 'error': err});
+						res.status(409).send({'message': err.message, 'error': err});
 					}else {
 					console.log('Line 342 - response From createPaymentProfile', data);
 						// res.status(203).send({'message': 'Payment Profile Created '+data});
@@ -537,7 +537,7 @@ exports.updateCCInfo = function (req, res) {
 							  		customerProfileId: req.offender.merchantCustomerId,
 							  	};
 							 
-								console.log('Response from Create Paymetn Profile', data);
+								console.log('Response from Create Payment Profile', data);
 					  				var args = {
 								  		offender: req.offender,
 								  		cardData: cardData,
