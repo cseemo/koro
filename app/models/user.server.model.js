@@ -44,7 +44,7 @@ var UserSchema = new Schema({
 	telephone: {
 		type: String,
 		trim: true,
-		default: '480 689-4838'
+		default: '(844) 551-4883'
 	},
 	email: {
 		type: String,
@@ -82,7 +82,7 @@ var UserSchema = new Schema({
 	roles: {
 		type: [{
 			type: String,
-			enum: ['user', 'admin']
+			enum: ['user', 'admin', 'shop']
 		}],
 		default: ['user']
 	},
@@ -134,9 +134,9 @@ UserSchema.pre('save', function(next) {
 			//console.log('Current Salt', this.salt);
 			if (this.password && this.password.length > 6) {
 				//this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-				//console.log('Password before hash',this.password);
+				console.log('Password before hash',this.password);
 				this.password = this.hashPassword(this.password);
-				//console.log('Password after hash',this.password);
+				console.log('Password after hash',this.password);
 				//console.log('Salt right now', this.salt);
 				next();
 			}

@@ -8,7 +8,18 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		//If user is signed in then redirect back home
 		if ($scope.authentication.user) $location.path('/');
 
-		$scope.signup = function() {
+		$scope.signup = function(io) {
+			// console.log('Paramt', $location.absUrl());
+
+			// console.log('Search Object', searchObject);
+			if(io){
+				if(io==='shop'){
+					var shopId = $location.search()['shop'];
+					$scope.credentials.isShop = true;
+					$scope.credentials.shop = shopId;
+				}
+			}
+			console.log('Credentials: ', $scope.credentials);
 			$http.post('/auth/signup', $scope.credentials).success(function(response) {
 				//If successful we assign the response to the global user model
 				$scope.authentication.user = response;

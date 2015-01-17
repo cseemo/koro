@@ -11,11 +11,11 @@ var mongoose = require('mongoose'),
 	var Authorize = require('auth-net-types'),
 	   _AuthorizeCIM = require('auth-net-cim'),
 	  	AuthorizeCIM = new _AuthorizeCIM({
-	    api: '78HDftF7Gs',
-	    key: '83H8U65tX3ekuFrD', //Chads TEst API
-	    // api: '5hB56Vus',
-	    // key: '37HmG92v4J2yDsMp', //Budget Actual API
-	    sandbox: true // false
+	    // api: '78HDftF7Gs',
+	    // key: '83H8U65tX3ekuFrD', //Chads TEst API
+	    api: '5hB56Vus',
+	    key: '37HmG92v4J2yDsMp', //Budget Actual API
+	    sandbox: false //true // false
 	  });
 
 //Delete Card Info
@@ -260,7 +260,7 @@ var createAuthProfile2 = function(off, cb) {
 		}, function(err, response) {
 			if(err) {
 				console.log('Error Line 262 - OffenderServer Controller', err);
-				cb(err.error.message, null);
+				cb(err.message, null);
 			}else{
 				// console.log('Response from Payment Profile, ', response);
 				cb(null, response);
@@ -291,26 +291,91 @@ var createAuthProfile2 = function(off, cb) {
 
 	};
 
-	var validatePaymentProfile = function(args, cb){
+	// var validatePaymentProfile = function(args, cb){
+	// 	console.log('Validating Profile', args);
+	// 	console.log('customerProfileId: ', args.customerProfileId);
+	// 	console.log('customerPaymentProfileId: ', args.paymentProfileId.customerPaymentProfileId);
+	// 	AuthorizeCIM.validateCustomerPaymentProfile({
+	// 					  customerProfileId: args.customerProfileId,
+	// 					  customerPaymentProfileId: args.paymentProfileId.customerPaymentProfileId,
+	// 					  validationMode: 'liveMode' // liveMode
+	// 					}, function(err, response) {
+	// 						if(err){
+	// 						console.log('ERROR Validating Card Line 299', err.message);
+	// 						// res.status(409).send('Error: '+err);
+	// 						cb('Payment Profile Created - but card not validated '+err, null);
+	// 						// cb(err,null);
+	// 					}else{
+	// 						console.log('Card Validated ');
+	// 						// res.status(200).send('Card Information Updated & Validated');
+	// 						cb(null, response);
+	// 					}
+	// 			});
+
+
+
+	// };
+
+
+		//Create Transaction for $10 inauhtorize ONLY
+		var validatePaymentProfile = function(args, cb){
 		console.log('Validating Profile', args);
 		console.log('customerProfileId: ', args.customerProfileId);
 		console.log('customerPaymentProfileId: ', args.paymentProfileId.customerPaymentProfileId);
-		AuthorizeCIM.validateCustomerPaymentProfile({
-						  customerProfileId: args.customerProfileId,
-						  customerPaymentProfileId: args.paymentProfileId.customerPaymentProfileId,
-						  validationMode: 'liveMode' // liveMode
-						}, function(err, response) {
+
+								var transaction = {
+						  amount: '1.00',
+						  tax: {
+						    amount: '0.00',
+						    name: 'State Tax',
+						    description: 'None'
+						  },
+						  // shipping: {
+						  //   amount: 5.00,
+						  //   name: 'FedEx Ground',
+						  //   description: 'No Free Shipping Option'
+						  // },
+							  customerProfileId: args.customerProfileId,
+							  customerPaymentProfileId:  args.paymentProfileId.customerPaymentProfileId,
+						  order: {
+						    invoiceNumber: Date.now(),
+						    description: 'Validation made from portal...'
+						  },
+						  billTo: {
+						  	firstName: args.cardData.fName,
+						  	lastName: args.cardData.lName,
+						  	address: args.cardData.address
+						  }
+						};
+								/* AuthCapture AuthOnly, CaptureOnly, PriorAuthCapture */
+							AuthorizeCIM.createCustomerProfileTransaction('AuthOnly', transaction, function(err, response) {
 							if(err){
-							console.log('ERROR Validating Card Line 299', err.message);
-							// res.status(409).send('Error: '+err);
-							cb('Payment Profile Created - but card not validated '+err, null);
-							// cb(err,null);
-						}else{
-							console.log('Card Validated ');
-							// res.status(200).send('Card Information Updated & Validated');
-							cb(null, response);
-						}
-				});
+								console.log('Error Charging Card', err);
+								return cb('Error Validating Card '+err, null);
+							}
+							if(response){
+								console.log('Card has been Validated!!', response);
+								return cb(null, 'Card Has Been Validated '+response);
+							}
+						});
+
+
+		// AuthorizeCIM.validateCustomerPaymentProfile({
+		// 				  customerProfileId: args.customerProfileId,
+		// 				  customerPaymentProfileId: args.paymentProfileId.customerPaymentProfileId,
+		// 				  validationMode: 'liveMode' // liveMode
+		// 				}, function(err, response) {
+		// 					if(err){
+		// 					console.log('ERROR Validating Card Line 299', err.message);
+		// 					// res.status(409).send('Error: '+err);
+		// 					cb('Payment Profile Created - but card not validated '+err, null);
+		// 					// cb(err,null);
+		// 				}else{
+		// 					console.log('Card Validated ');
+		// 					// res.status(200).send('Card Information Updated & Validated');
+		// 					cb(null, response);
+		// 				}
+		// 		});
 
 
 

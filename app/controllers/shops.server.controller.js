@@ -137,6 +137,97 @@ exports.hasAuthorization = function(req, res, next) {
 	next();
 };
 
+
+exports.sendShopInvite = function(req, res){
+	console.log('Sending Shop Invitation Now');
+
+		var message = {
+	'subject': 'Please Register to Use our Online Portal',
+	'from_email': 'Admin@budgetiid.com',
+	'from_name': req.shop.user.displayName,
+	'to': [{
+		'email': req.shop.email,
+		'name': req.shop.primarycontactname,
+			'type': 'to'
+	}],
+	'headers': {
+		'Reply-To': 'admin@budgetiid.com'
+	},
+	'merge': true,
+	'global_merge_vars': [{
+		'name': 'merge1',
+		'content': 'merge1 content'
+	}],
+	'merge_vars': [{
+			'rcpt': req.shop.email,
+			'vars': [
+				{
+					'name': 'repName',
+					'content': req.shop.user.displayName
+				},
+				{
+					'name': 'shopid',
+					'content': req.shop._id
+				},
+
+
+
+
+				]
+	}],
+	'important': false,
+	'track_opens': null,
+	'track_clicks': null,
+	'auto_text': null,
+	'auto_html': null,
+	'inline_css': true,
+	'url_strip_qs': null,
+	'preserver_recipients': null,
+	'view_content_link': null,
+	'bcc_address': 'fivecsconsulting@gmail.com',
+	'tracking_domain': null,
+	'signing_domain': null,
+	'return_path_domain': null,
+	// 'attachments': [{
+	// 	'type': 'application/pdf; name=Counter-Signed_ServiceCenter_Agreement.pdf',
+	// 	'name': 'Counter-Signed_ServiceCenter_Agreement.pdf',
+	// 	'content': content
+	// }]
+};
+
+
+
+var template_name='budget-shop-invite';
+
+var async = false;
+
+
+mandrill_client.messages.sendTemplate({
+	'template_name': template_name,
+	'template_content': [],
+	'message': message, 
+	'async': async
+}, function(result){
+
+	console.log('Results from Mandrill', result);
+	res.status(200).send(result);
+},
+function(e){
+	console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+	res.status(411).send(e);
+});
+
+
+
+		
+
+
+
+return;
+
+
+};
+
 exports.getSignedAgreement = function(req, res){
 		console.log('got here', req.deal);
 		res.download('./Signed_'+req.shop._id+'.pdf', 'Signed_'+req.shop._id+'.pdf', function(err){

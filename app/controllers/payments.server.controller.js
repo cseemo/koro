@@ -12,11 +12,11 @@ var mongoose = require('mongoose'),
 	var Authorize = require('auth-net-types')
 	  , _AuthorizeCIM = require('auth-net-cim')
 	  , AuthorizeCIM = new _AuthorizeCIM({
-	    api: '78HDftF7Gs',
-	    key: '83H8U65tX3ekuFrD', //Chads TEst API
-	    // api: '5hB56Vus',
-	    // key: '37HmG92v4J2yDsMp', //Budget Actual API
-	    sandbox: true // false
+	    // api: '78HDftF7Gs',
+	    // key: '83H8U65tX3ekuFrD', //Chads TEst API
+	    api: '5hB56Vus',
+	    key: '37HmG92v4J2yDsMp', //Budget Actual API
+	    sandbox: false //true // false
 	  });
 	  var moment = require('moment');
 	  var Offender = mongoose.model('Offender'),
@@ -133,7 +133,7 @@ var mongoose = require('mongoose'),
 								} else {
 								// res.jsonp(payment);
 								console.log('Payment for '+item.displayName);
-								callback();
+								// callback();
 								}
 							});
 						} else {
@@ -156,7 +156,7 @@ var mongoose = require('mongoose'),
 var CronJob = require('cron').CronJob;
 
 var job = new CronJob({
-  cronTime: '0 0 5 * * 0-6',
+  cronTime: '0 10 18 * * 0-6',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Ontick called');

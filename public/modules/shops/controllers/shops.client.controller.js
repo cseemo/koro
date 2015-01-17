@@ -534,6 +534,35 @@ $scope.mytime = $scope.dt;
 		 $scope.enableEdit = function() { $scope.edit = true; }
     $scope.disableEdit = function() { $scope.edit = false;  }
 
+    $scope.sendPortal = function(){
+    		console.log('Sending Portal for Shop ', $scope.shop);
+			$http({
+					    method: 'get',
+					    url: '/sendShopInvite/'+$scope.shop._id,
+					    responseType: 'arraybuffer',
+					    headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+					 })
+					.error(function(err, status) {
+						// console.log('Error!! ERr ', err);
+						// console.log('Error!!  RESP', err.name);
+						// console.log('Error Message: ', err.message);
+						toastr.warning('Email Error: Is the email a valid address?');
+					})
+					.success(function(data, status, headers, config) {
+					    // console.log('Status ', status);
+					    // console.log('Success sending agreement!', data);
+						toastr.success('Success! Email was sent to '+$scope.shop.email);
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		 $scope.fileURL = URL.createObjectURL(file);
+			     		 $scope.seeSA = true;
+			     		 $timeout(function(){
+								////console.log('Going to Change');
+							$scope.seeSA = false;
+							$scope.shop.agreementSent = 'true';
+							$scope.shop.$update();
+							}, 10000);	     		
+     				});
+		};
 
 		//Download an Uploaded File
 		$scope.dlUpload = function(id, name) {

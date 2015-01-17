@@ -9,6 +9,7 @@ angular.module('users').factory('Authentication', [
 		_this._data = {
 			user: window.user,
 			hasRole: function(role) {
+				// console.log('Has Role', role);
 				
 				if(!this.user)
 					return false;

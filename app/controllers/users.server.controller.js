@@ -230,6 +230,12 @@ exports.signup = function(req, res) {
 	// Init Variables
 	var user = new User(req.body);
 	var message = null;
+	if(req.body.isShop===true){
+		console.log('Shop is true');
+		user.roles.push('shop');
+
+	}
+	console.log('User is: ', user);
 
 	// Add missing user fields
 	user.provider = 'local';
@@ -248,7 +254,7 @@ exports.signup = function(req, res) {
 
 			req.login(user, function(err) {
 				if (err) {
-					res.send(400, err);
+					res.send(401, err);
 				} else {
 					res.jsonp(user);
 				}

@@ -1,5 +1,6 @@
 
 <div class="nav-wrapper" name="nav-wrapper" >
+
     <ul id="nav"
         class="nav"
         data-ng-controller="NavController"
@@ -8,47 +9,43 @@
         data-highlight-active
     
         >
+       
 
-         <!-- <li>
-        <a href="#!/dashboard"> <i class="fa fa-dashboard"></i>
-        <span>Dashboard</span>
-         </a>
-         </li> -->
-          <li>
+         
+          <li data-ng-show="authentication.hasRole('manager')===true">
         <a href="#!/offenders"> <i class="fa fa-male"></i>
         <span>Clients</span>
          </a>
          </li>
-          <li>
+          <li data-ng-show="authentication.hasRole('manager')===true">
         <a href="#!/shops"> <i class="fa fa-building-o"></i>
         <span>Service Centers</span>
          </a>
-         </li>
-         <li>
+         </li >
+         <li data-ng-show="authentication.hasRole('manager')===true">
         <a href="#!/devices"> <i class="fa fa-building-o"></i>
         <span>Devices</span>
          </a>
          </li>
-         <li><----- Budget IID VIEWS </li>
-         <li>
-         &nbsp;&nbsp;&nbsp;
-         </li>
-         <li>SHOP VIEWS ---></li>
-          <li>
+         
+        
+          <li  data-ng-show="authentication.hasRole('shop')===true">
         <a href="#!/pending"> <i class="fa fa-building-o"></i>
         <span>Pending Work Orders</span>
          </a>
          </li>
-         <li>
+         <li  data-ng-show="authentication.hasRole('shop')===true">
         <a href="#!/lookUpCustomer"> <i class="fa fa-search"></i>
         <span>Customer Search</span>
          </a>
          </li>
-         <li>
+         <li  data-ng-show="authentication.hasRole('shop')===true">
         <a href="#!/shopdevices"> <i class="fa fa-building-o"></i>
         <span>Devices</span>
          </a>
          </li>
+
+        
    <!--      <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);" style="color: white; ">
             <a href="#!/{{item.link}}">
                 <i class="{{item.icon}}"></i>

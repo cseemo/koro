@@ -994,19 +994,33 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		
 
 		$scope.findPending = function() {
-			$http({
-		method: 'get',
-		url: '/getPendingOrders',
-			})
-		.success(function(data, status) {
-			
-				console.log('Return Data: ', data);
-				$scope.offenders = data;
-				$scope.filteredOffenders = data;
-				$scope.select($scope.currentPage);
-
-				
+		// 	$http({
+		// method: 'get',
+		// url: '/getPendingOrders',
+		// 	})
+		if($scope.authentication.user.shop){
+			console.log('Looking for Pending ', $scope.authentication.user.shop);
+			$scope.filteredOffenders = Offenders.query({
+				// status: 'Pending',
+				assignedShop: $scope.authentication.user.shop
 			});
+			$scope.filteredOffenders.$promise.then(function(data, status) {
+					
+					console.log('Return Data: ', data);
+					// $scope.offenders = data;
+					// $scope.filteredOffenders = data;
+					$scope.select($scope.currentPage);
+
+					
+				});
+
+
+
+		} else{
+			console.log('No Shop -- no pending');
+			$scope.filteredOffenders = null;
+		}
+
 
 
 

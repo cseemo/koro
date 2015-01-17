@@ -7,6 +7,13 @@ angular.module('core').controller('NavController', ['$scope', 'Authentication', 
 		$scope.menu = Menus.getMenu('topbar');
 		$scope.isAdmin = false;
 
+		// $scope.getUserInfo = function(){
+		// 	console.log('Getting User');
+		// 	console.log($scope.authentication.user.roles);
+
+
+		// }();
+
 
 $scope.hideHeader=true;
 // 				//console.log('Where am I? %o', $location.$$path);

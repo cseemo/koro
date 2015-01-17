@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Shops Routes
 	app.route('/shops')
-		.get(users.requiresLogin,shops.list)
+		.get(users.requiresLogin, shops.list)
 		.post(users.requiresLogin, shops.create);
 
 	
@@ -18,6 +18,11 @@ module.exports = function(app) {
 
 		app.route('/signAgreement/:shopId')
 		.get(shops.signAgreement);
+
+		app.route('/sendShopInvite/:shopId')
+		.get(shops.sendShopInvite);
+
+		
 
 		app.route('/downloadPDF/:shopId')
 		.get(shops.getSignedAgreement);
@@ -34,6 +39,9 @@ module.exports = function(app) {
 		app.route('/dlupload/:fileId')
 		.get(shops.dlUpload)
 		.post(shops.saveUpload);
+
+		app.route('/removefile/:fileId')
+		.get(shops.delFile);
 
 		app.route('/removefile/:fileId')
 		.get(shops.delFile);
