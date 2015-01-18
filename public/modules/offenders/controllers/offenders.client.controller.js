@@ -2639,7 +2639,7 @@ $scope.mytime = $scope.dt;
             $scope.getPayments = function(){
       	
      	console.log('Getting Modal Payments for: ', offender._id);
-     	
+     		
      			$http({
 					method: 'post',
 					url: '/pmtsByOffender/',
@@ -2656,24 +2656,29 @@ $scope.mytime = $scope.dt;
 							}
 				});
 
-				authorizeCIM.getPaymentProfiles(offender)
-				.success(function(profiles){
-						console.log('Service return', profiles);
-						if(profiles.profile.paymentProfiles.billTo){
-							console.log('Only received one item back', profiles.profile.paymentProfiles );
-							$scope.paymentProfiles = [];
-							$scope.paymentProfiles.push(profiles.profile.paymentProfiles);
-						}else{
-							console.log('Got mulitple profiles');
+				if(offender.merchantCustomerId){
+					console.log('They have a Merchant ID - Lets check for payment profiles');
+				
 
-						$scope.paymentProfiles = profiles.profile.paymentProfiles;
-						console.log('Payment Profiles: ', $scope.paymentProfiles );
-					}
+					authorizeCIM.getPaymentProfiles(offender)
+					.success(function(profiles){
+							console.log('Service return', profiles);
+							if(profiles.profile.paymentProfiles.billTo){
+								console.log('Only received one item back', profiles.profile.paymentProfiles );
+								$scope.paymentProfiles = [];
+								$scope.paymentProfiles.push(profiles.profile.paymentProfiles);
+							}else{
+								console.log('Got mulitple profiles');
 
-					})
-				.error(function(error){
-					$scope.paymentProfiles = null;
-				});
+							$scope.paymentProfiles = profiles.profile.paymentProfiles;
+							console.log('Payment Profiles: ', $scope.paymentProfiles );
+						}
+
+						})
+					.error(function(error){
+						$scope.paymentProfiles = null;
+					});
+				}
 
 				
 					

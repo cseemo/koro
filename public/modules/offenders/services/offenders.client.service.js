@@ -11,7 +11,7 @@ angular.module('offenders').factory('Offenders', ['$resource',
 		});
 	}
 ]).factory('authorizeCIM', ['$http', '$resource', function($http, $resource){
-	var paymentProfiles;
+	var paymentProfiles = [];
 	var authorizeCIM = {};
 
 	authorizeCIM.getPaymentProfiles = function(offender){
@@ -73,6 +73,8 @@ angular.module('offenders').factory('Offenders', ['$resource',
 
 		} else{
 			console.log('No Merchant Id...');
+			paymentProfiles = null;
+			return paymentProfiles;
 		}
 
 

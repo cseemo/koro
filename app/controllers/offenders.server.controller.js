@@ -260,7 +260,7 @@ var createAuthProfile2 = function(off, cb) {
 		}, function(err, response) {
 			if(err) {
 				console.log('Error Line 262 - OffenderServer Controller', err);
-				cb(err.message, null);
+				cb(err, null);
 			}else{
 				// console.log('Response from Payment Profile, ', response);
 				cb(null, response);
@@ -291,40 +291,43 @@ var createAuthProfile2 = function(off, cb) {
 
 	};
 
-	// var validatePaymentProfile = function(args, cb){
-	// 	console.log('Validating Profile', args);
-	// 	console.log('customerProfileId: ', args.customerProfileId);
-	// 	console.log('customerPaymentProfileId: ', args.paymentProfileId.customerPaymentProfileId);
-	// 	AuthorizeCIM.validateCustomerPaymentProfile({
-	// 					  customerProfileId: args.customerProfileId,
-	// 					  customerPaymentProfileId: args.paymentProfileId.customerPaymentProfileId,
-	// 					  validationMode: 'liveMode' // liveMode
-	// 					}, function(err, response) {
-	// 						if(err){
-	// 						console.log('ERROR Validating Card Line 299', err.message);
-	// 						// res.status(409).send('Error: '+err);
-	// 						cb('Payment Profile Created - but card not validated '+err, null);
-	// 						// cb(err,null);
-	// 					}else{
-	// 						console.log('Card Validated ');
-	// 						// res.status(200).send('Card Information Updated & Validated');
-	// 						cb(null, response);
-	// 					}
-	// 			});
+	var validatePaymentProfile2 = function(args, cb){
+		console.log('Validating Profile', args);
+		console.log('  -------------------------------');
+		console.log('customerProfileId: ', args.customerProfileId);
+		console.log('customerPaymentProfileId: ', args.paymentProfileId.customerPaymentProfileId);
+		console.log('Card Code: ', args.cardData.cardCVV);
+		AuthorizeCIM.validateCustomerPaymentProfile({
+						  customerProfileId: args.customerProfileId,
+						  customerPaymentProfileId: args.paymentProfileId.customerPaymentProfileId,
+						  cardCode: args.cardData.cardCVV,
+						  validationMode: 'liveMode' // liveMode testMode
+						}, function(err, response) {
+							if(err){
+							console.log('ERROR Validating Card Line 299', err);
+							// res.status(409).send('Error: '+err);
+							cb('Payment Profile Created - but card not validated '+err, null);
+							// cb(err,null);
+						}else{
+							console.log('Card Validated ');
+							// res.status(200).send('Card Information Updated & Validated');
+							cb(null, response);
+						}
+				});
 
 
 
-	// };
+	};
 
 
-		//Create Transaction for $10 inauhtorize ONLY
+		//Create Transaction for $1.00 inauhtorize ONLY
 		var validatePaymentProfile = function(args, cb){
 		console.log('Validating Profile', args);
 		console.log('customerProfileId: ', args.customerProfileId);
 		console.log('customerPaymentProfileId: ', args.paymentProfileId.customerPaymentProfileId);
 
 								var transaction = {
-						  amount: '1.00',
+						  amount: '0.01',
 						  tax: {
 						    amount: '0.00',
 						    name: 'State Tax',
@@ -334,8 +337,15 @@ var createAuthProfile2 = function(off, cb) {
 						  //   amount: 5.00,
 						  //   name: 'FedEx Ground',
 						  //   description: 'No Free Shipping Option'
-						  // },
-							  customerProfileId: args.customerProfileId,
+						  // }, 
+						  payment: {
+							    creditCard: {
+							      cardNumber: args.cardData.cardNumber,
+							      expirationDate: args.cardData.cardExp,
+							      cardCode: args.cardData.cardCVV
+							    }
+							  },
+							customerProfileId: args.customerProfileId,
 							  customerPaymentProfileId:  args.paymentProfileId.customerPaymentProfileId,
 						  order: {
 						    invoiceNumber: Date.now(),
@@ -345,7 +355,8 @@ var createAuthProfile2 = function(off, cb) {
 						  	firstName: args.cardData.fName,
 						  	lastName: args.cardData.lName,
 						  	address: args.cardData.address
-						  }
+						  },
+						  cardCode: args.cardData.cardCVV
 						};
 								/* AuthCapture AuthOnly, CaptureOnly, PriorAuthCapture */
 							AuthorizeCIM.createCustomerProfileTransaction('AuthOnly', transaction, function(err, response) {
@@ -454,7 +465,7 @@ exports.updateCCInfo = function (req, res) {
 	  //Update or Delete or Create New 
 	  if(req.body.type==='new' && req.offender.merchantCustomerId){
 		  	//Create a New Payment Profile ID
-		  	console.log('Adding New Credit Card on File');
+		  	console.log('Existing Authorize.net Profile --- Adding New Credit Card on File Line 458');
 		  	var args = {
 		  		offender: req.offender,
 		  		cardData: cardData,
@@ -464,7 +475,7 @@ exports.updateCCInfo = function (req, res) {
 	  		createPaymentProfile(args, function(err, data){
 					if(err){
 						console.log('Error Line 244', err);
-						res.status(409).send({'message': err.message, 'error': err});
+						res.status(409).send({'message': err, 'error': err});
 					}else {
 					console.log('Line 342 - response From createPaymentProfile', data);
 						// res.status(203).send({'message': 'Payment Profile Created '+data});
@@ -478,6 +489,7 @@ exports.updateCCInfo = function (req, res) {
 					  		customerProfileId: req.offender.merchantCustomerId,
 					  	};
 					  	console.log('Args Sending to Validate: ', args2);
+					  	console.log('Do we have Card Code: ', args2.cardData.cardCVV);
 						validatePaymentProfile(args2, function(err, response){
 		  				if(err){
 		  					console.log('Error Validating Profile');
@@ -493,15 +505,16 @@ exports.updateCCInfo = function (req, res) {
 				});
 
 	  }else if(req.body.type==='new' && !req.offender.merchantCustomerId){
-	  	var args = {
+	  	console.log('No Authorize.net Profile - Creating a New One Now -- Line 498');
+	  	var argsV = {
 		  		offender: req.offender,
 		  		cardData: cardData,
 		  	};
 
-		  	createAuthProfile(args, function(err, data){
+		  	createAuthProfile(argsV, function(err, data){
 		  		if(err){
 		  			console.log('Error: Line 503 ', err);
-		  			res.status(400).send({'message': 'Error Creating Payment Profile', 'error': err});
+		  			res.status(400).send({'message': 'Error Creating Payment Profile'+err, 'error': err});
 		  		}else{
 		  			//Time to Create a Payment Profile
 		  			console.log('rsopnse From create Auth Profile', data);
@@ -514,40 +527,43 @@ exports.updateCCInfo = function (req, res) {
 
 		  			
 		  			console.log('Creating New Payment Profile');
-				  	var args = {
+				  	var argsC = {
 				  		offender: req.offender,
 				  		cardData: cardData,
 				  	};
 		  	
-				  	console.log('Args Sending to Create New Profile: ', args);
-			  		createPaymentProfile(args, function(err, data){
+				  	console.log('Args Sending to Create New Profile: ', argsC);
+			  		createPaymentProfile(argsC, function(err, data){
 							if(err){
 								console.log('Error Line 244', err);
 								res.status(409).send({'message': 'Error Creating Payment Profile', 'error': err});
 							}else {
-							console.log('Line 342 - response From createPaymentProfile', data);
+							console.log('Line 531 - response From createPaymentProfile', data);
 								// res.status(203).send({'message': 'Payment Profile Created '+data});
 								console.log('Payment Profile ID: ', data.customerPaymentProfileId);
-								var args2 = {
-							  		offender: req.offender,
-							  		cardData: cardData,
-							  		paymentProfileId: {
-							  		customerPaymentProfileId: data.customerPaymentProfileId
-							  		},
-							  		customerProfileId: req.offender.merchantCustomerId,
-							  	};
+								// var args3 = {
+							 //  		offender: req.offender,
+							 //  		cardData: cardData,
+							 //  		paymentProfileId: {
+							 //  		customerPaymentProfileId: data.customerPaymentProfileId
+							 //  		},
+							 //  		customerProfileId: req.offender.merchantCustomerId,
+							 //  	};
 							 
-								console.log('Response from Create Payment Profile', data);
-					  				var args = {
+								// console.log('Response from Create Payment Profile', data);
+								// console.log('Payment Profile ID: ',  data.customerPaymentProfileId);
+					  				var argsM = {
 								  		offender: req.offender,
 								  		cardData: cardData,
 								  	 	paymentProfileId: {
-								  	 		customerProfileId: data.customerPaymentProfileId,
+								  	 		customerPaymentProfileId: data.customerPaymentProfileId,
 								  	 	},
+								  	 	customerProfileId: req.offender.merchantCustomerId,
 								  		
 								  	};
+								  	console.log('Args to Validate Profile:  Line 554:', argsM);
 
-					  			validatePaymentProfile(args, function(err, response){
+					  			validatePaymentProfile(argsM, function(err, response){
 					  				if(err){
 					  					console.log('Error Validating Profile - line 510');
 					  					res.status(400).send({'message': 'Error Validating Payment - Please Verify', 'error': err});
