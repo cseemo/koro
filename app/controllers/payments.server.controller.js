@@ -112,7 +112,7 @@ var mongoose = require('mongoose'),
 					var d = new Date();
 					var n = d.getDate();
 					console.log('Todays date is: ', n);
-					n = n-1;
+					// n = n-1;
 
 
 					if(item.billDate == n ){
@@ -157,7 +157,7 @@ var mongoose = require('mongoose'),
 var CronJob = require('cron').CronJob;
 
 var job = new CronJob({
-  cronTime: '30 30 15 * * 0-6',
+  cronTime: '10 01 23 * * 0-6',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Ontick called');
