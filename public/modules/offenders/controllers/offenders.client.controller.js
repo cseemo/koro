@@ -5,6 +5,25 @@
 angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', '$sce', '$timeout', 
 	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http, $sce, $timeout) {
 		$scope.authentication = Authentication;
+
+
+		// If user is not signed in then redirect back home
+		if (!$scope.authentication.user) {
+			console.log('User Not Logged in');
+          var test = $location.path();
+          test = test.substring(0,14);
+          // console.log('Test Path',test);
+
+          if(test==='/svccntrsignup' || test==='/workorderauth'){
+            console.log('Geting Something approved');
+          
+          }else{
+          	console.log('Please sign in');
+          	$location.path('/signin');
+		}
+		}
+
+
 		$scope.pendingOrder = true;
 		// Create new Offender
 		$scope.step=1;

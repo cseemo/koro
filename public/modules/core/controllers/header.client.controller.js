@@ -6,6 +6,25 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
 
+		$scope.user = Authentication.user;
+
+		// If user is not signed in then redirect back home
+		if (!$scope.user) {
+			console.log('User Not Logged in');
+          var test = $location.path();
+          test = test.substring(0,14);
+          // console.log('Test Path',test);
+
+          if(test==='/svccntrsignup' || test==='/workorderauth'){
+            console.log('Geting Something approved');
+          
+          }else{
+          	console.log('Please sign in');
+          	$location.path('/signin');
+		}
+		}
+
+
 		$scope.signin = function() {
 			$http.post('/auth/signin', $scope.credentials).success(function(response) {
 				//If successful we assign the response to the global user model

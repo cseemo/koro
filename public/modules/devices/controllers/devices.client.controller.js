@@ -5,6 +5,21 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 	function($scope, $stateParams, $location, $modal, Authentication, Devices ) {
 		$scope.authentication = Authentication;
 
+			// If user is not signed in then redirect back home
+		if (!$scope.authentication.user) {
+			console.log('User Not Logged in');
+          var test = $location.path();
+          test = test.substring(0,14);
+          // console.log('Test Path',test);
+
+          if(test==='/svccntrsignup' || test==='/workorderauth'){
+            console.log('Geting Something approved');
+          
+          }else{
+          	console.log('Please sign in');
+          	$location.path('/signin');
+		}
+		}
 
 		// Create new Device
 		$scope.create = function() {
