@@ -154,7 +154,7 @@ $scope.approveWorkOrderPayment = function(){
 				pmtOpt: 'Credit Card', 
 				offender: off._id,
 				status: 'Due',
-				notes: 'Auto-Pay thru Portal', 
+				notes: 'Attempting to Auto-Pay thru Portal', 
 				amount: wo.amount
 				
 			});
@@ -196,7 +196,8 @@ $scope.approveWorkOrderPayment = function(){
    						wo.pmtStatus = 'Paid';
    						wo.amount = amount;
    						wo.$update();
-
+   						pmt.notes = 'AutoPaid: '+description+' on '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+   						
    						console.log('Do we still have payment? - can we Add AuthCode and update status', pmt);
    						pmt.status = 'Paid';
    						pmt.authCode = authCode;
@@ -209,7 +210,7 @@ $scope.approveWorkOrderPayment = function(){
 		//Create Manual Payment 
 				var createPayment = function (wo, off){
 			console.log('Creating Manual Payment Now', $scope.offender);
-
+				console.log('Workorder', wo);
 
         	//Create New Payment
         		var pmt = new Payments ({
@@ -230,7 +231,7 @@ $scope.approveWorkOrderPayment = function(){
         		
 
    						wo.pmtStatus = 'Due';
-   						wo.amount = amount;
+   						wo.amount = wo.amount;
    						wo.$update();
 
    					});
@@ -275,10 +276,11 @@ $scope.approveWorkOrderPayment = function(){
 			     		$scope.step=3;
 			     		
 			     		
-			     		if($scope.offender.cardNumber && $scope.offender.cardNumber.length > 11){
+			     		if($scope.offender.merchantCustomerId && $scope.offender.paymentProfileId){
 			     			console.log('line 235 work');
-			     			console.log('Length of Card Number: ', $scope.offender.cardNumber.length);
+			     			// console.log('Length of Card Number: ', $scope.offender.cardNumber.length);
 			     			console.log('We are charging this guy because: ', $scope.offender);
+			     			console.log('Workorder in question: ', workorder);
 			     			chargeCard(workorder, $scope.offender);
 			     		} else {
 			     			createPayment(workorder, $scope.offender);

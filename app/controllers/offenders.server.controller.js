@@ -348,8 +348,8 @@ var createAuthProfile2 = function(off, cb) {
 							customerProfileId: args.customerProfileId,
 							  customerPaymentProfileId:  args.paymentProfileId.customerPaymentProfileId,
 						  order: {
-						    invoiceNumber: Date.now(),
-						    description: 'Validation made from portal...'
+						    invoiceNumber: 'VER'+Date.now(),
+						    description: 'Card Verification Only...transaction will be voided'
 						  },
 						  billTo: {
 						  	firstName: args.cardData.fName,
@@ -361,14 +361,34 @@ var createAuthProfile2 = function(off, cb) {
 								/* AuthCapture AuthOnly, CaptureOnly, PriorAuthCapture */
 							AuthorizeCIM.createCustomerProfileTransaction('AuthOnly', transaction, function(err, response) {
 							if(err){
-								console.log('Error Charging Card', err);
+								console.log('Error Validating Card via $.01 charge', err);
 								return cb('Error Validating Card '+err, null);
 							}
 							if(response){
 								console.log('Card has been Validated!!', response);
+								console.log('RESPONSE DATA :::::');
+								console.log('AVS Response', response.directResponse[5]);
+								console.log('Transaction ID: ', response.directResponse[6]);
+								console.log('Authorization Code',response.directResponse[4]);
+								console.log('Card Code Response',response.directResponse[39]);
+								console.log('Card Type',response.directResponse[51]);
+								console.log('Cardholder Verification',response.directResponse[39]);
+								
+								
+
+
 								return cb(null, 'Card Has Been Validated '+response);
 							}
 						});
+
+
+							//Response
+							// directResponse: '1,1,1,
+							// [3] - This transaction has been approved.,
+							// 183441,Y,6846707383,1421544948047,Validation made from portal...,
+							// 0.01,CC,auth_only,b070d8bd32032d1407c4,Chad,Seymour,,15428 N 170th Ln,
+							// Surprise,AZ,85388,,,,cseemo@gmail.com,,,,,,,,,0.00,,,,,
+							// EABF2B39AB6EB26686A58028DADB5429,M,,,,,,,,,,,,XXXX1253,MasterCard,,,,,,,,,,,,,,,,' }
 
 
 		// AuthorizeCIM.validateCustomerPaymentProfile({
@@ -480,6 +500,12 @@ exports.updateCCInfo = function (req, res) {
 					console.log('Line 342 - response From createPaymentProfile', data);
 						// res.status(203).send({'message': 'Payment Profile Created '+data});
 						console.log('Payment Profile ID: ', data.customerPaymentProfileId);
+						req.offender.paymentProfileId = data.customerPaymentProfileId;
+						req.offender.save(function(err){
+		  				if(err){
+		  					console.log('Error Saving Offender: ', err);
+		  				}});
+
 						var args2 = {
 					  		offender: req.offender,
 					  		cardData: cardData,
@@ -552,6 +578,12 @@ exports.updateCCInfo = function (req, res) {
 							 
 								// console.log('Response from Create Payment Profile', data);
 								// console.log('Payment Profile ID: ',  data.customerPaymentProfileId);
+								req.offender.paymentProfileId = data.customerPaymentProfileId;
+								req.offender.save(function(err){
+				  				if(err){
+				  					console.log('Error Saving Offender: ', err);
+				  				}});
+
 					  				var argsM = {
 								  		offender: req.offender,
 								  		cardData: cardData,
