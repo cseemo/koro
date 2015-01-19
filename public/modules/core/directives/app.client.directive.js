@@ -97,7 +97,17 @@ angular.module('core').directive('imgHolder', [
       ]
     };
   }
-]).filter('tel', function () {
+]).filter('capitalize', function () {
+    return function (str) {
+      if (!str) { return ''; }
+      var name = str.substring(0,1).toUpperCase()+str.substring(1);
+      console.log('Returned Name: ', name);
+      return name;
+
+
+    };
+  }).filter('tel', function () {
+
     return function (tel) {
         if (!tel) { return ''; }
 

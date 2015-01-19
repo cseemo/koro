@@ -2,8 +2,8 @@
 
 
 // Offenders controller
-angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', '$sce', '$timeout', 
-	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http, $sce, $timeout) {
+angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', '$sce', '$timeout', 'portalPayments', 
+	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http, $sce, $timeout, portalPayments) {
 		$scope.authentication = Authentication;
 
 
@@ -73,9 +73,20 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		};
 		
 		$scope.findClient = function() {
+			$scope.error = null;
 			console.log('Looking for client', $scope.dLNumber);
+			if($scope.dLNumber){
+			var test = $scope.dLNumber;
+			var dLNumber = test.toUpperCase();
+			console.log('Test', dLNumber);
+
+			}else{
+				var dLNumber = 'none';
+			}
+			
+			
 			var offenderList = Offenders.query({
-				driverNumber: $scope.dLNumber
+				driverNumber: dLNumber
 			});
 			offenderList.$promise.then(function(){
 				console.log('Offender List: ', offenderList);
@@ -88,13 +99,17 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					
 					url: '/getClientbyDL', 
 					data: {
-						'dl': $scope.dLNumber,
+						'dl': dLNumber,
 						
 						
 								},
 								
 						})
 					.success(function(data, status) {
+						if(data.length < 1){
+							$scope.error = 'Sorry no clients can be found by that Driver License Number...';
+							// toastr.error('Sorry no clients can be found by that Driver License Number...');
+						}else{
 
 						console.log('Yeah!!!', data);
 						console.log('Got Offender', status);
@@ -147,7 +162,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 		      	});
 
-
+		      }
 
       
             });
@@ -606,6 +621,16 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// console.log('This: ', this);
 		var mainPhone = $filter('tel')(this.mainPhone);
 		var altPhone = $filter('tel')(this.altPhone);
+		var dLNumber, fName, lName;
+		if($scope.driverNumber){
+		var test = $scope.driverNumber;
+		dLNumber = test.toUpperCase();
+		}
+		
+		fName = $filter('capitalize')(this.firstName);
+		lName = $filter('capitalize')(this.lastName);
+		// console.log('Test', dLNumber);
+			
 		// var cardExp;
 		// var last4;
 
@@ -619,8 +644,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
 			var offender = new Offenders ({
-				firstName: this.firstName,
-				lastName: this.lastName,
+				firstName: fName,
+				lastName: lName,
 				mInitial: this.mInitial,
 				mainPhone: mainPhone, 
 				altPhone: altPhone, 
@@ -633,7 +658,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				vehicleMake: $scope.vehicleMake, 
 				vehicleYear: $scope.vehicleYear,
 				vehicleModel: $scope.vehicleModel,
-				driverNumber: $scope.driverNumber, 
+				driverNumber: dLNumber, 
 				
 				dobMO: $scope.dobMO,
 				dobDAY: $scope.dobDAY,
@@ -1261,7 +1286,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
   ]).controller('clientLookUpController', [
-    '$scope', '$modalInstance', 'items', 'offenderList', 'Offenders', '$timeout',  'Devices', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location',  function($scope, $modalInstance, items, offenderList, Offenders, $timeout, Devices, Authentication, $http, Workorders, Shops, workorder, $location) {
+    '$scope', '$modalInstance', 'items', 'offenderList', 'Offenders', '$timeout',  'Devices', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location', 'portalPayments',   function($scope, $modalInstance, items, offenderList, Offenders, $timeout, Devices, Authentication, $http, Workorders, Shops, workorder, $location, portalPayments) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
      $scope.offenderList = offenderList;
@@ -1340,6 +1365,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// Redirect after save
 			workorder.$save(function(response) {
 				console.log('Response from new work order', response);
+				portalPayments.newPayment(workorder, $scope.offender);
 					workorder._id = response._id;
 					var offender = Offenders.get({offenderId: $scope.offender._id});
 					offender.$promise.then(function(){
@@ -1404,9 +1430,15 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
       };
 
+      //Close Modal
+         $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+      };
+
+
 
  }]).controller('ModalInstanceCtrl', [
-    '$scope', '$modalInstance', 'items', 'offender', 'Devices', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location',  function($scope, $modalInstance, items, offender, Devices, Authentication, $http, Workorders, Shops, workorder, $location) {
+    '$scope', '$modalInstance', 'items', 'offender', 'Devices', 'Authentication', '$http', 'Workorders', 'Shops', 'workorder', '$location', 'portalPayments',   function($scope, $modalInstance, items, offender, Devices, Authentication, $http, Workorders, Shops, workorder, $location, portalPayments) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
      $scope.offender = offender;
@@ -1825,6 +1857,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// Redirect after save
 			workorder.$save(function(response) {
 					$scope.workOrder._id = response._id;
+					portalPayments.newPayment(workorder, $scope.offender);
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
@@ -1975,6 +2008,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// Redirect after save
 			workorder.$save(function(response) {
 					// $scope.workOrder._id = response._id;
+					portalPayments.newPayment(workorder, $scope.offender);
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
@@ -2277,7 +2311,7 @@ $scope.mytime = $scope.dt;
 
 
 
- }]).controller('NEWworkOrderCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'Payments',  function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, Payments) {
+ }]).controller('NEWworkOrderCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'Payments', 'portalPayments',   function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, Payments, portalPayments) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
     $scope.offender = offender;
@@ -2352,6 +2386,7 @@ $scope.mytime = $scope.dt;
 			// Redirect after save
 			workorder.$save(function(response) {
 					// $scope.workOrder._id = response._id;
+					portalPayments.newPayment(workorder, $scope.offender);
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.pendingWorkType = workorder.type;
         			$scope.offender.$update();
@@ -2908,13 +2943,18 @@ $scope.makePmt = function(){
 	payment.$promise.then(function(){
 
 		console.log('Got the payment - ready to update', payment);
-
-		payment.status = 'Paid';
+		if(payment.authCode){
+			console.log('Has AuthCode -- need to mark as paid', payment.authCode);
+			payment.status = 'Paid';
+		}else{
+			payment.status = 'Pending Reconcilliation';
+		}
+		
 		payment.notes = $scope.payment.notes;
 		payment.paidDate = Date.now();
 		payment.pmtOpt = payment.pmtOpt || $scope.pmtOpt;
 		payment.$update();
-		 $modalInstance.dismiss('paid');
+		 $modalInstance.dismiss('payment confirmed');
 		 toastr.success('Payment applied');
 	})
 

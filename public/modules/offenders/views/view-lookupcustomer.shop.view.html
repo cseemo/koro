@@ -29,9 +29,17 @@ h2{
 </style>
 
 <section data-ng-controller="OffendersController">
- 
+     
       
                <div class="panel panel-primary text-center">
+                <div class="col-md-12 stickyTop" data-ng-show="error">
+                            <span >
+                            <alert class="text-center" type="danger" >
+       {{error}}
+        </alert>
+
+                            </span>
+                            </div>
                   <div class="panel-body ">
                   
                     <h2>Lookup Customer</h2>
@@ -85,21 +93,23 @@ h2{
                                  </div>
                             </th>
                             <th>
-                                <div class="th" colspan="3">
+                                <div class="th">
                                    Vehicle Information
                                  </div>
                             </th>
                             <th>
-                                <div class="th" colspan="3">
+                                <div class="th">
                                    State Reporting To
                                  </div>
                             </th>
+                            </tr>
                             </thead>
                             <tbody>
 
                             <tr data-ng-click="pickClient($index)" data-ng-repeat="c in offenderList track by $index">
                             
-                            <td>{{c.displayName}}</td><td colspan="3">{{c.vehicleYear}} {{c.vehicleMake}} {{c.vehicleModel}}</td>
+                            <td>{{c.displayName}}</td><td>{{c.vehicleYear}} {{c.vehicleMake}} {{c.vehicleModel}}</td>
+
                             <td>{{c.stateReportTo}}</td>
                            
                             </tr>

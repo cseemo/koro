@@ -1105,12 +1105,12 @@ var test = new Buffer(testCalendar).toString('base64');
 	},
 	'merge': true,
 	'global_merge_vars': [{
-		'name': 'merge1',
-		'content': 'merge1 content'
-	}],
-	'merge_vars': [{
-			'rcpt': req.body.offender.offenderEmail,
-			'vars': [{
+	// 	'name': 'merge1',
+	// 	'content': 'merge1 content'
+	// }],
+	// 'merge_vars': [{
+	// 		'rcpt': req.body.offender.offenderEmail,
+			// 'vars': [{
 					'name': 'serviceCenter',
 					'content': req.body.workinfo.serviceCenter
 				},
@@ -1192,13 +1192,13 @@ var test = new Buffer(testCalendar).toString('base64');
 				{
 					'name': 'apptDate',
 					'content': apptDate
-				}
+				// }
 
 
 
 
 
-				]
+				// ]
 	}],
 	'important': false,
 	'track_opens': null,
