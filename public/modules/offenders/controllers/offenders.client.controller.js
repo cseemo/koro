@@ -2755,7 +2755,7 @@ $scope.mytime = $scope.dt;
 
 					$scope.updatePmtProfile = function(row){
 						console.log('Choosing Payment Profile #'+row);
-						console.log('Write code to Update Payment Profile %o', $scope.paymentProfiles[row]);
+						// console.log('Write code to Update Payment Profile %o', $scope.paymentProfiles[row]);
 						$scope.updateChosen = true;
 						return $scope.paymentProfile = $scope.paymentProfiles[row];
 
@@ -2766,7 +2766,7 @@ $scope.mytime = $scope.dt;
 						console.log('Deleting Payment Profile #',row);
 						console.log($scope.paymentProfiles[row]);
 						
-						toastr.info('Write code to delete Profile');
+						// toastr.info('Write code to delete Profile');
 						authorizeCIM.deletePaymentProfile($scope.paymentProfiles[row], offender)
 						.success(function(response){
 							console.log('Deleted that motha ', response);
@@ -2782,7 +2782,7 @@ $scope.mytime = $scope.dt;
 					
 					$scope.updatePaymentProfile = function(){
 						console.log('Updating Payment Profile #', $scope.paymentProfile);
-						toastr.info('Write code to Update Payment Profile');
+						// toastr.info('Write code to Update Payment Profile');
 						
 				      	var expDate = $scope.expYear+'-'+$scope.expMonth;
 				      	
@@ -2818,7 +2818,7 @@ $scope.mytime = $scope.dt;
 
 					$scope.newPmtProfile = function(){
 						console.log('Adding New  Payment Profile #');
-						toastr.info('Write code to Add New  Payment Profile');
+						// toastr.info('Write code to Add New  Payment Profile');
 						  	var expDate = $scope.expYear+'-'+$scope.expMonth;
 				      	
 						var cardData = {	

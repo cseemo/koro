@@ -177,75 +177,75 @@ var job = new CronJob({
 job.start();
 
 
-var job2 = new CronJob({
-  cronTime: '20,40 * * * * 0-6',
-  //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
-  onTick: function() {
-  	console.log('Job 2 Has Been Called...');
-  	var today = new moment();
-  	// var startDate = moment().hours(0).minutes(0).seconds(0);
-	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+// var job2 = new CronJob({
+//   cronTime: '20,40 * * * * 0-6',
+//   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
+//   onTick: function() {
+//   	console.log('Job 2 Has Been Called...');
+//   	var today = new moment();
+//   	// var startDate = moment().hours(0).minutes(0).seconds(0);
+// 	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
 	
-    console.log('Running Job2!!', convertedPretty);
-    // createMonthlyCharge();
-  },
-  start: false,
-  // timeZone: "America/Los_Angeles"
-});
-job2.start();
+//     console.log('Running Job2!!', convertedPretty);
+//     // createMonthlyCharge();
+//   },
+//   start: false,
+//   // timeZone: "America/Los_Angeles"
+// });
+// job2.start();
 
-var job3 = new CronJob({
-  cronTime: '0,30 30 * * * 0-6',
-  //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
-  onTick: function() {
-  	console.log('Job 3 Has Been Called...');
-  	var today = new moment();
-  	// var startDate = moment().hours(0).minutes(0).seconds(0);
-	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+// var job3 = new CronJob({
+//   cronTime: '0,30 30 * * * 0-6',
+//   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
+//   onTick: function() {
+//   	console.log('Job 3 Has Been Called...');
+//   	var today = new moment();
+//   	// var startDate = moment().hours(0).minutes(0).seconds(0);
+// 	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
 	
-    console.log('Running Job3!!', convertedPretty);
-    // createMonthlyCharge();
-  },
-  start: false,
-  // timeZone: "America/Los_Angeles"
-});
-job3.start();
+//     console.log('Running Job3!!', convertedPretty);
+//     // createMonthlyCharge();
+//   },
+//   start: false,
+//   // timeZone: "America/Los_Angeles"
+// });
+// job3.start();
 
-var job4 = new CronJob({
-  cronTime: '0,30 01 18,19,20 * * 0-6',
-  //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
-  onTick: function() {
-  	console.log('Job 4 Has Been Called...');
-  	var today = new moment();
-  	// var startDate = moment().hours(0).minutes(0).seconds(0);
-	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+// var job4 = new CronJob({
+//   cronTime: '0,30 01 18,19,20 * * 0-6',
+//   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
+//   onTick: function() {
+//   	console.log('Job 4 Has Been Called...');
+//   	var today = new moment();
+//   	// var startDate = moment().hours(0).minutes(0).seconds(0);
+// 	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
 	
-    console.log('Running Job4!!', convertedPretty);
-    console.log('WOOOOOOOTOOOOTOTOTOOT');
-    // createMonthlyCharge();
-  },
-  start: false,
-  // timeZone: "America/Los_Angeles"
-});
-job4.start();
+//     console.log('Running Job4!!', convertedPretty);
+//     console.log('WOOOOOOOTOOOOTOTOTOOT');
+//     // createMonthlyCharge();
+//   },
+//   start: false,
+//   // timeZone: "America/Los_Angeles"
+// });
+// job4.start();
 
 
-var job5 = new CronJob({
-  cronTime: '01 01 21 * * 0-6',
-  //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
-  onTick: function() {
-  	console.log('Job 5Has Been Called...');
-  	var today = new moment();
-  	// var startDate = moment().hours(0).minutes(0).seconds(0);
-	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+// var job5 = new CronJob({
+//   cronTime: '01 01 21 * * 0-6',
+//   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
+//   onTick: function() {
+//   	console.log('Job 5Has Been Called...');
+//   	var today = new moment();
+//   	// var startDate = moment().hours(0).minutes(0).seconds(0);
+// 	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
 	
-    console.log('Running Job5 !!', convertedPretty);
-    createMonthlyCharge();
-  },
-  start: false,
-  // timeZone: "America/Los_Angeles"
-});
-job5.start();
+//     console.log('Running Job5 !!', convertedPretty);
+//     createMonthlyCharge();
+//   },
+//   start: false,
+//   // timeZone: "America/Los_Angeles"
+// });
+// job5.start();
 
 
 // createMonthlyCharge();
