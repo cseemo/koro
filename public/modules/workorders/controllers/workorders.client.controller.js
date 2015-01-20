@@ -145,27 +145,11 @@ $scope.approveWorkOrderPayment = function(){
 		//Charge Credit Card for Work order
 		var chargeCard = function (wo, off){
 			console.log('Charging Credit Card Now', $scope.offender);
+			var pmt = Payments.query({workorder: wo._id});
+   						pmt.$promise.then(function(){
+   						console.log('Got payment...', pmt);
 
-
-        	//Create New Payment
-        		var pmt = new Payments ({
-				workorder: wo._id,
-				pmtType: wo.type,
-				pmtOpt: 'Credit Card', 
-				offender: off._id,
-				status: 'Due',
-				notes: 'Attempting to Auto-Pay thru Portal', 
-				amount: wo.amount
-				
-			});
-
-        		
-			// Redirect after save
-			pmt.$save(function(response) {
-					console.log('Response from saving PMT: ', response);
-
-        		});
-
+   						});
 
 
 						$http({
@@ -179,7 +163,16 @@ $scope.approveWorkOrderPayment = function(){
 					  })
 					.error(function(data) {
 						console.log('Error!! ', data);
-						toastr.error(data);
+						toastr.error(data.error.message);
+						// var pmt = Payments.get({workorder: wo._id});
+   			// 			pmt.$promise.then(function(){
+   							pmt = pmt[0];
+   							pmt.notes = 'Payment Error via Portal: '+data.error.message;
+	   						// console.log('Do we still have payment? - can we Add AuthCode and update status', pmt);
+	   						pmt.status = 'Due';
+	   						// pmt.authCode = authCode;
+	   						pmt.$update();
+	   		// 			});
 					})
 					.success(function(data, status, headers, config) {
 						console.log('Data From Charge: ', data.directResponse);
@@ -196,13 +189,20 @@ $scope.approveWorkOrderPayment = function(){
    						wo.pmtStatus = 'Paid';
    						wo.amount = amount;
    						wo.$update();
-   						pmt.notes = 'AutoPaid: '+description+' on '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+
+
+						// var pmt = Payments.get({workorder: wo._id});
+   			// 			pmt.$promise.then(function(){
+   							pmt = pmt[0];
+   							pmt.notes = 'AutoPaid: '+description+' on '+resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+	   						console.log('Do we still have payment? - can we Add AuthCode and update status', pmt);
+	   						pmt.status = 'Paid';
+	   						pmt.authCode = authCode;
+	   						pmt.$update();
+	   					// });
+
+   						})
    						
-   						console.log('Do we still have payment? - can we Add AuthCode and update status', pmt);
-   						pmt.status = 'Paid';
-   						pmt.authCode = authCode;
-   						pmt.$update();
-   					});
 
 			
 		};
@@ -283,7 +283,7 @@ $scope.approveWorkOrderPayment = function(){
 			     			console.log('Workorder in question: ', workorder);
 			     			chargeCard(workorder, $scope.offender);
 			     		} else {
-			     			createPayment(workorder, $scope.offender);
+			     			// createPayment(workorder, $scope.offender);
 			     		}
 			     		
    					});

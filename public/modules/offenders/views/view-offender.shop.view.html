@@ -691,7 +691,7 @@ max-height: 300px;
 	                    <td>{{item.payment.creditCard.cardNumber}}</td>
 	                     <td>{{item.payment.creditCard.expirationDate}}</td>
 	                     <td> <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="choosePmt($index)">
-				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Charge {{item.payment.creditCard.cardNumber}}
+				<span class="fa fa-credit-card" aria-hidden="true"></span> Charge {{item.payment.creditCard.cardNumber}}
 			</a></td>
 
 	                    
@@ -1129,12 +1129,22 @@ max-height: 300px;
 
 
 
+
+
     <script type="text/ng-template" id="pmtInfoModalContent.html">
        
         <div class="modal-header">
             <h3>Update Payment Methods for {{offender.firstName}} {{offender.lastName}}<h3>
         </div>
         <div class="modal-body">
+        	<div class="col-md-12">
+
+
+        <div class="row">
+        
+
+        	     	<div class="panel-primary">
+
         	     	<span data-ng-hide="!paymentProfiles">
         	     	<h3>Update a Credit Card Already On-File...</h3>
 
@@ -1164,6 +1174,11 @@ max-height: 300px;
 	                                Card Number
 	                        </div>
 	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Active Billing Card
+	                        </div>
+	                        </th>
 	                        
 	                         <th>
 	                            <div class="th">
@@ -1182,9 +1197,17 @@ max-height: 300px;
 	                    <td>{{item.billTo.zip}}</td>
 	                    <td>{{item.payment.creditCard.cardNumber}}</td>
 	                    
-	                     <td> <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="deletePmtProfile($index)">
+	                   
+						<td data-ng-show="item.customerPaymentProfileId==offender.paymentProfileId">Primary Card</td>
+			<td data-ng-hide="item.customerPaymentProfileId==offender.paymentProfileId"><a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="makePrimary($index)" >
+				Make Primary
+			</a></td>
+
+			  <td> <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="deletePmtProfile($index)">
 				Delete Profile
 			</a></td>
+			
+
 
 	                    
 	                    </tr>
@@ -1194,7 +1217,6 @@ max-height: 300px;
 	                    </tbody>
 	                    </table>
 	                    </div>
-	                    <hr>
 	                    </span>
 	                    <span data-ng-hide="onFile">
 	                     <h3>Input a New Credit Card Number</h3>

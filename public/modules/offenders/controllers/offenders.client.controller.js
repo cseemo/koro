@@ -743,7 +743,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
     $scope.numPerPage = $scope.numPerPageOpt[2];
     $scope.currentPage = 1;
     //$scope.currentPageDeals= $scope.getinit;
-    $scope.currentpageOffenders= [];
+    $scope.currentPageOffenders= [];
 
 
 
@@ -752,10 +752,14 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       var end, start;
       start = (page - 1) * $scope.numPerPage;
       end = start + $scope.numPerPage;
-      //////////////console.log('Start '+start+' and End '+end);
-      $scope.currentPage = page;
+      // console.log('Start '+start+' and End '+end);
      
-      return $scope.currentPageOffenders = $scope.filteredOffenders.slice(start, end);
+      // console.log('Filtered Offenders', $scope.filteredOffenders);
+      $scope.currentPage = page;
+      $scope.currentPageOffenders = $scope.filteredOffenders.slice(start, end);
+      // console.log('Current Page Offenders', $scope.currentPageOffenders);
+
+      return $scope.currentPageOffenders;
 
 
     };
@@ -774,7 +778,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       return $scope.currentPage = 1;
     };
     $scope.search = function() {
-      //////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
+      // console.log('Keywords: ', $scope.tableData.searchKeywords);
+      // console.log('Offenders; ', $scope.offenders);
       $scope.filteredOffenders = $filter('filter')($scope.offenders, $scope.tableData.searchKeywords);
 
       return $scope.onFilterChange();
@@ -782,7 +787,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
      $scope.searchPending = function() {
       //////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
-      $scope.filteredOffenders = $filter('filter')($scope.offenders, $scope.tableData.searchKeywords);
+      $scope.filteredOffenders = $filter('filter')($scope.pendingOffenders, $scope.tableData.searchKeywords);
 
       // {companyname: $scope.tableData.searchKeywords},
 
@@ -1044,12 +1049,14 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		// 	})
 		if($scope.authentication.user.shop){
 			console.log('Looking for Pending ', $scope.authentication.user.shop);
+
+
 			$scope.filteredOffenders = Offenders.query({
 				// status: 'Pending',
 				assignedShop: $scope.authentication.user.shop
 			});
 			$scope.filteredOffenders.$promise.then(function(data, status) {
-					
+					$scope.pendingOffenders = data;
 					console.log('Return Data: ', data);
 					// $scope.offenders = data;
 					// $scope.filteredOffenders = data;
@@ -2582,6 +2589,20 @@ $scope.mytime = $scope.dt;
 
   };
 
+  $scope.makePrimary = function(row){
+  	console.log('Row Chosen', row);
+  	$scope.offender.$promise.then(function() {
+  		console.log('Offender: ', $scope.offender);
+  		var profile = $scope.paymentProfiles[row];
+  		$scope.offender.paymentProfileId = profile.customerPaymentProfileId;
+  		console.log('Offender after update', $scope.offender);
+  		$scope.offender.$update();
+  		return $scope.paymentProfiles;
+  	});
+
+
+  };
+
 	$scope.myShop = function(){
 		console.log('Getting our shop');
       		
@@ -2626,9 +2647,14 @@ $scope.mytime = $scope.dt;
 					.error(function(data) {
 						console.log('Error!! ', data);
 						toastr.error(data);
-						$scope.error = data.error.message;
+						$scope.error = data;
 					})
 					.success(function(data, status, headers, config) {
+						if(status===200){
+							console.log('Approved Payment...');
+						}else{
+							console.log('Non approved payment');
+						}
 						$scope.chargeComplete = true;
 						console.log('Data From Charge: ', data.directResponse);
 						var resp = data.directResponse.split(',');
@@ -2673,15 +2699,29 @@ $scope.mytime = $scope.dt;
 						var payment = Payments.get({paymentId: $scope.pmtchosen._id}, function(ret){
 							$scope.payment = payment;
 							console.log('Return?? :', ret);
-							payment.authCode = authCode;
-							payment.pmtOpt = 'Credit Card via Portal';
-							payment.paidDate = Date.now();
-							payment.status = 'Paid';
-							payment.notes = resp[51]+'-'+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+							if(authCode){
+								console.log('This payment appears to have been approved...');
+								payment.authCode = authCode;
+								payment.pmtOpt = 'Credit Card via Portal';
+								payment.paidDate = Date.now();
+								payment.status = 'Paid';
+								payment.notes = resp[51]+'-'+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+								toastr.success(resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
+
+							}else if (payment==='Credit Card' && $scope.error){
+								console.log('This payment appears to have been declined...');
+								// payment.authCode = authCode;
+								// payment.pmtOpt = 'Credit Card via Portal';
+								// payment.paidDate = Date.now();
+								payment.status = 'Due';
+								// payment.notes = resp[51]+'-'+resp[50]+' for $'+amount+'. Authorization Code: '+authCode;
+								// toastr.success(resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
+								payment.notes = $scope.error;
+
+							}
 							payment.$update();
 							console.log('Payment Chosen: ', payment);
-							toastr.success(resp[51]+resp[50]+' for $'+amount+'. Authorization Code: '+authCode);
-
+							
 						})
 						
 						
@@ -2947,12 +2987,19 @@ $scope.makePmt = function(){
 			console.log('Has AuthCode -- need to mark as paid', payment.authCode);
 			payment.status = 'Paid';
 		}else{
-			payment.status = 'Pending Reconcilliation';
+
+			if($scope.pmtOpt!=='Credit Card'){
+				payment.notes = 'Portal Payment: '+$scope.pmtOpt+' | '+$scope.payment.notes;
+				payment.paidDate = Date.now();
+				payment.status = 'Pending Confirmation';
+				payment.pmtOpt = payment.pmtOpt || $scope.pmtOpt;
+			}
+
+
+			// payment.status = 'Pending Reconcilliation';
 		}
 		
-		payment.notes = $scope.payment.notes;
-		payment.paidDate = Date.now();
-		payment.pmtOpt = payment.pmtOpt || $scope.pmtOpt;
+	
 		payment.$update();
 		 $modalInstance.dismiss('payment confirmed');
 		 toastr.success('Payment applied');

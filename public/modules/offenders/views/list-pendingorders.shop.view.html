@@ -62,17 +62,7 @@ color: #333;
                                       data-ng-class="{active: row == '-pendingWorkType'}"></span>
                             </div>
                         </th>
-                    <th>
-                         <div class="th">
-                                Appointment Date
-                                <span class="fa fa-angle-up"
-                                      data-ng-click=" order('apptDate') "
-                                      data-ng-class="{active: row == 'apptDate'}"></span>
-                                <span class="fa fa-angle-down"
-                                      data-ng-click=" order('-apptDate') "
-                                      data-ng-class="{active: row == '-apptDate'}"></span>
-                            </div>
-                        </th>
+                  
           
                         <th>
                             <div class="th">
@@ -116,8 +106,6 @@ color: #333;
                     <tr data-ng-repeat="item in currentPageOffenders" >
                     <td><a data-ng-click="setCurrentOffender()" href="#!/customer/{{item._id}}">{{item.firstName}} {{item.lastName}}</a></td>
                     <td>{{item.pendingWorkType}}</td>
-                    <td>{{item.apptDate}}</td>
-                    <td>{{item.status}}</td>
                     <td>{{item.mainPhone}}</td>
                     <td>{{item.billingCity}}</td>
                     <td>{{item.billingState}}</td>

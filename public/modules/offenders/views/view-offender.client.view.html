@@ -515,6 +515,7 @@ h1, h2, h3{
 	                                Notes 
 	                        </div>
 	                        </th>
+	                        
 
 	                                  </tr> 
 	                </thead>
@@ -527,6 +528,7 @@ h1, h2, h3{
 	                    <td>${{pmt.amount}}</td>
 	                    <td>{{pmt.status}}</td>
 	                    <td>{{pmt.notes}}</td>
+
 	                    </tr>
 
 
@@ -854,6 +856,7 @@ h1, h2, h3{
 	                                Charge Card
 	                        </div>
 	                        </th>
+	                        
 
 	                                  </tr> 
 	                </thead>
@@ -865,9 +868,9 @@ h1, h2, h3{
 	                    <td>{{item.payment.creditCard.cardNumber}}</td>
 	                     <td>{{item.payment.creditCard.expirationDate}}</td>
 	                     <td> <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="choosePmt($index)">
-				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Charge {{item.payment.creditCard.cardNumber}}
+				<span class="fa fa-credit-card" aria-hidden="true"></span> Charge {{item.payment.creditCard.cardNumber}}
 			</a></td>
-
+			
 	                    
 	                    </tr>
 
@@ -1036,6 +1039,11 @@ h1, h2, h3{
 	                                Card Number
 	                        </div>
 	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Active Billing Card
+	                        </div>
+	                        </th>
 	                        
 	                         <th>
 	                            <div class="th">
@@ -1054,9 +1062,17 @@ h1, h2, h3{
 	                    <td>{{item.billTo.zip}}</td>
 	                    <td>{{item.payment.creditCard.cardNumber}}</td>
 	                    
-	                     <td> <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="deletePmtProfile($index)">
+	                   
+						<td data-ng-show="item.customerPaymentProfileId==offender.paymentProfileId">Primary Card</td>
+			<td data-ng-hide="item.customerPaymentProfileId==offender.paymentProfileId"><a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="makePrimary($index)" >
+				Make Primary
+			</a></td>
+
+			  <td> <a class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="deletePmtProfile($index)">
 				Delete Profile
 			</a></td>
+			
+
 
 	                    
 	                    </tr>
