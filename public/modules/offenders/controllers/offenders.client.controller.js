@@ -1470,15 +1470,31 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
      	$scope.deviceChosen = true;
      	var device = $scope.availableDevices[row];
      	console.log('Device: ', device);
+     	var oldDeviceSN = $scope.offender.deviceSN;
+     	var oldDevice = Devices.query({serialNumber: oldDeviceSN});
+     	oldDevice.$promise.then(function(){
+     				oldDevice = oldDevice[0];
+     		     	console.log('oldDevice: ', oldDevice);
+			     	oldDevice.status = 'Pending Shop Movement';
+     				oldDevice.$update();
+
+     	});
+
+
      	$scope.offender.deviceSN = $scope.availableDevices[row]['serialNumber'];
      	$scope.offender.device = $scope.availableDevices[row]['_id'];
      	console.log('Offender: ', $scope.offender);
      	$scope.availableDevices.splice(row, 1);
+     	$scope.offender.deployedDate = Date.now();
      	$scope.offender.$update();
      	
      	device.status = 'Deployed';
+     	device.offender = $scope.offender._id;
         $scope.deviceSN = device.serialNumber;
        console.log('Device: ', device);
+       device.$update();
+       console.log('Updated and done...', device);
+       console.log('Offender: ', $scope.offender);
        
   
         // $modalInstance.dismiss('Device Incentoried');

@@ -49,6 +49,10 @@ var OffenderSchema = new Schema({
 		type: Date,
 		default: null
 	},
+		deployedDate: {
+		type: Date,
+		default: null
+	},
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'

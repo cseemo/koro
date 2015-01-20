@@ -269,6 +269,12 @@ h1, h2, h3{
 	                                        <label>Type</label>
 	                                        Brac Auditlock 1
 	                                    </li>
+	                                 
+	                                    <li>
+	                                        
+	                                        <label>Serial Number</label>
+	                                        {{offender.deviceSN}}
+	                                    </li>
 	                                    <li>
 	                                       
 	                                        <label>Reports To</label>
@@ -277,7 +283,7 @@ h1, h2, h3{
 	                                    <li>
 	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
 	                                        <label>Deployed</label>
-	                                        {{offender.created | date: 'MMM d, yyyy' || 'N/A'}}
+	                                        {{offender.deployedDate | date: 'MMM d, yyyy' || 'N/A'}}
 	                                    </li>
 	                                    <li>
 	                                       <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
