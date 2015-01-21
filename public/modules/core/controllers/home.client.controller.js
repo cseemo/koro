@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('core').controller('HomeController', ['$scope', 'Authentication', '$location',  
-	function($scope, Authentication, $location, ) {
+	function($scope, Authentication, $location ) {
 		// uiGmapGoogleMapApi 'uiGmapGoogleMapApi',
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
