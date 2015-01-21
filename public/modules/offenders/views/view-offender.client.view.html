@@ -599,21 +599,66 @@ tbody{
         <label>Customer: </label>{{offender.displayName}}<br>
         <label>Service Type: </label>{{workorder.type}}<br>
         <label>Status: </label>{{workorder.status}}<br>
-        <label>Apointment Date: </label>{{workorder.apptDate}}<br>
-        <label>Service Fee: </label> <input type="text" ng-model="workorder.amount"/><br>
-        <label>Created by: </label>{{workorder.user.displayName}}
-
+        <label>Apointment Date: </label> <span class="link"> <a data-ng-click="changeAppt()"> {{workorder.apptDate | date: 'medium' }} </a></span><br> 
+        
 
 
 <br>
+	<span data-ng-show="showCalendar">
+	         <fieldset>
+	         <hr>
+        	<div class="col-md-6 inline-block">
+        <label>Choose the Date for the New Appointment</label>
+       
+         <div class="input-group ui-datepicker" ng-click="openCalendar($event)" ng-init="findWorkOrder(workorder._id)">
+                    <span class="input-group-addon" ><i class="fa fa-calendar"></i></span>
+                    <input type="text" 
+                           class="form-control "
+                           datepicker-popup="{{format}}"
+                           ng-model="dt"
+                           is-open="opened"
+                           min="minDate"
+                           max="'2016-06-22'"
+                           datepicker-options="dateOptions"
+                           ng-required="true" 
+                           close-text="Close"
+                           style="width: 65%"
+                           name="ApptDate"
+                           >
+                   
+                     
 
-	<label>Service Center</label>
+
+                </div>
+                </div>
+                
+                 <div class="col-md-6 inline-block">
+                <label> Please Choose the New Appointment Time/Date:</label>
+                 
+
+                   <div ng-model="mytime" ng-change="changed()" style="display:inline-block;" >
+                    <timepicker class="ui-timepicker" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian" ></timepicker>
+                </div>  
+                </div>
+               	<br>
+
+                  <button class="btn btn-secondary btn-sm"  ng-click="updateAppt()">Update Appointment</button>
+                   </fieldset>
+                  <br>
+                  <hr>
+	</span>
+
+<label>Service Fee: </label> <input type="text" ng-model="workorder.amount"/><br>
+        <label>Created by: </label>{{workorder.user.displayName}}<br>
+
+
+	<label>Re-Assign to a Different Service Center:</label>
 				<select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"></select>
         	   
 
 <br>
 
-        	    <label>Notes</label>
+        	    <label>Notes:</label>
         	    <textarea type="text" data-ng-model="workorder.orderNotes"  id="orderNotes" class="form-control" placeholder="Notes...reasons for making change" >
 
         	    </textarea>
@@ -786,8 +831,8 @@ tbody{
 
         <div class="row">
         <div class="col-md-6"> 
-        	    <label>Amount to Pay: </label>
-        	  <input type="text" data-ng-model="pmtAmount"  id="" class="form-control" placeholder="Amount" >
+        	    <label>Amount to Pay: {{pmtchosen.amount}} </label>
+        	  <input type="text" data-ng-model="pmtchosen.amount"  id="" class="form-control" placeholder="Amount" >
         	
         	    </div>
         	   
@@ -796,7 +841,7 @@ tbody{
         	
 
 			<label>Payment Type:</label>
-        	  <select class="form-control" data-ng-model="pmtOpt"  data-ng-options="item for item in pmtOpts" ><option value=""></option></select>
+        	  <select class="form-control" data-ng-model="pmtOpt"  data-ng-change="changepmtType()" data-ng-options="item for item in pmtOpts" ><option value=""></option></select>
 
         	  </div>
         	  </div>
@@ -980,7 +1025,7 @@ tbody{
         	   	 </span>
 
         <div class="modal-footer">
-            <button class="btn btn-primary"  hng-disabled="!hide" ng-click="makePmt()">Confirm Payment</button>
+            <button class="btn btn-primary"  ng-disabled="!hide" ng-click="makePmt()">Confirm Payment</button>
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>

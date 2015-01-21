@@ -14,6 +14,26 @@ angular.module('payments').factory('Payments', ['$resource',
 	var paymentProfiles = [];
 	var portalPayments = {};
 
+	this.sendReceipt = function(pmt){
+		console.log('Sending Receipt Now');
+		$http({
+					method: 'post',
+					url: '/sendReceipt/',
+					data: {
+						payment: pmt
+					}
+				}).success(function(err, data, status) {
+					console.log('Got Receipt Response', data);
+					toastr.success('Receipt Sent: ', data);
+					return data;
+				}).error(function(err, status){
+					
+					console.log('Error: ', err);
+					return err;
+
+				});
+		};
+
 	this.newPayment = function(wo, off){
 		console.log('Runnign Payment Service');
 

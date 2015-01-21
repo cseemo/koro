@@ -17,6 +17,9 @@ module.exports = function(app) {
 		.put(payments.update);
 
 		
+		app.route('/sendReceipt')
+		.post(payments.sendReceipt);
+		
 		app.route('/checkpastdue')
 		.post(payments.checkPastDue);
 

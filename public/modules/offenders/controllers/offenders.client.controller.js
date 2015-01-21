@@ -1540,12 +1540,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       };
       $scope.whomCus = true;
       $scope.chosen = items[0];
-      $scope.subjectText = ' Authorization from Budget Ignition Interlock';
+      $scope.subjectText = ' Authorization from Budget IID, LLC';
       $scope.sendToOptions = ['Customer', 'Service Center', 'Court', 'Attorney', 'Other'];
       $scope.sendTo = $scope.sendToOptions[0];
       // console.log('Our Offender Is: ', offender);
 
-      $scope.emailSubject = 'Welcome to Budget Ignition Interlock';
+      $scope.emailSubject = 'Welcome to Budget IID, LLC';
       	
       
       $scope.offender = offender;
@@ -1565,13 +1565,13 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       	console.log('Changing who', $scope.sendTo);
       	if($scope.sendTo==='Customer'){
       			$scope.emailAddress = offender.offenderEmail;
-      			$scope.subjectText = ' Authorization from Budget Ignition Interlock';
-      			$scope.emailSubject = $scope.chosen+$scope.subjectText;
+      			$scope.subjectText = ' Authorization from Budget IID, LLC';
+      			$scope.emailSubject = 'Service Authorization from Budget IID, LLC';
       			$scope.toWhomName = $scope.offender.displayName;
       			$scope.whomCus = true;
       	}else{
       		$scope.emailAddress = null;
-      		$scope.subjectText = ' Work Authorization for '+offender.firstName+' '+offender.lastName+' from Budget Ignition Interlock ';
+      		$scope.subjectText = ' Work Authorization for '+offender.firstName+' '+offender.lastName+' from Budget IID, LLC ';
       		$scope.emailSubject = $scope.chosen+$scope.subjectText;
       		$scope.toWhomName = $scope.toWhoName;
       		$scope.whomCus = false;
@@ -1598,11 +1598,11 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
             $scope.changeType = function(){
       	console.log('Changing Type', $scope.chosen);
       	if($scope.chosen==='New Install'){
-      		$scope.emailSubject = 'Welcome to Budget Ignition Interlock';
+      		$scope.emailSubject = 'Welcome to Budget IID, LLC';
       	}else{
 
       	}
-      	$scope.emailSubject = $scope.chosen+' Authorization from Budget Ignition Interlock';
+      	$scope.emailSubject = 'Service Authorization from Budget IID, LLC';
       };
 
 
@@ -1794,7 +1794,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
   			$scope.workorder.email = $scope.offender.offenderEmail;
 		     // $scope.workorder.type =  'New Install';
-		     $scope.workorder.subject = 'Authorization for Budget Ignition Interlock';
+		     $scope.workorder.subject = 'Authorization for Budget IID, LLC';
 		     $scope.workorder.toWhom = 'Customer';
 		     // $scope.workorder.serviceCenter = 'Need to get SVC CEnter Name';
 		     $scope.workorder.toWhomName =  $scope.offender.firstName+' '+ $scope.offender.lastName;
@@ -2312,6 +2312,7 @@ $scope.mytime = $scope.dt;
 
 
       	console.log('Ok Pressed ', $scope.workorder);
+     
       	console.log('Serivce Fee: ', $scope.workorder.amount);
       	var amt = $scope.workorder.amount;
       		$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
@@ -2337,6 +2338,135 @@ $scope.mytime = $scope.dt;
 
 		})
 		};
+
+		$scope.updateAppt = function(){
+			console.log('Updating Appointment');
+			if($scope.oldApptDate && $scope.showCalendar) {
+      		console.log('Old Appointment Date: ', $scope.oldApptDate);
+      		console.log('New Appointment Date: ', $scope.workorder.apptDate);
+      		var date = $scope.dt;
+				var time = $scope.mytime;
+				var datetime = new Date(date.getFullYear(), 
+					date.getMonth(), 
+					date.getDate(), 
+					time.getHours(), 
+					time.getMinutes(), 
+					time.getSeconds());
+				console.log('Appt Date Time: ', datetime);
+				datetime.toUTCString();
+				console.log('Converted Appointment: ', datetime);
+
+				$scope.workorder.apptDate = datetime;
+				$scope.workorder.$update(function(){
+
+
+				
+				console.log('Updated...');
+
+				        	$http({
+									method: 'post',
+									
+									url: '/sendICS', 
+									data: {
+										'user': $scope.authentication.user,
+										'offender': $scope.offender,
+										'workinfo': $scope.workorder
+										
+												},
+												
+										})
+									.success(function(data, status) {
+									$scope.showCalendar = false;
+									$scope.sending = false;
+									$scope.results = true;
+									//////console.log('Data from LOA?? %o',data);
+										toastr.success('Appointment has been updated to '+datetime);
+										$scope.myresults = 'Email Sent!';
+										
+
+							}, function(errorResponse) {
+								$scope.error = errorResponse.data.message;
+							});
+        				
+        				});
+			}
+
+
+
+		};
+
+$scope.changeAppt = function(){
+	$scope.oldApptDate = $scope.workorder.apptDate;
+	$scope.showCalendar=true;
+	$scope.dt = $scope.oldApptDate;
+
+
+};
+
+
+ $scope.today = function() {
+        return $scope.dt = new Date();
+      };
+      $scope.today();
+      $scope.showWeeks = true;
+      $scope.toggleWeeks = function() {
+        return $scope.showWeeks = !$scope.showWeeks;
+      };
+      $scope.clear = function() {
+        return $scope.dt = null;
+      };
+      $scope.disabled = function(date, mode) {
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+      };
+      $scope.toggleMin = function() {
+        var _ref;
+        return $scope.minDate = (_ref = $scope.minDate) != null ? _ref : {
+          "null": new Date()
+        };
+      };
+      $scope.toggleMin();
+      $scope.openCalendar = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        return $scope.opened = true;
+      };
+      $scope.dateOptions = {
+        'year-format': "'yy'",
+        'starting-day': 7
+      };
+      $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
+      $scope.format = $scope.formats[0];
+   
+
+$scope.mytime = $scope.dt;
+      $scope.hstep = 1;
+      $scope.mstep = 5;
+      $scope.options = {
+        hstep: [1, 2, 3],
+        mstep: [1, 5, 10, 15, 25, 30]
+      };
+      $scope.ismeridian = true;
+      $scope.toggleMode = function() {
+        return $scope.ismeridian = !$scope.ismeridian;
+      };
+
+
+      $scope.update = function() {
+        var d;
+        d = new Date();
+        d.setHours(14);
+        d.setMinutes(0);
+        return $scope.mytime = d;
+      };
+
+      $scope.changed = function() {
+        return //////////console.log('Time changed to: ' + $scope.mytime);
+      };
+
+      return $scope.clear = function() {
+        return $scope.mytime = null;
+};
+
 
 
 
@@ -2393,7 +2523,7 @@ $scope.mytime = $scope.dt;
         	if($scope.chosen==='Calibration') {
         		chargeAmount = '0';
         	}
-        	
+
 	        	console.log('Charge Amount: ', chargeAmount);
 	        	console.log('$scope.installFee = ', $scope.installFee);
 	        	
@@ -2608,7 +2738,7 @@ $scope.mytime = $scope.dt;
         return $scope.mytime = null;
 };
 
-}]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', 'payments', '$resource', 'authorizeCIM',  function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments, payments, $resource, authorizeCIM) {
+}]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', 'payments', '$resource', 'authorizeCIM', 'portalPayments',   function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments, payments, $resource, authorizeCIM, portalPayments) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
     $scope.offender = offender;
@@ -2985,8 +3115,15 @@ $scope.mytime = $scope.dt;
   $scope.pmtOpts = ['Cash', 'Check', 'Gift Card', 'Credit Card'];
 
   $scope.changepmtType = function() {
-  	console.log('Changing Payment Type');
-  	$scope.hide = false;
+  	console.log('Changing Payment Type', $scope.pmtOpt);
+  	// $scope.hide = false;
+  	if($scope.pmtOpt!=='Credit Card'){
+  		console.log('Not a Credit Card');
+  		$scope.payment.notes = '';
+  	}else{
+  		console.log('Is a Credit Card');
+  		$scope.payment.notes = 'Credit Card Payment:';
+  	}
 
 
   };
@@ -2998,7 +3135,7 @@ $scope.chooseRow = function(row) {
 	console.log('Row: ', row);
 	$scope.hide = true;
 	$scope.pmtchosen = $scope.payments[row];
-	$scope.pmtAmount = $scope.payments[row]['amount'];
+	// $scope.pmt = $scope.payments[row]['amount'];
 	$scope.payment = $scope.payments[row];
 	// $scope.pmtAmount = $scope.wochosen.amount;
 	// $scope.myShop();
@@ -3007,7 +3144,7 @@ $scope.chooseRow = function(row) {
 
 $scope.makePmt = function(){
 	console.log('Making Payment', $scope.pmtOpt);
-	console.log('Payment Amount: ', $scope.pmtAmount);
+	console.log('Payment Amount: ', $scope.pmtchosen.amount);
 	console.log('Work Order Assigned: ', $scope.payment);
 
 	var payment = Payments.get({ 
@@ -3022,10 +3159,13 @@ $scope.makePmt = function(){
 		}else{
 
 			if($scope.pmtOpt!=='Credit Card'){
-				payment.notes = 'Portal Payment by: '+$scope.authentication.user.displayName+' . '+$scope.pmtOpt+' | '+$scope.payment.notes;
+				payment.notes = 'In Person Payment Received by: '+$scope.authentication.user.displayName+'. '+$scope.payment.notes;
 				payment.paidDate = Date.now();
 				payment.status = 'Paid';
 				payment.pmtOpt = payment.pmtOpt || $scope.pmtOpt;
+				portalPayments.sendReceipt(payment);
+				payment.amount = $scope.pmtchosen.amount;
+				payment.$update();
 			}
 
 

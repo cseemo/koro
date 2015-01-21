@@ -17,16 +17,232 @@ var mongoose = require('mongoose'),
 	    api: '5hB56Vus',
 	    key: '37HmG92v4J2yDsMp', //Budget Actual API
 	    sandbox: false //true // false
-	  });
+	  }), 
+	  mandrill = require('mandrill-api/mandrill');
 	  var moment = require('moment');
 	  var Offender = mongoose.model('Offender'),
 	  offenders = require('../../app/controllers/offenders');
-
+	  var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	  var async = require('async');
 
-	  // var q = require('q');
-// var Workorder = require('Workorder');
-// var workorders = require('../../app/controllers/workorders');
+	  //Send Receipt for Cash Payment
+	  exports.sendReceipt = function(req, res){
+	  	console.log('Sending Receipt: ', req.body);
+	  	console.log('Payment: ', req.body.payment);
+	  	if(req.body.payment && req.body.payment.workorder){
+
+	  	workorderByID(req.body.payment.workorder, function(workorder){
+	  			console.log('Return: ', workorder);
+	  			
+	  			offenderByID(workorder.offender, function(err, offender) {
+					if (err) {
+						console.log('Got an error finding the offender; ', err);
+						return res.status(400).send({
+							message: err //errorHandler.getErrorMessage(err)
+						});
+					} else {
+						console.log('Got Offender @ Payment Line 44', offender);
+						// console.log('Req.offender??', req.offender);
+						generateEmailReceipt(workorder, offender, req.body.payment, function(err, retInfo){
+							if(err){
+								console.log('ERROR Line 48 - Payment Server: ', err);
+								res.status(400).send('eror: ', err);
+							}else{
+								console.log('Got our return info: ', retInfo);
+								res.status(200).send('Receipt Complete: ', retInfo);
+							}
+
+						});
+					}
+				});
+	  			
+
+	  		});
+	  }
+	};
+
+	var generateEmailReceipt = function(workorder, offender, payment, cb){
+		console.log('Got to Generate Receipt: ');
+		console.log('-----------------------');
+		console.log('WORKORDER ==========');
+		console.log(workorder);
+		console.log('-----------------------');
+		console.log('-----------------------');
+		console.log('Payment ==========');
+		console.log(payment);
+		console.log('-----------------------');
+		console.log('-----------------------');
+		console.log('OFFENDER ==========');
+		console.log(offender);
+		console.log('-----------------------');
+		
+
+		
+
+
+		
+		var timesrun = 0;
+		var today = moment().format("MMM DD, YYYY [at] hh:mm a");
+		var invoiceNumber = Date.now();
+
+		var message = {	
+		'subject': 'Ignition Interlock Receipt',
+		'from_email': offender.user.email,
+		'from_name': offender.user.displayName,
+		'to': [{
+			'email': offender.offenderEmail,
+			'name': offender.displayName,
+				'type': 'to'
+		}],
+		'headers': {
+			'Reply-To': offender.user.email
+		},
+		'merge': true,
+		'global_merge_vars': [
+					{
+						'name': 'invoiceNumber',
+						'content': invoiceNumber || ''
+					},
+					{
+						'name': 'address',
+						'content': offender.billingAddress || ''
+					},
+					{
+						'name': 'city',
+						'content': offender.billingCity || ''
+					},
+					{
+						'name': 'state',
+						'content': offender.billingState || ''
+					},
+					{
+						'name': 'zip',
+						'content': offender.billingZipcode  || ''
+					},
+
+					
+					
+					{
+						'name': 'workType',
+						'content': 'Service'
+					},
+					{
+						'name': 'clientName',
+						'content': offender.firstName+' '+offender.lastName  || ''
+					},
+					{
+						'name': 'serviceCenter',
+						'content': workorder.serviceCenter  || ''
+					},
+					{
+						'name': 'svcAddress',
+						'content': workorder.svcAddress  || ''
+					},
+					{
+						'name': 'pmtOpt',
+						'content': payment.pmtOpt || ''
+					},
+					{
+						'name': 'paymentNotes',
+						'content': payment.notes  || ''
+					},
+				
+
+					{
+						'name': 'date',
+						'content': today
+					},
+
+					{
+						'name': 'vehicleYear',
+						'content': offender.vehicleYear
+					},
+
+					{
+						'name': 'offenderName',
+						'content': offender.firstName+' '+offender.lastName
+					},
+					{
+						'name': 'vehicleMake',
+						'content': offender.vehicleMake
+					},
+					{
+						'name': 'vehicleModel',
+						'content': offender.vehicleModel
+					},
+					{
+						'name': 'driverNumber',
+						'content': offender.driverNumber
+					},
+					{
+						'name': 'workorderid',
+						'content': workorder._id
+					},
+					{
+						'name': 'email',
+						'content': offender.offenderEmail
+					},
+					{
+						'name': 'orderTotal',
+						'content': workorder.amount
+					},
+				
+				
+		],
+		'important': false,
+		'track_opens': null,
+		'track_clicks': null,
+		'auto_text': null,
+		'auto_html': null,
+		'inline_css': true,
+		'url_strip_qs': null,
+		'preserver_recipients': null,
+		'view_content_link': null,
+		'bcc_address': 'fivecsconsulting@gmail.com',
+		'tracking_domain': null,
+		'signing_domain': null,
+		'return_path_domain': null,
+	
+	        };
+
+	var template_name='budget-receipt';
+		
+
+
+	var async = false;
+	if(timesrun < 2){
+
+	mandrill_client.messages.sendTemplate({
+		'template_name': template_name,
+		'template_content': [],
+		'message': message, 
+		'async': async
+	}, function(result){
+		timesrun++;
+		console.log('Results from Mandrill', result);
+		// console.log('Result.message', result.message);
+		var id = result[0]['_id'];
+		console.log('Result[0]', result[0]['_id']);
+		console.log('Email ID: ', id);
+		cb(null, 'Complete: '+id);
+		
+			
+		
+	},
+	function(e){
+		console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+		cb('Error from Mandrill : '+e);
+
+
+	});
+
+	// res.status(200).send(mypdf);
+	}
+
+
+
+
+	  };
 
 	exports.getPaymentProfiles = function(req, res){
 		console.log('Getting Payment Profiles');
@@ -263,6 +479,15 @@ var workorderByID = function(id, cb) {
 		// req.workorder = workorder ;
 		console.log('Got the workorder');
 		cb(workorder);
+	});
+};
+
+var offenderByID = function(id, next) { Offender.findById(id).populate('user').exec(function(err, offender) {
+		if (err) return next(err);
+		if (! offender) return next(new Error('Failed to load Offender ' + id));
+		
+		console.log('Got OFfender: ', offender);
+		next(null, offender);
 	});
 };
 

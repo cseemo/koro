@@ -614,7 +614,7 @@ max-height: 300px;
         	
 
 			<label>Payment Type:</label>
-        	  <select class="form-control" data-ng-model="pmtOpt"  data-ng-options="item for item in pmtOpts" ><option value=""></option></select>
+        	  <select class="form-control" data-ng-model="pmtOpt"  data-ng-change="changepmtType()" data-ng-options="item for item in pmtOpts" ><option value=""></option></select>
 
         	  </div>
         	  </div>
