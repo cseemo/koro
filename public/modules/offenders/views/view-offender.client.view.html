@@ -22,6 +22,9 @@ h1, h2, h3{
 	text-decoration: none;
 	cursor: pointer;
 }
+tbody{
+	cursor: pointer;
+}
 </style>
 
 <div class="col-md-12 stickyTop" >
@@ -438,7 +441,7 @@ h1, h2, h3{
 	                </thead>
 	                <tbody>
 	                    <tr data-ng-repeat="wo in workorders track by $index">
-	                    <td class="link" data-ng-click="pickWO($index)">Edit</td>
+	                    <td class="link"><a data-ng-click="pickWO($index)">Edit</a></td>
 	                    <td>{{wo.apptDate | date: 'short'}}</td>
 	                    <td>{{wo.type}}</td>
 	                    <td>{{wo.serviceCenter}}</td>

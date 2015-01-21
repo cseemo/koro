@@ -46,7 +46,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		{item: $scope.signedUpStatus, click: 'installPaperwork'},
 		{item: 'Collect Payment', click: 'openpmt'},
 		{item: 'Inspect Vehicle', click: 'inspected'},
-		{item: 'Have Customer Watch Training Video', click: 'customerVideo'},
+		// {item: 'Have Customer Watch Training Video', click: 'customerVideo'},
 		{item: 'Complete Service', click: 'complete'}
 		];
 
@@ -894,8 +894,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
 //Modal Stuff for New Work Order
-      $scope.workOrderTypes = ['New Install', 'Calibration', 'Reset', 'Removal'];
-      $scope.serviceTypes = ['Calibration', 'Reset', 'Removal'];
+      $scope.workOrderTypes = ['New Install', '30 Day Reset', 'Calibration', 'Violation Reset', 'Removal'];
+      $scope.serviceTypes = ['30 Day Reset', 'Calibration', 'Violation Reset', 'Removal'];
       
 
       $scope.open = function() {
@@ -1230,12 +1230,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 								progress = progress+15;
 							}
 
-							if($scope.workorder.customerVideo){
-								console.log('Customer Video Already Watched!!');
-								console.log("STuff: ", $scope.checklist[6]);
-								$scope.checklist[6]['strike'] = "done-true" ;
-								progress = progress+15;
-							}
+							// if($scope.workorder.customerVideo || $scope.workorder.type==='New Install'){
+							// 	console.log('Customer Video Already Watched!!');
+							// 	console.log("STuff: ", $scope.checklist[6]);
+							// 	$scope.checklist[6]['strike'] = "done-true" ;
+							// 	progress = progress+15;
+							// }
 							if($scope.workorder.authSigned){
 
 								console.log('Install Agreement Already Signed');
@@ -1258,8 +1258,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 							}
 							if($scope.workorder.completed){
 								console.log('Workorder Alrady Completed');
-								console.log("STuff: ", $scope.checklist[7]);
-								$scope.checklist[7]['strike'] = "done-true" ;
+								console.log("STuff: ", $scope.checklist[6]);
+								$scope.checklist[6]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
 
@@ -1343,7 +1343,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         	if($scope.chosen==='New Install'){
         		chargeAmount = $scope.installFee;
         	} 
-        	if($scope.chosen==='Reset') {
+        	 if($scope.chosen==='30 Day Reset') {
+        		chargeAmount = '0';
+        	}
+        	if($scope.chosen==='Violation Reset') {
         		chargeAmount = '50';
         	}
         	if($scope.chosen==='Removal') {
@@ -1848,10 +1851,14 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
         	var chargeAmount = '0';
 
+
         	if($scope.chosen==='New Install'){
         		chargeAmount = $scope.installFee;
         	} 
-        	if($scope.chosen==='Reset') {
+        	 if($scope.chosen==='30 Day Reset') {
+        		chargeAmount = '0';
+        	}
+        	if($scope.chosen==='Violation Reset') {
         		chargeAmount = '50';
         	}
         	if($scope.chosen==='Removal') {
@@ -1999,10 +2006,14 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
         	var chargeAmount = '0';
 
+
         	if($scope.chosen==='New Install'){
         		chargeAmount = $scope.installFee;
         	} 
-        	if($scope.chosen==='Reset') {
+        	 if($scope.chosen==='30 Day Reset') {
+        		chargeAmount = '0';
+        	}
+        	if($scope.chosen==='Violation Reset') {
         		chargeAmount = '50';
         	}
         	if($scope.chosen==='Removal') {
