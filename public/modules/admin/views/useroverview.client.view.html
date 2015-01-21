@@ -40,6 +40,18 @@
                   
           
                         <th>
+                             <th>
+                            <div class="th">
+                                Username
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('username') "
+                                      data-ng-class="{active: row == 'username'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-username') "
+                                      data-ng-class="{active: row == '-username'}"></span>
+                            </div>
+                        </th>
+
                             <div class="th">
                                 Telephone
                                 <span class="fa fa-angle-up"
@@ -72,7 +84,7 @@
                                       data-ng-class="{active: row == 'roles'}"></span>
                             </div>
                         </th>
-                              <th>
+                        <th>
                             <div class="th">
                                 Assigned to Shop
                                 <span class="fa fa-angle-up"

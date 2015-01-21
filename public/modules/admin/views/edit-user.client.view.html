@@ -85,15 +85,15 @@ max-height: 300px;
 
 
                   <div class="form-group">
-                    <label for="telephone">Service Center</label>
-                    <select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"></select>
+                    <label for="telephone">Assign to a New Service Center</label>
+                    <select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"><option value="Reassign"></option></select>
                 </div>
 
 
                    
 
                 <label class="form-label" style="font-size: 14px;">Roles:</label>
-                
+                <br>
             <label class="switch" style="vertical-align: middle">User<input type="checkbox" style="vertical-align: middle" ng-model="roles.user" class="pull-right"><i></i></label>
 
               <label class="switch" style="vertical-align: middle">Shop<input type="checkbox" style="vertical-align: middle" ng-model="roles.shop" class="pull-right"><i></i></label>
