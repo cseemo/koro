@@ -26,7 +26,20 @@ exports.list = function(req, res) { User.find().exec(function(err, users) {
 };
 
 
+		exports.delete = function(req, res) {
+			//console.log('Request is: ',req);
+	var user = req.profile ;
 
+	user.remove(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: err
+			});
+		} else {
+			res.send('200', 'User has been Deleted');
+		}
+	});
+};
 
 exports.sendRegistration = function(req, res){
 	//console.log('Sending Registration');

@@ -10,15 +10,15 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 
 		 $scope.changeSvcCenter = function() {
 		 	$scope.userB.shop = $scope.serviceCenter._id;
-		 	console.log('User is: ', $scope.userB);
+		 	// //console.log('User is: ', $scope.userB);
 
 
 		 };
 		// Find existing Deal
 		$scope.findOne = function() {
-			//console.log('MyScope at beginning %o', $scope);
-			console.log('Finding One');
-			//console.log('StateParam %o', $stateParams.userId);
+			////console.log('MyScope at beginning %o', $scope);
+			// //console.log('Finding One');
+			////console.log('StateParam %o', $stateParams.userId);
 			$scope.userB = Users.get({ 
 				userId: $stateParams.userId
 			}, function() {
@@ -28,13 +28,13 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 					$scope.roles[$scope.userB.roles[i]] = true;
 				}
 
-				console.log('User Info: %o', $scope.userB);
-			//console.log('This %o ', this);
+				// //console.log('User Info: %o', $scope.userB);
+			////console.log('This %o ', this);
 				if($scope.userB && $scope.userB.shop){
-						console.log('User has a shop');
+						// //console.log('User has a shop');
 						var shop = Shops.get({shopId: $scope.userB.shop});
 						shop.$promise.then(function(data){
-							// console.log('Got our Shop Info: ', data);
+							// //console.log('Got our Shop Info: ', data);
 							$scope.userB.shopName = data.name;
 
 
@@ -53,13 +53,13 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 		};
 
 		$scope.resetPW = function() {
-				//console.log('Resetting PW',$scope.userB);
+				////console.log('Resetting PW',$scope.userB);
 				var user_id = $scope.userB._id;
 				var mydata = $scope.userB;
 
 				$http.post('userspw/' + user_id + '/reset', mydata).success(function (data, status, headers){
 
-					//console.log('Success', data);
+					////console.log('Success', data);
 					$location.path('/adminusers');
 				});
 		
@@ -67,15 +67,15 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 		};
 
 $scope.notify = function() {
-//console.log('notify');
+////console.log('notify');
 };
 	
 
 		// Find a list of Leads
 		$scope.find = function() {
-			//console.log('Finding');
+			////console.log('Finding');
 			$scope.users = Users.query();
-			//console.log('Scope %o', $scope);
+			////console.log('Scope %o', $scope);
 		};
 
 
@@ -92,10 +92,10 @@ $scope.notify = function() {
 				}
 			});
 
-			//console.log('Scope %o', $scope);
+			////console.log('Scope %o', $scope);
 			//var userB = $scope.userB ;
 			//var user = $scope.user;
-			//console.log('Scope %o', $scope);
+			////console.log('Scope %o', $scope);
 			$scope.userB.$update(function() {
 				//$location.path('users/' + user._id + '/edit');
 			}, function(errorResponse) {
@@ -124,12 +124,12 @@ $scope.notify = function() {
       var end, start;
       start = (page - 1) * $scope.numPerPage;
       end = start + $scope.numPerPage;
-      // console.log('Start '+start+' and End '+end);
+      //console.log('Start '+start+' and End '+end);
      
-      // console.log('Filtered Users', $scope.filteredUsers);
+      //console.log('Filtered Users', $scope.filteredUsers);
       $scope.currentPage = page;
       $scope.currentPageUsers = $scope.filteredUsers.slice(start, end);
-      // console.log('Current Page Users', $scope.currentPageUsers);
+      // //console.log('Current Page Users', $scope.currentPageUsers);
 
       return $scope.currentPageUsers;
 
@@ -150,15 +150,15 @@ $scope.notify = function() {
       return $scope.currentPage = 1;
     };
     $scope.search = function() {
-      // console.log('Keywords: ', $scope.tableData.searchKeywords);
-      // console.log('Users; ', $scope.Users);
-      $scope.filteredUsers = $filter('filter')($scope.Users, $scope.tableData.searchKeywords);
+      // //console.log('Keywords: ', $scope.tableData.searchKeywords);
+      // //console.log('Users; ', $scope.Users);
+      $scope.filteredUsers = $filter('filter')($scope.users, $scope.tableData.searchKeywords);
 
       return $scope.onFilterChange();
     };
 
     //  $scope.searchPending = function() {
-    //   //////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
+    //   ////////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
     //   $scope.filteredUsers = $filter('filter')($scope.pendingUsers, $scope.tableData.searchKeywords);
 
     //   // {companyname: $scope.tableData.searchKeywords},
@@ -173,14 +173,14 @@ $scope.notify = function() {
 
 
     $scope.order = function(rowName) {
-    	// console.log('Reordering by ',rowName);
-    	// console.log('Scope.row ', $scope.row);
+    	// //console.log('Reordering by ',rowName);
+    	// //console.log('Scope.row ', $scope.row);
       if ($scope.row === rowName) {
         return;
       }
       $scope.row = rowName;
       $scope.filteredUsers = $filter('orderBy')($scope.filteredUsers, rowName);
-      //////////////console.log(rowName);
+      ////////////////console.log(rowName);
       return $scope.onOrderChange();
     };
     $scope.setCurrentOffender = function(ind) {
@@ -188,22 +188,22 @@ $scope.notify = function() {
     };
 
     $scope.init = function() {
-    	// console.log('Getting Users');
+    	// //console.log('Getting Users');
 
     	$scope.users = Users.query();
     	$scope.users.$promise.then(function() {
 				// $scope.search();
-				// console.log('Go our users');
+				// //console.log('Go our users');
 				$scope.filteredUsers = $scope.users;
 
 				angular.forEach($scope.users, function(user){
-					// console.log('User Name: ', user.displayName);
-					// console.log('User Shop: ', user.shop);
+					// //console.log('User Name: ', user.displayName);
+					// //console.log('User Shop: ', user.shop);
 					if(user.shop){
 
 						var shop = Shops.get({shopId: user.shop});
 						shop.$promise.then(function(data){
-							// console.log('Got our Shop Info: ', data);
+							// //console.log('Got our Shop Info: ', data);
 							user.shopName = data.name;
 
 
@@ -217,12 +217,38 @@ $scope.notify = function() {
 				});
 
 
-				// console.log('Returning...');
+				// //console.log('Returning...');
 				return $scope.select($scope.currentPage);
 				});	
 	
 
     };
+
+		$scope.remove = function(userB) {
+			if(!userB){
+				var userB = $scope.userB;
+			}
+			userB.$promise.then(function(){
+
+
+				//console.log('Attempting to Remove', userB);
+				if (userB) {
+					userB.$remove();
+
+					for (var i in $scope.users) {
+						if ($scope.users[i] === userB) {
+							$scope.users.splice(i, 1);
+						}
+					}
+				} else {
+					$scope.userB.$remove(function() {
+						$location.path('adminusers');
+					});
+				}
+			});
+			$location.path('adminusers');
+
+			};
 
 
 	}

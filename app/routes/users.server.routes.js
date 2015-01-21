@@ -44,7 +44,8 @@ module.exports = function(app) {
 	//FIX THIS -- REQUIRES LOGIN
 	app.route('/users/:userId/edit')
 		.put(users.hasAuthorization(['admin', 'manager']), users.updateUser2)
-		.get(users.showUser);
+		.get(users.showUser)
+		.delete(users.delete);
 	
 
 	//FIX THIS -- REQUIRES LOGIN
