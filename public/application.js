@@ -10,13 +10,13 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 	}
 ])
 
-// .config(function(uiGmapGoogleMapApiProvider) {
-//     uiGmapGoogleMapApiProvider.configure({
-//         //    key: 'your api key',
-//         v: '3.17',
-//         libraries: 'weather,geometry,visualization,places'
-//     });
-// });
+.config(['uiGmapGoogleMapApiProvider',function(uiGmapGoogleMapApi) {
+    uiGmapGoogleMapApi.configure({
+        //    key: 'your api key',
+        v: '3.17',
+        libraries: 'weather,geometry,visualization,places'
+    });
+}]);
 
 
 //Then define the init function for starting up the application
