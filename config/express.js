@@ -21,6 +21,7 @@ var express = require('express'),
 	path = require('path');
 	var busboy = require('busboy');
 	var multer = require('multer');
+	var nosniff = require('dont-sniff-mimetype');
 // 	var memwatch = require('memwatch');
 
 // memwatch.on('leak', function(info) {
@@ -171,7 +172,8 @@ app.use(multer({ dest: './public/uploads/'}));
 	app.use(helmet.xframe());
 	// app.use(helmet.iexss());
 	app.use(helmet.xssFilter());
-	app.use(helmet.contentTypeOptions());
+	// app.use(helmet.contentTypeOptions());
+	app.use(nosniff());
 	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
 
