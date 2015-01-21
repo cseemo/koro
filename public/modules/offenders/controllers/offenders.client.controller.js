@@ -1735,9 +1735,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 						
 						
 
-						var file = new Blob([data], {type: 'application/pdf'});
-			     		var fileURL = URL.createObjectURL(file);
-			     		window.open(fileURL);
+						// var file = new Blob([data], {type: 'application/pdf'});
+			   //   		var fileURL = URL.createObjectURL(file);
+			   //   		window.open(fileURL);
 			     	});
 
 				});
@@ -1821,9 +1821,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 						
 						
 
-						var file = new Blob([data], {type: 'application/pdf'});
-			     		var fileURL = URL.createObjectURL(file);
-			     		window.open(fileURL);
+						// var file = new Blob([data], {type: 'application/pdf'});
+			   //   		var fileURL = URL.createObjectURL(file);
+			   //   		window.open(fileURL);
 			     		
 			     		
 
@@ -2076,13 +2076,13 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					$scope.results = true;
 					//////console.log('Data from LOA?? %o',data);
 					toastr.success('Success! Email was sent...');
-						$scope.myresults = 'Email Sent!';
+						$scope.myresults = 'Email Sent!!';
 						
 						
 
-						var file = new Blob([data], {type: 'application/pdf'});
-			     		var fileURL = URL.createObjectURL(file);
-			     		window.open(fileURL);
+						// var file = new Blob([data], {type: 'application/pdf'});
+			   //   		var fileURL = URL.createObjectURL(file);
+			   //   		window.open(fileURL);
 			     		
 			     		
 
@@ -2593,9 +2593,9 @@ $scope.mytime = $scope.dt;
 						
 						
 
-						var file = new Blob([data], {type: 'application/pdf'});
-			     		var fileURL = URL.createObjectURL(file);
-			     		window.open(fileURL);
+						// var file = new Blob([data], {type: 'application/pdf'});
+			   //   		var fileURL = URL.createObjectURL(file);
+			   //   		window.open(fileURL);
 			     		
 			     		
 
