@@ -5,8 +5,9 @@ var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'mean';
 	//var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils'];
-	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'ui.tree', 'easypiechart', 'textAngular', 'ngMap', 'ngTagsInput', 'btford.socket-io', 'angularFileUpload', 'xeditable', 'uiGmapgoogle-maps'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'ui.tree', 'easypiechart', 'textAngular', 'ngMap', 'ngTagsInput', 'btford.socket-io', 'angularFileUpload', 'xeditable'];
 
+// , 'uiGmapgoogle-maps'
 	// Add a new vertical module
 	var registerModule = function(moduleName) {
 		// Create angular module
