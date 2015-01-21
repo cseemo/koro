@@ -894,8 +894,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
 //Modal Stuff for New Work Order
-      $scope.workOrderTypes = ['New Install', '30 Day Reset', 'Calibration', 'Violation Reset', 'Removal'];
-      $scope.serviceTypes = ['30 Day Reset', 'Calibration', 'Violation Reset', 'Removal'];
+      $scope.workOrderTypes = ['New Install', '30 Day Service', 'Calibration', 'Violation Reset', 'Removal'];
+      $scope.serviceTypes = ['30 Day Service', 'Calibration', 'Violation Reset', 'Removal'];
       
 
       $scope.open = function() {
@@ -1313,7 +1313,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		      	});
 		      };
 
-     $scope.serviceTypes = ['Calibration', 'Reset', 'Removal'];
+     $scope.serviceTypes = ['30 Day Service', 'Calibration', 'Violation Reset', 'Removal'];
       $scope.emailSubject = 'Ignition Interlock Service Appointment';
       	
 
@@ -1343,7 +1343,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         	if($scope.chosen==='New Install'){
         		chargeAmount = $scope.installFee;
         	} 
-        	 if($scope.chosen==='30 Day Reset') {
+        	 if($scope.chosen==='30 Day Service') {
         		chargeAmount = '0';
         	}
         	if($scope.chosen==='Violation Reset') {
@@ -1531,7 +1531,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 	  $scope.termoptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '24', '36', 'Other'];
 	  $scope.installFee = 75;
-	  $scope.serviceTypes = ['Calibration', 'Reset', 'Removal'];
+	  $scope.serviceTypes = ['30 Day Service', 'Calibration', 'Violation Reset', 'Removal'];
       
 
       $scope.items = items;
@@ -1855,7 +1855,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         	if($scope.chosen==='New Install'){
         		chargeAmount = $scope.installFee;
         	} 
-        	 if($scope.chosen==='30 Day Reset') {
+        	 if($scope.chosen==='30 Day Service') {
         		chargeAmount = '0';
         	}
         	if($scope.chosen==='Violation Reset') {
@@ -2010,7 +2010,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         	if($scope.chosen==='New Install'){
         		chargeAmount = $scope.installFee;
         	} 
-        	 if($scope.chosen==='30 Day Reset') {
+        	 if($scope.chosen==='30 Day Service') {
         		chargeAmount = '0';
         	}
         	if($scope.chosen==='Violation Reset') {
@@ -2348,7 +2348,7 @@ $scope.mytime = $scope.dt;
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
     $scope.offender = offender;
-    $scope.items = ['Calibration', 'Reset', 'Removal'];
+    $scope.items = ['30 Day Service', 'Calibration', 'Violation Reset', 'Removal'];
     $scope.emailSubject = 'New Work Order Appointment';
 
 
@@ -2378,15 +2378,22 @@ $scope.mytime = $scope.dt;
 	        	var chargeAmount = '0';
 
 	        
-	        	if($scope.chosen==='Reset') {
-	        		chargeAmount = '50';
-	        	}
-	        	if($scope.chosen==='Removal') {
-	        		chargeAmount = '75';
-	        	}
-	        	if($scope.chosen==='Calibration') {
-	        		chargeAmount = '0';
-	        	}
+	        if($scope.chosen==='New Install'){
+        		chargeAmount = $scope.installFee;
+        	} 
+        	 if($scope.chosen==='30 Day Service') {
+        		chargeAmount = '0';
+        	}
+        	if($scope.chosen==='Violation Reset') {
+        		chargeAmount = '50';
+        	}
+        	if($scope.chosen==='Removal') {
+        		chargeAmount = '75';
+        	}
+        	if($scope.chosen==='Calibration') {
+        		chargeAmount = '0';
+        	}
+        	
 	        	console.log('Charge Amount: ', chargeAmount);
 	        	console.log('$scope.installFee = ', $scope.installFee);
 	        	
