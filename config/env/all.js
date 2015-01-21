@@ -44,8 +44,9 @@ module.exports = {
 				'public/lib/angular-socket-io/socket.js',
 				'public/lib/socket.io-client/socket.io.js',
 				'public/lib/angular-file-upload/angular-file-upload.js',
-				'public/lib/angular-xeditable/dist/js/xeditable.js'
-
+				'public/lib/angular-xeditable/dist/js/xeditable.js',
+				'public/lib/lodash/dist/lodash.min.js',
+				'public/lib/angular-google-maps/dist/angular-google-maps.min.js',
 
 
 				//'public/lib/flot/*.js'

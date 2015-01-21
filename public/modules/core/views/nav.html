@@ -27,6 +27,11 @@
         <span>Devices</span>
          </a>
          </li>
+                  <li data-ng-show="authentication.hasRole('admin')===true">
+        <a href="#!/adminusers"> <i class="fa fa-puzzle-piece"></i>
+        <span>Users</span>
+         </a>
+         </li>
          
         
           <li  data-ng-show="authentication.hasRole('shop')===true">

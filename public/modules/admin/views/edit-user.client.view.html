@@ -1,23 +1,187 @@
-<section data-ng-controller="AdminusersController" data-ng-init="findOne()">
-    <div class="page-header">
-        <h1>Edit User - {{userB.displayName}}</h1>
+<style>
+.col-md-4{
+    padding: 10px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+h1, h2, h3, h4{
+    color: #333;
+}
+.main-body{
+    background-color: #555;
+}
+td{
+    font-size: 1em;
+
+}
+.scroll{
+overflow: scroll;  
+height: auto; 
+min-height: 100px; 
+max-height: 300px;
+}
+
+</style>
+
+     <section data-ng-controller="AdminusersController" data-ng-init="findOne()">
+<div class="main-body">
+    <div class="container">
+      <div class="row">
+         <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>User Profile</h1>
+                </div>
+                <div class="panel-body">
+                       <h3 class="list-group-item-text">
+                       <label>Name:</label> <span data-ng-bind="userB.displayName"></span><br>
+                       <label>Username: </label><span data-ng-bind="userB.username"></span><br>
+                       <label>Email:</label> <span data-ng-bind="userB.email"></span><br>
+                       <label>Telephone: </label><span data-ng-bind="userB.telephone"></span><br>
+                        <label>Roles: </label><span data-ng-bind="userB.roles"></span><br>
+                       <label>Service Center: </label> <span data-ng-bind="userB.shopName"></span> 
+                    </h3>
+                     <button class="btn btn-w-md btn-gap btn-warning pull-right" data-ng-click="resetPW()">Reset Password</button>
+                </div>
+            </div>
+         </div>
+        </div>
+     <div class="row">
+         <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Edit User</h1>
+                </div>
+                <div class="panel-body">
+                    
+
+                     <form class="form-horizontal" data-ng-submit="updateUser()" novalidate>
+
+        
+
+                    <fieldset>
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="userB.firstName" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="userB.lastName" placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" class="form-control" data-ng-model="userB.email" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="telephone">Telephone</label>
+                    <input type="text" id="telephone" name="telephone" class="form-control" data-ng-model="userB.telephone" placeholder="Telephone NUmber">
+                </div>
+
+
+                  <div class="form-group">
+                    <label for="telephone">Service Center</label>
+                    <select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"></select>
+                </div>
+
+
+                   
+
+                <label class="form-label" style="font-size: 14px;">Roles:</label>
+                
+            <label class="switch" style="vertical-align: middle">User<input type="checkbox" style="vertical-align: middle" ng-model="roles.user" class="pull-right"><i></i></label>
+
+              <label class="switch" style="vertical-align: middle">Shop<input type="checkbox" style="vertical-align: middle" ng-model="roles.shop" class="pull-right"><i></i></label>
+
+                <label class="switch" style="vertical-align: middle">Budget Employee<input type="checkbox" style="vertical-align: middle" ng-model="roles.manager" class="pull-right"><i></i></label>
+
+            <label class="switch" style="vertical-align: middle">Admin<input type="checkbox" style="vertical-align: middle" ng-model="roles.admin" class="pull-right"><i></i></label>
+
+
+               
+
+                    
+
+                <div class="form-group">
+                <br>
+                    <input type="submit" value="Update" class="btn btn-secondary">
+              
+                </div>
+
+                <div data-ng-show="error" class="text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+            </fieldset>
+        </form>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="updateUser()" novalidate>
-            <fieldset>
 
+<!-- 
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Test
+                </div>
+            </div>
+        </div>
+         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Test2
+                </div>
+            </div>
+        </div>
+         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Test3
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+               <div class="panel panel-primary">
+               <div class="panel-header">
+                    <h1>Edit User</h1>
+                    </div>
+                    <div class="panel-body">
+                   
+        <div class="container">
+            <div class="row">
+            <fieldset>
 
           
                 <h3 data-ng-bind="userB.displayName"></h3>
                
-                    {{userB.firstName}}
+                  
                     <small class="list-group-item-text">
                        userBname: <span data-ng-bind="userB.username"></span><br>
                        Email: <span data-ng-bind="userB.email"></span><br>
                        Telephone: <span data-ng-bind="userB.telephone"></span>
                     </small>
-                     <button class="btn btn-w-md btn-gap btn-warning pull-right" data-ng-click="resetPW()">Reset Password</button></a></span>
+                     <button class="btn btn-w-md btn-gap btn-warning pull-right" data-ng-click="resetPW()">Reset Password</button>
+                     </fieldset>
+                     </div>
+<div class="row">
+  
+        <form class="form-horizontal" data-ng-submit="updateUser()" novalidate>
+
         
 
                     <fieldset>
@@ -58,9 +222,14 @@
 
 
                 <div class="btn-group">
-                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'yes'" uncheckable><i class="fa fa-thumbs-o-up"></i></label>
-                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'maybe'" uncheckable>Maybe</label>
-                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'no'" uncheckable><i class="fa fa-thumbs-o-down"></i></label>
+                     <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'yes'" uncheckable><i class="fa fa-thumbs-o-up"></i></button>
+
+                
+                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'yes'" uncheckable><i class="fa fa-thumbs-o-up"></i></button>
+
+                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'maybe'" uncheckable><label>Maybe</label></button>
+
+                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="registration.vote" btn-radio="'no'" uncheckable><i class="fa fa-thumbs-o-down"></i></button>
                             </div>
 
 
@@ -120,6 +289,7 @@
                 </div>
 
  -->
+<!--  
                     
 
                 <div class="form-group">
@@ -132,7 +302,10 @@
 				</div>
             </fieldset>
         </form>
-    </div>
+    </div> -->
+</div>
+</div>
+
 </section>
 
 

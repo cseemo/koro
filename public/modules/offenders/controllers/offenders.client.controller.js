@@ -2080,9 +2080,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 						
 						
 
-						// var file = new Blob([data], {type: 'application/pdf'});
-			   //   		var fileURL = URL.createObjectURL(file);
-			   //   		window.open(fileURL);
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		window.open(fileURL);
 			     		
 			     		
 
@@ -2593,9 +2593,9 @@ $scope.mytime = $scope.dt;
 						
 						
 
-						// var file = new Blob([data], {type: 'application/pdf'});
-			   //   		var fileURL = URL.createObjectURL(file);
-			     		// window.open(fileURL);
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		window.open(fileURL);
 			     		
 			     		
 

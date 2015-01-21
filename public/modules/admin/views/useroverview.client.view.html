@@ -1,40 +1,134 @@
-<section data-ng-controller="AdminusersController" ng-init="find()">
+<section data-ng-controller="AdminusersController" ng-init="init()">
     <div class="panel panel-default">
         <div class="panel-heading"><strong><span class="glyphicon glyphicon-user"></span> Users</strong></div>
      
-            <div class="list-group">
-                <a data-ng-repeat="user in users" data-ng-href="#!/users/{{user._id}}/edit" class="list-group-item">
-                  <small class="pull-right list-group-item-text">
-                  Created: <span data-ng-bind="user.created"></span>
-                  </small>
-                <h3 data-ng-bind="user.displayName"></h3>
-               
 
-                    <small class="list-group-item-text">
-                       Username: <span data-ng-bind="user.username"></span><br>
-                       Email: <span data-ng-bind="user.email"></span><br>
-                       Telephone: <span data-ng-bind="user.telephone"></span>
-
-                      <!--  <p data-ng-repeat="role in user.roles">
-                       {{role}}
-                       </p>
- -->
-                    </small>
-                </a>
+               <div class="panel-body">
+        
+            <div class="table-filters">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <input type="text"
+                               placeholder="Search..."
+                               class="form-control"
+                               data-ng-model="tableData.searchKeywords"
+                               data-ng-keyup="search()">
+                        {{tableData.searchKeywords}}
+                    </div>
+                    <div class="col-sm-3 col-xs-6 filter-result-info">
+                        <span>
+                            Showing {{currentPageUsers.length}}/{{filteredUsers.length}} Matches
+                        </span>              
+                    </div>
+                </div>
             </div>
 
-            
-         <!--    <div class="alert alert-warning text-center" data-ng-hide="!leads.$resolved || leads.length">
-                No Leads yet, why don't you <a href="/#!/leads/create">create one</a>?
-            </div> -->
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('firstName') "
+                                      data-ng-class="{active: row == 'firstName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-firstName') "
+                                      data-ng-class="{active: row == '-firstName'}"></span>
+                            </div>
+                        </th>
+                  
+          
+                        <th>
+                            <div class="th">
+                                Telephone
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('telephone') "
+                                      data-ng-class="{active: row == 'telephone'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-telephone') "
+                                      data-ng-class="{active: row == '-telephone'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                Email
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('email') "
+                                      data-ng-class="{active: row == 'email'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-email') "
+                                      data-ng-class="{active: row == '-email'}"></span>
+                            </div>
+                        </th>
+                                <th>
+                            <div class="th">
+                                Role
+                                <span class="fa fa-angle-up"
+                                       data-ng-click=" order('roles.length') "
+                                      data-ng-class="{active: row == 'roles'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-roles.length') "
+                                      data-ng-class="{active: row == 'roles'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                Assigned to Shop
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('shopName') "
+                                      data-ng-class="{active: row == 'shopName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-shopName') "
+                                      data-ng-class="{active: row == '-shopName'}"></span>
+                            </div>
+                        </th>
+                           
+
+                    </tr> 
+                </thead>
+                
+                <tbody>
+                    <tr data-ng-repeat="item in currentPageUsers" >
+                    <td><a data-ng-click="setCurrentOffender()" href="#!/users/{{item._id}}/edit">{{item.displayName}}</a></td>
+                    <td>{{item.telephone}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.roles}}</td>
+                    <td>{{item.shopName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+           
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                        <span>
+                            Show 
+                            <select data-ng-model="numPerPage"
+                                    data-ng-options="num for num in numPerPageOpt"
+                                    data-ng-change="onNumPerPageChange()">
+                            </select> 
+                            clients per page
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredUsers.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </footer>
+
         </div>
-  <!-- 
-            <button class="btn btn-w-md btn-gap btn-info" data-ng-click="notify('info')">info message</button>
-            <button class="btn btn-w-md btn-gap btn-success" data-ng-click="notify('success')">success message</button>
-            <button class="btn btn-w-md btn-gap btn-warning" data-ng-click="notify('warning')">warning message</button>
-            <button class="btn btn-w-md btn-gap btn-danger" data-ng-click="notify('error')">error message</button>
-            <div class="callout callout-info">
-                <p>Notification will show in lower right corner.</p>
-            </div> -->
+
+
+
+        
         </div>
     </section>

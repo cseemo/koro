@@ -434,12 +434,12 @@ exports.email = function(req, res){
 
 		if(req.body.workinfo.type==='New Install'){
 			//Generate New Install Agreement
-			doc.image('images/cusAgreementPg1.png', 2, 2,{width: 610});
+			doc.image('images/budgetKS1.png', 0, 0,{width: 580});
 		
 		//Place Term Length on contract
-		doc.y = 217;
-		doc.x = 320;
-		doc.fontSize(18);
+		doc.y = 340;
+		doc.x = 375;
+		doc.fontSize(14);
 		doc.font('Times-Roman');
 		// doc.fillColor('#1b3959')
 		doc.text(termLength,{
@@ -449,11 +449,18 @@ exports.email = function(req, res){
 		doc.addPage();
 
 		//Page 2 
-		doc.image('images/cusAgreementPg2.png', 0, 0,{width: 600});
+		doc.image('images/budgetKS2.png', 0, 0,{width: 580});
 
 
-		//Place Vehicle Info
-		doc.y = 298;
+
+
+		doc.addPage();
+
+		//Page 3
+		doc.image('images/budgetKS3.png', 0, 0,{width: 580});
+
+				//Place Vehicle Info
+		doc.y = 130;
 		doc.x = 50;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
@@ -464,7 +471,7 @@ exports.email = function(req, res){
 		});
 
 		//Place Service Center Address
-		doc.y = 347;
+		doc.y = 209;
 		doc.x = 50;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
@@ -475,25 +482,41 @@ exports.email = function(req, res){
 		});
 
 
-		doc.addPage();
 
-		//Page 3
-		doc.image('images/cusAgreementPg3.png', 0, 0,{width: 600});
-		//Device Serial Number
-		doc.y = 460;
-		doc.x = 355;
-		doc.fontSize(14);
-		doc.text(req.body.workinfo.deviceSN || 'TBD');
-
+	
 
 		doc.addPage();
 
 		//Page 4
-		doc.image('images/cusAgreementPg4.png', 0, 0,{width: 600});
+		doc.image('images/budgetKS4.png', 0, 0,{width: 580});
+		
+			//Device Serial Number
+		doc.y = 265;
+		doc.x = 370;
+		doc.fontSize(14);
+		doc.text(req.body.workinfo.deviceSN || 'TBD');
+
+
+
+		// //Place Service Center Address
+		// doc.y = 47;
+		// doc.x = 50;
+		// doc.fontSize(16);
+		// doc.font('Times-Roman');
+		// // doc.fillColor('#1b3959')
+		// doc.text(req.body.offender.displayName,{
+	
+		// 	// align: 'center'
+		// });
+
+		doc.addPage();
+
+		//Page 4
+		doc.image('images/budgetKS5.png', 0, 0,{width: 580});
 		
 		//Place Service Center Address
-		doc.y = 47;
-		doc.x = 50;
+		doc.y = 44;
+		doc.x = 60;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
 		// doc.fillColor('#1b3959')
@@ -501,6 +524,8 @@ exports.email = function(req, res){
 	
 			// align: 'center'
 		});
+
+
 		} else {
 			//generate Generic Work ORder
 
@@ -872,8 +897,11 @@ exports.sendICS = function(req, res){
 	var workCharge =req.body.workinfo.amount;
 	console.log('Charge for Service: ', workCharge);
 	req.body.workinfo.apptDate = req.body.workinfo.apptDate  || '';
+
+	//Fix Time Zone Issue Here -- Make it Local to the Service Center Zip Code
+
 	// var apptDate = moment(req.body.workinfo.apptDate).format("MM/DD/YYYY [at] hh:mm a");
-		var apptDate = moment(req.body.workinfo.apptDate).format("dddd [the] Do [of] MMMM [at] hh:mm a");
+	var apptDate = moment(req.body.workinfo.apptDate).format("dddd [the] Do [of] MMMM [at] hh:mm a");
 
 	var today = moment().format("MMM DD, YYYY");
 
@@ -2109,15 +2137,14 @@ exports.signAuth = function(req, res){
 	var waiverTerm = 'By signing this document, I, '+req.body.offender.firstName+' '+req.body.offender.lastName+', agree to have the services requested performed on my vehicle, by '+req.body.workinfo.serviceCenter+'. I also consent to being electronically billed $'+workCharge+'.00 plus tax for this service.';
 	
 	if(req.body.workinfo.type==='New Install'){
-			//Generate New Install Agreement
 
-			console.log('New INstall');
-			doc.image('images/cusAgreementPg1.png', 2, 2,{width: 610});
+					//Generate New Install Agreement
+			doc.image('images/budgetKS1.png', 0, 0,{width: 580});
 		
 		//Place Term Length on contract
-		doc.y = 217;
-		doc.x = 320;
-		doc.fontSize(18);
+		doc.y = 340;
+		doc.x = 375;
+		doc.fontSize(14);
 		doc.font('Times-Roman');
 		// doc.fillColor('#1b3959')
 		doc.text(termLength,{
@@ -2127,11 +2154,18 @@ exports.signAuth = function(req, res){
 		doc.addPage();
 
 		//Page 2 
-		doc.image('images/cusAgreementPg2.png', 0, 0,{width: 600});
+		doc.image('images/budgetKS2.png', 0, 0,{width: 580});
 
 
-		//Place Vehicle Info
-		doc.y = 298;
+
+
+		doc.addPage();
+
+		//Page 3
+		doc.image('images/budgetKS3.png', 0, 0,{width: 580});
+
+				//Place Vehicle Info
+		doc.y = 130;
 		doc.x = 50;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
@@ -2142,7 +2176,7 @@ exports.signAuth = function(req, res){
 		});
 
 		//Place Service Center Address
-		doc.y = 347;
+		doc.y = 209;
 		doc.x = 50;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
@@ -2153,30 +2187,33 @@ exports.signAuth = function(req, res){
 		});
 
 
+
+	
+
 		doc.addPage();
 
-		//Page 3
-		doc.image('images/cusAgreementPg3.png', 0, 0,{width: 600});
-
-		//Device Serial Number
-		doc.y = 460;
-		doc.x = 355;
+		//Page 4
+		doc.image('images/budgetKS4.png', 0, 0,{width: 580});
+		
+			//Device Serial Number
+		doc.y = 265;
+		doc.x = 370;
 		doc.fontSize(14);
 		doc.text(req.body.workinfo.deviceSN || 'TBD');
 
 
-		doc.y = 619;
-		doc.x = 385;
+		doc.y = 450;
+		doc.x = 380;
 		doc.fontSize(14);
 		doc.text(convertedPretty);
 
-		doc.y = 525;
+		doc.y = 355;
 		doc.x = 375;
 		doc.fontSize(26);
 		doc.font('SANTO.TTF');
 		doc.text(req.body.offender.displayName);
 
-		doc.y = 577;
+		doc.y = 405;
 		doc.x = 375;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
@@ -2187,11 +2224,11 @@ exports.signAuth = function(req, res){
 		doc.addPage();
 
 		//Page 4
-		doc.image('images/cusAgreementPg4.png', 0, 0,{width: 600});
+		doc.image('images/budgetKS5.png', 0, 0,{width: 580});
 		
-		//Place Customer Name
-		doc.y = 47;
-		doc.x = 50;
+		//Place Service Center Address
+		doc.y = 44;
+		doc.x = 60;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
 		// doc.fillColor('#1b3959')
@@ -2200,9 +2237,9 @@ exports.signAuth = function(req, res){
 			// align: 'center'
 		});
 
-		//Set Initials
+		// //Set Initials
 		
-		doc.y = 105;
+		doc.y = 100;
 		doc.x = 125;
 		doc.fontSize(18);
 		doc.font('Times-Roman');
@@ -2212,7 +2249,7 @@ exports.signAuth = function(req, res){
 			// align: 'center'
 		});
 
-		doc.y = 162;
+		doc.y = 153;
 		doc.x = 125;
 		doc.fontSize(18);
 		doc.font('Times-Roman');
@@ -2222,7 +2259,7 @@ exports.signAuth = function(req, res){
 			// align: 'center'
 		});
 
-		doc.y = 220;
+		doc.y = 207;
 		doc.x = 125;
 		doc.fontSize(18);
 		doc.font('Times-Roman');
@@ -2232,7 +2269,7 @@ exports.signAuth = function(req, res){
 			// align: 'center'
 		});
 
-		doc.y = 273;
+		doc.y = 270;
 		doc.x = 125;
 		doc.fontSize(18);
 		doc.font('Times-Roman');
@@ -2243,14 +2280,14 @@ exports.signAuth = function(req, res){
 		});
 
 		//Set Signature
-		doc.y = 552;
+		doc.y = 542;
 		doc.x = 30;
 		doc.fontSize(32);
 		doc.font('SANTO.TTF');
 		doc.text(req.body.offender.displayName);
 
-		doc.y = 564;
-		doc.x = 365;
+		doc.y = 552;
+		doc.x = 330;
 		doc.fontSize(18);
 		doc.font('Times-Roman');
 		doc.text(convertedPretty);
@@ -2624,13 +2661,13 @@ exports.viewOrder = function(req, res){
 	var chunks = [];
 
 		if(req.body.workinfo.type==='New Install'){
-			//Generate New Install Agreement
-			doc.image('images/cusAgreementPg1.png', 2, 2,{width: 610});
+//Generate New Install Agreement
+			doc.image('images/budgetKS1.png', 0, 0,{width: 580});
 		
 		//Place Term Length on contract
-		doc.y = 217;
-		doc.x = 320;
-		doc.fontSize(18);
+		doc.y = 340;
+		doc.x = 375;
+		doc.fontSize(14);
 		doc.font('Times-Roman');
 		// doc.fillColor('#1b3959')
 		doc.text(termLength,{
@@ -2640,11 +2677,18 @@ exports.viewOrder = function(req, res){
 		doc.addPage();
 
 		//Page 2 
-		doc.image('images/cusAgreementPg2.png', 0, 0,{width: 600});
+		doc.image('images/budgetKS2.png', 0, 0,{width: 580});
 
 
-		//Place Vehicle Info
-		doc.y = 298;
+
+
+		doc.addPage();
+
+		//Page 3
+		doc.image('images/budgetKS3.png', 0, 0,{width: 580});
+
+				//Place Vehicle Info
+		doc.y = 130;
 		doc.x = 50;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
@@ -2655,7 +2699,7 @@ exports.viewOrder = function(req, res){
 		});
 
 		//Place Service Center Address
-		doc.y = 347;
+		doc.y = 209;
 		doc.x = 50;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
@@ -2666,24 +2710,41 @@ exports.viewOrder = function(req, res){
 		});
 
 
-		doc.addPage();
 
-		//Page 3
-		doc.image('images/cusAgreementPg3.png', 0, 0,{width: 600});
-		//Device Serial Number
-		doc.y = 460;
-		doc.x = 355;
-		doc.fontSize(14);
-		doc.text(req.body.workinfo.deviceSN || 'TBD');
+	
 
 		doc.addPage();
 
 		//Page 4
-		doc.image('images/cusAgreementPg4.png', 0, 0,{width: 600});
+		doc.image('images/budgetKS4.png', 0, 0,{width: 580});
+		
+			//Device Serial Number
+		doc.y = 265;
+		doc.x = 370;
+		doc.fontSize(14);
+		doc.text(req.body.workinfo.deviceSN || 'TBD');
+
+
+
+		// //Place Service Center Address
+		// doc.y = 47;
+		// doc.x = 50;
+		// doc.fontSize(16);
+		// doc.font('Times-Roman');
+		// // doc.fillColor('#1b3959')
+		// doc.text(req.body.offender.displayName,{
+	
+		// 	// align: 'center'
+		// });
+
+		doc.addPage();
+
+		//Page 4
+		doc.image('images/budgetKS5.png', 0, 0,{width: 580});
 		
 		//Place Service Center Address
-		doc.y = 47;
-		doc.x = 50;
+		doc.y = 44;
+		doc.x = 60;
 		doc.fontSize(16);
 		doc.font('Times-Roman');
 		// doc.fillColor('#1b3959')
@@ -2691,6 +2752,8 @@ exports.viewOrder = function(req, res){
 	
 			// align: 'center'
 		});
+
+
 		} else {
 			//generate Generic Work ORder
 

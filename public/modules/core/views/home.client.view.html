@@ -1,3 +1,4 @@
+
 <style>
 .col-md-4{
     padding: 10px;
@@ -20,12 +21,48 @@ h1, h2, h3{
 	text-decoration: none;
 	cursor: pointer;
 }
+.angular-google-map-container { 
+height: 400px; 
+width: 600px;
+}
 </style>
-
 <section data-ng-controller="HomeController">
+
 	<div class="jumbotron">
 	<center>
 	<img alt="Five C's Consulting" class="img-responsive text-center" src="modules/core/img/brand/logo.png" />
+	<br>
+
+<br>
+
+
+   
+	
+
+    <div class="container main" >
+        <form>
+            <div class="row">
+                <div id="map_canvas" ui-map="model.myMap" class="map" ui-options="mapOptions">
+                </div>
+                <div ng-repeat="marker in myMarkers" ui-map-marker="myMarkers[$index]">
+                </div>
+            </div>
+            <div class="row" ng-show="showResult()">
+               Latitude: {{lat}} <br />
+               Longitude: {{lng}} <br />
+               Accuracy: {{accuracy}}
+            </div>
+            <div class="row" ng-show="!showResult()">
+                Error : {{error}}
+                Error Code: {{error.code}}
+            </div>       
+        </form>
+    </div>
+
+
+
+
+	<br>
 		</center>
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12 text-center">
