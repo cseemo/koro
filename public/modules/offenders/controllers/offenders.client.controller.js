@@ -37,17 +37,16 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		$scope.signedUpStatus = 'Get Authorization Signed';
 		
 		
-		$scope.installFee = '65.00';
+		$scope.installFee = '75.00';
 
 		$scope.checklist = [
 		{item: 'Set Appointment Date', click: 'setAppt'},
 		{item: 'Customer Check-In', click: 'checkIn'},
-		{item: 'Inspect Vehicle', click: 'inspected'},
 		{item: 'Inventory Device', click: 'checkOutDevice'},
-		{item: 'Have Customer Watch Training Video', click: 'customerVideo'},
 		{item: $scope.signedUpStatus, click: 'installPaperwork'},
-
 		{item: 'Collect Payment', click: 'openpmt'},
+		{item: 'Inspect Vehicle', click: 'inspected'},
+		{item: 'Have Customer Watch Training Video', click: 'customerVideo'},
 		{item: 'Complete Service', click: 'complete'}
 		];
 
@@ -1226,35 +1225,35 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 							if($scope.workorder.inspected){
 								console.log('This baby has been inspected already!!');
-								console.log("STuff: ", $scope.checklist[2]);
-								$scope.checklist[2]['strike'] = "done-true" ;
-								progress = progress+15;
-							}
-
-							if($scope.workorder.customerVideo){
-								console.log('Customer Video Already Watched!!');
-								console.log("STuff: ", $scope.checklist[4]);
-								$scope.checklist[4]['strike'] = "done-true" ;
-								progress = progress+15;
-							}
-							if($scope.workorder.authSigned){
-
-								console.log('Install Agreement Already Signed');
 								console.log("STuff: ", $scope.checklist[5]);
 								$scope.checklist[5]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
 
-							if($scope.workorder.deviceSN || $scope.workorder.type!=='New Install'){
-								console.log('Workorder Already has Serial Number Assigned');
+							if($scope.workorder.customerVideo){
+								console.log('Customer Video Already Watched!!');
+								console.log("STuff: ", $scope.checklist[6]);
+								$scope.checklist[6]['strike'] = "done-true" ;
+								progress = progress+15;
+							}
+							if($scope.workorder.authSigned){
+
+								console.log('Install Agreement Already Signed');
 								console.log("STuff: ", $scope.checklist[3]);
 								$scope.checklist[3]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
+
+							if($scope.workorder.deviceSN || $scope.workorder.type!=='New Install'){
+								console.log('Workorder Already has Serial Number Assigned');
+								console.log("STuff: ", $scope.checklist[2]);
+								$scope.checklist[2]['strike'] = "done-true" ;
+								progress = progress+15;
+							}
 							if($scope.workorder.authCode || $scope.workorder.amount==='0'){
 								console.log('Workorder Alrady Paid For');
-								console.log("STuff: ", $scope.checklist[6]);
-								$scope.checklist[6]['strike'] = "done-true" ;
+								console.log("STuff: ", $scope.checklist[4]);
+								$scope.checklist[4]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
 							if($scope.workorder.completed){
@@ -1528,7 +1527,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		};
 
 	  $scope.termoptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '24', '36', 'Other'];
-	  $scope.installFee = 65;
+	  $scope.installFee = 75;
 	  $scope.serviceTypes = ['Calibration', 'Reset', 'Removal'];
       
 
@@ -3005,9 +3004,9 @@ $scope.makePmt = function(){
 		}else{
 
 			if($scope.pmtOpt!=='Credit Card'){
-				payment.notes = 'Portal Payment: '+$scope.pmtOpt+' | '+$scope.payment.notes;
+				payment.notes = 'Portal Payment by: '+$scope.authentication.user.displayName+' . '+$scope.pmtOpt+' | '+$scope.payment.notes;
 				payment.paidDate = Date.now();
-				payment.status = 'Pending Confirmation';
+				payment.status = 'Paid';
 				payment.pmtOpt = payment.pmtOpt || $scope.pmtOpt;
 			}
 

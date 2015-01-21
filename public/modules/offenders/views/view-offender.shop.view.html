@@ -603,15 +603,11 @@ max-height: 300px;
         	   </div>
         	   </div>
         	  
-        	   </span>
+        	  
        
 
         <div class="row">
-        <div class="col-md-6"> 
-        	    <label>Amount to Pay: </label>
-        	  <input type="text" data-ng-model="pmtAmount"  id="" class="form-control" placeholder="Amount" >
-        	
-        	    </div>
+     
         	   
 
         	   <div class="col-md-6"> 
@@ -798,9 +794,10 @@ max-height: 300px;
         	    </textarea>
         	    </div>
         	   </div>
+        	    </span>
 
         <div class="modal-footer">
-            <button class="btn btn-primary"  ng-click="makePmt()">Confirm Payment</button>
+            <button class="btn btn-primary"  ng-disabled="!hide" ng-click="makePmt()">Confirm Payment</button>
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>

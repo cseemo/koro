@@ -2595,7 +2595,7 @@ exports.viewOrder = function(req, res){
 	
 	var workCharge;
 	if(req.body.workinfo.type==='New Install') {
-		workCharge =  req.body.workinfo.amount || 89;
+		workCharge =  req.body.workinfo.amount || 75;
 	
 	}
 	else if(req.body.workinfo.type==='Reset') {

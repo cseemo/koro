@@ -650,14 +650,7 @@ h1, h2, h3{
 <br> 
 
 </span>
-        	   <label>Submitting To</label>
-        	  <select class="form-control" data-ng-model="sendTo" name="sendTo" data-ng-options="sendto for sendto in sendToOptions" data-ng-change="changeWho()"> <option value=""></option></select>
-<br>
-				<span data-ng-show="!whomCus">
-				<label>Recipient Name</label>
-        	    <input type="text" data-ng-model="toWhoName"  id="toWhoName" class="form-control" placeholder="Name" >
-        	    <br></span>
-
+  
 
 
 				<label>Service Center</label>
@@ -785,7 +778,7 @@ h1, h2, h3{
         	   </div>
         	   </div>
         	  
-        	   </span>
+        	  
        
 
         <div class="row">
@@ -981,9 +974,10 @@ h1, h2, h3{
         	    </textarea>
         	    </div>
         	   </div>
+        	   	 </span>
 
         <div class="modal-footer">
-            <button class="btn btn-primary"  ng-click="makePmt()">Confirm Payment</button>
+            <button class="btn btn-primary"  hng-disabled="!hide" ng-click="makePmt()">Confirm Payment</button>
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
         </div>
     </script>
