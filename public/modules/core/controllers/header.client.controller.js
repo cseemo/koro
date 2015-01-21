@@ -8,14 +8,13 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 
 		$scope.user = Authentication.user;
 
-		// If user is not signed in then redirect back home
-		if (!$scope.user) {
+		if (!$scope.authentication.user) {
 			console.log('User Not Logged in');
           var test = $location.path();
           test = test.substring(0,14);
           // console.log('Test Path',test);
 
-          if(test==='/svccntrsignup' || test==='/workorderauth'){
+          if(test==='/svccntrsignup' || test==='/workorderauth' || test==='/newshopsignup'){
             console.log('Geting Something approved');
           
           }else{
@@ -25,18 +24,19 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		}
 
 
-		$scope.signin = function() {
-			$http.post('/auth/signin', $scope.credentials).success(function(response) {
-				//If successful we assign the response to the global user model
-				$scope.authentication.user = response;
-				socket.emit('message', {type: 'signing', user: $scope.authentication.user.displayName});
+
+		// $scope.signin = function() {
+		// 	$http.post('/auth/signin', $scope.credentials).success(function(response) {
+		// 		//If successful we assign the response to the global user model
+		// 		$scope.authentication.user = response;
+		// 		socket.emit('message', {type: 'signing', user: $scope.authentication.user.displayName});
 				
-				//And redirect to the index page
-				$location.path('/');
-			}).error(function(response) {
-				$scope.error = response.message;
-			});
-		};
+		// 		//And redirect to the index page
+		// 		$location.path('/');
+		// 	}).error(function(response) {
+		// 		$scope.error = response.message;
+		// 	});
+		// };
 
 
 		

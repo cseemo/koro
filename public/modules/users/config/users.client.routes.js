@@ -30,7 +30,7 @@ angular.module('users').config(['$stateProvider',
 			templateUrl: 'modules/users/views/signup.client.view.html'
 		}).
 		state('shopSignup', {
-			url: '/service_center_signup',
+			url: '/newshopsignup',
 			templateUrl: 'modules/users/views/shopsignup.client.view.html'
 		}).
 		state('signin', {
