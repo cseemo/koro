@@ -103,6 +103,7 @@
                 <tbody>
                     <tr data-ng-repeat="item in currentPageUsers" >
                     <td><a data-ng-click="setCurrentOffender()" href="#!/users/{{item._id}}/edit">{{item.displayName}}</a></td>
+                    <td>{{item.username}}</td>
                     <td>{{item.telephone}}</td>
                     <td>{{item.email}}</td>
                     <td>{{item.roles}}</td>
