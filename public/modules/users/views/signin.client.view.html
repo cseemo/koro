@@ -1,14 +1,64 @@
-<div class="page-signin" data-ng-controller="AuthenticationController">
- <div class="panel panel-profile">
-    <div class="signin-header">
-        <section class="logo text-center">
-        <img src="http://budgetiid.com/wp-content/uploads/2014/07/Budget-Interlock-logo-copy.jpg"/>
-        </section>
-    </div>
+<style>
+.col-md-4{
+    padding: 10px;
 
-    <div class="main-body">
-        <div class="container">
+}
+.form-inline{
+    padding: 17px;
 
+}
+fieldset{
+    padding: 3px;
+}
+h1, h2, h3, h4{
+    color: #333;
+}
+.main-body{
+    background-color: #555;
+    min-height: 100%;
+}
+td{
+    font-size: 1em;
+
+}
+.scroll{
+overflow: scroll;  
+height: auto; 
+min-height: 100px; 
+max-height: 300px;
+}
+
+</style>
+
+     <!-- <section data-ng-controller="AdminusersController" data-ng-init="findOne()"> -->
+<!-- <div class="main-body">
+    <div class="container">
+      <div class="row">
+         <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>User Profile</h1>
+                </div>
+                    <div class="panel-body">
+                           <h3 class="list-group-item-text">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div> -->
+
+<section class="page-signin" data-ng-controller="AuthenticationController">
+ <div class="main-body">
+  <div class="container">
+    <div class="panel panel-profile">
+        <div class="signin-header">
+            <section class="logo text-center">
+            <img src="http://budgetiid.com/wp-content/uploads/2014/07/Budget-Interlock-logo-copy.jpg"/>
+            </section>
+        </div>
             <div class="form-container">
 
                 <form data-ng-submit="signin()" class="form-horizontal">
