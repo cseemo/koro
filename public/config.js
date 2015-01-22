@@ -3,8 +3,7 @@
 // Init the application configuration module for AngularJS application
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
-	var applicationModuleName = 'mean';
-	//var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils'];
+	var applicationModuleName = 'Budget';
 	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'ui.tree', 'easypiechart', 'textAngular', 'ngMap', 'ngTagsInput', 'btford.socket-io', 'angularFileUpload', 'xeditable', 'uiGmapgoogle-maps'];
 
 // , 'uiGmapgoogle-maps'
