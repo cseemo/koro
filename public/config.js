@@ -3,10 +3,9 @@
 // Init the application configuration module for AngularJS application
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
-	var applicationModuleName = 'mean';
-	//var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils'];
-	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'ui.tree', 'easypiechart', 'textAngular', 'ngMap', 'ngTagsInput', 'btford.socket-io', 'angularFileUpload', 'xeditable', 'uiGmapgoogle-maps'];
-
+	var applicationModuleName = 'Budget';
+	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ui.tree', 'easypiechart', 'textAngular', 'ngMap', 'ngTagsInput', 'btford.socket-io', 'angularFileUpload', 'ngTouch', 'xeditable', 'uiGmapgoogle-maps'];
+	//'ngTouch', 
 // , 'uiGmapgoogle-maps'
 	// Add a new vertical module
 	var registerModule = function(moduleName) {
