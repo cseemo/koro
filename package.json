@@ -12,7 +12,6 @@
     "postinstall": "bower install --config.interactive=false"
   },
   "dependencies": {
-     // "angular-touch": "~1.2.8",
     "async": "^0.9.0",
     "auth-net-cim": "^2.1.0",
     "auth-net-types": "^1.1.0",
