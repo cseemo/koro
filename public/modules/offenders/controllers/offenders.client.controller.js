@@ -1374,6 +1374,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// Redirect after save
 			workorder.$save(function(response) {
 				console.log('Response from new work order', response);
+				if(workorder && workorder.amount > 0){
+
+
+			
 				portalPayments.newPayment(workorder, $scope.offender);
 					workorder._id = response._id;
 					var offender = Offenders.get({offenderId: $scope.offender._id});
@@ -1384,6 +1388,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		        		offender.$update();
 		        		console.log('Offender has been saved...', offender);
 					})
+				}
 					
 				
 
@@ -1886,7 +1891,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// Redirect after save
 			workorder.$save(function(response) {
 					$scope.workOrder._id = response._id;
-					portalPayments.newPayment(workorder, $scope.offender);
+						if(workorder && workorder.amount > 0){
+			
+				portalPayments.newPayment(workorder, $scope.offender);
+					
+				}
+					
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
@@ -2041,7 +2051,13 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// Redirect after save
 			workorder.$save(function(response) {
 					// $scope.workOrder._id = response._id;
-					portalPayments.newPayment(workorder, $scope.offender);
+					if(workorder && workorder.amount > 0){
+			
+				portalPayments.newPayment(workorder, $scope.offender);
+					
+				}
+					
+					
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
@@ -2556,7 +2572,13 @@ $scope.mytime = $scope.dt;
 			// Redirect after save
 			workorder.$save(function(response) {
 					// $scope.workOrder._id = response._id;
-					portalPayments.newPayment(workorder, $scope.offender);
+						if(workorder && workorder.amount > 0){
+			
+				portalPayments.newPayment(workorder, $scope.offender);
+					
+				}
+				
+					// portalPayments.newPayment(workorder, $scope.offender);
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.pendingWorkType = workorder.type;
         			$scope.offender.$update();

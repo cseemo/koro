@@ -197,46 +197,39 @@ tbody{
 	                    </div>
 	                    <div class="media">
 	                        <div class="media-body">
-	                                        <ul class="list-unstyled list-info">
-	                                            <li>
-	                                                
-	                                               <label>Name</label>
-                                                    <input ng-model="offender.displayName" cb:inline ng-blur="saveMe()"></input>
-                                                   
-                                                </li>
-                                                <li>
-                                                   
-                                                    <label>Email</label>
-                                                    <input ng-model="offender.offenderEmail" cb:inline ng-blur="saveMe()"></input>
-                                                    
-	                                            </li>
-	                                            <li>
-	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
-	                                                <label>Phone</label>
-	                                               
-	                                                <input ng-model="offender.mainPhone" cb:inline ng-blur="saveMe()"></input>
+	                        	 <div class="list-group-item-text">
+                        			<div class="table-responsive">          
+      									<table class="table">
+      										<tbody>
+      											<tr>
+      												<td> <label>Name</label></td>
+      												<td> <input ng-model="offender.displayName" cb:inline ng-blur="saveMe()"></input></td>
+      											</tr>
+      											<tr>
+      												<td> <label>Email</label></td>
+      												<td> <input ng-model="offender.offenderEmail" cb:inline ng-blur="saveMe()"></input></td>
+      											</tr>
+      											<tr>
+      												<td> <label>Phone</label></td>
+      												<td> <input ng-model="offender.mainPhone" cb:inline ng-blur="saveMe()"></input></td>
+      											</tr>
+      											<tr>
+      												<td> <label>Alternate</label></td>
+      												<td> <input ng-model="offender.altPhone" cb:inline ng-blur="saveMe()"></input></td>
+      											</tr>
+      											<tr>
+      												<td> <label>Date of Birth</label></td>
+      												<td> {{offender.dobMO}}/{{offender.dobDAY}}/{{offender.dobYR}}</td>
+      											</tr>
+      											<tr>
+      												<td> <label>Driver License Number</label></td>
+      												<td> <input ng-model="offender.driverNumber" cb:inline ng-blur="saveMe()"></input></td>
+      											</tr>
 
-	                                            </li>
-	                                            <li>
-	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
-	                                                <label>Alternate</label>
-	                                                
-	                                                 <input ng-model="offender.altPhone" cb:inline ng-blur="saveMe()"></input>
-	                                            </li>
-	                                               <li>
-	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
-	                                                <label>Date of Birth</label>
-	                                                {{offender.dobMO}}/{{offender.dobDAY}}/{{offender.dobYR}}
-	                                               
-	                                            </li>
-	                                            <li>
-	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
-	                                                <label>Driver License Number</label>
-	                                                {{offender.driverNumber}}
-	                                               
-	                                            </li>
-
-	                                        </ul>
+      									</table>
+      								</div>
+      							</div>
+       <!--  -->
 	                        </div>
 	                    </div>
 	        		</fieldset>
@@ -307,53 +300,39 @@ tbody{
 	            </div>
 	        </div> 
 
-
-	        <div class="col-md-4">
+	           	<div class="col-md-4">
 	            <div class="panel panel-profile">
-
-	                <form name="form"  class="form-horizontal form-validation" novalidate>
-	                    <fieldset>
-
-	                        <!-- Pofile panel -->
-	                        <!-- <div class="panel panel-profile"> -->
-	                            <div class="panel-heading bg-primary clearfix">
-	                                <!-- <a href="" class="pull-left profile">
-	                                    <img alt="" src="images/g1.jpg" class="img-circle img80_80">
-	                                </a> -->
-	                                <!-- <div class="pull-left profile">
-	                                    <i class="fa fa-users text-large stat-icon"></i>
-	                                </div> -->
-	                                <!-- <span class="pull-left box-icon rounded text-large">
-	                                    <i class="fa fa-check"></i>
-	                                </span> -->
+	                <fieldset>
+	                    <div class="panel-heading bg-primary clearfix">
+	                               
 	                                <h4>Vehicle Information</h4>
 	                              
-	                            </div>
-	                            <div class="media">
-	                              
-	                                    <div class="media-body">
-	                                        <ul class="list-unstyled list-info">
-	                                            <li>
-	                                                
-	                                                <label>Year</label>
-	                                                {{offender.vehicleYear}}
-	                                            </li>
-	                                            <li>
-	                                               
-	                                                <label>Make</label>
-	                                                {{offender.vehicleMake || 'N/A'}}
-	                                            </li>
-	                                            <li>
-	                                               <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
-	                                                <label>Model</label>
-	                                                {{offender.vehicleModel || 'N/A'}}
-	                                            </li>
-	                                          <!--   <li>
-	                                              <span class="icon glyphicon glyphicon-envelope"></span> 
-	                                                <label>Alternate</label>
-	                                                <span style="text-transform: capitalize"> {{offender.altPhone || 'N/A'}}</span>
-	                                            </li> -->
-	                                        </ul>
+	                    </div>
+	                    <div class="media">
+	                        <div class="media-body">
+	                        	 <div class="list-group-item-text">
+                        			<div class="table-responsive">          
+      									<table class="table">
+
+      										<tbody>
+      											<tr>
+      												<td> <label>Year</label></td>
+      												<td> <input ng-model="offender.vehicleYear" cb:inline ng-blur="saveMe()"></input></td>
+      											</tr>
+      											<tr>
+      												<td> <label>Make</label></td>
+      												<td> <input ng-model="offender.vehicleMake" cb:inline ng-blur="saveMe()"></input></td>
+      											</tr>
+      											<tr>
+      												<td> <label>Model</label></td>
+      												<td> <input ng-model="offender.vehicleModel" cb:inline ng-blur="saveMe()"></input></td>
+      											</tr>
+      											
+      											
+
+      									</table>
+	</div>      								</div>
+
 	                                    </div>
 	                                </div>
 	                            </div>
@@ -559,7 +538,7 @@ tbody{
 				  </accordion>
 	      		</div>
 	    </div>
-	  
+	<!--   
 	    <div class="pull-right">
 			<a class="btn btn-primary" href="/#!/offenders/{{offender._id}}/edit">
 				<i class="glyphicon glyphicon-edit"></i>
@@ -570,12 +549,12 @@ tbody{
 		</div>
 		<small>
 			<em class="text-muted">
-				Posted on
+				Created on
 				<span data-ng-bind="offender.created | date:'mediumDate'"></span>
 				by
 				<span data-ng-bind="offender.user.displayName"></span>
 			</em>
-		</small>
+		</small> -->
 
 
     <script type="text/ng-template" id="workOrderModal.html">

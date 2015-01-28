@@ -140,14 +140,17 @@ exports.hasAuthorization = function(req, res, next) {
 
 exports.sendShopInvite = function(req, res){
 	console.log('Sending Shop Invitation Now');
-
+	console.log('Request Body: ', req.body);
+	if(!req.body.email){
+		return res.status(400).send('Not a valid email');
+	}
 		var message = {
 	'subject': 'Please Register to Use our Online Portal',
 	'from_email': 'Admin@budgetiid.com',
-	'from_name': req.shop.user.displayName,
+	'from_name': req.body.shop.user.displayName,
 	'to': [{
-		'email': req.shop.email,
-		'name': req.shop.primarycontactname,
+		'email': req.body.email,
+		'name': req.body.shop.primarycontactname,
 			'type': 'to'
 	}],
 	'headers': {
@@ -159,15 +162,15 @@ exports.sendShopInvite = function(req, res){
 		'content': 'merge1 content'
 	}],
 	'merge_vars': [{
-			'rcpt': req.shop.email,
+			'rcpt': req.body.email,
 			'vars': [
 				{
 					'name': 'repName',
-					'content': req.shop.user.displayName
+					'content': req.body.shop.user.displayName
 				},
 				{
 					'name': 'shopid',
-					'content': req.shop._id
+					'content': req.body.shop._id
 				},
 
 

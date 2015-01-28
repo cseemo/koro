@@ -537,10 +537,14 @@ $scope.mytime = $scope.dt;
     $scope.sendPortal = function(){
     		console.log('Sending Portal for Shop ', $scope.shop);
 			$http({
-					    method: 'get',
-					    url: '/sendShopInvite/'+$scope.shop._id,
-					    responseType: 'arraybuffer',
-					    headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+					    method: 'post',
+					    url: '/sendShopInvite/',
+					    // responseType: 'arraybuffer',
+					    data: {
+					    	email: $scope.emailTo,
+					    	shop: $scope.shop
+					    },
+					    // headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 					 })
 					.error(function(err, status) {
 						// console.log('Error!! ERr ', err);
@@ -700,11 +704,22 @@ $scope.mytime = $scope.dt;
 				});	
 		};
 
+		$scope.checkEmail = function(){
+			$scope.showEmail=true;
+			// console.log('Shop: ', $scope.shop);
+			if($scope.shop.email){
+				// console.log('Has an email ', $scope.shop.email);
+				$scope.emailTo = $scope.shop.email;
+			}
+
+		};
 		// Find existing Shop
 		$scope.findOne = function() {
+
 			$scope.shop = Shops.get({ 
 				shopId: $stateParams.shopId
 			});
+			
 			$scope.getUploads($stateParams.shopId);
 		};
 	}

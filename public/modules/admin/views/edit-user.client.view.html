@@ -40,12 +40,35 @@ max-height: 300px;
                 </div>
                 <div class="panel-body">
                        <h3 class="list-group-item-text">
-                       <label>Name:</label> <span data-ng-bind="userB.displayName"></span><br>
-                       <label>Username: </label><span data-ng-bind="userB.username"></span><br>
-                       <label>Email:</label> <span data-ng-bind="userB.email"></span><br>
-                       <label>Telephone: </label><span data-ng-bind="userB.telephone"></span><br>
-                        <label>Roles: </label><span data-ng-bind="userB.roles"></span><br>
-                       <label>Service Center: </label> <span data-ng-bind="userB.shopName"></span> 
+                        <div class="table-responsive">          
+      <table class="table">
+       
+        <tbody>
+          <tr>
+            <td><label>Name:</label></td>
+            <td>{{userB.displayName}}</td>
+          </tr>
+          <tr>
+            <td> <label>Username: </label></td>
+            <td>{{userB.username}}</td>
+          </tr>
+          <tr>
+            <td> <label>Email:</label></td>
+            <td>{{userB.email}}</td>
+          </tr>
+           <tr>
+            <td> <label>Telephone Number:</label></td>
+            <td>{{userB.telephone}}</td>
+          </tr>
+           <tr>
+            <td> <label>User Roles:</label></td>
+            <td><span data-ng-bind="userB.roles"></span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    
+
                     </h3>
                      <button class="btn btn-w-md btn-gap btn-warning pull-right" data-ng-click="resetPW()">Reset Password</button>
                      

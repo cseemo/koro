@@ -31,9 +31,23 @@
                     <a  class="btn btn-primary btn-xs" style="color: #fff;" data-ng-click="sendContract();">
                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Re-send Service Center Agreement
             </a> <br>
-               <a  class="btn btn-primary btn-xs" style="color: #fff;" data-ng-click="sendPortal()">
+               <a  class="btn btn-primary btn-xs" style="color: #fff;" data-ng-click="checkEmail()" data-ng-hide="showEmail">
                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Send Portal Invitation
             </a> 
+            <span data-ng-show="showEmail">
+              <br>
+              <label>Email Address: </label> <input type="text" data-ng-model="emailTo" class="form-control" placeholder="Email Address to Send Invitation"/>
+              <br>
+              
+                <a  class="btn btn-primary btn-xs" style="color: #fff;" data-ng-click="sendPortal()">
+           <!--      <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> -->
+                 Send Now
+            </a> 
+            <a  class="btn btn-primary btn-xs" style="color: #fff;" data-ng-click="showEmail=false">
+           <!--      <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> -->
+                 Cancel
+            </a> 
+            </span>
             </div>
               <div class="col-md-6">
 

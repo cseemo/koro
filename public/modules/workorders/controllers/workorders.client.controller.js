@@ -211,7 +211,10 @@ $scope.approveWorkOrderPayment = function(){
 				var createPayment = function (wo, off){
 			console.log('Creating Manual Payment Now', $scope.offender);
 				console.log('Workorder', wo);
+			if(wo && wo.amount > 0){
 
+
+				
         	//Create New Payment
         		var pmt = new Payments ({
 				workorder: wo._id,
@@ -236,7 +239,7 @@ $scope.approveWorkOrderPayment = function(){
 
    					});
 
-			
+			}
 		};
 
 

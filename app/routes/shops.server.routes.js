@@ -19,8 +19,8 @@ module.exports = function(app) {
 		app.route('/signAgreement/:shopId')
 		.get(shops.signAgreement);
 
-		app.route('/sendShopInvite/:shopId')
-		.get(shops.sendShopInvite);
+		app.route('/sendShopInvite')
+		.post(shops.sendShopInvite);
 
 		
 

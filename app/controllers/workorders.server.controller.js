@@ -1644,10 +1644,15 @@ var chargeIt = function(req, res, number){
 							var transaction = {
 						  amount: totalCharge,
 						  tax: {
-						    amount: stateTax,
+						    amount: 0,
 						    name: 'State Tax',
 						    description: taxState
 						  },
+						    // tax: {
+						  //   amount: stateTax,
+						  //   name: 'State Tax',
+						  //   description: taxState
+						  // },
 						  // shipping: {
 						  //   amount: 5.00,
 						  //   name: 'FedEx Ground',

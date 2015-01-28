@@ -355,6 +355,7 @@ var mongoose = require('mongoose'),
 								// res.jsonp(payment);
 								console.log('Payment for '+item.displayName);
 								// callback();
+
 								}
 							});
 						} else {
@@ -376,8 +377,10 @@ var mongoose = require('mongoose'),
 
 var CronJob = require('cron').CronJob;
 
+//Check who needs to be billed
 var job = new CronJob({
   cronTime: '10 01 20 * * 0-6',
+
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Ontick called');
@@ -397,22 +400,205 @@ var job = new CronJob({
 job.start();
 
 
-var job2 = new CronJob({
-  cronTime: '55 * * * * 0-6',
+//Charge all customers on AutoPay
+var jobCharge = new CronJob({
+  // cronTime: '5,25,40 * * * * 0-6',
+   cronTime: '10 30 20 * * 0-6',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
-  	console.log('Time check Motherfuckers!!!!!!!!!!');
+  	console.log('Ontick called');
   	var today = new moment();
   	// var startDate = moment().hours(0).minutes(0).seconds(0);
 	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
 	
-    console.log('The current time is...', convertedPretty);
-    // createMonthlyCharge();
+    console.log('Going to charge some cards!!!', convertedPretty);
+    autoCharge();
   },
   start: false,
   // timeZone: "America/Los_Angeles"
 });
-job2.start();
+
+// console.log('Job.start about to executie!!');
+
+jobCharge.start();
+
+
+
+var chargeIt = function(pmt, callback){
+	console.log('Charging it...');
+	console.log('Payment: ', pmt);
+	var offender = offenderByID(pmt.offender, function(err, cus){
+		if(err){
+			console.log('Err finding offender...loine 435');
+			return callback(err);
+		}
+		if(cus && cus.merchantCustomerId && cus.paymentProfileId){
+			console.log('Auto Charge this bastard'+cus.displayName+' '+pmt.amount+':::'+pmt._id);
+			
+				var transaction = {
+				  amount: pmt.amount,
+				  // tax: {
+				  //   amount: 0,
+				  //   name: 'State Tax',
+				  //   // description: taxState
+				  // },
+				 
+					  customerProfileId: cus.merchantCustomerId,
+					  customerPaymentProfileId: cus.paymentProfileId,
+				  order: {
+				    invoiceNumber: Date.now(),
+				    description: 'Auto Payment of Monthly Interlock Fee'
+				  },
+				  billTo: {
+				  	firstName: cus.firstName,
+				  	lastName: cus.lastName,
+				  	address: cus.billingAddress
+				  }
+				};
+
+				AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, CaptureOnly, PriorAuthCapture */, transaction, function(err, response) {
+					if(err){
+						console.log('Error Charging Card', err);
+						// res.status(400).send('ERROR: '+err);
+						return callback(err);
+					}
+					if(response){
+						console.log('Card has been charged!!', response);
+						pmt.status='Paid';
+						pmt.paidDate = Date.now();
+						pmt.save(function(err, data){
+							if(err){
+								console.log('Error saving Payment...');
+								return callback('Error saving payment...'+err);
+							}
+							console.log('Payment Saved...', data);
+							return callback(null, response);
+
+						});
+						
+						// res.status(200).send(response);
+					}
+				});
+
+
+
+
+		}
+
+	})
+	
+
+};
+var autoCharge = function(){
+	console.log('Charging cards now...');
+var today = moment().endOf('day');
+var tomorrow = moment(today).add(1, 'days');
+console.log('Today is: ', today);
+console.log('Tomorrow will be : ', tomorrow);
+
+	// Step 1. Get the payments that are due
+	// Step 2. Find out if those Offenders have a CC on File
+	// Step 3. Charge that Credit Card
+
+		Payment.find({
+			dueDate: {
+				$lt: today.toDate()
+			},
+			status: 'Due'
+		}).exec(function(err, payments) {
+			if (err) {
+				console.log('Error !!! :', err);
+				return res.status(400).send({
+					message: err //errorHandler.getErrorMessage(err)
+				});
+			} else {
+				console.log('Got Payments: ');
+				// console.log('Offenders List: ', offenders);
+				
+  				
+				// var convertedPretty = new moment().format("MM/DD/YYYY hh:mm:ss");
+	
+				// var nextMonth = moment().add(15, 'days').hours(0).minutes(0).seconds(0);
+
+				
+
+				async.forEach(payments, function(item, callback){
+					// console.log('Payment: ', item);
+					if(!item.paidDate && item.status==='Due'){
+						console.log('This bitch needs to be charged...');
+						console.log('*************');
+						var dueDate = item.dueDate;
+						var status = item.status;
+						console.log('This will be charged '+item.amount+' because it is '+item.status+' and it was due: '+item.dueDate);
+						chargeIt(item, function(err, data){
+							console.log('Return from charge it', err);
+							console.log('Data: ', data);
+						});
+						// async.waterfall([
+						// 	function(){ callback(item);},
+						// 	function(item){
+						// 		console.log('Working with '+item+' going to see if the Offender has a card on file');
+						// 		Offender.find({userId: item.offender}, function(err, offender){
+						// 			if(err){
+						// 				console.log('Error; ', err);
+						// 				return callback(err);
+						// 			}
+						// 			callback(offender)
+						// 		})
+								
+						// 	},
+						// 	function(arg1, arg2){
+								
+						// 		console.log('Arg1: ', arg1);
+						// 		console.log('Arg2: ', arg2);
+						// 		callback('done');
+						// 	},
+						// 	], function(err, results){
+						// 		//results should be done
+						// 		if(err){
+						// 			console.log('Got an error',err);
+						// 			console.trace();
+
+
+						// 		}else{
+						// 			console.log('Results: ', results);
+						// 		}
+						// 	});
+					}
+					
+
+					// console.log('Client ', item.displayName);
+					// console.log('Bill Date is: ', item.billDate);
+					// var d = new Date();
+					// var n = d.getDate();
+					// console.log('Todays date is: ', n);
+					// // n = n-1;
+
+
+					// if(item.billDate == n ){
+					});
+			}
+		});
+
+	console.log('Done');
+};
+
+// var job2 = new CronJob({
+//   cronTime: '55 * * * * 0-6',
+//   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
+//   onTick: function() {
+//   	console.log('Time check Motherfuckers!!!!!!!!!!');
+//   	var today = new moment();
+//   	// var startDate = moment().hours(0).minutes(0).seconds(0);
+// 	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+	
+//     console.log('The current time is...', convertedPretty);
+//     createMonthlyCharge();
+//   },
+//   start: false,
+//   // timeZone: "America/Los_Angeles"
+// });
+// job2.start();
 
 // var job3 = new CronJob({
 //   cronTime: '0,30 30 * * * 0-6',
@@ -486,7 +672,7 @@ var offenderByID = function(id, next) { Offender.findById(id).populate('user').e
 		if (err) return next(err);
 		if (! offender) return next(new Error('Failed to load Offender ' + id));
 		
-		console.log('Got OFfender: ', offender);
+		// console.log('Got OFfender: ', offender);
 		next(null, offender);
 	});
 };
@@ -569,6 +755,8 @@ res.jsonp(pmt);
 exports.create = function(req, res) {
 	var payment = new Payment(req.body);
 	payment.user = req.user;
+	var today = moment().hours(20).minutes(0).seconds(0);
+	payment.dueDate = today;
 
 	payment.save(function(err) {
 		if (err) {
