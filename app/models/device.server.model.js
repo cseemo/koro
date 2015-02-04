@@ -32,6 +32,7 @@ var deviceDetailSchema = new Schema({
 	},
 
 
+
 });
 
 mongoose.model('deviceDetail', deviceDetailSchema, 'devices');

@@ -757,8 +757,29 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       $scope.currentPage = page;
       $scope.currentPageOffenders = $scope.filteredOffenders.slice(start, end);
       // console.log('Current Page Offenders', $scope.currentPageOffenders);
+     angular.forEach($scope.currentPageOffenders, function(item){
+		console.log('Offender: ', item);
+		// item.shopName = 'Test';
+		if(item.assignedShop){
+			console.log('Shop has an assigned SHop');
+			var myShop = Shops.get({ 
+				shopId: item.assignedShop
+					});
+		      	myShop.$promise.then(function(){
+		      		console.log('Shop Promise finished', myShop);
+		      		
+			      	item.shopName = myShop.name;
+		      		
 
-      return $scope.currentPageOffenders;
+		      	});
+
+		
+      		
+
+		}
+	})
+		
+		return $scope.currentPageOffenders;
 
 
     };

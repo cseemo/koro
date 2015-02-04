@@ -14,12 +14,12 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var device = new Device(req.body);
 	device.user = req.user;
-	device.details = [
-	{type: 'Check In'},
-	{updated: Date.now()},
-	{destination: 'New Inventory'},
-	{requestor:req.user.displayName}
-	];
+	// device.details.push(
+	// {type: 'Check In'},
+	// {updated: Date.now()},
+	// {destination: 'New Inventory'},
+	// {requestor:req.user.displayName}
+	// );
 	console.log('Device: ', device);
 
 	// ['type'] = 'Check In', 

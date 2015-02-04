@@ -82,6 +82,30 @@ color: #333;
                                       data-ng-class="{active: row == '-state'}"></span>
                             </div>
                         </th>
+
+                         <th>
+                            <div class="th">
+                                Service Center
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('state') "
+                                      data-ng-class="{active: row == 'state'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-state') "
+                                      data-ng-class="{active: row == '-state'}"></span>
+                            </div>
+                        </th>
+
+                         <th>
+                            <div class="th">
+                                Device Serial Number
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('state') "
+                                      data-ng-class="{active: row == 'state'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-state') "
+                                      data-ng-class="{active: row == '-state'}"></span>
+                            </div>
+                        </th>
                            
 
                     </tr> 
@@ -93,6 +117,8 @@ color: #333;
                     <td>{{item.mainPhone}}</td>
                     <td>{{item.billingCity}}</td>
                     <td>{{item.billingState}}</td>
+                    <td>{{item.shopName}}</td>
+                    <td>{{item.deviceSN}}</td>
                     
 
                         

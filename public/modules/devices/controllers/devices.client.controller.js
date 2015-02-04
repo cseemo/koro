@@ -1,7 +1,7 @@
 'use strict';
 
 // Devices controller
-angular.module('devices').controller('DevicesController', ['$scope', '$stateParams', '$location', '$modal','Authentication', 'Devices',
+angular.module('devices').controller('DevicesController', ['$scope', '$stateParams', '$location', '$modal', 'Authentication', 'Devices',
 	function($scope, $stateParams, $location, $modal, Authentication, Devices ) {
 		$scope.authentication = Authentication;
 
@@ -23,7 +23,10 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 
 		// Create new Device
 		$scope.create = function() {
+			console.log('Making new device');
 			// Create new Device object
+			$modal.close();
+
 			var device = new Devices ({
 				type: this.deviceType,
 				notes: this.deviceNotes,
@@ -38,7 +41,6 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 				
 				 
 				toastr.info('This device has been added to the inventory');
-				
 
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
@@ -140,6 +142,8 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
      $scope.headingtext = 'Inventory Management';
      $scope.devicesToShip = [];
 
+
+
      $scope.getDevices = function(){
      	// $scope.devices 
      		$scope.availableDevices = Devices.query({status: 'Pending', shopId: Authentication.user.shop});
@@ -192,7 +196,7 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
      	var devices = $scope.devicesToShip;
      	angular.forEach(devices, function(device){
 			console.log('Device ID: ', device._id);
-
+			device.shop = $scope.authentication.user.shop;
 			device.status = 'Pending Deployment';
 			device.details.push({
 				type: 'Received by Shop',
@@ -207,7 +211,7 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 			console.log('Device: ', device);
 
 						})
-     	 $modalInstance.dismiss('submitted');
+     	 $modalInstance.close('submitted');
      	 var qtyDetails = devices.length+' device has';
      	 if(devices.length > 1) qtyDetails = devices.length+' devices have';
      	 
@@ -232,6 +236,47 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
      $scope.shops = Shops.query();
      $scope.headingtext = 'Inventory Management';
      $scope.devicesToShip = [];
+
+		$scope.typeOfDevices = ['Brac Auditlock 1', 'Ali\'s Device', 'Other'];
+
+
+     	$scope.create = function() {
+			console.log('Making new device INVENTORY CONTROL');
+			// Create new Device object
+			var details = [];
+			details.push({
+					type: 'Check In',
+					updated: Date.now(),
+					destination: 'New Inventory',
+					requestor:$scope.authentication.user.displayName
+	
+				});
+			var device = new Devices ({
+				type: this.deviceType,
+				notes: this.deviceNotes,
+				serialNumber: this.deviceSN,
+				status: 'Available',
+				details: details
+				// details: {[
+				// type: 'Check-In', 
+				// updated: Date.now()
+				// ]}
+				});
+
+			
+			
+			console.log('Device: ', device);
+			// Redirect after save
+			device.$save(function(response) {
+				console.log('Saved');
+				
+				 $modalInstance.close();
+				toastr.info('This device has been added to the inventory');
+
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
 
      $scope.getDevices = function(){
      	// $scope.devices 
@@ -292,6 +337,7 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 				destination: $scope.serviceCenter.name,
 				requestor: $scope.authentication.user.displayName
 			});
+			console.log('Device Details: ', device.details);
 			device.shopId = $scope.serviceCenter._id;
 
 			device.$update();
