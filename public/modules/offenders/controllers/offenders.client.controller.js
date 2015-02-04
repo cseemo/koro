@@ -47,7 +47,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		{item: 'Collect Payment', click: 'openpmt'},
 		{item: 'Inspect Vehicle', click: 'inspected'},
 		// {item: 'Have Customer Watch Training Video', click: 'customerVideo'},
-		{item: 'Complete Service', click: 'complete'}
+		// {item: 'Complete Service', click: 'complete'}
 		];
 
 		$scope.checklist2 = [
@@ -228,11 +228,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		};
 
 		      $scope.openPmt = function() {
-      	console.log('Opening Modal');
+      	console.log('Opening Modal', $scope.workorder);
+
         var modalInstance;
         var offender = $scope.offender;
         modalInstance = $modal.open({
-          templateUrl: 'pmtModalContent.html',
+          templateUrl: 'pmtModalContent2.html',
           controller: 'paymentCtrl',
           size: 'lg',
           resolve: {
@@ -405,28 +406,38 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 		$scope.completeOrder = function() {
 			console.log('WE are completing the work order!');
-			var modalInstance;
-	        var offender = $scope.offender;
-	        modalInstance = $modal.open({
-	          templateUrl: 'completeOrder.html',
-	          controller: 'ModalInstanceCtrl',
-	          resolve: {
-	            items: function() {
-	              return $scope.workOrderTypes;
-	            }, 
-	             workorder: function() {
-	              return $scope.workorder._id;
-	            },
-	            offender: function() {
-	              return $scope.offender;
-	            }
-	          }
-	        });
-	        modalInstance.result.then(function(selectedItem, offender) {
-	          $scope.selected = selectedItem;
-	        }, function() {
-	          $log.info('Modal dismissed at: ' + new Date());
-	        });
+			
+					
+					var modalInstance;
+			        var offender = $scope.offender;
+			        modalInstance = $modal.open({
+			          templateUrl: 'completeOrder.html',
+			          controller: 'ModalInstanceCtrl',
+			          resolve: {
+			            items: function() {
+			              return $scope.workOrderTypes;
+			            }, 
+			             workorder: function() {
+			              return $scope.workorder._id;
+			            },
+			            offender: function() {
+			              return $scope.offender;
+			            }
+			          }
+			        });
+			        modalInstance.result.then(function(selectedItem, offender) {
+			          $scope.selected = selectedItem;
+			        }, function() {
+			          $log.info('Modal dismissed at: ' + new Date());
+			        });
+
+
+				
+
+
+
+				
+
 
 
 			// console.log($scope.workorder);
@@ -1271,18 +1282,18 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 								$scope.checklist[2]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
-							if($scope.workorder.authCode || $scope.workorder.amount==='0'){
+							if($scope.workorder.pmtStatus!=='Due' || $scope.workorder.amount==='0'){
 								console.log('Workorder Alrady Paid For');
 								console.log("STuff: ", $scope.checklist[4]);
 								$scope.checklist[4]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
-							if($scope.workorder.completed){
-								console.log('Workorder Alrady Completed');
-								console.log("STuff: ", $scope.checklist[6]);
-								$scope.checklist[6]['strike'] = "done-true" ;
-								progress = progress+15;
-							}
+							// if($scope.workorder.completed){
+							// 	console.log('Workorder Alrady Completed');
+							// 	console.log("STuff: ", $scope.checklist[6]);
+							// 	$scope.checklist[6]['strike'] = "done-true" ;
+							// 	progress = progress+15;
+							// }
 
 							$scope.progress = progress;
 
@@ -2787,7 +2798,7 @@ $scope.mytime = $scope.dt;
     $scope.offender = offender;
     $scope.worders = workorders;
     $scope.payments = payments;
-
+    
   $scope.oneAtATime = true;
 
   $scope.close = function(){
@@ -3214,6 +3225,24 @@ $scope.makePmt = function(){
 
 			// payment.status = 'Pending Reconcilliation';
 		}
+		
+		var wos = Workorders.query({_id: payment.workorder});
+   							
+
+   							wos.$promise.then(function(){
+   								var workOrder = wos[0];
+   								console.log('Workorder ready to save: , ', workOrder);
+   								
+		   						workOrder.pmtStatus = 'Paid';
+
+		   						workOrder.amount = $scope.pmtchosen.amount;
+		   						workOrder.$update();
+
+
+
+
+   							});
+   							
 		
 	
 		payment.$update();

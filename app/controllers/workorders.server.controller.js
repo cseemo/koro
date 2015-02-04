@@ -1642,12 +1642,12 @@ var chargeIt = function(req, res, number){
 						console.log('Tax Amount: ', stateTax);
 
 							var transaction = {
-						  amount: totalCharge,
-						  tax: {
-						    amount: 0,
-						    name: 'State Tax',
-						    description: taxState
-						  },
+						  amount: workCharge,
+						  // tax: {
+						  //   amount: 0,
+						  //   name: 'State Tax',
+						  //   description: taxState
+						  // },
 						    // tax: {
 						  //   amount: stateTax,
 						  //   name: 'State Tax',
@@ -1677,7 +1677,7 @@ var chargeIt = function(req, res, number){
 								res.status(400).send('ERROR: '+err);
 							}
 							if(response){
-								console.log('Card has been charged!!', response);
+								console.log('Card has been charged!! 1680 WO Server', response);
 
 
 
@@ -1713,11 +1713,11 @@ var chargeCreditCard = function(req, res, paymentProfile){
 
 		var transaction = {
 			  amount: totalCharge,
-			  tax: {
-			    amount: stateTax,
-			    name: 'State Tax',
-			    description: taxState
-			  },
+			  // tax: {
+			  //   amount: stateTax,
+			  //   name: 'State Tax',
+			  //   description: taxState
+			  // },
 				  // shipping: {
 				  //   amount: 5.00,
 				  //   name: 'FedEx Ground',
@@ -1742,7 +1742,7 @@ var chargeCreditCard = function(req, res, paymentProfile){
 				res.status(400).send('ERROR: '+err);
 			}
 			if(response){
-				console.log('Card has been charged!!', response);
+				console.log('Card has been charged!! WO - 1745', response);
 
 
 
@@ -1822,12 +1822,12 @@ var chargeNewCard = function(req, res){
 				console.log('Tax Amount: ', stateTax);
 
 				var transaction = {
-					  amount: totalCharge,
-					  tax: {
-					    amount: stateTax,
-					    name: 'State Tax',
-					    description: taxState
-					  },
+					  amount: workCharge,
+					  // tax: {
+					  //   amount: stateTax,
+					  //   name: 'State Tax',
+					  //   description: taxState
+					  // },
 						  // shipping: {
 						  //   amount: 5.00,
 						  //   name: 'FedEx Ground',
@@ -1852,7 +1852,7 @@ var chargeNewCard = function(req, res){
 						res.status(400).send('ERROR: '+err);
 					} else {
 
-						console.log('Card has been charged!!', response);
+						console.log('Card has been charged!! WO -1855', response);
 						res.status(200).send(response);
 					}
 				});
@@ -1964,7 +1964,9 @@ exports.runAuth = function(req, res) {
 
 
 
-	}
+	}else{
+
+
 
 
 	console.log('Workorder?', req.workorder);
@@ -2006,12 +2008,12 @@ console.log('Work Order Charge: ', workCharge);
 console.log('Tax Amount: ', stateTax);
 
 	var transaction = {
-  amount: totalCharge,
-  tax: {
-    amount: stateTax,
-    name: 'State Tax',
-    description: taxState
-  },
+  amount: workCharge,
+  // tax: {
+  //   amount: 0,
+  //   name: 'State Tax',
+  //   description: taxState
+  // },
   // shipping: {
   //   amount: 5.00,
   //   name: 'FedEx Ground',
@@ -2036,7 +2038,7 @@ console.log('Tax Amount: ', stateTax);
 		res.status(400).send(err);
 	}
 	if(response){
-		console.log('Card has been charged!!', response);
+		console.log('Card has been charged!! wo - 2041', response);
 		res.status(200).send(response);
 	}
 });
@@ -2052,7 +2054,7 @@ console.log('Tax Amount: ', stateTax);
 
 
 console.log('Done w/ that shit...');
-
+}
 
 };
 

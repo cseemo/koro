@@ -328,11 +328,11 @@ var createAuthProfile2 = function(off, cb) {
 
 								var transaction = {
 						  amount: '0.01',
-						  tax: {
-						    amount: '0.00',
-						    name: 'State Tax',
-						    description: 'None'
-						  },
+						  // tax: {
+						  //   amount: '0.00',
+						  //   name: 'State Tax',
+						  //   description: 'None'
+						  // },
 						  // shipping: {
 						  //   amount: 5.00,
 						  //   name: 'FedEx Ground',

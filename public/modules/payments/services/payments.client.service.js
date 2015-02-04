@@ -50,7 +50,8 @@ angular.module('payments').factory('Payments', ['$resource',
 				offender: off._id,
 				status: 'Due',
 				notes: 'Pending Workorder -- Payment Due', 
-				amount: wo.amount
+				amount: wo.amount,
+				
 				
 			});
 
