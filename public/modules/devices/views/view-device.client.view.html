@@ -1,3 +1,29 @@
+<style>
+.col-md-4{
+    padding: 10px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+h1, h2, h3{
+	color: #333;
+}
+.main-body{
+	background-color: #555;
+}
+.link {
+	text-decoration: none;
+	cursor: pointer;
+}
+tbody{
+	cursor: pointer;
+}
+</style>
 <section data-ng-controller="DevicesController" data-ng-init="findOne()">
 	<div class="page-header">
 		
@@ -5,15 +31,67 @@
 		<h1 data-ng-bind="device.notes"></h1>
 		<h1 data-ng-bind="device.serialNumber"></h1>
 		<h1 data-ng-bind="device.status"></h1>
+
+
+		 <table class="table table-bordered table-striped table-responsive" >
+	                <thead>
+	                    <tr>
+	                   
+	                    <th>
+	                            <div class="th">
+	                                Date
+	                             </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Type
+	                             </div>
+	                        </th>
+	                       
+	                      
+	                        <th>
+	                            <div class="th">
+	                                Destination 
+	                        </div>
+	                        </th>
+	                        <th>
+	                            <div class="th">
+	                                Requestor 
+	                        </div>
+	                        </th>
+	                         <th>
+	                            <div class="th">
+	                                Notes 
+	                        </div>
+	                        </th>
+
+	                        
+
+	                                  </tr> 
+	                </thead>
+	                <tbody>
+	                    <tr data-ng-repeat="device in device.details track by $index">
+	                    	
+	                    <!-- <td class="link"><a data-ng-click="pickWO($index)">Edit</a></td> -->
+	                    <td>{{device.updated | date: 'short'}}</td>
+	                    <td>{{device.type}}</td>
+	                    
+	                   <td>{{device.destination}}</td>
+	                    <td>{{device.requestor}}</td>
+	                    <td>{{device.notes}}</td>
+	                    
+	                    </tr>
+
+	                  
+
+	                    </tbody>
+	                    </table>
+
+
+
+
 	</div>
-	<div class="pull-right" data-ng-show="authentication.user._id == device.user._id">
-		<a class="btn btn-primary" href="/#!/devices/{{device._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
+	
 	<small>
 		<em class="text-muted">
 			Posted on
@@ -21,5 +99,8 @@
 			by
 			<span data-ng-bind="device.user.displayName"></span>
 		</em>
+		<a class="btn btn-primary" data-ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
 	</small>
 </section>
