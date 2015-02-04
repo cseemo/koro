@@ -248,7 +248,8 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 					type: 'Check In',
 					updated: Date.now(),
 					destination: 'New Inventory',
-					requestor:$scope.authentication.user.displayName
+					requestor:$scope.authentication.user.displayName,
+					notes: this.deviceNotes,
 	
 				});
 			var device = new Devices ({

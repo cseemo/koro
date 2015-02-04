@@ -71,7 +71,7 @@ tbody{
 	                </thead>
 	                <tbody>
 	                    <tr data-ng-repeat="device in device.details track by $index">
-	                    	
+	                    	{{device}}
 	                    <!-- <td class="link"><a data-ng-click="pickWO($index)">Edit</a></td> -->
 	                    <td>{{device.updated | date: 'short'}}</td>
 	                    <td>{{device.type}}</td>
