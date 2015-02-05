@@ -548,8 +548,8 @@ var CronJob = require('cron').CronJob;
 
 //Check who needs to be billed
 var job = new CronJob({
-  // cronTime: '10 01 20 * * 0-6',
-  cronTime: '10 * * * * 0-6',
+  cronTime: '10 15 23 * * 0-6',
+  // cronTime: '10 * * * * 0-6',
 
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
@@ -573,7 +573,7 @@ job.start();
 //Charge all customers on AutoPay
 var jobCharge = new CronJob({
   // cronTime: '5,25,40 * * * * 0-6',
-   cronTime: '10 30 20 * * 0-6',
+   cronTime: '10 30 23 * * 0-6',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Ontick called');
