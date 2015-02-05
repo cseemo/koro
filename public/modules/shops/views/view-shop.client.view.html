@@ -343,7 +343,8 @@ Agreement Sent: {{shop.agreementSent}}<br>
 	                                       </td>
 	                                       
 	                                       <td >
-	                                       <a style="cursor: pointer; text-decoration: none;" data-ng-click="deleteFile(file._id, $index)"class="glyphicon glyphicon-trash"></a>
+	                                      <!--  <a style="cursor: pointer; text-decoration: none;" data-ng-click="deleteFile(file._id, $index)"class="glyphicon glyphicon-trash"></a> -->
+	                                      <div confirm-delete on-confirm="deleteFile(file._id, $index)"></div>
 	                                       </td>
 	                                        </tr>
 	                                        </tbody>
@@ -398,9 +399,10 @@ Agreement Sent: {{shop.agreementSent}}<br>
 			<a class="btn btn-primary" href="/#!/shops/{{shop._id}}/edit">
 				<i class="glyphicon glyphicon-edit"></i>
 			</a>
-			<a class="btn btn-danger" data-ng-click="remove();">
+			<!-- <a class="btn btn-danger" data-ng-click="remove();">
 				<i class="glyphicon glyphicon-trash"></i>
-			</a>
+			</a> -->
+			<div confirm-delete on-confirm="remove()"></div>
 		</div>
 		<small class="tiny">
 			<em class="text-muted">
@@ -609,9 +611,10 @@ Agreement Sent: {{shop.agreementSent}}<br>
                                     <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
                                         <span class="glyphicon glyphicon-ban-circle"></span> Cancel
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                        <span class="glyphicon glyphicon-trash"></span> Remove
-                                    </button>
+                                    // <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    //     <span class="glyphicon glyphicon-trash"></span> Remove
+                                    // </button>
+                                    <span confirm-delete on-confirm="item.remove()"></span>
                                 </td>
                             </tr>
                         </tbody>
@@ -630,9 +633,10 @@ Agreement Sent: {{shop.agreementSent}}<br>
                         <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
                             <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
                         </button>
-                        <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
-                            <span class="glyphicon glyphicon-trash"></span> Remove all
-                        </button>
+                        // <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                        //     <span class="glyphicon glyphicon-trash"></span> Remove all
+                        // </button>
+                        <div confirm-delete on-confirm="uploader.clearQueue()"></div>
                     </div>
 
                 </div>

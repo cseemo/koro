@@ -99,8 +99,7 @@ tbody{
 			by
 			<span data-ng-bind="device.user.displayName"></span>
 		</em>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
+		<div confirm-delete on-confirm="remove()"></div>
+	
 	</small>
 </section>
