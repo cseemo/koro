@@ -1491,6 +1491,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
      $scope.getDevices = function(){
      	console.log('Finding Devices in Shop Inventory');
+     	console.log('Auth.user.shop: ',Authentication.user.shop );
+
      	 $scope.availableDevices = Devices.query({status: 'Pending Deployment', shopId: Authentication.user.shop});
 
      	$scope.availableDevices.$promise.then(function(){
@@ -1528,6 +1530,15 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
      	$scope.offender.$update();
      	
      	device.status = 'Deployed';
+     	device.details.push({
+				type: 'Installed',
+				updated: Date.now(),
+				destination: $scope.offender.vehicleYear+' '+ $scope.offender.vehicleMake+' '+ $scope.offender.vehicleModel+' for '+$scope.offender.displayName,
+				requestor: $scope.authentication.user.displayName
+			});
+
+
+
      	device.offender = $scope.offender._id;
         $scope.deviceSN = device.serialNumber;
        console.log('Device: ', device);
@@ -1703,6 +1714,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
   		};
 
   		$scope.deviceCheckout = function() {
+  			console.log('Checking Out Device');
         $modalInstance.close();
         console.log($scope.deviceSN);
         console.log($scope.deviceNotes);
@@ -1720,6 +1732,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
         });
+
+        console.log('Saving Device Notes...');
     
 
     };
