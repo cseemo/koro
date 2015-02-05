@@ -2274,6 +2274,20 @@ $scope.mytime = $scope.dt;
 
 
     };
+
+    $scope.deletePayment = function(row){
+    	console.log('Delete Payment', $scope.payment);
+    	$modalInstance.close();
+    	// $scope.payments.splice(row,1)
+    	var payment = Payments.get({paymentId: $scope.payment._id});
+
+
+			payment.$promise.then(function() {
+				console.log('Payment to Delete: ', payment);
+					payment.$remove();
+				});
+
+    };
 			
 		
 

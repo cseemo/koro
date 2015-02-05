@@ -37,7 +37,7 @@ module.exports = function(app) {
 	app.route('/payments/:paymentId')
 		.get(payments.read)
 		.put(payments.update)
-		.delete(users.requiresLogin, payments.hasAuthorization, payments.delete);
+		.delete(users.requiresLogin, payments.delete);
 
 	// Finish by binding the Payment middleware
 	app.param('paymentId', payments.paymentByID);

@@ -289,6 +289,167 @@ var mongoose = require('mongoose'),
 	};
 
 
+	var sendMonthlyInvoice = function(payment, offender, cb){
+		var timesrun = 0;
+		var today = new moment();
+  		var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+		var dueDate = moment(payment.dueDate).format("MM/DD/YYYY");
+		console.log('Payment Due on ', dueDate);
+		console.log('Sending Invoice...');
+		console.log('Payment to Invoice: ', payment);
+		console.log('Offender to invoice: ', offender);
+		var message = {	
+		'subject': 'Ignition Interlock Monthly Invoice',
+		'from_email': 'admin@budgetiid.com',
+		'from_name': 'Budget IID, LLC',
+		'to': [{
+			'email': 'cseemo@gmail.com', //offender.offenderEmail,
+			'name': offender.displayName,
+				'type': 'to'
+		}],
+		'headers': {
+			'Reply-To': 'budgetiid@gmail.com'
+		},
+		'merge': true,
+		'global_merge_vars': [
+					
+					{
+						'name': 'address',
+						'content': offender.billingAddress || ''
+					},
+					{
+						'name': 'city',
+						'content': offender.billingCity || ''
+					},
+					{
+						'name': 'state',
+						'content': offender.billingState || ''
+					},
+					{
+						'name': 'zip',
+						'content': offender.billingZipcode  || ''
+					},
+					{
+						'name': 'dueDate',
+						'content': dueDate  || ''
+					},
+					
+					
+					{
+						'name': 'workType',
+						'content': 'Service'
+					},
+					{
+						'name': 'clientName',
+						'content': offender.firstName+' '+offender.lastName  || ''
+					},
+					
+					{
+						'name': 'pmtOpt',
+						'content': payment.pmtOpt || ''
+					},
+					{
+						'name': 'paymentNotes',
+						'content': payment.notes  || ''
+					},
+					{
+						'name': 'paymentAmount',
+						'content': payment.amount  || ''
+					},
+				
+
+					{
+						'name': 'date',
+						'content': convertedPretty
+					},
+
+					{
+						'name': 'vehicleYear',
+						'content': offender.vehicleYear
+					},
+
+					{
+						'name': 'offenderName',
+						'content': offender.firstName+' '+offender.lastName
+					},
+					{
+						'name': 'vehicleMake',
+						'content': offender.vehicleMake
+					},
+					{
+						'name': 'vehicleModel',
+						'content': offender.vehicleModel
+					},
+					{
+						'name': 'driverNumber',
+						'content': offender.driverNumber
+					},
+					
+					{
+						'name': 'email',
+						'content': offender.offenderEmail
+					},
+					
+				
+				
+		],
+		'important': false,
+		'track_opens': null,
+		'track_clicks': null,
+		'auto_text': null,
+		'auto_html': null,
+		'inline_css': true,
+		'url_strip_qs': null,
+		'preserver_recipients': null,
+		'view_content_link': null,
+		'bcc_address': 'fivecsconsulting@gmail.com',
+		'tracking_domain': null,
+		'signing_domain': null,
+		'return_path_domain': null,
+	
+	        };
+
+	var template_name='budget-invoice';
+		
+
+
+	var async = false;
+	if(timesrun < 2){
+
+	mandrill_client.messages.sendTemplate({
+		'template_name': template_name,
+		'template_content': [],
+		'message': message, 
+		'async': async
+	}, function(result){
+		timesrun++;
+		console.log('Results from Mandrill', result);
+		// console.log('Result.message', result.message);
+		var id = result[0]['_id'];
+		console.log('Result[0]', result[0]['_id']);
+		console.log('Email ID: ', id);
+
+		//cb is not defined???
+		cb(null, 'Complete: '+id);
+		
+			
+		
+	},
+	function(e){
+		console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+		cb('Error from Mandrill : '+e);
+
+
+	});
+
+	// res.status(200).send(mypdf);
+	}
+
+
+
+
+	};
+
 
 	var createMonthlyCharge = function() {
 		//GO thru each Offender and create a new Charge for them
@@ -324,7 +485,7 @@ var mongoose = require('mongoose'),
   	
 				var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
 	
-				var nextMonth = moment().add(15, 'days').hours(0).minutes(0).seconds(0);
+				var nextMonth = moment().add(5, 'days').hours(0).minutes(0).seconds(0);
 
 				async.forEach(offenders, function(item, callback){
 					console.log('Client ', item.displayName);
@@ -332,7 +493,8 @@ var mongoose = require('mongoose'),
 					var d = new Date();
 					var n = d.getDate();
 					console.log('Todays date is: ', n);
-					// n = n-1;
+					n = n-0+5;
+					console.log('We are looking for people with a Bill Date of : ', n);
 
 
 					if(item.billDate == n ){
@@ -355,7 +517,14 @@ var mongoose = require('mongoose'),
 								// res.jsonp(payment);
 								console.log('Payment for '+item.displayName);
 								// callback();
+								sendMonthlyInvoice(payment, item, function(err, data){
+									console.log('Monthly Payment Sent Out');
+									if(err){
+										console.log('Error: Payment Line 518 ', err);
+										return;
+									}
 
+								});
 								}
 							});
 						} else {
@@ -379,7 +548,8 @@ var CronJob = require('cron').CronJob;
 
 //Check who needs to be billed
 var job = new CronJob({
-  cronTime: '10 01 20 * * 0-6',
+  // cronTime: '10 01 20 * * 0-6',
+  cronTime: '10 * * * * 0-6',
 
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
