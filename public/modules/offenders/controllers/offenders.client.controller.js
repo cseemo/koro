@@ -669,7 +669,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				vehicleYear: $scope.vehicleYear,
 				vehicleModel: $scope.vehicleModel,
 				driverNumber: dLNumber, 
-				
+				notes: $scope.notes,
 				dobMO: $scope.dobMO,
 				dobDAY: $scope.dobDAY,
 				dobYR: $scope.dobYR,
