@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 var moment = require('moment');
-var nextMonth = moment().add(30, 'days').hours(0).minutes(0).seconds(0);
+var nextMonth = moment().add(5, 'days').hours(0).minutes(0).seconds(0);
 
 /**
  * Payment Schema

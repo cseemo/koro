@@ -198,7 +198,7 @@ var mongoose = require('mongoose'),
 		'url_strip_qs': null,
 		'preserver_recipients': null,
 		'view_content_link': null,
-		'bcc_address': 'fivecsconsulting@gmail.com',
+		'bcc_address': 'cseymour@budgetiid.com',
 		'tracking_domain': null,
 		'signing_domain': null,
 		'return_path_domain': null,
@@ -402,7 +402,7 @@ var mongoose = require('mongoose'),
 		'url_strip_qs': null,
 		'preserver_recipients': null,
 		'view_content_link': null,
-		'bcc_address': 'fivecsconsulting@gmail.com',
+		'bcc_address': 'cseymour@budgetiid.com',
 		'tracking_domain': null,
 		'signing_domain': null,
 		'return_path_domain': null,
@@ -572,11 +572,11 @@ job.start();
 
 //Charge all customers on AutoPay
 var jobCharge = new CronJob({
-  // cronTime: '5,25,40 * * * * 0-6',
+  // cronTime: '10 * * * * 0-6',
    cronTime: '10 30 23 * * 0-6',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
-  	console.log('Ontick called');
+  	console.log('Auto Charge OnTick called');
   	var today = new moment();
   	// var startDate = moment().hours(0).minutes(0).seconds(0);
 	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
@@ -595,13 +595,24 @@ jobCharge.start();
 
 
 var chargeIt = function(pmt, callback){
-	console.log('Charging it...');
+	console.log('Charging it...Line 598');
 	console.log('Payment: ', pmt);
-	var offender = offenderByID(pmt.offender, function(err, cus){
-		if(err){
-			console.log('Err finding offender...loine 435');
-			return callback(err);
+	var offender = Offender.findById(pmt.offender).populate('user').exec(function(err, offender) {
+		if (err) {
+			console.log('Error Line 602 -- ', err);
+			return err;
 		}
+
+		if (! offender) return new Error('Failed to load Offender ' + id);
+
+		console.log('Got our oFfender on line 608', offender);
+
+	// var offender = offenderByID(pmt.offender, function(err, cus){
+	// 	if(err){
+	// 		console.log('Err finding offender...loine 435');
+	// 		return callback(err);
+	// 	}
+		var cus = offender;
 		if(cus && cus.merchantCustomerId && cus.paymentProfileId){
 			console.log('Auto Charge this bastard'+cus.displayName+' '+pmt.amount+':::'+pmt._id);
 			
@@ -656,6 +667,8 @@ var chargeIt = function(pmt, callback){
 		}
 
 	})
+
+
 	
 
 };
@@ -663,8 +676,8 @@ var autoCharge = function(){
 	console.log('Charging cards now...');
 var today = moment().endOf('day');
 var tomorrow = moment(today).add(1, 'days');
-console.log('Today is: ', today);
-console.log('Tomorrow will be : ', tomorrow);
+console.log('Today is: ', today._d);
+console.log('Tomorrow will be : ', tomorrow._d);
 
 	// Step 1. Get the payments that are due
 	// Step 2. Find out if those Offenders have a CC on File
@@ -701,7 +714,7 @@ console.log('Tomorrow will be : ', tomorrow);
 						var status = item.status;
 						console.log('This will be charged '+item.amount+' because it is '+item.status+' and it was due: '+item.dueDate);
 						chargeIt(item, function(err, data){
-							console.log('Return from charge it', err);
+							console.log('Return from charge it line 704', err);
 							console.log('Data: ', data);
 						});
 						// async.waterfall([
@@ -838,7 +851,9 @@ var workorderByID = function(id, cb) {
 	});
 };
 
-var offenderByID = function(id, next) { Offender.findById(id).populate('user').exec(function(err, offender) {
+var offenderByID = function(id, next) { 
+
+	Offender.findById(id).populate('user').exec(function(err, offender) {
 		if (err) return next(err);
 		if (! offender) return next(new Error('Failed to load Offender ' + id));
 		
