@@ -1,6 +1,7 @@
+
 <style>
-.col-md-4{
-    padding: 10px;
+/*.form-group{
+    padding: 17px;
 
 }
 .form-inline{
@@ -9,23 +10,46 @@
 }
 fieldset{
     padding: 3px;
-}
-h1, h2, h3{
-	color: #333;
+}*/
+.makeMed {
+    font-size: 2em;
 }
 .main-body{
-	background-color: #555;
+    background-color: #555;
+    min-height: 100%;
 }
-.link {
-	text-decoration: none;
-	cursor: pointer;
+.nostyle:hover, .nostyle:visited, .nostyle:link, .nostyle:active{
+    text-decoration: none;
+    cursor: pointer;
 }
-tbody{
-	cursor: pointer;
+.bigPad{
+    padding-left: 15px;
+}
+h1, h2, h3{
+    color: #333;
+}
+.stickyTop{
+position: absolute;
+top: 0px;
+left: 0px;
+right: 00px;
+z-index: 999;
+
 }
 </style>
 <section data-ng-controller="DevicesController" data-ng-init="findOne()">
-	<div class="page-header">
+	
+    <div class="main-body">
+      <div class="container">
+ 
+<div class="row">
+
+
+    <div class="container">
+     
+               <div class="panel panel-primary">
+                  <div class="panel-body">
+
 		
 		<h1 data-ng-bind="device.type"></h1>
 		<h1 data-ng-bind="device.notes"></h1>
@@ -102,4 +126,6 @@ tbody{
 		<div confirm-delete on-confirm="remove()"></div>
 	
 	</small>
+</div>
+</div>
 </section>
