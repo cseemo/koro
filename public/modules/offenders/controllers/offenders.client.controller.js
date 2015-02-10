@@ -995,7 +995,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					.success(function(data, status) {
 							if(status === 200) {
 								
-							console.log('Return Data: ', data);
+							// console.log('Return Data: ', data);
 							$scope.workorders = data;
 							}
 				});
