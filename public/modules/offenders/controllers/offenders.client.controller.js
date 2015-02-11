@@ -42,10 +42,11 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		$scope.checklist = [
 		{item: 'Set Appointment Date', click: 'setAppt'},
 		{item: 'Customer Check-In', click: 'checkIn'},
+		{item: 'Inspect Vehicle', click: 'inspected'},
 		{item: 'Inventory Device', click: 'checkOutDevice'},
 		{item: $scope.signedUpStatus, click: 'installPaperwork'},
 		{item: 'Collect Payment', click: 'openpmt'},
-		{item: 'Inspect Vehicle', click: 'inspected'},
+		
 		// {item: 'Have Customer Watch Training Video', click: 'customerVideo'},
 		// {item: 'Complete Service', click: 'complete'}
 		];

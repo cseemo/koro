@@ -1,7 +1,7 @@
-<section data-ng-controller="OffendersController" data-ng-init="findOne()">
+<section data-ng-controller="OffendersController" data-ng-init="findOne2()">
 
 <style>
-.col-md-4{
+.col-md-4, .col-md-8{
     padding: 10px;
 
 }
@@ -12,173 +12,58 @@
 fieldset{
     padding: 3px;
 }
+.main-body{
+	background-color: #555;
+	/*font-size: 1.25em;*/
+}
+
+/* CSS REQUIRED */
+.state-icon {
+    left: -5px;
+}
+.list-group-item-primary {
+    color: rgb(255, 255, 255);
+    background-color: rgb(66, 139, 202);
+}
 h1, h2, h3{
 	color: #333;
 }
-.main-body{
-	background-color: #555;
+
+/* DEMO ONLY - REMOVES UNWANTED MARGIN */
+.well .list-group {
+    margin-bottom: 0px;
 }
-.link {
-	text-decoration: none;
-	cursor: pointer;
+.strike {
+  text-decoration: line-through;
+
 }
-tbody{
-	cursor: pointer;
+.done-true  {
+    color: #ff0000;
+     /*background-color: #555;*/
+    text-decoration: line-through;
+}
+.scroll{
+overflow: scroll;  
+height: auto; 
+min-height: 100px; 
+max-height: 300px;
 }
 </style>
-
-<div class="col-md-12 stickyTop" >
-<!-- data-ng-show="!offender.cardNumber" -->
-                            
-                            <alert class="text-center" type="info" data-ng-show="ChadSaidSo" >
-       <button class="btn btn-lg" data-ng-click="isCollapsed=!isCollapsed">Add Credit Card Information</button>
-       <br>
-        <div collapse="isCollapsed">
-       <div class="well well-md">
-      
-       <div class="panel">
-       <div class="row">
-        <h3>Input a New Credit Card Number</h3>
-        
-        	     	    	</div>
-        	            	     	  <div class="col-md-12 stickyTop" data-ng-show="authNetErr">
-                            <span >
-                            <alert class="text-center" type="danger" >
-       {{authNetErr.message}}
-        </alert>
-
-                            </span>
-                            </div>
-<div class="col-md-12 stickyTop" data-ng-show="authNetResults">
-                            <span >
-                            <alert class="text-center" type="success" >
-                            {{authNetResults}}
-                            </alert>
-                            </span>
-                            </div>	
-
-                       <div class="row">
-                          <div class="form-group col-md-5 col-sm-5" >
-                          
-                                <label class="control-label" for="name">Credit Card Number</label>
-                                <div class="controls">
-                                           <input type="text" data-ng-model="cardNumber" id="ccnumber" class="form-control" placeholder="Credit Card Number" maxlength="16">
-
-                                </div>
-                            </div>
-
-                          <div class="form-group col-md-2 col-sm-2" >
-                            <label class="control-label" for="name">Expiration Month</label>
-                            <div class="controls">
-                                    <select data-ng-model="expMonth" class="form-control" name="expMonth" placeholder="Month" ng-options="month for month in months"></select>
-
-
-                            </div>
-                        </div>
-
-                          <div class="form-group col-md-2 col-sm-2" >
-                            <label class="control-label" for="name">Expiration Year</label>
-                            <div class="controls">
-                                     <select data-ng-model="expYear" class="form-control" name="expYear" placeholder="Year" ng-options="year for year in expYears"></select>
-                            </div>
-                        </div>
-
-                          <div class="form-group col-md-2 col-sm-2" >
-                            <label class="control-label" for="name">CCV Number</label>
-                            <div class="controls">
-                                      <input type="text" data-ng-model="cardCVV" name="cvv" id="creditcardCCV" class="form-control" maxlength="4" Updaplaceholder="CCV" >
-
-                            </div>
-                        </div>
-                        	</div>
-                        	<div class="row">
-
-                           <div class="form-group col-md-3 col-sm-6 col-xs-6" >
-                                <label class="control-label" for="name">Name on Card</label>
-                                <div class="controls">
-                                           <input type="text" data-ng-model="cardName" id="ccname" class="form-control" placeholder="Name on Card" >
-
-                                </div>
-                            </div>
-                          
-
-                              <div class="form-group col-md-4 col-sm-6 col-xs-6" >
-                            <label class="control-label" for="name">Cardholder Address</label>
-                            <div class="controls">
-                        <input type="text" data-ng-model="cardAddress" name="ccname" id="creditcardCCV" class="form-control"  placeholder="Address" >
-                            </div>
-                        </div>
-                          <div class="form-group col-md-3 col-sm-4 col-xs-6" >
-                            <label class="control-label" for="name">City </label>
-                            <div class="controls">
-                                      <input type="text" data-ng-model="cardCity" name="ccname" id="creditcardCCV" class="form-control" placeholder="City" >
-
-                            </div>
-                        </div>
-                          <div class="form-group col-md-1 col-sm-3 col-xs-6" >
-                            <label class="control-label" for="name">State</label>
-                            <div class="controls">
-                                      <input type="text" data-ng-model="cardState" name="ccname" id="creditcardCCV" class="form-control" minlength="2" maxlength="2" placeholder="State" >
-
-                            </div>
-                        </div>
-
-                         <div class="form-group col-md-1 col-sm-3 col-xs-6" >
-                            <label class="control-label" for="name">Zip Code</label>
-                            <div class="controls">
-                                      <input type="text" data-ng-model="cardZip" name="ccname" id="creditcardCCV" class="form-control" minlength="5" maxlength="9" placeholder="Zipcode" >
-
-                            </div>
-                        </div>
-                        </div>
-                        <div class="row">
-
-                          <div class="form-group text-center" >
-                       <label class="control-label"></label>
-                        <div class="controls">
-                        <a class="btn btn-primary btn-lg" style="color: #fff;" data-ng-disabled="!cardNumber || !cardCVV || !cardName || !cardZip" data-ng-click="updateCCInfo('new')">
-				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Validate Card
-			</a>
-			</div>
-			</div>
-               
-
-
-
-
-               </div>
-               </div>
-              </div>
-              <div class="row">
-            
-
-             </div>
-
-
-                    </div>
-                   
-    </alert>
-</div>		
-                           
-
-
-
-
 	<div class="main-body">
+	    <div class="container">
+
+	    		<div class="main-body">
 	
 	    <div class="container">
+
+	   
+	    	
 	    	<div class="text-center bg-danger" data-ng-show="pastDue">
 	    	<h3>Past Due</h3>
 	    	
 	    	</div>
 		<div class="panel panel-primary">
-	       <!--  <div class="panel panel-heading">
-	            
-	                <h2>{{offender.firstName}} {{offender.lastName}}</h2>
-
-
-	            
-	        </div> -->
+	    
 	    	<div class="col-md-4">
 	            <div class="panel panel-profile">
 	                <fieldset>
@@ -233,7 +118,7 @@ tbody{
       									</table>
       								</div>
       							</div>
-       <!--  -->
+   
 	                        </div>
 	                    </div>
 	        		</fieldset>
@@ -546,24 +431,7 @@ tbody{
 	    <a class="btn btn-primary" href="/#!/offenders/{{offender._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
-		<span confirm-delete on-confirm="remove()"></span>
-	<!--   
-	    <div class="pull-right">
-			<a class="btn btn-primary" href="/#!/offenders/{{offender._id}}/edit">
-				<i class="glyphicon glyphicon-edit"></i>
-			</a>
-			<a class="btn btn-danger" data-ng-click="remove();">
-				<i class="glyphicon glyphicon-trash"></i>
-			</a>
-		</div>
-		<small>
-			<em class="text-muted">
-				Created on
-				<span data-ng-bind="offender.created | date:'mediumDate'"></span>
-				by
-				<span data-ng-bind="offender.user.displayName"></span>
-			</em>
-		</small> -->
+		<div confirm-delete on-confirm="remove()"></div>
 
 
     <script type="text/ng-template" id="workOrderModal.html">

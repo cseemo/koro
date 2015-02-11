@@ -174,16 +174,18 @@ max-height: 300px;
 	                                                <label>Phone</label>
 	                                                {{offender.mainPhone | tel}}
 	                                            </li>
-	                                            <li>
-	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
-	                                                <label>Alternate</label>
-	                                                 {{offender.altPhone | tel}} 
-	                                            </li>
+	                                            
 	                                             <li>
 	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
 	                                                <label>Address</label>
 	                                                 {{offender.billingAddress}} <br>
 	                                                 {{offender.billingCity}}, {{offender.billingState}} {{offender.billingZipcode}}
+	                                            </li>
+	                                              <li>
+	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
+	                                                <label>Vehicle Info</label>
+	                                                 {{offender.vehicleYear}} <br>
+	                                                 {{offender.vehicleMake}}, {{offender.vehicleModel}} 
 	                                            </li>
 	                                               <li>
 	                                               <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
