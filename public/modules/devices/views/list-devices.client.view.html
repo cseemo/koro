@@ -28,8 +28,8 @@ max-height: 300px;
 }
 
 </style>
-<section data-ng-controller="DevicesController" data-ng-init="find()">
-    
+<section data-ng-controller="DevicesController" data-ng-init="init()">
+    <div class="main-body">
     <div class="container">
       
                <div class="panel panel-primary">
@@ -37,7 +37,13 @@ max-height: 300px;
                     <h1>Current Inventory of Devices</h1>
                
  
-         <div class="row">
+
+
+    </div>
+    <div class="panel panel-primary">
+
+
+   
     <div class="col-md-4">
      <a  href="/#!/devices" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="openModal('checkin')">Add New Device</a>
      </div>
@@ -48,32 +54,155 @@ max-height: 300px;
        <div class="col-md-4">
      <a  href="/#!/devices" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="openModal('repair')">Send Device(s) Out for Repair</a>
    </div>
-    </div>
-    </div>
-    <div class="panel panel-primary">
+   <hr>
 
-    <div class="list-group">
-        <a data-ng-repeat="device in devices" data-ng-href="#!/devices/{{device._id}}" class="list-group-item">
-			{{device.type}} - {{device.serialNumber}}
-            <br>{{device.status}}<br>
-            {{device.notes}}<br>
 
-            <small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="device.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="device.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="device.name"></h4>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!devices.$resolved || devices.length">
-    	No Devices yet, why don't you <a href="/#!/devices/create">create one</a>?
-    </div>
-    </div>
-    </div>
-    </div>
-    </section>
+          <div class="panel-body">
+        
+            <div class="table-filters">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <input type="text"
+                               placeholder="Search..."
+                               class="form-control"
+                               data-ng-model="tableData.searchKeywords"
+                               data-ng-keyup="search()">
+                        {{tableData.searchKeywords}}
+                    </div>
+                    <div class="col-sm-3 col-xs-6 filter-result-info">
+                        <span>
+                            Showing {{currentPageDevices.length}}/{{filteredDevices.length}} Matches
+                        </span>              
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                Device Type
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('type') "
+                                      data-ng-class="{active: row == 'type'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-type') "
+                                      data-ng-class="{active: row == '-type'}"></span>
+                            </div>
+                        </th>
+                  
+          
+                        <th>
+                            <div class="th">
+                                Serial Number
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('serialNumber') "
+                                      data-ng-class="{active: row == 'serialNumber'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-serialNumber') "
+                                      data-ng-class="{active: row == '-serialNumber'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                Status
+
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('status') "
+                                      data-ng-class="{active: row == 'status'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-status') "
+                                      data-ng-class="{active: row == '-status'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                Notes
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('notes') "
+                                      data-ng-class="{active: row == 'notes'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-notes') "
+                                      data-ng-class="{active: row == '-notes'}"></span>
+                            </div>
+                        </th>
+
+
+                    </tr> 
+                </thead>
+                
+                <tbody>
+                    <tr data-ng-repeat="item in currentPageDevices" >
+                    <td><a data-ng-click="setCurrentDevice()" href="#!/devices/{{item._id}}">
+                        {{item.type}}</a></td>
+                    <td>{{item.serialNumber}}</td>
+                    <td>{{item.status}}</td>
+                    <td>{{item.notes}}</td>
+                   
+                    
+
+                        
+                    
+                   
+                    </tr>
+                </tbody>
+            </table>
+           
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                        <span>
+                            Show 
+                            <select data-ng-model="numPerPage"
+                                    data-ng-options="num for num in numPerPageOpt"
+                                    data-ng-change="onNumPerPageChange()">
+                            </select> 
+                            clients per page
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredDevices.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

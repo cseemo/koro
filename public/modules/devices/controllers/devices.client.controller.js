@@ -1,8 +1,8 @@
 'use strict';
 
 // Devices controller
-angular.module('devices').controller('DevicesController', ['$scope', '$stateParams', '$location', '$modal', 'Authentication', 'Devices',
-	function($scope, $stateParams, $location, $modal, Authentication, Devices ) {
+angular.module('devices').controller('DevicesController', ['$scope', '$stateParams', '$location', '$modal', 'Authentication', 'Devices', '$filter', 
+	function($scope, $stateParams, $location, $modal, Authentication, Devices, $filter) {
 		$scope.authentication = Authentication;
 
 			// If user is not signed in then redirect back home
@@ -131,6 +131,124 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 		  });
 
 		  };
+
+
+		  //Table Stuff
+
+  $scope.tableData = {
+      searchKeywords: '',
+    };
+    $scope.filteredDevices= [];
+    $scope.row = '';
+    $scope.numPerPageOpt = [3, 5, 10, 20];
+    $scope.numPerPage = $scope.numPerPageOpt[2];
+    $scope.currentPage = 1;
+    //$scope.currentPageDeals= $scope.getinit;
+    $scope.currentPageDevices= [];
+
+
+
+    $scope.select = function(page) {
+    	 
+      var end, start;
+      start = (page - 1) * $scope.numPerPage;
+      end = start + $scope.numPerPage;
+      // console.log('Start '+start+' and End '+end);
+     
+      // console.log('Filtered Offenders', $scope.filteredOffenders);
+      $scope.currentPage = page;
+      $scope.currentPageDevices = $scope.filteredDevices.slice(start, end);
+      // console.log('Current Page Offenders', $scope.currentPageOffenders);
+     // angular.forEach($scope.currentPageOffenders, function(item){
+	// 	console.log('Offender: ', item);
+	// 	// item.shopName = 'Test';
+	// 	if(item.assignedShop){
+	// 		console.log('Shop has an assigned SHop');
+	// 		var myShop = Shops.get({ 
+	// 			shopId: item.assignedShop
+	// 				});
+	// 	      	myShop.$promise.then(function(){
+	// 	      		console.log('Shop Promise finished', myShop);
+		      		
+	// 		      	item.shopName = myShop.name;
+		      		
+
+	// 	      	});
+
+		
+      		
+
+	// 	}
+	// })
+		
+		return $scope.currentPageDevices;
+
+
+    };
+
+    $scope.onFilterChange = function() {
+      $scope.select(1);
+      $scope.currentPage = 1;
+      return $scope.row = '';
+    };
+    $scope.onNumPerPageChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.onOrderChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.search = function() {
+      // console.log('Keywords: ', $scope.tableData.searchKeywords);
+      // console.log('Offenders; ', $scope.offenders);
+      $scope.filteredDevices = $filter('filter')($scope.devices, $scope.tableData.searchKeywords);
+
+      return $scope.onFilterChange();
+    };
+
+     $scope.searchPending = function() {
+      //////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
+      $scope.filteredDevices = $filter('filter')($scope.devices, $scope.tableData.searchKeywords);
+
+      // {companyname: $scope.tableData.searchKeywords},
+
+      /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
+        firstName: $scope.searchKeywords,
+        lastName: $scope.searchKeywords,
+        confirmationNumber: $scope.searchKeywords,
+      });*/
+      return $scope.onFilterChange();
+    };
+
+
+    $scope.order = function(rowName) {
+    	console.log('Reordering by ',rowName);
+    	//////////////console.log('Scope.row ', $scope.row);
+      if ($scope.row === rowName) {
+        return;
+      }
+      $scope.row = rowName;
+      $scope.filteredDevices = $filter('orderBy')($scope.filteredDevices, rowName);
+      //////////////console.log(rowName);
+      return $scope.onOrderChange();
+    };
+    $scope.setCurrentOffender = function(ind) {
+      $scope.currentDevice = $scope.filteredDevices.indexOf(ind);
+    };
+
+    $scope.init = function() {
+    	console.log('Getting Devics');
+    	$scope.devices = Devices.query();
+    	$scope.devices.$promise.then(function() {
+				// $scope.search();
+				$scope.filteredDevices = $scope.devices;
+				return $scope.select($scope.currentPage);
+				});	
+	
+
+    };
+
 
 
 
