@@ -93,16 +93,26 @@ max-height: 300px;
                         </th>
                          <th>
                             <div class="th">
-                                Service Center
+                                Assigned Client
                                 <span class="fa fa-angle-up"
-                                      data-ng-click=" order('type') "
-                                      data-ng-class="{active: row == 'type'}"></span>
+                                      data-ng-click=" order('clientName') "
+                                      data-ng-class="{active: row == 'clientName'}"></span>
                                 <span class="fa fa-angle-down"
-                                      data-ng-click=" order('-type') "
-                                      data-ng-class="{active: row == '-type'}"></span>
+                                      data-ng-click=" order('-clientName') "
+                                      data-ng-class="{active: row == '-clientName'}"></span>
                             </div>
                         </th>
-                  
+                        <th>
+                            <div class="th">
+                                Service Center
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('shopName') "
+                                      data-ng-class="{active: row == 'shopName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-shopName') "
+                                      data-ng-class="{active: row == '-shopName'}"></span>
+                            </div>
+                        </th>
           
                         <th>
                             <div class="th">
@@ -147,7 +157,11 @@ max-height: 300px;
                     <tr data-ng-repeat="item in currentPageDevices" >
                     <td><a data-ng-click="setCurrentDevice()" href="#!/devices/{{item._id}}">
                         {{item.type}}</a></td>
-                         <td>{{item.shopName}}</td>
+                         <td><a  href="#!/offenders/{{item.offender}}">
+                        {{item.clientName}}</a></td>
+                         <td><a  href="#!/shops/{{item.shopId}}">
+                        {{item.shopName}}</a></td>
+                        
                     <td>{{item.serialNumber}}</td>
                     <td>{{item.status}}</td>
                     <td>{{item.notes}}</td>

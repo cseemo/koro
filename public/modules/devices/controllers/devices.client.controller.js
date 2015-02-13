@@ -1,8 +1,8 @@
 'use strict';
 
 // Devices controller
-angular.module('devices').controller('DevicesController', ['$scope', '$stateParams', '$location', '$modal', 'Authentication', 'Devices', '$filter', 'Shops', 
-	function($scope, $stateParams, $location, $modal, Authentication, Devices, $filter, Shops) {
+angular.module('devices').controller('DevicesController', ['$scope', '$stateParams', '$location', '$modal', 'Authentication', 'Devices', '$filter', 'Shops', 'Offenders', 
+	function($scope, $stateParams, $location, $modal, Authentication, Devices, $filter, Shops, Offenders) {
 		$scope.authentication = Authentication;
 
 			// If user is not signed in then redirect back home
@@ -247,6 +247,26 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 				     angular.forEach($scope.filteredDevices, function(item){
 		console.log('Device: ', item);
 		// item.shopName = 'Test';
+
+		//Get Offender Using Device
+				if(item.offender){
+			console.log('Device has an assigned Client');
+			var myClient = Offenders.get({ 
+				offenderId: item.offender
+			});
+		      	myClient.$promise.then(function(){
+		      		console.log('Client Promise finished', myClient);
+		      		
+			      	item.clientName = myClient.displayName;
+		      		
+
+		      	});
+
+		
+      		
+
+		}
+		//Get the SHop that the Device is Assigned To
 		if(item.shopId){
 			console.log('Device has an assigned SHop');
 			var myShop = Shops.get({ 
