@@ -1,8 +1,8 @@
 'use strict';
 
 // Devices controller
-angular.module('devices').controller('DevicesController', ['$scope', '$stateParams', '$location', '$modal', 'Authentication', 'Devices', '$filter', 
-	function($scope, $stateParams, $location, $modal, Authentication, Devices, $filter) {
+angular.module('devices').controller('DevicesController', ['$scope', '$stateParams', '$location', '$modal', 'Authentication', 'Devices', '$filter', 'Shops', 
+	function($scope, $stateParams, $location, $modal, Authentication, Devices, $filter, Shops) {
 		$scope.authentication = Authentication;
 
 			// If user is not signed in then redirect back home
@@ -243,6 +243,30 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
     	$scope.devices.$promise.then(function() {
 				// $scope.search();
 				$scope.filteredDevices = $scope.devices;
+
+				     angular.forEach($scope.filteredDevices, function(item){
+		console.log('Device: ', item);
+		// item.shopName = 'Test';
+		if(item.shopId){
+			console.log('Device has an assigned SHop');
+			var myShop = Shops.get({ 
+				shopId: item.shopId
+					});
+		      	myShop.$promise.then(function(){
+		      		console.log('Shop Promise finished', myShop);
+		      		
+			      	item.shopName = myShop.name;
+		      		
+
+		      	});
+
+		
+      		
+
+		}
+	})
+
+
 				return $scope.select($scope.currentPage);
 				});	
 	
