@@ -81,6 +81,61 @@
         $scope.myObject = data;
       });
 
+             var getOtherStuff = function(shop){
+              var woCount = 0,
+              installCount = 0,
+              totalOwedToShop = 0,
+              totalCollected = 0,
+              shopBalance = 0,
+              totalRevenue = 0,
+              paidRevenue = 0;
+              var counter = 0;
+
+              console.log('Getting Stuff...', shop);
+                    $scope.workorders = Workorders.query({ 
+                    shopId: shop._id
+                  });
+                  console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
+                  
+                  
+                  $scope.workorders.$promise
+                  .then(function(wos){
+                    shop.workorders = wos;
+                    angular.forEach(wos, function(wo){
+                      console.log('^^^^^^^^^^WORKORDER   '+counter+'    ^^^^^^^^^^^^^^^^^');
+                      console.log('WOrkorder...', wo);
+                      woCount++;
+                      if(wo.type==='New Install'){
+                        console.log('Weve got an install!!');
+                        installCount++;
+                      }
+                      if(wo.amount){
+                        // totalRevenue = parseInt(totalRevenue)+parseInt(wo.amount);
+                        totalRevenue = parseFloat(totalRevenue, 2)+parseFloat(wo.amount, 2);
+                        console.log('Total Revenue so far: ', totalRevenue);
+                      }
+                      if(wo.pmtStatus !== 'Due'){
+                        console.log('Paid ...', wo);
+                         paidRevenue = parseFloat(paidRevenue, 2)+parseFloat(wo.amount, 2);
+                      }else {
+                        console.log('Payment Due');
+                        console.log(wo);
+
+                      }
+                      console.log('This Shop has aWorkorder: ', woCount);
+                        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+                  });
+
+                    shop.totalWorkorders = woCount;
+                    shop.totalInstalls = installCount;
+                    shop.totalRevenue = totalRevenue;
+                    shop.paidRevenue = paidRevenue;
+
+
+                  });
+
+
+             };
 
              $scope.getReport = function() {
               //Get a report of teh following info
@@ -95,44 +150,62 @@
               totalCollected = 0,
               shopBalance = 0,
               totalRevenue = 0;
-              
+              var counter = 0;
               $scope.shops = Shops.query();
               $scope.shops.$promise
               .then(function(shops){
                 console.log('Got our Shps', $scope.shops);
+
+                
+
+
                 angular.forEach($scope.shops, function(shop){
-                  console.log('Shop ID: ', shop._id);
-                  $scope.workorders = Workorders.query({ 
-                    shopId: shop._id
-                  });
-                  console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
+                  counter++;
+                  console.log('------------SHOP  '+counter+'    ---------------------');
                   woCount = 0;
                   installCount = 0,
                   totalOwedToShop = 0,
                   totalCollected = 0,
                   shopBalance = 0,
                   totalRevenue = 0;
+
+                  console.log('Revenue Update: '+totalRevenue+ '  Workorder Count: '+woCount);
+
+                  console.log('Shop ID: ', shop._id);
+
+                  getOtherStuff(shop);
+                  // $scope.workorders = Workorders.query({ 
+                  //   shopId: shop._id
+                  // });
+                  // console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
                   
-                  $scope.workorders.$promise
-                  .then(function(wos){
-                    angular.forEach(wos, function(wo){
-                      console.log('WOrkorder...');
-                      woCount++;
-                      if(wo.type==='New Install'){
-                        console.log('Weve got an install!!');
-                        installCount++;
-                      }
-                      if(wo.amount){
-                        // totalRevenue = parseInt(totalRevenue)+parseInt(wo.amount);
-                        totalRevenue = parseFloat(totalRevenue, 2)+parseFloat(wo.amount, 2);
-                        console.log('Total Revenue so far: ', totalRevenue);
-                      }
-                      console.log('This Shop has aWorkorder: ', woCount);
-                  });
-                    shop.totalWorkorders = woCount;
-                    shop.totalInstalls = installCount;
-                    shop.totalRevenue = totalRevenue;
-                  });
+                  
+                  // $scope.workorders.$promise
+                  // .then(function(wos){
+                  //   shop.workorders = wos;
+                  //   angular.forEach(wos, function(wo){
+                  //     console.log('^^^^^^^^^^WORKORDER   '+counter+'    ^^^^^^^^^^^^^^^^^');
+                  //     console.log('WOrkorder...');
+                  //     woCount++;
+                  //     if(wo.type==='New Install'){
+                  //       console.log('Weve got an install!!');
+                  //       installCount++;
+                  //     }
+                  //     if(wo.amount){
+                  //       // totalRevenue = parseInt(totalRevenue)+parseInt(wo.amount);
+                  //       totalRevenue = parseFloat(totalRevenue, 2)+parseFloat(wo.amount, 2);
+                  //       console.log('Total Revenue so far: ', totalRevenue);
+                  //     }
+                  //     console.log('This Shop has aWorkorder: ', woCount);
+                  //       console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+                  // });
+
+                    // shop.totalWorkorders = woCount;
+                    // shop.totalInstalls = installCount;
+                    // shop.totalRevenue = totalRevenue;
+
+
+                  // });
 
                   // device.shop = $scope.authentication.user.shop;
                   // device.status = 'Pending Deployment';
@@ -141,6 +214,7 @@
                   //   updated: Date.now(),
                   //   destination: 'Shop Shelf',
                   //   requestor: $scope.authentication.user.displayName
+                  console.log('*******************************************');
                 });
       
 

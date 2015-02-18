@@ -114,6 +114,17 @@ z-index: 999;
                         </th>
                         <th>
                             <div class="th">
+                                Total Collected (Cash/Charge)
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('update') "
+                                      data-ng-class="{active: row == 'update'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-update') "
+                                      data-ng-class="{active: row == '-update'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
                                 Total Owed to Shop
                                 <span class="fa fa-angle-up"
                                       data-ng-click=" order('update') "
@@ -156,10 +167,12 @@ z-index: 999;
                         <td>{{shop.totalWorkorders}}</td>
                         <td>{{shop.totalInstalls}}</td>
                         <td>{{shop.totalRevenue | currency}}</td>
+                         <td>{{shop.paidRevenue | currency}}</td>
                         <td>{{shop.totalOwedToShop}}</td>
                         <td>{{shop.totalCollected}}</td>
-                        <td>{{shop.shopBalance}}</td>
-                       
+                        <td>{{shop.shopBalance}}</td> 
+                       <!--  <td>{{shop.cashRevenue | currency}}</td>
+                         <td>{{shop.chargeRevenue | currency}}</td> -->
                    
                     </tr>
                 </tbody>
