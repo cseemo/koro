@@ -1489,6 +1489,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
      $scope.offender = offender;
+     $scope.shopFee = 60;
+     $scope.budgetAdlFee = 15;
+
+     $scope.updateFees = function(){
+     	$scope.budgetAdlFee = parseFloat($scope.installFee) - parseFloat($scope.shopFee);
+     };
 
      $scope.getDevices = function(){
      	console.log('Finding Devices in Shop Inventory');
