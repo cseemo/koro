@@ -115,7 +115,7 @@
                         console.log('Total Revenue so far: ', totalRevenue);
                       }
                       if(wo.pmtStatus !== 'Due'){
-                        console.log('Paid ...', wo);
+                        console.log('Paid...', wo);
                          paidRevenue = parseFloat(paidRevenue, 2)+parseFloat(wo.amount, 2);
                       }else {
                         console.log('Payment Due');

@@ -935,7 +935,7 @@ exports.sendICS = function(req, res){
 
 // 'ORGANIZER;CN="mailto:cseymour@budgetiid.com;SENT-BY=MAILTO:cseymour@budgetiid.com;LANGUAGE=se:MAILTO:'+req.body.offender.offenderEmail+'\r\n'+
 'ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN='+req.body.offender.displayName+';X-NUM-GUESTS=0:MAILTO:'+req.body.offender.offenderEmail+'\r\n'+
-'DESCRIPTION:Ignition Interlock Appointment\r\n'+
+'DESCRIPTION:'+req.body.workinfo.serviceCenter+' Appointment\r\n'+
 'LOCATION: '+req.body.workinfo.svcAddress+'\r\n'+
 'SUMMARY: Before Apple Test\r\n'+
 'BEGIN:VALARM\r\n'+
@@ -969,7 +969,7 @@ var apple = 'BEGIN:VCALENDAR\r\n'+
 'UID:'+apptDateStart+'-cseymour@budgetiid.com\r\n'+
 'LOCATION:'+req.body.workinfo.svcAddress+'\r\n'+
 'SEQUENCE:0\r\n'+
-'SUMMARY: Ignition Interlock Appointment @ '+apptDate+'!!!!\r\n'+ //Ignition Interlock Service Appointment at '+req.body.workinfo.serviceCenter+'\r\n'+
+'SUMMARY: '+req.body.workinfo.serviceCenter+' Appointment @ '+apptDate+'!!!!\r\n'+ //Ignition Interlock Service Appointment at '+req.body.workinfo.serviceCenter+'\r\n'+
 'DTSTART;TZID=America/Phoenix:'+apptDateStart+'\r\n'+
 'CREATED:20150114T224808Z\r\n'+
 // 'ATTENDEE;CN=Dustin Creek;CUTYPE=INDIVIDUAL;PARTSTAT=ACCEPTED;ROLE=CHAIR;'+
@@ -1115,7 +1115,7 @@ var test = new Buffer(testCalendar).toString('base64');
 			var message = {
 	'html': '<p>Appointment Reminder</p>',
 	
-	'subject': 'Ignition Interlock Appointment Reminder',
+	'subject': req.body.workinfo.serviceCenter+' Appointment Reminder',
 	'from_email': req.body.user.email,
 	'from_name': req.body.user.displayName,
 	'to': [{
