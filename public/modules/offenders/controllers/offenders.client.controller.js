@@ -1258,8 +1258,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 							if($scope.workorder.inspected){
 								console.log('This baby has been inspected already!!');
-								console.log("STuff: ", $scope.checklist[5]);
-								$scope.checklist[5]['strike'] = "done-true" ;
+								console.log("STuff: ", $scope.checklist[2]);
+								$scope.checklist[2]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
 
@@ -1272,21 +1272,21 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 							if($scope.workorder.authSigned){
 
 								console.log('Install Agreement Already Signed');
-								console.log("STuff: ", $scope.checklist[3]);
-								$scope.checklist[3]['strike'] = "done-true" ;
+								console.log("STuff: ", $scope.checklist[4]);
+								$scope.checklist[4]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
 
 							if($scope.workorder.deviceSN || $scope.workorder.type!=='New Install'){
 								console.log('Workorder Already has Serial Number Assigned');
-								console.log("STuff: ", $scope.checklist[2]);
-								$scope.checklist[2]['strike'] = "done-true" ;
+								console.log("STuff: ", $scope.checklist[3]);
+								$scope.checklist[3]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
 							if($scope.workorder.pmtStatus!=='Due' || $scope.workorder.amount==='0'){
 								console.log('Workorder Alrady Paid For');
-								console.log("STuff: ", $scope.checklist[4]);
-								$scope.checklist[4]['strike'] = "done-true" ;
+								console.log("STuff: ", $scope.checklist[5]);
+								$scope.checklist[5]['strike'] = "done-true" ;
 								progress = progress+15;
 							}
 							// if($scope.workorder.completed){

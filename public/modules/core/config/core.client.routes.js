@@ -17,7 +17,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 			}*/
 		}).
 		state('admin', {
-			url: '/admin',
+			url: '/dashboard',
 			templateUrl: 'modules/core/views/admin.client.view.html'
 			/*templateUrl: function($stateParams) {
 				console.log('stateparams: ', $stateParams.type);

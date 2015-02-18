@@ -1,5 +1,189 @@
 
-<div class="page page-dashboard " data-ng-controller="DashboardCtrl">
+
+<style>
+/*.form-group{
+    padding: 17px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}*/
+.makeMed {
+    font-size: 2em;
+}
+.page{
+    background-color: #555;
+    min-height: 100%;
+}
+.nostyle:hover, .nostyle:visited, .nostyle:link, .nostyle:active{
+    text-decoration: none;
+    cursor: pointer;
+}
+.bigPad{
+    padding-left: 15px;
+}
+h1, h2, h3{
+    color: #333;
+}
+.stickyTop{
+position: absolute;
+top: 0px;
+left: 0px;
+right: 00px;
+z-index: 999;
+
+}
+</style>
+ <div class="page page-dashboard" data-ng-controller="DashboardCtrl">
+  
+
+      <div class="container">
+<h2>Dashboard Details</h2>
+    <div class="row">
+        Row
+     
+            <div class="panel panel-primary">
+                <div class="text-center">
+                        Choose the Date Range you wish to see the Report for:
+                    </div>
+                  <div class="panel-body">
+                    <a ng-click="getReport()">Get Report</a>
+
+
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                Service Center Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('companyname') "
+                                      data-ng-class="{active: row == 'companyname'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-companyname') "
+                                      data-ng-class="{active: row == '-companyname'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Location
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('assignedRep') "
+                                      data-ng-class="{active: row == 'assignedRep'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-assignedRep') "
+                                      data-ng-class="{active: row == '-assignedRep'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Number of Workorders
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('stagenum') "
+                                      data-ng-class="{active: row == 'stagenum'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-stagenum') "
+                                      data-ng-class="{active: row == '-stagenum'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Number of Installs
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('stagenum') "
+                                      data-ng-class="{active: row == 'stagenum'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-stagenum') "
+                                      data-ng-class="{active: row == '-stagenum'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Total Revenue Generated
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('telephone') "
+                                      data-ng-class="{active: row == 'telephone'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-telephone') "
+                                      data-ng-class="{active: row == '-telephone'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Total Owed to Shop
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('update') "
+                                      data-ng-class="{active: row == 'update'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-update') "
+                                      data-ng-class="{active: row == '-update'}"></span>
+                            </div>
+                        </th>
+                         <th>
+                            <div class="th">
+                                Fees Collected by Shop
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('update') "
+                                      data-ng-class="{active: row == 'update'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-update') "
+                                      data-ng-class="{active: row == '-update'}"></span>
+                            </div>
+                        </th>
+                           <th>
+                            <div class="th">
+                                Shop Balance
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('update') "
+                                      data-ng-class="{active: row == 'update'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-update') "
+                                      data-ng-class="{active: row == '-update'}"></span>
+                            </div>
+                        </th>
+
+
+                    </tr> 
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="shop in shops">
+                        <td>{{shop.name}}</td>
+                        <td>{{shop.city}}, {{shop.state}}</td>
+                        <td>{{shop.totalWorkorders}}</td>
+                        <td>{{shop.totalInstalls}}</td>
+                        <td>{{shop.totalRevenue | currency}}</td>
+                        <td>{{shop.totalOwedToShop}}</td>
+                        <td>{{shop.totalCollected}}</td>
+                        <td>{{shop.shopBalance}}</td>
+                       
+                   
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+                After Panel Body
+            </div>After Panel
+        </div>After Row
+    </div>After
+</div>
+
 
     <div class="row">
       <div class="col-lg-3 col-xsm-3">
@@ -57,7 +241,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Recent Rep Activity</h3>
                 </div>
-                <div class="panel-body" data-ng-controller="DealsController">
+               
             
     <span data-ng-repeat="notify in notifys">
 
@@ -107,8 +291,7 @@
 
 
     <div class="row">
-    <div class="page page-table" data-ng-controller="DealsController" data-ng-init="stinit()">
-
+   
     <section class="panel panel-default table-dynamic">
         <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Deals</strong></div>
         

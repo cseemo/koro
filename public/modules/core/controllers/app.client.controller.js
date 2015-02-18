@@ -73,13 +73,81 @@
 
 
         .controller('NavContainerCtrl', ['$scope', function($scope) {}]).
-    controller('DashboardCtrl', ['$scope', 'Authentication', 'Leads', 'Deals', '$filter', 'socket', '$timeout', function($scope, Authentication, Leads, Deals, $filter, socket, $timeout) {
+    controller('DashboardCtrl', ['$scope', 'Authentication', '$filter', 'socket', '$timeout', 'Shops', 'Workorders',   function($scope, Authentication, $filter, socket, $timeout, Shops, Workorders) {
    
       
              socket.on('newconnect', function(data) {
         //console.log('Socket Data: %o', data);
         $scope.myObject = data;
       });
+
+
+             $scope.getReport = function() {
+              //Get a report of teh following info
+              //Service Center -- # of WorkOrders -- # of Installs -- $$ Collected -- $$ Owed by Customer -- $$ owed to shop
+              //Step 1 - Get all Service Centers iterate thru each and get 
+              //            - Get all Workorders Completed in Date Range w/ that ShopId
+              //            - Get Workorder Details ($$ Owed, Paid or Owed)
+              //Step 2 - Display?
+              var woCount = 0,
+              installCount = 0,
+              totalOwedToShop = 0,
+              totalCollected = 0,
+              shopBalance = 0,
+              totalRevenue = 0;
+              
+              $scope.shops = Shops.query();
+              $scope.shops.$promise
+              .then(function(shops){
+                console.log('Got our Shps', $scope.shops);
+                angular.forEach($scope.shops, function(shop){
+                  console.log('Shop ID: ', shop._id);
+                  $scope.workorders = Workorders.query({ 
+                    shopId: shop._id
+                  });
+                  console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
+                  woCount = 0;
+                  installCount = 0,
+                  totalOwedToShop = 0,
+                  totalCollected = 0,
+                  shopBalance = 0,
+                  totalRevenue = 0;
+                  
+                  $scope.workorders.$promise
+                  .then(function(wos){
+                    angular.forEach(wos, function(wo){
+                      console.log('WOrkorder...');
+                      woCount++;
+                      if(wo.type==='New Install'){
+                        console.log('Weve got an install!!');
+                        installCount++;
+                      }
+                      if(wo.amount){
+                        // totalRevenue = parseInt(totalRevenue)+parseInt(wo.amount);
+                        totalRevenue = parseFloat(totalRevenue, 2)+parseFloat(wo.amount, 2);
+                        console.log('Total Revenue so far: ', totalRevenue);
+                      }
+                      console.log('This Shop has aWorkorder: ', woCount);
+                  });
+                    shop.totalWorkorders = woCount;
+                    shop.totalInstalls = installCount;
+                    shop.totalRevenue = totalRevenue;
+                  });
+
+                  // device.shop = $scope.authentication.user.shop;
+                  // device.status = 'Pending Deployment';
+                  // device.details.push({
+                  //   type: 'Received by Shop',
+                  //   updated: Date.now(),
+                  //   destination: 'Shop Shelf',
+                  //   requestor: $scope.authentication.user.displayName
+                });
+      
+
+              });
+
+
+             };
 
 
 
