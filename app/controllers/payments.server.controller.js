@@ -722,6 +722,9 @@ var mongoose = require('mongoose'),
 
 				});
 				
+		}else {
+			console.log('No AutoPay - Invoice Generated');
+					res.status(200).send('Payment Created - Needs to pay via Cash');
 		}
 	};
 
