@@ -72,8 +72,63 @@
     
 
 
+        .controller('woModalCtrl', ['$scope', 'shop', 'Workorders', 'Payments', 'Offenders',   function($scope, shop, Workorders, Payments, Offenders) {
+          $scope.shop = shop;
+          $scope.workorders = Workorders.query({
+            shopId: shop._id
+          });
+
+          var getClientInfo = function(wo){
+            console.log('Getting Client Info: ', wo._id);
+            var client = Offenders.get({
+              offenderId: wo.offender
+            });
+            client.$promise.then(function(client){
+              console.log('Got our client', client);
+              wo.clientName = client.displayName;
+              wo.vehicleInfo = client.vehicleYear+' '+client.vehicleMake+' '+client.vehicleModel;
+
+            });
+          };
+
+          var getPmtInfo = function(wo){
+            console.log('Getting Payment Info: ', wo._id);
+            var payment = Payments.query({
+              workorder: wo._id
+            });
+            payment.$promise.then(function(pmt){
+              console.log('Got Payment Details: ', pmt);
+              wo.payment = pmt;
+            });
+          };
+
+          $scope.workorders.$promise.then(function(wos){
+            console.log('Got our workorders: ', wos);
+            angular.forEach(wos, function(wo){
+              getClientInfo(wo);
+              getPmtInfo(wo);
+
+            });
+            // $scope.payments = Payments.query({
+            //   workorder: wos._id
+
+            // });
+            // $scope.payments.$promise.then(function(pmt){
+            //   console.log('Got our payments!!', pmt);
+
+            // });
+          
+
+          });
+
+
+
+
+        }])
+
+
         .controller('NavContainerCtrl', ['$scope', function($scope) {}]).
-    controller('DashboardCtrl', ['$scope', 'Authentication', '$filter', 'socket', '$timeout', 'Shops', 'Workorders',   function($scope, Authentication, $filter, socket, $timeout, Shops, Workorders) {
+    controller('DashboardCtrl', ['$scope', 'Authentication', '$filter', 'socket', '$timeout', 'Shops', 'Workorders', '$modal',  function($scope, Authentication, $filter, socket, $timeout, Shops, Workorders, $modal) {
    
       
              socket.on('newconnect', function(data) {
@@ -136,6 +191,48 @@
 
 
              };
+
+
+             //Open Modal for Workorder Details
+                $scope.openModal = function(type, row){
+                  console.log('Row: ', row);
+
+                  console.log('Opening Modal', type);
+                  var template = 'modules/core/views/woDetails.html';
+                  var size = 'lg';
+                  var controller = 'woModalCtrl';
+
+
+                  if(type==='checkin'){
+                    template = 'modules/devices/views/create-device.client.view.html';
+                    size = 'sm';
+                  
+                  }
+                  if(type==='shopCheckInModal'){
+                    template = 'shopCheckInModal.html';
+                    size = 'lg';
+                    controller = 'shopInventoryCtrl';
+                  
+                  }
+
+                  
+
+                    var modalInstance = $modal.open({
+                        templateUrl: template,
+                        controller: controller,
+                        size: size,
+                        resolve: {
+                          shop: function() {
+                            return $scope.shops[row];
+                          }
+
+                          },
+                          
+                         
+                    });
+
+      };
+
 
              $scope.getReport = function() {
               //Get a report of teh following info

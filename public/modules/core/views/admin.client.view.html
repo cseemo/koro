@@ -37,6 +37,9 @@ right: 00px;
 z-index: 999;
 
 }
+.link{
+  cursor: pointer;
+}
 </style>
  <div class="page page-dashboard" data-ng-controller="DashboardCtrl">
   
@@ -162,8 +165,8 @@ z-index: 999;
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr data-ng-repeat="shop in shops">
-                        <td>{{shop.name}}</td>
+                    <tr data-ng-repeat="shop in shops track by $index">
+                        <td><a class="link" data-ng-click="openModal('workorders', $index)">{{shop.name}}</a></td>
                         <td>{{shop.city}}, {{shop.state}}</td>
                         <td>{{shop.totalWorkorders}}</td>
                         <td>{{shop.totalInstalls}}</td>
