@@ -72,11 +72,17 @@
     
 
 
-        .controller('woModalCtrl', ['$scope', 'shop', 'Workorders', 'Payments', 'Offenders',   function($scope, shop, Workorders, Payments, Offenders) {
+        .controller('woModalCtrl', ['$scope', 'shop', 'Workorders', 'Payments', 'Offenders', '$modalInstance',   function($scope, shop, Workorders, Payments, Offenders, $modalInstance) {
           $scope.shop = shop;
           $scope.workorders = Workorders.query({
             shopId: shop._id
           });
+
+          $scope.close = function(){
+
+        $modalInstance.dismiss('cancel');
+     };
+          
 
           var getClientInfo = function(wo){
             console.log('Getting Client Info: ', wo._id);

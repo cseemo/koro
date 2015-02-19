@@ -115,7 +115,7 @@ h1, h2, h3{
         <tbody>
                     <tr data-ng-repeat="wo in workorders">
                         <!-- <td>{{wo}}</td> -->
-                        <td>{{wo.clientName}}</td>
+                        <td><a class="link" data-ng-click="close()" href="#!/offenders/{{wo.offender}}">{{wo.clientName}}</a></td>
                         <td>{{wo.type}}</td>
                         <td>{{wo.apptDate}}</td>
                         

@@ -11,7 +11,11 @@
         >
        
 
-         
+            <li data-ng-show="authentication.hasRole('manager')===true">
+        <a href="#!/dashboard"> <i class="fa fa-bell"></i>
+        <span>Service Center Summary</span>
+         </a>
+         </li >
           <li data-ng-show="authentication.hasRole('manager')===true">
         <a href="#!/offenders"> <i class="fa fa-users"></i>
         <span>Clients</span>
