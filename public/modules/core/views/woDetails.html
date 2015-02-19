@@ -1,0 +1,155 @@
+<style>
+.col-md-4{
+    padding: 10px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+h1, h2, h3{
+    color: #333;
+}
+.main-body{
+    background-color: #555;
+}
+</style>
+
+<!-- <section data-ng-controller="DevicesController"> -->
+   
+               
+        <div class="modal-header">
+
+           Work Order Details for {{shop.name}}
+        </div>
+        <div class="modal-body">
+
+
+                  <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                Client Name
+                                <!-- <span class="fa fa-angle-up"
+                                      data-ng-click=" order('name') "
+                                      data-ng-class="{active: row == 'name'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-name') "
+                                      data-ng-class="{active: row == '-name'}"></span> -->
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Type of Work
+                                <!-- <span class="fa fa-angle-up"
+                                      data-ng-click=" order('assignedRep') "
+                                      data-ng-class="{active: row == 'assignedRep'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-assignedRep') "
+                                      data-ng-class="{active: row == '-assignedRep'}"></span> -->
+                            </div>
+                        </th>
+                             <th>
+                            <div class="th">
+                                Appointment Date
+                                <!-- <span class="fa fa-angle-up"
+                                      data-ng-click=" order('name') "
+                                      data-ng-class="{active: row == 'name'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-name') "
+                                      data-ng-class="{active: row == '-name'}"></span> -->
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                               Status
+                             <!--    <span class="fa fa-angle-up"
+                                      data-ng-click=" order('stagenum') "
+                                      data-ng-class="{active: row == 'stagenum'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-stagenum') "
+                                      data-ng-class="{active: row == '-stagenum'}"></span> -->
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                               Vehicle Info
+                               <!--  <span class="fa fa-angle-up"
+                                      data-ng-click=" order('stagenum') "
+                                      data-ng-class="{active: row == 'stagenum'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-stagenum') "
+                                      data-ng-class="{active: row == '-stagenum'}"></span> -->
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                               Workorder Fee
+                               <!--  <span class="fa fa-angle-up"
+                                      data-ng-click=" order('stagenum') "
+                                      data-ng-class="{active: row == 'stagenum'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-stagenum') "
+                                      data-ng-class="{active: row == '-stagenum'}"></span> -->
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Payment Status
+                               <!--  <span class="fa fa-angle-up"
+                                      data-ng-click=" order('telephone') "
+                                      data-ng-class="{active: row == 'telephone'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-telephone') "
+                                      data-ng-class="{active: row == '-telephone'}"></span> -->
+                            </div>
+                        </th>
+
+
+                    </tr> 
+                </thead>
+        <tbody>
+                    <tr data-ng-repeat="wo in workorders">
+                        <!-- <td>{{wo}}</td> -->
+                        <td>{{wo.clientName}}</td>
+                        <td>{{wo.type}}</td>
+                        <td>{{wo.apptDate}}</td>
+                        
+                        <td>{{wo.status}}</td>
+                         <td>{{wo.vehicleInfo}}</td>
+                         <td>{{wo.payment.0.amount | currency}}</td>
+                         <td>{{wo.payment.0.status}}</td>
+
+
+                       <!--  <td><a data-ng-click="openModal(workorders)">{{shop.totalWorkorders}}</a></td>
+                        <td><a data-ng-click="openModal(installs)">{{shop.totalInstalls}}</a></td>
+                        <td>{{shop.totalRevenue | currency}}</td>
+                         <td>{{shop.paidRevenue | currency}}</td>
+                        <td>{{shop.totalOwedToShop}}</td>
+                        <td>{{shop.totalCollected}}</td>
+                        <td>{{shop.shopBalance}}</td>  -->
+                       <!--  <td>{{shop.cashRevenue | currency}}</td>
+                         <td>{{shop.chargeRevenue | currency}}</td> -->
+                   
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+    </div>
+    </div></div></div></div>
+</section>
