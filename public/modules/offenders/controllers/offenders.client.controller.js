@@ -404,6 +404,43 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
 
+   //    	$scope.complete = function() {
+  	// 		console.log('Work Order Complete');
+  	// 		$modalInstance.close();
+
+
+  	// 		 $scope.findWorkOrder();
+   //     		 $scope.workorder.$promise.then(function(){
+	  // 				var wo = $scope.workorder;
+	  // 				wo.completed = Date.now();
+			// 		console.log('WHTFFF!!', wo);
+			// 		wo.status = 'Complete';
+			// 		wo.techName = $scope.techName;
+			// 		wo.orderNotes = $scope.orderNotes;
+			// 		console.log('WO', wo);
+			// 		wo.$update(function(){
+			// 		console.log('Update complete!', wo);
+
+			// 		$scope.offender.pendingWorkOrder = null;
+		 //  			$scope.offender.pendingWorkType = null;
+		 //  			if(wo.type==='New Install'){
+		 //  				var d = new Date();
+			// 			var n = d.getDate();
+		 //  				console.log('n is: ', n);
+		 //  				$scope.offender.billDate = n+1;
+		 //  				chargeFirstMonth($scope.offender, wo);
+
+
+		 //  			}
+		  			
+		 //  			$scope.offender.$update();
+			// 	});
+
+			// });
+				
+  	// 	};
+
+
 
 		$scope.completeOrder = function() {
 			console.log('WE are completing the work order!');
@@ -1804,6 +1841,29 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
   	};
 
+
+  	  		var chargeFirstMonth = function(offender,wo) {
+  			console.log('Charging First Month');
+
+  				$http({
+					method: 'post',
+					url: '/chargeFirstMonth', 
+					data: {
+						'user': $scope.authentication.user,
+						'offender': offender,
+						'workinfo': wo
+						
+								},
+								
+						})
+					.success(function(data, status) {
+						console.log('Completed charging First month');
+					});
+					
+
+  		};
+
+
       	$scope.complete = function() {
   			console.log('Work Order Complete');
   			$modalInstance.close();
@@ -1828,7 +1888,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 						var n = d.getDate();
 		  				console.log('n is: ', n);
 		  				$scope.offender.billDate = n+1;
-
+		  				chargeFirstMonth($scope.offender, wo);
 
 		  			}
 		  			

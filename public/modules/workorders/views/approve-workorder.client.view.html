@@ -245,7 +245,7 @@ z-index: 999;
 		When you are ready, simply click the button to agree
 		</small>
 		<br>
-		<a class="btn btn-primary" style="color: #fff;" data-ng-click="signAgreement();">
+		<a class="btn btn-primary" data-ng-hide="hideMe" style="color: #fff;" data-ng-click="signAgreement();">
 				<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> eSign Now
 			</a>  
 			<br>
@@ -285,7 +285,7 @@ z-index: 999;
 				<!-- <img src="http://localhost:5000/modules/core/img/brand/logo.png" style="width:90%; height: 960px;" ></img> -->
 				</div>
 				</div>
-				<a class="btn btn-lg btn-primary" data-ng-show="!hideeSign" style="color: #fff;" data-ng-click="signAgreement();">
+				<a class="btn btn-lg btn-primary" data-ng-show="!hideeSign" data-ng-hide="hideMe" style="color: #fff;" data-ng-click="signAgreement();">
 				<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> eSign Now
 			</a> 
 

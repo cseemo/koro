@@ -1712,7 +1712,7 @@ var chargeCreditCard = function(req, res, paymentProfile){
 		console.log('Tax Amount: ', stateTax);
 
 		var transaction = {
-			  amount: totalCharge,
+			  amount: workCharge,
 			  // tax: {
 			  //   amount: stateTax,
 			  //   name: 'State Tax',

@@ -606,6 +606,125 @@ var mongoose = require('mongoose'),
 	};
 
 
+	var firstMonthCharge = function(cus, wo, pmt, callback){
+		var today = new moment();
+		var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+		var now  =  moment(today).format("MM/DD/YYYY");
+
+			console.log('About to create transaction', pmt);
+
+					
+			console.log('Auto Charge this bastard'+cus.displayName+' '+pmt.amount+':::'+pmt._id);
+			
+				var transaction = {
+				  amount: pmt.amount,
+				  // tax: {
+				  //   amount: 0,
+				  //   name: 'State Tax',
+				  //   // description: taxState
+				  // },
+				 
+					  customerProfileId: cus.merchantCustomerId,
+					  customerPaymentProfileId: cus.paymentProfileId,
+				  order: {
+				    invoiceNumber: Date.now(),
+				    description: 'Auto Payment of Monthly Interlock Fee'
+				  },
+				  billTo: {
+				  	firstName: cus.firstName,
+				  	lastName: cus.lastName,
+				  	address: cus.billingAddress
+				  }
+				};
+
+				AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, CaptureOnly, PriorAuthCapture */, transaction, function(err, response) {
+					if(err){
+						console.log('Error Charging Card', err);
+						// res.status(400).send('ERROR: '+err);
+						console.log('Sending Card Decline NOtification...');
+						sendCardDeclineNotification(pmt, cus);
+						pmt.notes = pmt.notes+'--| Card Failed '+convertedPretty;
+						pmt.save(function(err, data){
+							if(err){
+								console.log('Error saving Payment...');
+								return callback('Error saving payment...'+err);
+							}
+							console.log('Payment Saved...', data);
+
+							return callback(err);
+
+						});
+						
+						
+					}
+					if(response){
+						console.log('Card has been charged!!', response);
+						pmt.status='Paid';
+						// console.log('Direct Response: ', response.directResponse);
+						// console.log('4: ', response.directResponse[4]);
+						var resp = response.directResponse.split(',');
+						// console.log('4TEST', resp[4]);
+						pmt.notes = pmt.notes+'--| Autopay: '+convertedPretty+' AuthCode: '+resp[4];
+						pmt.paidDate = Date.now();
+						console.log(pmt.notes);
+						pmt.save(function(err, data){
+							if(err){
+								console.log('Error saving Payment...');
+								return callback('Error saving payment...'+err);
+							}
+							console.log('Payment Saved...', data);
+							return callback(null, response);
+
+						});
+						
+						// res.status(200).send(response);
+					}
+				});
+
+
+
+
+		
+
+
+
+	};
+
+	exports.chargeFirstMonth = function(req, res) {
+		console.log('Charging First MOnth');
+		console.log('Offender: ', req.body.offender);
+		console.log('User: ', req.body.user);
+		console.log('Workorder: ', req.body.workinfo);
+		var today = new moment();
+		var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+		var now  =  moment(today).format("MM/DD/YYYY");
+		var payment = new Payment({
+						    pmtType: 'Initial Monthly Service Fee',
+						    dueDate: now,
+						    offender: req.body.offender._id,
+						    status: 'Due',
+						    notes: 'Initial Invoice on '+convertedPretty,
+						    amount: '75',
+							});
+
+		payment.save();
+
+
+		var cus = req.body.offender;
+		if(cus && cus.merchantCustomerId && cus.paymentProfileId){
+				firstMonthCharge(cus, req.body.workinfo, payment, function(err, data){
+					if(err){
+						console.log('Test Err Return', err);
+					return	res.status(444).send(err);
+					}
+					console.log('Data return', data);
+					res.status(200).send(data);
+
+				});
+				
+		}
+	};
+
 	var createMonthlyCharge = function() {
 		//GO thru each Offender and create a new Charge for them
 		//This should run one time per month...right now every month on the 1st

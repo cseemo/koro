@@ -29,6 +29,9 @@ module.exports = function(app) {
 		app.route('/getPaymentProfiles')
 		.post(payments.getPaymentProfiles);
 
+		app.route('/chargeFirstMonth')
+		.post(payments.chargeFirstMonth);
+
 
 		
 		

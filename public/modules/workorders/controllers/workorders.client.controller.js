@@ -248,6 +248,7 @@ $scope.approveWorkOrderPayment = function(){
 						//Shop Signs Agreement
 		$scope.signAgreement = function() {
 			$scope.hideeSign = true;
+			$scope.hideMe = true;
 			toastr.success('Congratrulations, you have eSigned the documents.');
 			var Id = $scope.workorder._id;
 			var workorder = $scope.workorder;
