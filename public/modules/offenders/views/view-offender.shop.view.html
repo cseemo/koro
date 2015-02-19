@@ -126,7 +126,7 @@ max-height: 300px;
              										 <span class="{{stuff.strike}}" >{{stuff.item}} </span>
 	                                            </li>
 
-	                                           <li data-ng-show="workorder.pmtStatus!=='Due' && workorder.authSigned"><input type="checkbox" data-ng-click="completeOrder()" /> Complete Order</li>
+	                                           <li data-ng-show="workorder.authSigned"><input type="checkbox" data-ng-click="completeOrder()" /> Complete Order</li>
 
 	                                           <!-- <li>Ready to Cpl: {{readyToCpl}}</li>
 	                                           <li>Workorder PmtStatus: {{workorder.pmtStatus}}</li>
