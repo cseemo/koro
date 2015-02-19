@@ -908,8 +908,9 @@ exports.sendICS = function(req, res){
 
 	var testDate = Date.now();
 	var appDt = moment(req.body.workinfo.apptDate).format("YYYYMMDTHHmmss");
-	var apptDateStart = moment(appDt).subtract(2, 'hours').format("YYYYMMDTHHmmss");
-	var apptDateEnd = moment(req.body.workinfo.apptDate).add(1, 'hours').format("YYYYMMDTHHmmss");
+	// var apptDateStart = moment(req.body.workinfo.apptDate).format("YYYYMMDTHHmmss");
+	var apptDateStart = moment(req.body.workinfo.apptDate).subtract(2, 'hours').format("YYYYMMDTHHmmss");
+	var apptDateEnd = moment(req.body.workinfo.apptDate).subtract(1, 'hours').format("YYYYMMDTHHmmss");
 	console.log('Appointment Begin: ', apptDateStart);
 	console.log('Appointmetn End: ', apptDateEnd);
 
