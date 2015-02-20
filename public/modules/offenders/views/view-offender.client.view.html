@@ -542,14 +542,32 @@ max-height: 300px;
         
          <label>Work Order Type</label>
         	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
-        	
+
+        	  <br>
+      
+
+        	  	<label>Service Center</label>
+				<select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter(this)"></select>
+        	   
+
+  	
 <br>
 <span data-ng-show="chosen==='New Install'">
- <label>Term of Service <em>(in Months)</em></label>
-  <input type="text" class="form-control"  data-ng-model="term" placeholder="Term of Service Agreement" maxlength="3">
 
  
- <div class="row">
+
+        	<div class="row" >
+       
+        <center>
+        <span data-ng-show="shop.installType==='Hourly Rate'">
+        <label>This shop will charge the customer an hourly rate of {{shop.shopHourly | currency}} for the installation</label>
+        </span>
+          <span data-ng-show="shop.installType=='Shop to Charge Customer'">
+        <label>This shop will charge the customer for the installation at the time of the appointment</label>
+        </span>
+
+
+        </center>
         <div class="col-md-4">
         	 <label>Customer Install Fee</label>
         	  <input type="text" data-ng-model="installFee"  data-ng-change="updateFees()" id="installFee" class="form-control" placeholder="80" >
@@ -565,15 +583,20 @@ max-height: 300px;
         	</div>
         	</div>
 
+
+
+
+ <label>Term of Service <em>(in Months)</em></label>
+  <input type="text" class="form-control"  data-ng-model="term" placeholder="Term of Service Agreement" maxlength="3">
+
+ 
+
+
 </span>
-  
+  <br>
 
 
-				<label>Service Center</label>
-				<select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"></select>
-        	   
-
-<br>
+			
         	   <label>Email Address</label>
         	    <input type="text" data-ng-model="emailAddress"  id="emailAddress" class="form-control" placeholder="Email Address" >
 

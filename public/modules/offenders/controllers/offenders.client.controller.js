@@ -1644,8 +1644,27 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       $scope.emailAddress = offender.offenderEmail;
       $scope.toWhomName = $scope.offender.firstName+' '+$scope.offender.lastName;
 
-      $scope.changeSvcCenter = function(){
+      $scope.changeSvcCenter = function(svc){
+      	console.log('Line 1648', svc.serviceCenter.name);
       	console.log('Name is: ', this);
+      	$scope.shop = svc.serviceCenter;
+
+      	if($scope.shop.installType==='Hourly Rate'){
+      		console.log('This is an houlry rate');
+      		$scope.shopFee = parseFloat($scope.shop.shopHourly)*2;
+
+      	}
+      	if($scope.shop.installType==='Shop to Charge Customer'){
+      		console.log('This shop charges themselves');
+      		$scope.shopFee = 60;
+      		
+      	}
+      	if($scope.shop.installType==='Standard'){
+      		console.log('This shop charges Standard Rates');
+      		$scope.shopFee = 60;
+      		
+      	}
+      	$scope.updateFees();
       	// $scope.serviceCenter = name;
       	// console.log('Service Center: ', $scope.shops[name]['name']);
       	// console.log('Service Center: ', $scope.serviceCenter);
@@ -2381,6 +2400,7 @@ $scope.mytime = $scope.dt;
     $scope.workorder = workorder;
 
     $scope.changeSvcCenter = function(){
+    	console.log('Line 2384 ');
     		var amt = $scope.workorder.amount;
       		$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
 			$scope.workorder.$promise.then(function() {
@@ -2761,6 +2781,7 @@ $scope.mytime = $scope.dt;
     };
 
     $scope.changeSvcCenter = function(){
+    	console.log('2765');
     		var amt = $scope.workorder.amount;
       		$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
 			$scope.workorder.$promise.then(function() {

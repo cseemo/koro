@@ -14,6 +14,9 @@ angular.module('shops').controller('ShopsController', ['$scope', '$stateParams',
 
 		  //Date Picker stuff
 
+//Install Options
+$scope.installProcesses = ['Standard', 'Shop to Charge Customer', 'Hourly Rate'];
+$scope.installType = $scope.installProcesses[0];
  $scope.today = function() {
         return $scope.dt = new Date();
       };
@@ -660,10 +663,18 @@ $scope.mytime = $scope.dt;
 			}
 		};
 
+		$scope.changeType = function(){
+			$scope.shop.installType = $scope.installType;
+
+
+		};
+
 		// Update existing Shop
 		$scope.update = function() {
-			var shop = $scope.shop ;
-
+			var shop = $scope.shop;
+			// shop.shopHourly = $scope.shopHourly;
+			// shop.installType = $scope.installType;
+			console.log('Shpo: ', shop);
 			shop.$update(function() {
 				$location.path('shops/' + shop._id);
 			}, function(errorResponse) {

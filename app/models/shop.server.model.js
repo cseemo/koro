@@ -164,6 +164,16 @@ var ShopSchema = new Schema({
 		trim: true,
 		default: '000'
 	},
+		installType: {
+		type: String,
+		trim: true,
+		default: 'Standard'
+	},
+		shopHourly: {
+		type: Number,
+		trim: true,
+		default: 0
+	},
 
 	
 

@@ -268,8 +268,12 @@ Agreement Sent: {{shop.agreementSent}}<br>
 	                      			       
 	                                    
 	                                     <label>Shop Rates</label>
-	                                    <li>
-	                                    <input ng-model="shop.rate" cb:inline ng-blur="saveMe()" String></input>
+	                                    <li ng-show="shop.installType==='Hourly Rate'">
+	                                    	 {{shop.installType}}  $
+	                                    <input ng-model="shop.shopHourly" cb:inline ng-blur="saveMe()" String></input>
+	                                    </li>
+	                                    <li ng-show="shop.installType!=='Hourly Rate'">
+	                                    {{shop.installType}}
 	                                    </li>
 
 	                                    

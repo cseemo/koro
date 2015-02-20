@@ -205,6 +205,31 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                          <div class="col-md-6 col-md-offset-3">
+                            <div class="form-group">
+                                 <label class="form-label" for="address">Shop Install Process: {{shop.installType}}</label>
+                                   <select class="form-control"  ng-change="changeType()" ng-model="installType" ng-options="type for type in installProcesses">
+                                      <option value="na">Select Here to Change</option>
+                                </select>  
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                     <div class="row" data-ng-show="installType==='Hourly Rate'">
+                          <div class="col-md-6 col-md-offset-3">
+                            <div class="form-group">
+                                 <label class="form-label" for="address">Shop Hourly Rate:</label>
+                                   <input type="text" class="form-control" ng-model="shop.shopHourly"/ >
+                                    
+                            </div>
+                        </div>
+
+
+
+                    </div>
                            <a class="btn btn-primary btn-center" style="color: #fff;" data-ng-click="update()">
                 <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Update Details
             </a>
