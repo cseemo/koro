@@ -154,6 +154,44 @@ angular.module('offenders').factory('Offenders', ['$resource',
 
 		};
 
+				authorizeCIM.voidPayment = function(profile, offender){
+		console.log('Runnign Service to Update Payment Profile');
+		console.log('Profile ', profile);
+		
+		console.log('Offender :', offender);
+			return $http({
+					method: 'post',
+					url: '/updateCCInfo/'+offender._id,
+					data: {
+						type: 'delete',
+						paymentProfileId: profile, 
+						customerProfileId: offender.merchantCustomerId
+					}
+				}).success(function(data, status) {
+					if(data.authNet==='Error'){
+					
+						
+						
+					}
+						var message = 'Credit Card has been Authorized and is no on file';
+
+							
+							console.log('Message: ', message);
+							
+						
+				}).error(function(err, data){
+					// toastr.error(err);
+					console.log('Data from Error Validating or Updating Creidt Card', err);
+					console.log('Data from Error', data);
+					
+
+		});
+
+
+
+		};
+
+
 	authorizeCIM.updatePaymentProfile = function(profile, cardData, offender){
 		console.log('Runnign Service to Update Payment Profile');
 		console.log('Profile ', profile);

@@ -229,6 +229,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		};
 
 		      $scope.openPmt = function() {
+		      	console.log('WTF');
       	console.log('Opening Modal', $scope.workorder);
 
         var modalInstance;
@@ -1708,6 +1709,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
             $scope.changeType = function(){
       	console.log('Changing Type', $scope.chosen);
+      	$scope.payment.paymentType = $scope.chosen;
+      	console.log('Scope Payment: ', $scope.payment);
       	if($scope.chosen==='New Install'){
       		$scope.emailSubject = 'Welcome to Budget IID, LLC';
       	}else{
@@ -2326,6 +2329,21 @@ $scope.mytime = $scope.dt;
 
       };
 
+      //Void Payment
+      $scope.voidPayment = function() {
+      	console.log('Voiding Paymetn', $scope.payment);
+      		authorizeCIM.voidPayment($scope.paymentProfiles[row], offender)
+						.success(function(response){
+							console.log('Deleted that motha ', response);
+							$scope.paymentProfiles.splice(row, 1);
+						})
+						.error(function(errror){
+							console.log('Error ');
+
+						});
+
+      };
+
       		$scope.findWorkOrder = function(id) {
      		console.log('Workorder: ', id);
 			$scope.workorder = Workorders.get({ 
@@ -2914,13 +2932,26 @@ $scope.mytime = $scope.dt;
     $scope.offender = offender;
     $scope.worders = workorders;
     $scope.payments = payments;
-    
+    $scope.items = ['New Install', '30 Day Service', 'Calibration', 'Violation Reset', 'Removal', 'Manual Charge', 'Other'];
   $scope.oneAtATime = true;
 
   $scope.close = function(){
   	$modalInstance.dismiss('closefd');
 
   };
+
+              $scope.changeType = function(){
+      	console.log('Changing Type', $scope.chosen);
+      	$scope.payment.pmtType = $scope.chosen;
+      	console.log('Scope Payment: ', $scope.payment);
+      	if($scope.chosen==='New Install'){
+      		$scope.emailSubject = 'Welcome to Budget IID, LLC';
+      	}else{
+
+      	}
+      	$scope.emailSubject = 'Service Authorization from Budget IID, LLC';
+      	$scope.payment.$update();
+      };
 
   $scope.makePrimary = function(row){
   	console.log('Row Chosen', row);
@@ -2958,7 +2989,9 @@ $scope.mytime = $scope.dt;
 
       	$scope.choosePmt = function(row){
       		$scope.onFile = true;
-      		$scope.error = false;
+      		$scope.error = false;	
+      		$scope.disableBtns = true;
+      		//Update Error
 
       		console.log('Choosing Payment  Profile', $scope.paymentProfiles[row]);
       		console.log('Offender ', $scope.offender);
@@ -3297,6 +3330,31 @@ $scope.mytime = $scope.dt;
 
 
   };
+
+  $scope.manualPmt = function() {
+  	console.log('Creating New Manual Payment...');
+  	$scope.chooseAmt = true;
+  	var pmt = new Payments ({
+				offender: $scope.offender._id,
+				status: 'Due',
+				notes: 'Random Payment', 
+				dueDate: Date.now()
+				
+			});
+
+  	pmt.$save();
+  	$scope.hide = true;
+  	$scope.pmtchosen = pmt;
+  	$scope.payment = pmt;
+
+  };
+
+$scope.changeAmount = function(){
+	console.log('New amount is ', $scope.amtDue);
+	$scope.payment.amount = $scope.amtDue;
+	$scope.payment.$update();
+	
+};
 
 
 $scope.chooseRow = function(row) {
