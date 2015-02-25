@@ -103,7 +103,11 @@ exports.list = function(req, res) {
 	console.log('Request: ', req.query);
 	console.log('Do we have a user? ', req.user);
 	if(req.user===undefined){
-		console.log('No user...lets see if we have an id? ', req.body);
+		// console.log('No user...lets see if we have an id? ', req.body);
+		var userId = req.query.id;
+		console.log('UserID: ', userId);
+		req.query = "";
+
 	}
 	Device.find(req.query).sort('-created').populate('user', 'displayName').exec(function(err, devices) {
 		if (err) {
