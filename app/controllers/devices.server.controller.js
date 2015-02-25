@@ -101,7 +101,7 @@ exports.delete = function(req, res) {
  */
 exports.list = function(req, res) { 
 	console.log('Request: ', req.query);
-
+	console.log('Do we have a user? ', req.user);
 	Device.find(req.query).sort('-created').populate('user', 'displayName').exec(function(err, devices) {
 		if (err) {
 			return res.status(400).send({
