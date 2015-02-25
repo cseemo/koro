@@ -284,16 +284,19 @@ exports.signin = function(req, res, next) {
 	console.log('Request Info: ', req.body);
 	passport.authenticate('local', function(err, user, info) {
 		if (err || !user) {
-			res.send(400, info);
+			console.log('Got an err line 287 - User Server Controller');
+			res.status(400).send(info);
 		} else {
 			// Remove sensitive data before login
 			user.password = undefined;
 			user.salt = undefined;
-
+			console.log('About to Login in');
 			req.login(user, function(err) {
 				if (err) {
-					res.send(400, err);
+					console.log('Error User Controller 296');
+						res.status(400).send(err);
 				} else {
+					console.log('Singed In - returning user');
 					res.jsonp(user);
 				}
 			});
