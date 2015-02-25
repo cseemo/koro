@@ -69,6 +69,15 @@ module.exports = function(db) {
 		require(path.resolve(modelPath));
 	});
 
+		app.use(function(req, res, next) {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "X-Requested-With");
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+		next();
+	});
+
 	// Setting application local variables
 	app.locals.title = config.app.title;
 	app.locals.description = config.app.description;
