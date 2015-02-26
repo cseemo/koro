@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
+
 /**
  * Offender Schema
  */
@@ -53,6 +54,16 @@ var OffenderSchema = new Schema({
 		type: Date,
 		default: null
 	},
+		lockOutDate: {
+		type: Date,
+		default: null
+	},
+		contractEndDate: {
+		type: Date,
+		default: null
+	},
+
+	
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'

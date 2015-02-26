@@ -65,10 +65,12 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 
 		// Update existing Device
 		$scope.update = function() {
+			console.log('Updateing');
 			var device = $scope.device ;
 
 			device.$update(function() {
 				$location.path('devices/' + device._id);
+				toastr.success('Device notes have been saved...');
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

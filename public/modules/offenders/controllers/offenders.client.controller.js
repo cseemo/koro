@@ -2,10 +2,10 @@
 
 
 // Offenders controller
-angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', '$sce', '$timeout', 'portalPayments', 
-	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http, $sce, $timeout, portalPayments) {
+angular.module('offenders').controller('OffendersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offenders', 'Shops', 'Workorders', '$filter', '$modal', '$log', '$http', '$sce', '$timeout', 'portalPayments', '$rootScope', 'Devices', 
+	function($scope, $stateParams, $location, Authentication, Offenders, Shops, Workorders, $filter, $modal, $log, $http, $sce, $timeout, portalPayments, $rootScope, Devices) {
 		$scope.authentication = Authentication;
-
+		$scope.orderComplete = $rootScope.orderComplete;
 
 		// If user is not signed in then redirect back home
 		if (!$scope.authentication.user) {
@@ -251,10 +251,33 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
             
           }
         });
-        modalInstance.result.then(function(selectedItem, offender) {
-          $scope.selected = selectedItem;
-        }, function() {
+        modalInstance.result.then(function() {
+        	// console.log('Status: ', status);
+        	// console.log('Workorder on close: ', wo);
+        	// console.log('Payment on close: ', pmt);
+          // $scope.selected = selectedItem;
+          
+
+        }, function(status, wo, pmt) {
           $log.info('Modal dismissed at: ' + new Date());
+          console.log('Status: ', status);
+        	console.log('Workorder on close: ', wo);
+        	console.log('Payment on close: ', pmt);
+          console.log('Returnnnnn: ', status);
+          if(status==='Paid'){
+          	console.log('Paid - strike that');
+
+          	$scope.checklist[5]['strike'] = "done-true" ;
+          } else {
+          	console.log('Turn off the strike');
+          	console.log("ScopeWOrkorder", $scope.workorder);
+          	// $scope.checklist[5]['strike'] = "";
+          	var myEl = angular.element( document.querySelector( '#test5' ) );
+			myEl.removeClass('done-true'); 
+          	updateChecklist($scope.workorder._id);
+          }
+
+
         });
       };
 
@@ -810,6 +833,18 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
      angular.forEach($scope.currentPageOffenders, function(item){
 		console.log('Offender: ', item);
 		// item.shopName = 'Test';
+		if(item.device){
+			console.log('Client has an assigned device - lets get the notes', item.device);
+			var device = Devices.get({
+				deviceId: item.device
+			});
+
+			device.$promise.then(function(){
+				console.log('Got the Devivce.', device);
+				item.deviceNotes = device.notes;
+
+			})
+		}
 		if(item.assignedShop){
 			console.log('Shop has an assigned SHop');
 			var myShop = Shops.get({ 
@@ -1248,32 +1283,16 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 		};
 
-
-		$scope.findOne2 = function() {
-			$scope.offender = Offenders.get({ 
-				offenderId: $stateParams.offenderId
+		var updateChecklist = function(id){
+			console.log('Updating the checklist', id);
+			$scope.workorder = Workorders.get({ 
+				workorderId: id
 			});
+			$scope.workorder.$promise.then(function(){
 
-			$scope.offender.$promise.then(function(){
-				$scope.workorders = $scope.getWorkOrders();
 
-				if($scope.offender.pendingWorkOrder){
-					console.log('This client has a pending work order...');
-
-						$http({
-							method: 'get',
-							url: '/workorders/'+$scope.offender.pendingWorkOrder,
-								})
-							.success(function(data, status) {
-									if(status === 200) {
-										//$scope.currentPrice = data.price;
-							//console.log('Data: ',data);
-							//console.log('Data.Response: %o',data._id);
-							checkPastDue($stateParams.offenderId);
-							console.log('Return Data Workorder: ', data);
-							$scope.workorder = data;
-							console.log('Got Workorder Check if anything has been done yet: ', $scope.workorder);
-
+			console.log('Got Workorder Check if anything has been done yet: ', $scope.workorder);
+			
 							$scope.signedUpStatus = 'Get'+$scope.workorder.type+' Authorization Signed';
 							console.log('Signedup Status: ', $scope.signedUpStatus);
 							var progress = 0;
@@ -1335,6 +1354,113 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 							// }
 
 							$scope.progress = progress;
+
+							if($scope.workorder.authSigned && ($scope.workorder.pmtStatus!=='Due' || $scope.workorder.amount==='0')){
+								console.log('Completed');
+								$scope.orderComplete = true;
+							}
+
+						})
+
+
+		};
+
+
+		$scope.findOne2 = function() {
+			$scope.offender = Offenders.get({ 
+				offenderId: $stateParams.offenderId
+			});
+
+			$scope.offender.$promise.then(function(){
+				if(!$scope.offender.contractEndDate && $scope.offender.deployedDate){
+					console.log('No contract end date for this guy but he was deployed');
+						var now = new Date($scope.offender.deployedDate);
+		  				var plusTerm = now.setDate(now.getDate() + ($scope.offender.term*30));
+		  				$scope.offender.contractEndDate = plusTerm;
+				}
+				$scope.workorders = $scope.getWorkOrders();
+
+				if($scope.offender.pendingWorkOrder){
+					console.log('This client has a pending work order...');
+
+						$http({
+							method: 'get',
+							url: '/workorders/'+$scope.offender.pendingWorkOrder,
+								})
+							.success(function(data, status) {
+									if(status === 200) {
+										//$scope.currentPrice = data.price;
+							//console.log('Data: ',data);
+							//console.log('Data.Response: %o',data._id);
+							checkPastDue($stateParams.offenderId);
+							console.log('Return Data Workorder: ', data);
+							$scope.workorder = data;
+							console.log('Got Workorder Check if anything has been done yet: ', $scope.workorder);
+
+							updateChecklist($scope.workorder._id);
+
+
+							// $scope.signedUpStatus = 'Get'+$scope.workorder.type+' Authorization Signed';
+							// console.log('Signedup Status: ', $scope.signedUpStatus);
+							// var progress = 0;
+
+							// if($scope.workorder.apptDate){
+							// 	console.log('This baby has an Appointment Date already!!');
+							// 	console.log("STuff: ", $scope.checklist[0]);
+							// 	$scope.checklist[0]['strike'] = "done-true" ;
+							// 	progress = progress+15;
+
+
+							// }
+							// if($scope.workorder.checkIn){
+							// 	console.log('This baby has been checked in already!!');
+							// 	console.log("STuff: ", $scope.checklist[1]);
+							// 	$scope.checklist[1]['strike'] = "done-true" ;
+							// 	$scope.checklist[1].selected;
+							// 	progress = progress+15;
+							// }
+
+							// if($scope.workorder.inspected){
+							// 	console.log('This baby has been inspected already!!');
+							// 	console.log("STuff: ", $scope.checklist[2]);
+							// 	$scope.checklist[2]['strike'] = "done-true" ;
+							// 	progress = progress+15;
+							// }
+
+							// // if($scope.workorder.customerVideo || $scope.workorder.type==='New Install'){
+							// // 	console.log('Customer Video Already Watched!!');
+							// // 	console.log("STuff: ", $scope.checklist[6]);
+							// // 	$scope.checklist[6]['strike'] = "done-true" ;
+							// // 	progress = progress+15;
+							// // }
+							// if($scope.workorder.authSigned){
+
+							// 	console.log('Install Agreement Already Signed');
+							// 	console.log("STuff: ", $scope.checklist[4]);
+							// 	$scope.checklist[4]['strike'] = "done-true" ;
+							// 	progress = progress+15;
+							// }
+
+							// if($scope.workorder.deviceSN || $scope.workorder.type!=='New Install'){
+							// 	console.log('Workorder Already has Serial Number Assigned');
+							// 	console.log("STuff: ", $scope.checklist[3]);
+							// 	$scope.checklist[3]['strike'] = "done-true" ;
+							// 	progress = progress+15;
+							// }
+							// if($scope.workorder.pmtStatus!=='Due' || $scope.workorder.amount==='0'){
+							// 	console.log('Workorder Alrady Paid For');
+							// 	console.log("STuff: ", $scope.checklist[5]);
+							// 	$scope.checklist[5]['strike'] = "done-true" ;
+							// 	progress = progress+15;
+							// }
+							// // if($scope.workorder.completed){
+							// // 	console.log('Workorder Alrady Completed');
+							// // 	console.log("STuff: ", $scope.checklist[6]);
+							// // 	$scope.checklist[6]['strike'] = "done-true" ;
+							// // 	progress = progress+15;
+							// // }
+
+							// $scope.progress = progress;
 
 							}
 						});
@@ -1530,6 +1656,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
      $scope.shopFee = 60;
      $scope.budgetAdlFee = 15;
 
+    
+
      $scope.updateFees = function(){
      	$scope.budgetAdlFee = parseFloat($scope.installFee) - parseFloat($scope.shopFee);
      };
@@ -1626,6 +1754,17 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 	  $scope.installFee = 75;
 	  $scope.serviceTypes = ['30 Day Service', 'Calibration', 'Violation Reset', 'Removal'];
       
+   //     $scope.testTerm = function(){
+   //   	console.log('Changing Term: ', $scope.term);
+   //   	var now = new Date();
+		 // var days = $scope.term * 30;
+		 // console.log('# of Days: ', days);
+		 // var plus30 = now.setDate(now.getDate() +  days);
+		 // console.log("Contract End Date: ", plus30);
+		 // $scope.testDate = plus30;
+
+
+   //   };
 
       $scope.items = items;
       $scope.selected = {
@@ -1887,6 +2026,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
       	$scope.complete = function() {
+
+
+
+
   			console.log('Work Order Complete');
   			$modalInstance.close();
 
@@ -1911,7 +2054,14 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		  				console.log('n is: ', n);
 		  				$scope.offender.billDate = n+1;
 		  				chargeFirstMonth($scope.offender, wo);
-
+		  				var now = new Date();
+		  				var myDate = new Date(now);
+		  				var plus30 = now.setDate(now.getDate() + 30);
+		  				var plusTerm = now.setDate(now.getDate() + ($scope.offender.term*30));
+		  				$scope.offender.lockOutDate = plus30;
+		  				$scope.offender.contractEndDate = plusTerm;
+		  				// var newDate = moment();
+		  				// console.log("New Date: ", newDate);
 		  			}
 		  			
 		  			$scope.offender.$update();
@@ -2332,6 +2482,8 @@ $scope.mytime = $scope.dt;
       //Void Payment
       $scope.voidPayment = function() {
       	console.log('Voiding Paymetn', $scope.payment);
+
+
       		authorizeCIM.voidPayment($scope.paymentProfiles[row], offender)
 						.success(function(response){
 							console.log('Deleted that motha ', response);
@@ -3371,6 +3523,8 @@ $scope.chooseRow = function(row) {
 };
 
 $scope.makePmt = function(){
+
+
 	console.log('Making Payment', $scope.pmtOpt);
 	console.log('Payment Amount: ', $scope.pmtchosen.amount);
 	console.log('Work Order Assigned: ', $scope.payment);
@@ -3420,7 +3574,7 @@ $scope.makePmt = function(){
 		
 	
 		payment.$update();
-		 $modalInstance.dismiss('payment confirmed');
+		 $modalInstance.dismiss('paid', wos, payment);
 		 toastr.success('Payment applied');
 	})
 

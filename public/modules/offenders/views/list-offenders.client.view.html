@@ -106,6 +106,39 @@ color: #333;
                                       data-ng-class="{active: row == '-deviceSN'}"></span>
                             </div>
                         </th>
+                        <th>
+                            <div class="th">
+                                Installation Date
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('deviceSN') "
+                                      data-ng-class="{active: row == 'deviceSN'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-deviceSN') "
+                                      data-ng-class="{active: row == '-deviceSN'}"></span>
+                            </div>
+                        </th>
+                         <th>
+                            <div class="th">
+                                Device Notes
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('deviceSN') "
+                                      data-ng-class="{active: row == 'deviceSN'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-deviceSN') "
+                                      data-ng-class="{active: row == '-deviceSN'}"></span>
+                            </div>
+                        </th>
+                         <th>
+                            <div class="th">
+                                Next Lock-Out
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('deviceSN') "
+                                      data-ng-class="{active: row == 'deviceSN'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-deviceSN') "
+                                      data-ng-class="{active: row == '-deviceSN'}"></span>
+                            </div>
+                        </th>
                            
 
                     </tr> 
@@ -119,6 +152,9 @@ color: #333;
                     <td>{{item.billingState}}</td>
                     <td>{{item.shopName}}</td>
                     <td>{{item.deviceSN}}</td>
+                     <td>{{item.deployedDate | date: 'short'}}</td>
+                      <td>{{item.deviceNotes}}</td>
+                       <td>{{item.lockOutDate | date: 'MM/dd/yyyy'}}</td>
                     
 
                         

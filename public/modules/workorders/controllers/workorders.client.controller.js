@@ -1,8 +1,8 @@
 'use strict';
 
 // Workorders controller
-angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', 'Payments', '$http', 
-	function($scope, $stateParams, $location, Authentication, Workorders, Offenders, Payments, $http ) {
+angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', 'Payments', '$http', '$rootScope',  
+	function($scope, $stateParams, $location, Authentication, Workorders, Offenders, Payments, $http, $rootScope ) {
 		$scope.authentication = Authentication;
 
 		// Create new Workorder
@@ -111,8 +111,8 @@ $scope.approveWorkOrderPayment = function(){
 			});
 		};
 	}
-]).controller('WorkOrderApprovalController', ['$scope', '$stateParams', '$location', 'Shops', '$http', '$filter', '$sce', 'Workorders', 'Payments', 'Offenders',  
-	function($scope, $stateParams, $location, Shops, $http, $filter, $sce, Workorders, Payments, Offenders) {
+]).controller('WorkOrderApprovalController', ['$scope', '$stateParams', '$location', 'Shops', '$http', '$filter', '$sce', 'Workorders', 'Payments', 'Offenders',  '$rootScope', 
+	function($scope, $stateParams, $location, Shops, $http, $filter, $sce, Workorders, Payments, Offenders, $rootScope) {
 		
 		//Update Info Button disaled until form is changed
 		$scope.updateInfo = false;
@@ -247,7 +247,9 @@ $scope.approveWorkOrderPayment = function(){
 
 						//Shop Signs Agreement
 		$scope.signAgreement = function() {
+			console.log('Signing agreement.');
 			$scope.hideeSign = true;
+			$rootScope.orderComplete = true;
 			$scope.hideMe = true;
 			toastr.success('Congratrulations, you have eSigned the documents.');
 			var Id = $scope.workorder._id;

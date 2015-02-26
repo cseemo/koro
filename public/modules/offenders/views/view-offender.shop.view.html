@@ -120,13 +120,16 @@ max-height: 300px;
 
 	                                        <ul class="list-unstyled list-info">
 	                                  
-	                                            <li class="done-{{todo.done}}" data-ng-repeat="stuff in checklist track by $index" >
+	                                            <li class="done-{{todo.done}}" id="test{{$index}}" data-ng-repeat="stuff in checklist track by $index" >
 	                                            <input type="checkbox" data-ng-model="todo.done" data-ng-click="clicked(stuff.click, $index)" />
 	                                           
              										 <span class="{{stuff.strike}}" >{{stuff.item}} </span>
+             										
 	                                            </li>
 
-	                                           <li ><input type="checkbox" data-ng-click="completeOrder()" /> Complete Order</li>
+	                                           <li data-ng-show="orderComplete"><input  type="checkbox" data-ng-click="completeOrder()" /> Complete Order</li>
+
+	                                          
 
 	                                           <!-- <li>Ready to Cpl: {{readyToCpl}}</li>
 	                                           <li>Workorder PmtStatus: {{workorder.pmtStatus}}</li>
@@ -426,7 +429,7 @@ max-height: 300px;
         	  <input type="text" data-ng-model="installFee"  id="installFee" class="form-control" placeholder="80" >
         	<br>
            <label>Term of Service</label>
-        	  <select class="form-control" data-ng-model="term" name="term" data-ng-options="term for term in termoptions"> <option value=""></option></select>
+        	  <select class="form-control"  data-ng-model="term" name="term" data-ng-options="term for term in termoptions"> <option value=""></option></select>
 <br> 
 
 </span>

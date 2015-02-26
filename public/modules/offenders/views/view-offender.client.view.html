@@ -167,13 +167,18 @@ max-height: 300px;
 	                                    </li>
 	                                    <li>
 	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
-	                                        <label>Deployed</label>
+	                                        <label>Install Date</label>
 	                                        {{offender.deployedDate | date: 'MMM d, yyyy' || 'N/A'}}
+	                                    </li>
+	                                     <li>
+	                                       <!--  <span class="icon glyphicon glyphicon-earphone"></span> -->
+	                                        <label>Contract End Date</label>
+	                                        {{offender.contractEndDate | date: 'MMM d, yyyy' || 'N/A'}} ({{offender.term}} Months)
 	                                    </li>
 	                                    <li>
 	                                       <!--  <span class="icon glyphicon glyphicon-envelope"></span> -->
 	                                        <label>Next Lock-Out</label>
-	                                        12/15/2014
+	                                        {{offender.lockOutDate | date: 'MMM d, yyyy' || 'N/A'}}
 	                                    </li>
 	                                    <li> <label>Device Issues</label>
 	                                        <select data-ng-model="deviceIssue" style="width: 60%" class="form-control pull-right" name="deviceIssues" ng-options="issue for issue in deviceIssues"></select>
