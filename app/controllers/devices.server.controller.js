@@ -26,13 +26,13 @@ var mongoose = require('mongoose'),
 	
 				});
 
- 	var device = new Device {
+ 	var device = new Device ({
  		type: req.body.type,
 		notes: req.body.notes,
 		serialNumber: req.body.serialNumber,
 		status: 'Available',
 		details: details
- 	};
+ 	});
 
 
 
