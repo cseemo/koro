@@ -11,6 +11,14 @@ var mongoose = require('mongoose'),
 /**
  * Create a Device
  */
+
+ exports.appCheckIn = function(req, res) {
+ 	console.log('Checking in new app...');
+ 	console.log(req);
+ 	res.status(200).send('Checked In');
+
+
+ };
 exports.create = function(req, res) {
 	var device = new Device(req.body);
 	device.user = req.user;

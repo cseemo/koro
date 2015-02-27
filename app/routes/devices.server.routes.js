@@ -17,6 +17,9 @@ app.route('/getAvailableDevices')
 		.put(users.requiresLogin, devices.update)
 		.delete(users.requiresLogin, devices.hasAuthorization, devices.delete);
 
+	app.route('/devices/appCheckIn')
+		.post(devices.appCheckIn);
+		
 	// Finish by binding the Device middleware
 	app.param('deviceId', devices.deviceByID);
 };
