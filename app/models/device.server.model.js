@@ -81,6 +81,11 @@ var DeviceSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'Offender'
 	},
+		scan: {
+		type: String,
+		trim: true,
+		default: null
+	},
 	
 });
 

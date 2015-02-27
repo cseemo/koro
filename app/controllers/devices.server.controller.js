@@ -12,6 +12,30 @@ var mongoose = require('mongoose'),
  * Create a Device
  */
 
+ exports.lookForScan = function(req, res){
+ 	console.log("Looking for scan");
+ 		console.log('Request: ', req.query);
+	console.log('Do we have a user? ', req.user);
+	if(req.user===undefined){
+		// console.log('No user...lets see if we have an id? ', req.body);
+		var userId = req.query.id;
+		console.log('UserID: ', userId);
+		req.query = "";
+
+	}
+	Device.find({scan: req.query}).sort('-created').populate('user', 'displayName').exec(function(err, devices) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			console.log('Found '+devices.length+' devices...');
+			res.jsonp(devices);
+		}
+	});
+
+
+ };
  exports.appCheckIn = function(req, res) {
  	console.log('Checking in new app...');
  	console.log(req.body);
