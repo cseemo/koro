@@ -19,14 +19,15 @@ var mongoose = require('mongoose'),
 
  	// console.log('User: ', req.body.user);
  	var parsed = JSON.parse(req.body.user);
- 	console.log('Parsed Name:', parsed.displayName);
+ 	var name = parsed.displayName;
+ 	console.log('Parsed Name:', name);
 
  	var details = [];
 			details.push({
 					type: 'New Device - Scanned In',
 					updated: Date.now(),
 					destination: 'New Inventory',
-					requestor: parsed.displayName,
+					requestor: name,
 					notes: req.body.notes,
 	
 				});
@@ -37,7 +38,7 @@ var mongoose = require('mongoose'),
 		serialNumber: req.body.serialNumber,
 		status: 'Available',
 		details: details,
-		user: parsed
+		user: req.body.user
  	});
 
  	
@@ -45,7 +46,7 @@ var mongoose = require('mongoose'),
  		device.save(function(err, data) {
 		if (err) {
 			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
+				message: err
 			});
 		} else {
 			console.log('Device Saved', data);
