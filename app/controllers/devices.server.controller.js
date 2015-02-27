@@ -38,13 +38,14 @@ var mongoose = require('mongoose'),
 		serialNumber: req.body.serialNumber,
 		status: 'Available',
 		details: details,
-		user: req.body.user
+		user: parsed._id
  	});
 
  	
 
  		device.save(function(err, data) {
 		if (err) {
+			console.log('Error Saving Device', err);
 			return res.status(400).send({
 				message: err
 			});
