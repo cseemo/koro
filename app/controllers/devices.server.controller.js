@@ -14,8 +14,37 @@ var mongoose = require('mongoose'),
 
  exports.appCheckIn = function(req, res) {
  	console.log('Checking in new app...');
- 	console.log(req);
- 	res.status(200).send('Checked In');
+ 	console.log(req.body);
+ 	// res.status(200).send('Checked In');
+ 	var details = [];
+			details.push({
+					type: 'New Device - Scanned In',
+					updated: Date.now(),
+					destination: 'New Inventory',
+					requestor:req.body.user.displayName,
+					notes: req.body.notes,
+	
+				});
+
+ 	var device = {
+ 		type: this.deviceType,
+		notes: req.body.notes,
+		serialNumber: req.body.serialNumber,
+		status: 'Available',
+		details: details
+ 	};
+
+
+
+ 		device.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(device);
+		}
+	});
 
 
  };
