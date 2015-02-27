@@ -20,7 +20,7 @@ app.route('/getAvailableDevices')
 	app.route('/devices/appCheckIn')
 		.post(devices.appCheckIn);
 
-	app.route('/devices/scan')
+	app.route('/scan')
 		.get(devices.lookForScan)
 
 	// Finish by binding the Device middleware
