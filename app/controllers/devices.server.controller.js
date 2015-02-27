@@ -23,7 +23,7 @@ var mongoose = require('mongoose'),
 	// 	req.query = "";
 
 	// }
-	Device.find({scan: req.query}).sort('-created').populate('user', 'displayName').exec(function(err, devices) {
+	Device.find({req.query}).sort('-created').populate('user', 'displayName').exec(function(err, devices) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
