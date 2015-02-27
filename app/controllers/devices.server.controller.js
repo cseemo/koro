@@ -16,8 +16,7 @@ var mongoose = require('mongoose'),
  	console.log('Checking in new app...');
  	console.log(req.body);
  	// res.status(200).send('Checked In');
- 	var parsed = JSON.parse(req.body);
- 	console.log('Parsed Name:', parsed.user.displayName);
+
  	console.log('User: ', req.body.user);
  	var details = [];
 			details.push({
@@ -37,6 +36,8 @@ var mongoose = require('mongoose'),
 		details: details
  	});
 
+ 	var parsed = JSON.parse(req.body.user);
+ 	console.log('Parsed Name:', parsed.displayName);
 
 
  		device.save(function(err, data) {
