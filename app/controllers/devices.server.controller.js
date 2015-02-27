@@ -30,7 +30,12 @@ var mongoose = require('mongoose'),
 			});
 		} else {
 			console.log('Found '+devices.length+' devices...');
-			res.jsonp(devices);
+			if(devices.length> 0){
+				res.jsonp(devices);
+			}else{
+				res.status(211).send('No Devices Found');
+			}
+			
 		}
 	});
 
