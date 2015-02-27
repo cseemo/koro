@@ -17,13 +17,16 @@ var mongoose = require('mongoose'),
  	console.log(req.body);
  	// res.status(200).send('Checked In');
 
- 	console.log('User: ', req.body.user);
+ 	// console.log('User: ', req.body.user);
+ 	var parsed = JSON.parse(req.body.user);
+ 	console.log('Parsed Name:', parsed.displayName);
+
  	var details = [];
 			details.push({
 					type: 'New Device - Scanned In',
 					updated: Date.now(),
 					destination: 'New Inventory',
-					requestor: req.body.user.displayName,
+					requestor: parsed.displayName,
 					notes: req.body.notes,
 	
 				});
@@ -33,12 +36,11 @@ var mongoose = require('mongoose'),
 		notes: req.body.notes,
 		serialNumber: req.body.serialNumber,
 		status: 'Available',
-		details: details
+		details: details,
+		user: parsed
  	});
 
- 	var parsed = JSON.parse(req.body.user);
- 	console.log('Parsed Name:', parsed.displayName);
-
+ 	
 
  		device.save(function(err, data) {
 		if (err) {
