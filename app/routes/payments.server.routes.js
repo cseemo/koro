@@ -32,7 +32,9 @@ module.exports = function(app) {
 		app.route('/chargeFirstMonth')
 		.post(payments.chargeFirstMonth);
 
-
+		app.route('/cleanUp')
+		.get(payments.cleanUp);
+		
 		
 		
 		// .put(payments.update);

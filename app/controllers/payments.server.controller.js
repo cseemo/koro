@@ -25,6 +25,72 @@ var mongoose = require('mongoose'),
 	  var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	  var async = require('async');
 
+	  var deletePayments = function(id){
+	  	console.log('Deleted Payments and WOrkorders with this OffenderID: ', id);
+	  	Payment.remove().where({offender: id}).exec(function(err, payment) {
+		if (err) return err;
+		if (! payment) return new Error('Failed to load Payment ' + id);
+		console.log('Payment Removed: ', id);
+		});
+
+		Workorder.remove().where({offender: id}).exec(function(err, wo) {
+		if (err) return err;
+		if (! wo) return new Error('Failed to load Payment ' + id);
+		console.log('Workorder Found: ', id);
+		});
+
+	  };
+
+	  //Clean Up the Database
+	  exports.cleanUp = function(req, res){
+	  	console.log("Cleaning Up the Database");
+	  	//Get Each Payment - Check if the Offender assigned to it still exists
+	  	Payment.find().exec(function(err, payments) {
+			if (err) {
+				console.log('Error !!! :', err);
+				return res.status(400).send({
+					message: err //errorHandler.getErrorMessage(err)
+				});
+			} else {
+				console.log('Got Payments: ');
+				async.forEach(payments, function(item, callback){
+					console.log('Offender: ', item.offender);
+
+						var offender = Offender.findById(item.offender).exec(function(err, offender) {
+							if (err) {
+								console.log('Error Line 47 cleanup -- ', err);
+								return err;
+							}
+
+							if (! offender) {
+								
+								deletePayments(item.offender);
+								return console.log('No Offender found');
+							}
+
+							console.log('Got our oFfender');
+						});
+
+					
+					// async.forEach(offenders, function(item, callback){
+					// console.log('Client ', item.displayName);
+					// console.log('Bill Date is: ', item.billDate);
+					// var d = new Date();
+					// var n = d.getDate();
+					// console.log('Todays date is: ', n);
+					// n = n-0+5;
+					// console.log('We are looking for people with a Bill Date of : ', n);
+
+
+
+				});
+			}
+		});
+
+	  	//Get Each Workorder - Check if the Offender assigned to it still exists
+
+
+	  };
 	  //Send Receipt for Cash Payment
 	  exports.sendReceipt = function(req, res){
 	  	console.log('Sending Receipt: ', req.body);
