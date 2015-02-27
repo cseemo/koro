@@ -15,14 +15,14 @@ var mongoose = require('mongoose'),
  exports.lookForScan = function(req, res){
  	console.log("Looking for scan");
  		console.log('Request: ', req.query);
-	console.log('Do we have a user? ', req.user);
-	if(req.user===undefined){
-		// console.log('No user...lets see if we have an id? ', req.body);
-		var userId = req.query.id;
-		console.log('UserID: ', userId);
-		req.query = "";
+	// console.log('Do we have a user? ', req.user);
+	// if(req.user===undefined){
+	// 	// console.log('No user...lets see if we have an id? ', req.body);
+	// 	var userId = req.query.id;
+	// 	console.log('UserID: ', userId);
+	// 	req.query = "";
 
-	}
+	// }
 	Device.find({scan: req.query}).sort('-created').populate('user', 'displayName').exec(function(err, devices) {
 		if (err) {
 			return res.status(400).send({
@@ -62,7 +62,8 @@ var mongoose = require('mongoose'),
 		serialNumber: req.body.serialNumber,
 		status: 'Available',
 		details: details,
-		user: parsed._id
+		user: parsed._id,
+		scan: req.body.scan
  	});
 
  	
