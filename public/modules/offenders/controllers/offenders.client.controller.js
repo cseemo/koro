@@ -691,6 +691,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			$scope.authNetErr = null;
 			// $scope.authNetData = null;
 			// console.log('This: ', this);
+
 		var mainPhone = $filter('tel')(this.mainPhone);
 		var altPhone = $filter('tel')(this.altPhone);
 		var dLNumber, fName, lName;
@@ -735,9 +736,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				dobMO: $scope.dobMO,
 				dobDAY: $scope.dobDAY,
 				dobYR: $scope.dobYR,
+				installType: $scope.installType
 				
 			});
-
+			console.log("New Offender", offender);
 		// 	if($scope.skipCard===true){
 		// 	console.log('Skip running the card');
 		// 	offender.cardNumber = null
@@ -1367,17 +1369,22 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
 		$scope.findOne2 = function() {
+			console.log('FindOne2 --- ');
 			$scope.offender = Offenders.get({ 
 				offenderId: $stateParams.offenderId
 			});
+			
 
 			$scope.offender.$promise.then(function(){
-				if(!$scope.offender.contractEndDate && $scope.offender.deployedDate){
-					console.log('No contract end date for this guy but he was deployed');
-						var now = new Date($scope.offender.deployedDate);
-		  				var plusTerm = now.setDate(now.getDate() + ($scope.offender.term*30));
-		  				$scope.offender.contractEndDate = plusTerm;
-				}
+				// if(!$scope.offender.contractEndDate && $scope.offender.deployedDate){
+					// console.log('No contract end date for this guy but he was deployed');
+						// var now = new Date($scope.offender.deployedDate);
+						// var mom = moment();
+						// console.log('Mom', mom);
+						// var plusTerm = moment().add($scope.offender.term, 'months').hours(0).minutes(0).seconds(0);
+		  		// 		// var plusTerm = now.setDate(now.getDate() + ($scope.offender.term*30));
+		  		// 		$scope.offender.contractEndDate = plusTerm;
+				
 				$scope.workorders = $scope.getWorkOrders();
 
 				if($scope.offender.pendingWorkOrder){
@@ -1751,7 +1758,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		};
 
 	  $scope.termoptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '24', '36', 'Other'];
-	  $scope.installFee = 75;
+	  $scope.installFee = 'Pending';
 	  $scope.serviceTypes = ['30 Day Service', 'Calibration', 'Violation Reset', 'Removal'];
       
    //     $scope.testTerm = function(){
@@ -1788,22 +1795,48 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       	console.log('Line 1648', svc.serviceCenter.name);
       	console.log('Name is: ', this);
       	$scope.shop = svc.serviceCenter;
+      	//Figure out # of Hours for Service and Shop Fee
+      	var numHours;
+      	var shopFee;
+      	var installFee; 
+      	 if($scope.offender.installType==='Push-Button'){
+      			console.log("w/ Push Button");
+      			numHours = 2;
+      			shopFee = 120;
+      			installFee = 120;
 
+      		}else if($scope.offender.installType==='High-End'){
+      			console.log("w/ High End");
+      			numHours = 2.5;
+      			shopFee = 140;
+      			installFee = 160;
+      		}else{
+      			console.log("w/ Standard");
+      			numHours = 1;
+      			shopFee = 60;
+      			installFee = 75;
+      		}
+
+      		$scope.installFee = installFee;
       	if($scope.shop.installType==='Hourly Rate'){
-      		console.log('This is an houlry rate');
-      		$scope.shopFee = parseFloat($scope.shop.shopHourly)*2;
+      		console.log('This is an houlry rate');	
+			$scope.shopFee = parseFloat($scope.shop.shopHourly)*numHours;
+			
 
       	}
       	if($scope.shop.installType==='Shop to Charge Customer'){
       		console.log('This shop charges themselves');
-      		$scope.shopFee = 60;
+      		$scope.shopFee = shopFee;
+
       		
       	}
       	if($scope.shop.installType==='Standard'){
       		console.log('This shop charges Standard Rates');
-      		$scope.shopFee = 60;
+      		$scope.shopFee = shopFee;
       		
       	}
+
+
       	$scope.updateFees();
       	// $scope.serviceCenter = name;
       	// console.log('Service Center: ', $scope.shops[name]['name']);
@@ -1848,14 +1881,19 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
             $scope.changeType = function(){
       	console.log('Changing Type', $scope.chosen);
-      	$scope.payment.paymentType = $scope.chosen;
-      	console.log('Scope Payment: ', $scope.payment);
+      	// $scope.payment.paymentType = $scope.chosen;
+      	// console.log('Scope Payment: ', $scope.payment);
       	if($scope.chosen==='New Install'){
       		$scope.emailSubject = 'Welcome to Budget IID, LLC';
+      		$scope.updateFees();
       	}else{
-
+      		$scope.shopFee = 60;
+      		$scope.installFee = 25;
+      		$scope.updateFees();
       	}
       	$scope.emailSubject = 'Service Authorization from Budget IID, LLC';
+
+
       };
 
 
@@ -2054,10 +2092,22 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		  				console.log('n is: ', n);
 		  				$scope.offender.billDate = n+1;
 		  				chargeFirstMonth($scope.offender, wo);
-		  				var now = new Date();
-		  				var myDate = new Date(now);
-		  				var plus30 = now.setDate(now.getDate() + 30);
-		  				var plusTerm = now.setDate(now.getDate() + ($scope.offender.term*30));
+		  				// var now = new Date();
+		  				// var myDate = new Date(now);
+		  				var mom = moment();
+		  				console.log('Mom', mom);
+		  				// var plus30 = now.setDate(now.getDate() + 30);
+		  				// var plusTerm = now.setDate(now.getDate() + ($scope.offender.term*30));
+
+						var plus30 = moment().add(30, 'days').hours(0).minutes(0).seconds(0);
+						var plusTerm = moment().add($scope.offender.term, 'months').hours(0).minutes(0).seconds(0);
+		  				console.log("Plus 30: ", plus30);
+		  				console.log("Plus Term: ", plusTerm);
+		  				plus30 = moment(plus30).format("MM/DD/YYYY");
+		  				plusTerm = moment(plusTerm).format("MM/DD/YYYY");
+		  				console.log('Plus30: ', plus30);
+		  				console.log('PlusTerm: ', plusTerm);
+
 		  				$scope.offender.lockOutDate = plus30;
 		  				$scope.offender.contractEndDate = plusTerm;
 		  				// var newDate = moment();

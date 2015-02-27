@@ -98,10 +98,15 @@ var WorkorderSchema = new Schema({
 		default: null
 	},
 	amount: {
-		type: String,
-		default: '65',
+		type: Number,
+		default: 65,
 		trim: true
-	}, 
+	},
+	shopFee: {
+		type: Number,
+		default: 60,
+		trim: true
+	},
 	authCode: 
 	{
 		type: String,

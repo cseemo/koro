@@ -208,6 +208,11 @@ var OffenderSchema = new Schema({
 		type: String,
 		trim: true, 
 		default: ' '
+	}, 
+	installType: {
+		type: String,
+		trim: true, 
+		default: 'Standard'
 	}
 
 

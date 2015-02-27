@@ -196,36 +196,12 @@ z-index: 999;
                             </div>
                              
                              <label class="form-label" style="font-size: 24px;" for="address">Installation Type:</label><i></i>
-                          <br>
-                                                    <div class="form-group col-md-4">
-                               <!--  <label class="control-label" for="name">Standard Vehicle Installation</label> -->
-                                <div class="controls">  
-                                    <label class="switch" style="vertical-align: middle">Standard<input type="checkbox" style="vertical-align: middle" ng-model="standardInstall" class="pull-right"><i></i></label>
-
-                                       
-                                            
-                                      
-                                </div>
-                            </div>
-                                                           <div class="form-group col-md-4">
-                                <!-- <label class="control-label" for="name">Push Button Installation</label> -->
-                                <div class="controls">  
-                                     <label class="switch" style="vertical-align: middle">Push-Button<input type="checkbox" style="vertical-align: middle" ng-model="pushButtonInstall" class="pull-right"><i></i></label>
-
-                                       
-                                            
-                                      
-                                </div>
-                            </div>
-                                                           <div class="form-group col-md-4">
-                                <!-- <label class="control-label" for="name">High End Installation</label> -->
-                                <div class="controls">  
-                                     <label class="switch" style="vertical-align: middle">High-End<input type="checkbox" style="vertical-align: middle" ng-model="highEndInstall" class="pull-right"><i></i></label>
-
-                                       
-                                            
-                                      
-                                </div>
+<!--  -->
+  <br>
+                              <div class="btn-group">
+                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="installType" btn-radio="'Standard'" uncheckable>Standard</label>
+                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="installType" btn-radio="'Push-Button'" uncheckable>Push-Button</label>
+                                <button type="button" data-ng-change="vote()" class="btn btn-default" data-ng-model="installType" btn-radio="'High-End'" uncheckable>High-End</i></label>
                             </div>
                           
                             </fieldset>
