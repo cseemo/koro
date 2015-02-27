@@ -27,7 +27,7 @@ var mongoose = require('mongoose'),
 				});
 
  	var device = {
- 		type: this.deviceType,
+ 		type: req.body.type,
 		notes: req.body.notes,
 		serialNumber: req.body.serialNumber,
 		status: 'Available',
