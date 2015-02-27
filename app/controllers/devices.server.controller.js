@@ -36,13 +36,14 @@ var mongoose = require('mongoose'),
 
 
 
- 		device.save(function(err) {
+ 		device.save(function(err, data) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(device);
+			console.log('Device Saved', data);
+			res.status(211).send(jsonp(device));
 		}
 	});
 
