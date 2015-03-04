@@ -115,6 +115,12 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 			controller = 'shopInventoryCtrl';
 		
 		}
+				if(type==='sendToBudget'){
+			template = 'shipToBudgetModal.html';
+			size = 'lg';
+			controller = 'shopInventoryCtrl';
+		
+		}
 
 		
 
@@ -306,7 +312,29 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
      $scope.headingtext = 'Inventory Management';
      $scope.devicesToShip = [];
 
+         $scope.getAllDevices = function(){
+     	// $scope.devices 
+     		$scope.availableDevices = Devices.query({shopId: Authentication.user.shop});
 
+     	$scope.availableDevices.$promise.then(function(){
+     		console.log('Got Pending Devices for this Shop', $scope.availableDevices);
+
+     		 // $scope.availableDevices = $filter('filter')($scope.devices, {status: 'Available'});
+     		 // console.log('$scope.availableDevices', $scope.availableDevices);
+
+     	})
+     // 	var devices = $http({
+					// method: 'get',
+					// url: '/getAvailableDevices', 
+					
+					// 	})
+					// .success(function(data, status) {
+					// 	console.log('Available Devices: ', data);
+					// 	$scope.availableDevices = data;
+					// });
+
+
+     }; 
 
      $scope.getDevices = function(){
      	// $scope.devices 
@@ -361,11 +389,11 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
      	angular.forEach(devices, function(device){
 			console.log('Device ID: ', device._id);
 			device.shop = $scope.authentication.user.shop;
-			device.status = 'Pending Deployment';
+			device.status = 'En Route to Budget';
 			device.details.push({
-				type: 'Received by Shop',
+				type: 'Ship to Budget',
 				updated: Date.now(),
-				destination: 'Shop Shelf',
+				destination: 'Budget Corporate',
 				requestor: $scope.authentication.user.displayName
 			});
 			

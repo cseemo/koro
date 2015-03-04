@@ -29,7 +29,7 @@ max-height: 300px;
 
 </style>
 <section data-ng-controller="DevicesController" data-ng-init="findShop()">
-    
+    <div class="main-body">
     <div class="container">
       
                <div class="panel panel-primary">
@@ -37,18 +37,27 @@ max-height: 300px;
                     <h1>Current Inventory of Devices</h1>
                
  
-         <div class="row">
+
+
+    </div>
+    <div class="panel panel-primary">
+
+
+   
+   <div class="row">
+ 
+         
     <div class="col-md-4">
      <a  href="/#!/shopdevices" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="openModal('shopCheckInModal')">Check-In Device</a>
      </div>
 
     <div class="col-md-4">
-     <a  href="/#!/shopdevices" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="openModal('sendtobudget')">Ship Device(s) to Budget IID</a>
+     <a  href="/#!/shopdevices" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="openModal('sendToBudget')">Ship Device(s) to Budget IID</a>
    </div>
       <!--  <div class="col-md-4">
      <a  href="/#!/devices" class="btn btn-primary btn-sm" style="color: #fff;" data-ng-click="openModal('repair')">Send Device(s) Out for Repair</a>
    </div> -->
-    </div>
+   </div>
     </div>
     <div class="panel panel-primary">
 
@@ -104,6 +113,58 @@ max-height: 300px;
         </div>
             <div class="col-md-6 scroll">
             <h3>Devices to Check-In</h3>
+                <div class="alert alert-warning text-center" data-ng-hide="devicesToShip.length ">No New Devices
+        </div>
+             <table class="table">
+            <tr data-ng-repeat="device in devicesToShip track by $index"><td>
+            {{device.type}} </td>
+            <td>{{device.serialNumber}} </td>
+            <td>{{device.status}}</td>
+            <td colspan="2">       <button class="btn btn-secondary"  ng-click="remDevice($index)">Remove</button>            </td>
+            </tr>
+            </table>
+            
+        </div>
+        </div>
+
+
+        </div>
+         <div class="modal-footer">
+            <button class="btn btn-primary"  ng-disabled="!devicesToShip" ng-click="ok()">Submit</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+
+    </script>
+
+
+
+<script type="text/ng-template"  class="modal modal-wide fade" id="shipToBudgetModal.html">
+       
+        <div class="modal-header" ng-init="getAllDevices()">
+        <h2>
+            {{headingtext}}
+            </h2>
+        </div>
+        <div class="modal-body">
+        <div class="row " >
+
+        <div class="col-md-6 scroll" >
+
+        <h3>Choose Device(s) to Ship to Budget</h3>
+            <div class="alert alert-warning text-center" data-ng-hide="!availableDevices.$resolved || availableDevices.length">No Available Devices Found
+        </div>
+            <table class="table"  >
+            <tr data-ng-repeat="device in availableDevices track by $index"><td>
+            {{device.type}} </td>
+            <td>{{device.serialNumber}} </td>
+            <td>{{device.status}}</td>
+            <td colspan="2">       <button class="btn btn-secondary"  ng-click="addDevice($index)">Select</button>            </td>
+            </tr>
+            </table>
+            
+        </div>
+            <div class="col-md-6 scroll">
+            <h3>Devices to Ship to Budget</h3>
                 <div class="alert alert-warning text-center" data-ng-hide="devicesToShip.length ">No New Devices
         </div>
              <table class="table">
