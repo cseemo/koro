@@ -1129,7 +1129,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			console.log('Update Offender');
 			var offender = $scope.offender ;
 			offender.displayName = offender.firstName+' '+offender.lastName;
-			
+
 			offender.$update(function() {
 				$location.path('offenders/' + offender._id);
 			}, function(errorResponse) {
@@ -2327,6 +2327,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
       
       $scope.ok = function() {
+      	console.log('Creating a New wowrk order');
         $modalInstance.close($scope.selected.item);
         $scope.offender.assignedShop = $scope.serviceCenter._id;
         $scope.offender.pendingWorkType = $scope.chosen;
@@ -2334,19 +2335,20 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         console.log('Service Center Name: ', $scope.serviceCenter.name);
         var shopAddy = $scope.serviceCenter.address+' '+$scope.serviceCenter.city+' '+$scope.serviceCenter.state+' '+$scope.serviceCenter.zipcode;
         console.log('Service Addy: ', shopAddy);
-        
+        console.log('Adding credits to the amount', $scope.firstMonthCredit);
 
-        $scope.workOrder = {
-        	email: $scope.emailAddress,
-        	type: $scope.chosen,
-        	subject: $scope.emailSubject,
-        	content: $scope.emailText,
-        	toWhom: $scope.sendTo,
-        	serviceCenter: $scope.serviceCenter.name,
-        	svcAddress: shopAddy,
-        	toWhomName: $scope.toWhomName
+        // $scope.workOrder = {
+        // 	email: $scope.emailAddress,
+        // 	type: $scope.chosen,
+        // 	subject: $scope.emailSubject,
+        // 	content: $scope.emailText,
+        // 	toWhom: $scope.sendTo,
+        // 	serviceCenter: $scope.serviceCenter.name,
+        // 	svcAddress: shopAddy,
+        // 	toWhomName: $scope.toWhomName,
+        	
 
-        };
+        // };
 
                
 
@@ -2379,7 +2381,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				offender: $scope.offender._id,
 				type: $scope.chosen,
 				shopId: $scope.serviceCenter._id, 
-				amount: chargeAmount
+				amount: chargeAmount,
+				creditsOwed: $scope.firstMonthCredit,
+				toWhomName: $scope.toWhomName
 				
 			});
 

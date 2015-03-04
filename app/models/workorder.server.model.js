@@ -38,6 +38,10 @@ var WorkorderSchema = new Schema({
 		ref: 'Offender'
 		
 	},
+	creditsOwed: {
+		type: Number,
+		default: 0
+	},
 	checkIn: {
 		type: Date,
 		default: null

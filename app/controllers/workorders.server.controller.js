@@ -2069,7 +2069,7 @@ var chargeFirstMonth = function(body){
 		console.log('Offender: ', body.offender);
 		console.log('User: ', body.user);
 		console.log('Workorder: ', body.workinfo);
-		var firstMonth = parseFloat(body.offender.leaseFee)-parseFloat(body.offender.creditsOwed);
+		var firstMonth = parseFloat(body.offender.leaseFee)-parseFloat(body.workinfo.creditsOwed);
 		console.log('Customer owes us '+firstMonth+'for his first monthly payment');
 		var today = new moment();
 		var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
