@@ -2641,15 +2641,31 @@ $scope.mytime = $scope.dt;
 
 
       };
+      //Get shop info for the Work order
+      var getShopInfo = function(id){
+      	console.log('Getting Shp for ', id);
+      	var shop = Shops.get({
+      		shopId: id
+      	});
+      	shop.$promise.then(function(){
+      		$scope.shop = shop;
+      		console.log('Got our shop', shop);
+      	});
 
+
+      };
     //Get Workorder Provider
     $scope.findWorkOrder = function(id) {
      		console.log('Workorder: ', id);
 			$scope.workorder = Workorders.get({ 
 				workorderId: id
 			});
-			console.log('Found our Workorder:  ', $scope.workorder);
-			return $scope.workorder;
+			$scope.workorder.$promise.then(function(){
+				console.log('Found our Workorder:  ', $scope.workorder);
+				console.log('Shop ID: ', $scope.workorder.shopId);
+				getShopInfo($scope.workorder.shopId);
+				return $scope.workorder;
+			});
 
 		};
 

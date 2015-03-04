@@ -756,13 +756,18 @@ max-height: 300px;
       
         <br>
         <label>Customer: </label>{{offender.displayName}}<br>
+        <label>Service Center: </label>{{shop.name}}<br>
         <label>Service Type: </label>{{workorder.type}}<br>
         <label>Status: </label>{{workorder.status}}<br>
-        <label>Apointment Date: </label> <span class="link"> <a data-ng-click="changeAppt()"> {{workorder.apptDate | date: 'medium' }} </a></span><br> 
-        
+        <label>Apointment Date: </label> {{workorder.apptDate | date: 'medium' }} <span class="btn btn-secondary"> <a data-ng-click="changeAppt()">Update</a></span><br>
+        <label>Check-In: </label>{{workorder.checkIn| date: 'medium'}}<br>
+         <label>Insepction: </label>{{workorder.inspected| date: 'medium'}}<br>
+         <label>Device: </label>{{workorder.deviceSN}}<br>
+         <label>Notes: </label>{{workorder.deviceNotes}}<br>
+         <label>Tech Name: </label>{{workorder.techName}}<br>
 
 
-<br>
+
 	<span data-ng-show="showCalendar">
 	         <fieldset>
 	         <hr>
@@ -807,7 +812,7 @@ max-height: 300px;
                   <hr>
 	</span>
 
-<label>Service Fee: </label> <input type="text" ng-model="workorder.amount"/><br>
+<label>Service Fee: </label> <span ng-show="workorder.status==='Complete'">{{workorder.amount | currency}}</span><input ng-hide="workorder.status==='Complete'" type="text" ng-model="workorder.amount"/><br>
         <label>Created by: </label>{{workorder.user.displayName}}<br>
 
 

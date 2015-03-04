@@ -22,8 +22,13 @@
          </a>
          </li>
           <li data-ng-show="authentication.hasRole('manager')===true">
-        <a href="#!/shops"> <i class="fa fa-wrench"></i>
+        <a href="#!/shops"> <i class="fa fa-building"></i>
         <span>Service Centers</span>
+         </a>
+         </li >
+                   <li data-ng-show="authentication.hasRole('manager')===true">
+        <a href="#!/workorders"> <i class="fa fa-wrench"></i>
+        <span>Workorders</span>
          </a>
          </li >
          <li data-ng-show="authentication.hasRole('manager')===true">

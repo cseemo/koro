@@ -1,8 +1,8 @@
 'use strict';
 
 // Workorders controller
-angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', 'Payments', '$http', '$rootScope',  
-	function($scope, $stateParams, $location, Authentication, Workorders, Offenders, Payments, $http, $rootScope ) {
+angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', 'Payments', '$http', '$rootScope', 'Shops',  
+	function($scope, $stateParams, $location, Authentication, Workorders, Offenders, Payments, $http, $rootScope, Shops) {
 		$scope.authentication = Authentication;
 
 		// Create new Workorder
@@ -110,6 +110,141 @@ $scope.approveWorkOrderPayment = function(){
 
 			});
 		};
+
+		//Table Stuff
+			//Offender List Table Stuff
+
+  $scope.tableData = {
+      searchKeywords: '',
+    };
+    $scope.filteredWorkorders= [];
+    $scope.row = '';
+    $scope.numPerPageOpt = [3, 5, 10, 20];
+    $scope.numPerPage = $scope.numPerPageOpt[2];
+    $scope.currentPage = 1;
+    //$scope.currentPageDeals= $scope.getinit;
+    $scope.currentPageWorkorders= [];
+
+
+
+    $scope.select = function(page) {
+    	 
+      var end, start;
+      start = (page - 1) * $scope.numPerPage;
+      end = start + $scope.numPerPage;
+      // console.log('Start '+start+' and End '+end);
+     
+      // console.log('Filtered Offenders', $scope.filteredWorkorders);
+      $scope.currentPage = page;
+      $scope.currentPageWorkorders = $scope.filteredWorkorders.slice(start, end);
+      // console.log('Current Page Offenders', $scope.currentPageWorkorders);
+     angular.forEach($scope.currentPageWorkorders, function(item){
+		console.log('Workorder: ', item);
+		// item.shopName = 'Test';
+		if(item.offender){
+			console.log('Client has an assigned device - lets get the notes', item.offender);
+			var offender = Offenders.get({
+				offenderId: item.offender
+			});
+
+			offender.$promise.then(function(){
+				console.log('Got the Devivce.', offender);
+				item.clientName = offender.displayName;
+				item.city = offender.billingCity;
+				item.state = offender.billingState;
+
+			})
+		}
+		if(item.shopId){
+			console.log('Shop has an assigned SHop');
+			var myShop = Shops.get({ 
+				shopId: item.shopId
+					});
+		      	myShop.$promise.then(function(){
+		      		console.log('Shop Promise finished', myShop);
+		      		
+			      	item.shopName = myShop.name;
+		      		
+
+		      	});
+
+		
+      		
+
+		}
+	})
+		
+		return $scope.currentPageWorkorders;
+
+
+    };
+
+    $scope.onFilterChange = function() {
+      $scope.select(1);
+      $scope.currentPage = 1;
+      return $scope.row = '';
+    };
+    $scope.onNumPerPageChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.onOrderChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.search = function() {
+      // console.log('Keywords: ', $scope.tableData.searchKeywords);
+      // console.log('Offenders; ', $scope.offenders);
+      $scope.filteredWorkorders = $filter('filter')($scope.workorders, $scope.tableData.searchKeywords);
+
+      return $scope.onFilterChange();
+    };
+
+     $scope.searchPending = function() {
+      //////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
+      $scope.filteredWorkorders = $filter('filter')($scope.pendingWorkorders, $scope.tableData.searchKeywords);
+
+      // {companyname: $scope.tableData.searchKeywords},
+
+      /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
+        firstName: $scope.searchKeywords,
+        lastName: $scope.searchKeywords,
+        confirmationNumber: $scope.searchKeywords,
+      });*/
+      return $scope.onFilterChange();
+    };
+
+
+    $scope.order = function(rowName) {
+    	//////////////console.log('Reordering by ',rowName);
+    	//////////////console.log('Scope.row ', $scope.row);
+      if ($scope.row === rowName) {
+        return;
+      }
+      $scope.row = rowName;
+      $scope.filteredWorkorders = $filter('orderBy')($scope.filteredWorkorders, rowName);
+      //////////////console.log(rowName);
+      return $scope.onOrderChange();
+    };
+    $scope.setCurrentWorkorder = function(ind) {
+      $scope.currentOffender = $scope.filteredWorkorders.indexOf(ind);
+    };
+
+    $scope.init = function() {
+    	console.log('Getting Workorders');
+    	$scope.workorders = Workorders.query();
+    	$scope.workorders.$promise.then(function() {
+				// $scope.search();
+				console.log("Workorders: ", $scope.workorders);
+				$scope.filteredWorkorders = $scope.workorders;
+				return $scope.select($scope.currentPage);
+				});	
+	
+
+    };
+
+
+
 	}
 ]).controller('WorkOrderApprovalController', ['$scope', '$stateParams', '$location', 'Shops', '$http', '$filter', '$sce', 'Workorders', 'Payments', 'Offenders',  '$rootScope', 
 	function($scope, $stateParams, $location, Shops, $http, $filter, $sce, Workorders, Payments, Offenders, $rootScope) {
