@@ -1977,6 +1977,164 @@ exports.chargeCCard = function(req, res) {
 
 };
 
+
+
+	var sendCardDeclineNotification = function(payment, offender){
+		var timesrun = 0;
+		console.log('Card Declined for Payment...');
+		console.log(payment);
+		console.log(offender);
+		console.log('Amount that was due: ', payment.amount);
+		var now = new moment();
+		var today = moment(now).format("MMM DD, YYYY [at] hh:mm a");
+		var dueDate = moment(payment.dueDate).format("MM/DD/YYYY");
+		var lateDate = moment(dueDate).add(5, 'days').format("MM/DD/YYYY");
+		var message = {	
+		'subject': '***Autopay Attempt Failed***',
+		'from_email': 'admin@budgetiid.com',
+		'from_name': 'URGENT ATTENTION REQUIRED',
+		'to': [{
+			'email': offender.offenderEmail,
+			'name': offender.displayName,
+				'type': 'to'
+		}],
+		'headers': {
+			'Reply-To': 'budgetiid@gmail.com'
+		},
+		'merge': true,
+		'global_merge_vars': [
+					
+					{
+						'name': 'address',
+						'content': offender.billingAddress || ''
+					},
+					{
+						'name': 'city',
+						'content': offender.billingCity || ''
+					},
+					{
+						'name': 'state',
+						'content': offender.billingState || ''
+					},
+					{
+						'name': 'zip',
+						'content': offender.billingZipcode  || ''
+					},
+					{
+						'name': 'clientName',
+						'content': offender.firstName+' '+offender.lastName  || ''
+					},
+					
+					{
+						'name': 'pmtOpt',
+						'content': payment.pmtOpt || ''
+					},
+					{
+						'name': 'paymentNotes',
+						'content': payment.notes  || ''
+					},
+					{
+						'name': 'paymentAmount',
+						'content': payment.amount  || ''
+					},
+
+					{
+						'name': 'date',
+						'content': today
+					},
+					{
+						'name': 'lateDate',
+						'content': lateDate
+					},
+					{
+						'name': 'dueDate',
+						'content': dueDate
+					},
+
+					{
+						'name': 'vehicleYear',
+						'content': offender.vehicleYear
+					},
+
+					{
+						'name': 'offenderName',
+						'content': offender.firstName+' '+offender.lastName
+					},
+					{
+						'name': 'vehicleMake',
+						'content': offender.vehicleMake
+					},
+					{
+						'name': 'vehicleModel',
+						'content': offender.vehicleModel
+					},
+					{
+						'name': 'driverNumber',
+						'content': offender.driverNumber
+					},
+					
+					{
+						'name': 'email',
+						'content': offender.offenderEmail
+					},
+					
+				
+		],
+		'important': false,
+		'track_opens': null,
+		'track_clicks': null,
+		'auto_text': null,
+		'auto_html': null,
+		'inline_css': true,
+		'url_strip_qs': null,
+		'preserver_recipients': null,
+		'view_content_link': null,
+		'bcc_address': 'cseymour@budgetiid.com',
+		'tracking_domain': null,
+		'signing_domain': null,
+		'return_path_domain': null,
+	
+	        };
+
+	var template_name='budget-decline';
+		
+
+
+	var async = false;
+	if(timesrun < 2){
+
+	mandrill_client.messages.sendTemplate({
+		'template_name': template_name,
+		'template_content': [],
+		'message': message, 
+		'async': async
+	}, function(result){
+		timesrun++;
+		console.log('Results from Mandrill', result);
+		// console.log('Result.message', result.message);
+		var id = result[0]['_id'];
+		console.log('Result[0]', result[0]['_id']);
+		console.log('Email ID: ', id);
+		// cb(null, 'Complete: '+id);
+		
+			
+		
+	},
+	function(e){
+		console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+		// cb('Error from Mandrill : '+e);
+
+
+	});
+
+	// res.status(200).send(mypdf);
+	}
+
+
+
+	};
+
+	
 	var firstMonthCharge = function(cus, wo, pmt, callback){
 		var today = new moment();
 		var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
