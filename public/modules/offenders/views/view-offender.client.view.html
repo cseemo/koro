@@ -759,12 +759,8 @@ max-height: 300px;
         <label>Service Center: </label>{{shop.name}}<br>
         <label>Service Type: </label>{{workorder.type}}<br>
         <label>Status: </label>{{workorder.status}}<br>
-        <label>Apointment Date: </label> {{workorder.apptDate | date: 'medium' }} <span class="btn btn-secondary"> <a data-ng-click="changeAppt()">Update</a></span><br>
-        <label>Check-In: </label>{{workorder.checkIn| date: 'medium'}}<br>
-         <label>Insepction: </label>{{workorder.inspected| date: 'medium'}}<br>
-         <label>Device: </label>{{workorder.deviceSN}}<br>
-         <label>Notes: </label>{{workorder.deviceNotes}}<br>
-         <label>Tech Name: </label>{{workorder.techName}}<br>
+        <label>Apointment Date: </label> {{workorder.apptDate | date: 'medium' }} <button class="btn btn-secondary"data-ng-click="changeAppt()"><i class="fa fa-refresh"></i>Update</button> <button class="btn btn-primary"data-ng-click="sendApptReminder()"><i class="fa fa-calendar"></i> Send Reminder</button><br>
+       
 
 
 
@@ -774,7 +770,7 @@ max-height: 300px;
         	<div class="col-md-6 inline-block">
         <label>Choose the Date for the New Appointment</label>
        
-         <div class="input-group ui-datepicker" ng-click="openCalendar($event)" ng-init="findWorkOrder(workorder._id)">
+         <div class="input-group ui-datepicker" ng-click="openCalendar($event)">
                     <span class="input-group-addon" ><i class="fa fa-calendar"></i></span>
                     <input type="text" 
                            class="form-control "
@@ -806,12 +802,17 @@ max-height: 300px;
                 </div>
                	<br>
 
-                  <button class="btn btn-secondary btn-sm"  ng-click="updateAppt()">Update Appointment</button>
+                  <button class="btn btn-secondary btn-sm" ng-show="dt" ng-click="updateAppt()">Update Appointment</button>
                    </fieldset>
                   <br>
                   <hr>
 	</span>
 
+ <label>Check-In: </label>{{workorder.checkIn| date: 'medium'}}<br>
+         <label>Insepction: </label>{{workorder.inspected| date: 'medium'}}<br>
+         <label>Device: </label>{{workorder.deviceSN}}<br>
+         <label>Notes: </label>{{workorder.deviceNotes}}<br>
+         <label>Tech Name: </label>{{workorder.techName}}<br>
 <label>Service Fee: </label> <span ng-show="workorder.status==='Complete'">{{workorder.amount | currency}}</span><input ng-hide="workorder.status==='Complete'" type="text" ng-model="workorder.amount"/><br>
         <label>Created by: </label>{{workorder.user.displayName}}<br>
 

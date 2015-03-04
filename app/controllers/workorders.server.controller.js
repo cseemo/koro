@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	// errorHandler = require('./errors'),
 	Workorder = mongoose.model('Workorder'),
+	Payment = mongoose.model('Payment'),
 	_ = require('lodash'),
 	Offender = mongoose.model('Offender'),
 	mandrill = require('mandrill-api/mandrill');
@@ -98,6 +99,23 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
 	var workorder = req.workorder ;
+	// var pmt = req.workorder.payment;
+	//Look for Payments with this Workorder ID
+		Payment.find({paymentId: req.workorder}).exec(function(err, payments) {
+		if (err) {
+			console.log('Err Getting Payments', err);
+			return null;
+		}
+
+		if (! payments) {
+			console.log('No Payment: ');
+			return null;
+		}
+
+
+		console.log('Got our payments: ', payments);
+	});
+
 
 	workorder.remove(function(err) {
 		if (err) {
@@ -105,6 +123,7 @@ exports.delete = function(req, res) {
 				message: err //errorHandler.getErrorMessage(err)
 			});
 		} else {
+			console.log('Work order removed');
 			res.jsonp(workorder);
 		}
 	});

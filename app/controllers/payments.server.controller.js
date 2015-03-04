@@ -891,7 +891,7 @@ var CronJob = require('cron').CronJob;
 
 //Check who needs to be billed
 var job = new CronJob({
-  cronTime: '10 15 22 * * 0-6',
+  cronTime: '10 15 23 * * 0-6',
   // cronTime: '10 * * * * 0-6',
 
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
@@ -916,7 +916,7 @@ job.start();
 //Charge all customers on AutoPay
 var jobCharge = new CronJob({
   // cronTime: '10 * * * * 0-6',
-   cronTime: '10 30 22 * * 0-6',
+   cronTime: '10 30 23 * * 0-6',
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Auto Charge OnTick called');
@@ -949,7 +949,7 @@ var chargeIt = function(pmt, callback){
 			return err;
 		}
 
-		if (! offender) return new Error('Failed to load Offender ' + id);
+		if (! offender) return console.log('Failed to load Offender ' + id);
 
 		console.log('Got our oFfender on line 608', offender);
 
@@ -1039,7 +1039,7 @@ var chargeIt = function(pmt, callback){
 
 };
 var autoCharge = function(){
-	console.log('Charging cards now...');
+console.log('Charging cards now...');
 var today = moment().endOf('day');
 var tomorrow = moment(today).add(1, 'days');
 console.log('Today is: ', today._d);

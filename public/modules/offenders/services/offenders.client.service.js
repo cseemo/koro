@@ -10,6 +10,23 @@ angular.module('offenders').factory('Offenders', ['$resource',
 			}
 		});
 	}
+]).factory('FindWos', ['$resource', 'Workorders',  function($resource, Workorders){
+	var findWos = {};
+
+	findWos.findById = function(id){
+
+	console.log('$scope.FindWorkorder: ', id);
+			var workorder = Workorders.get({ 
+				workorderId: id
+			});
+			console.log('Found our Workorder (return it):  ', workorder);
+			return workorder;
+		};
+
+		return findWos;
+
+
+}
 ]).factory('authorizeCIM', ['$http', '$resource', function($http, $resource){
 	var paymentProfiles = [];
 	var authorizeCIM = {};

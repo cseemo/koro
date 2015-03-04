@@ -2613,7 +2613,7 @@ $scope.mytime = $scope.dt;
 
 
 
- }]).controller('workOrderCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorder', 'Payments',  function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorder, Payments) {
+ }]).controller('workOrderCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorder', 'Payments', 'FindWos',   function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorder, Payments, FindWos) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
     $scope.offender = offender;
@@ -2683,6 +2683,9 @@ $scope.mytime = $scope.dt;
 			var url = $location.url();
 			console.log('Location: ', url);
 			console.log('$scope.workorder: ', $scope.workorder);
+			
+
+
 			$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
 			$scope.workorder.$promise.then(function() {
 
@@ -2711,12 +2714,16 @@ $scope.mytime = $scope.dt;
 
 
       	console.log('Ok Pressed ', $scope.workorder);
-     
+     	var id = $scope.workorder._id; 
+     	console.log('ID: :', id);
       	console.log('Serivce Fee: ', $scope.workorder.amount);
       	var amt = $scope.workorder.amount;
-      		$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+      	var workorder = FindWos.findById(id);
+      		
 
-			$scope.workorder.$promise.then(function() {
+			workorder.$promise.then(function(wo) {
+				console.log('WOO ===', wo);
+				$scope.workorder = wo;
 				$scope.workorder.amount = amt;
 		console.log('Workorder to Save/Modify ', $scope.workorder);
         $modalInstance.close('Saving Work Order');
@@ -2739,13 +2746,75 @@ $scope.mytime = $scope.dt;
 		};
 
 		$scope.updateAppt = function(){
-			console.log('Updating Appointment');
+			console.log('Updating Appointment', $scope.dt);
+
 			if($scope.oldApptDate && $scope.showCalendar) {
       		console.log('Old Appointment Date: ', $scope.oldApptDate);
       		console.log('New Appointment Date: ', $scope.workorder.apptDate);
-      		var date = $scope.dt;
+
+			
+      		var date = new Date($scope.dt);
 				var time = $scope.mytime;
+				console.log('Do we have a '+date+'?? What about some time: '+time);
 				var datetime = new Date(date.getFullYear(), 
+					date.getMonth(), 
+					date.getDate(), 
+					time.getHours(), 
+					time.getMinutes(), 
+					time.getSeconds());
+				console.log('Appt Date Time: ', datetime);
+				datetime.toUTCString();
+				console.log('Converted Appointment: ', datetime);
+				console.log('WOOOO', $scope.workorder);
+				var id = $scope.workorder._id;
+				var workorder = FindWos.findById(id);
+				workorder.$promise.then(function(donee){
+					console.log('PRomise ow: ', donee);
+					workorder.apptDate = datetime;
+					workorder.$update(function(){
+
+
+				
+					console.log('Updated...');
+					toastr.success('Appointment Updated  to '+datetime);
+
+
+				})
+				
+									
+
+				   //      	$http({
+							// 		method: 'post',
+									
+							// 		url: '/sendICS', 
+							// 		data: {
+							// 			'user': $scope.authentication.user,
+							// 			'offender': $scope.offender,
+							// 			'workinfo': $scope.workorder
+										
+							// 					},
+												
+							// 			})
+							// 		.success(function(data, status) {
+							// 		$scope.showCalendar = false;
+							// 		$scope.sending = false;
+							// 		$scope.results = true;
+							// 		//////console.log('Data from LOA?? %o',data);
+							// 			toastr.success('Appointment has been updated to '+datetime);
+							// 			$scope.myresults = 'Email Sent!';
+										
+
+							// }, function(errorResponse) {
+							// 	$scope.error = errorResponse.data.message;
+							// });
+        				
+        				});
+			} else { 
+				console.log('No Old Appointment Date to Update - set new appointment');
+				console.log('New Appointment Date: ', $scope.workorder.apptDate);
+      			var date = $scope.dt;
+				var time = $scope.mytime;
+					var datetime = new Date(date.getFullYear(), 
 					date.getMonth(), 
 					date.getDate(), 
 					time.getHours(), 
@@ -2757,10 +2826,36 @@ $scope.mytime = $scope.dt;
 
 				$scope.workorder.apptDate = datetime;
 				$scope.workorder.$update(function(){
+					console.log('UPdated WOrkorder');
+				});
+
+			}
+
+
+
+		};
+
+		$scope.sendApptReminder = function(){
+			console.log('Sending Appt Reminder');
+			console.log('New Appointment Date: ', $scope.workorder.apptDate);
+    //   		var date = $scope.dt;
+				// var time = $scope.mytime;
+				// var datetime = new Date(date.getFullYear(), 
+				// 	date.getMonth(), 
+				// 	date.getDate(), 
+				// 	time.getHours(), 
+				// 	time.getMinutes(), 
+				// 	time.getSeconds());
+				// console.log('Appt Date Time: ', datetime);
+				// datetime.toUTCString();
+				// console.log('Converted Appointment: ', datetime);
+
+				// $scope.workorder.apptDate = datetime;
+				// $scope.workorder.$update(function(){
 
 
 				
-				console.log('Updated...');
+				// console.log('Updated...');
 
 				        	$http({
 									method: 'post',
@@ -2779,7 +2874,7 @@ $scope.mytime = $scope.dt;
 									$scope.sending = false;
 									$scope.results = true;
 									//////console.log('Data from LOA?? %o',data);
-										toastr.success('Appointment has been updated to '+datetime);
+										toastr.success('Appointment Reminder Sent to '+$scope.offender.offenderEmail);
 										$scope.myresults = 'Email Sent!';
 										
 
@@ -2787,9 +2882,7 @@ $scope.mytime = $scope.dt;
 								$scope.error = errorResponse.data.message;
 							});
         				
-        				});
-			}
-
+        				
 
 
 		};
@@ -3144,7 +3237,7 @@ $scope.mytime = $scope.dt;
         return $scope.mytime = null;
 };
 
-}]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', 'payments', '$resource', 'authorizeCIM', 'portalPayments',   function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments, payments, $resource, authorizeCIM, portalPayments) {
+}]).controller('paymentCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'workorders', 'Payments', 'payments', '$resource', 'authorizeCIM', 'portalPayments', 'FindWos',    function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, workorders, Payments, payments, $resource, authorizeCIM, portalPayments, FindWos) {
      $scope.authentication = Authentication;
      $scope.shops = Shops.query();
     $scope.offender = offender;
@@ -3701,12 +3794,13 @@ $scope.makePmt = function(){
       };
 
       		$scope.findWorkOrder = function(id) {
-     		console.log('Workorder: ', id);
-			$scope.workorder = Workorders.get({ 
-				workorderId: id
-			});
-			console.log('Found our Workorder:  ', $scope.workorder);
-			return $scope.workorder;
+   //   		console.log('$scope.FindWorkorder: ', id);
+			// $scope.workorder = Workorders.get({ 
+			// 	workorderId: id
+			// });
+			// console.log('Found our Workorder (return it):  ', $scope.workorder);
+			// return $scope.workorder;
+			findWorkOrder
 
 		};
 		$scope.payments = function() {

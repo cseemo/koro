@@ -216,8 +216,8 @@ $scope.approveWorkOrderPayment = function(){
 
 
     $scope.order = function(rowName) {
-    	//////////////console.log('Reordering by ',rowName);
-    	//////////////console.log('Scope.row ', $scope.row);
+    	console.log('Reordering by ',rowName);
+    	console.log('Scope.row ', $scope.row);
       if ($scope.row === rowName) {
         return;
       }
