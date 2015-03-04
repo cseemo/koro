@@ -1129,6 +1129,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			console.log('Update Offender');
 			var offender = $scope.offender ;
 			offender.displayName = offender.firstName+' '+offender.lastName;
+			
 			offender.$update(function() {
 				$location.path('offenders/' + offender._id);
 			}, function(errorResponse) {
@@ -2091,7 +2092,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 						var n = d.getDate();
 		  				console.log('n is: ', n);
 		  				$scope.offender.billDate = n+1;
-		  				chargeFirstMonth($scope.offender, wo);
+		  				// chargeFirstMonth($scope.offender, wo);
 		  				// var now = new Date();
 		  				// var myDate = new Date(now);
 		  				var mom = moment();

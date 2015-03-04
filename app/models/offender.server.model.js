@@ -186,6 +186,14 @@ var OffenderSchema = new Schema({
 		type: Number,
 		default: null
 	},
+	leaseFee: {
+		type: Number,
+		default: 75
+	},
+	creditsOwed: {
+		type: Number,
+		default: 0
+	},
 	finalBillDate: {
 		type: Date
 	},

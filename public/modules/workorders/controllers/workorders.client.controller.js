@@ -424,6 +424,7 @@ $scope.approveWorkOrderPayment = function(){
 			     			console.log('We are charging this guy because: ', $scope.offender);
 			     			console.log('Workorder in question: ', workorder);
 			     			chargeCard(workorder, $scope.offender);
+			     			
 			     		} else {
 			     			// createPayment(workorder, $scope.offender);
 			     		}

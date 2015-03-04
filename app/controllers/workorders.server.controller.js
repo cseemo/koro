@@ -1977,9 +1977,140 @@ exports.chargeCCard = function(req, res) {
 
 };
 
+	var firstMonthCharge = function(cus, wo, pmt, callback){
+		var today = new moment();
+		var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+		var now  =  moment(today).format("MM/DD/YYYY");
+
+			console.log('About to create transaction', pmt);
+
+					
+			console.log('Auto Charge this bastard'+cus.displayName+' '+pmt.amount+':::'+pmt._id);
+			
+				var transaction = {
+				  amount: pmt.amount,
+				  // tax: {
+				  //   amount: 0,
+				  //   name: 'State Tax',
+				  //   // description: taxState
+				  // },
+				 
+					  customerProfileId: cus.merchantCustomerId,
+					  customerPaymentProfileId: cus.paymentProfileId,
+				  order: {
+				    invoiceNumber: Date.now(),
+				    description: 'Auto Payment of Monthly Interlock Fee'
+				  },
+				  billTo: {
+				  	firstName: cus.firstName,
+				  	lastName: cus.lastName,
+				  	address: cus.billingAddress
+				  }
+				};
+
+				AuthorizeCIM.createCustomerProfileTransaction('AuthCapture' /* AuthOnly, CaptureOnly, PriorAuthCapture */, transaction, function(err, response) {
+					if(err){
+						console.log('Error Charging Card', err);
+						// res.status(400).send('ERROR: '+err);
+						console.log('Sending Card Decline NOtification...');
+						sendCardDeclineNotification(pmt, cus);
+						pmt.notes = pmt.notes+'--| Card Failed '+convertedPretty;
+						pmt.save(function(err, data){
+							if(err){
+								console.log('Error saving Payment...');
+								return callback('Error saving payment...'+err);
+							}
+							console.log('Payment Saved...', data);
+
+							return callback(err);
+
+						});
+						
+						
+					}
+					if(response){
+						console.log('Card has been charged!!', response);
+						pmt.status='Paid';
+						// console.log('Direct Response: ', response.directResponse);
+						// console.log('4: ', response.directResponse[4]);
+						var resp = response.directResponse.split(',');
+						// console.log('4TEST', resp[4]);
+						pmt.notes = pmt.notes+'--| Autopay: '+convertedPretty+' AuthCode: '+resp[4];
+						pmt.paidDate = Date.now();
+						console.log(pmt.notes);
+						pmt.save(function(err, data){
+							if(err){
+								console.log('Error saving Payment...');
+								return callback('Error saving payment...'+err);
+							}
+							console.log('Payment Saved...', data);
+							return callback(null, response);
+
+						});
+						
+						// res.status(200).send(response);
+					}
+				});
+
+
+
+
+		
+
+
+
+	};
+
+
+
+var chargeFirstMonth = function(body){
+	console.log('Charging first month WO - 1980');
+
+		console.log('Offender: ', body.offender);
+		console.log('User: ', body.user);
+		console.log('Workorder: ', body.workinfo);
+		var firstMonth = parseFloat(body.offender.leaseFee)-parseFloat(body.offender.creditsOwed);
+		console.log('Customer owes us '+firstMonth+'for his first monthly payment');
+		var today = new moment();
+		var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+		var now  =  moment(today).format("MM/DD/YYYY");
+		var payment = new Payment({
+						    pmtType: 'Initial Monthly Service Fee',
+						    dueDate: now,
+						    offender: body.offender._id,
+						    status: 'Due',
+						    notes: 'Initial Invoice on '+convertedPretty,
+						    amount: firstMonth,
+							});
+
+		payment.save();
+
+
+		var cus = body.offender;
+		if(cus && cus.merchantCustomerId && cus.paymentProfileId){
+				firstMonthCharge(cus, body.workinfo, payment, function(err, data){
+					if(err){
+						console.log('Test Err Return', err);
+					return	null//res.status(444).send(err);
+					}
+					console.log('Data return', data);
+					
+
+				});
+				
+		}else {
+			console.log('No AutoPay - Invoice Generated');
+					
+		}
+
+};
 
 exports.runAuth = function(req, res) {
 	console.log('Running Authorization for Auth.net', req.body);
+	if(req.body.workinfo==='New Install'){
+		console.log('New Install Sign...charge first Month!!');
+		
+	}
 	if(req.body.setupProfile){
 		console.log('Need to Setup the Payment Profile first');
 		updateCCInfo(req, res);
@@ -2086,6 +2217,7 @@ exports.signAuth = function(req, res){
 
 	console.log('Sending Sign Auth Now');
 	console.log(req.body);
+	chargeFirstMonth(req.body);
 	// console.log(req.query);
 	console.log(req.params);
 	console.log('Did we find Workorder Info, Offender Info, and User info?');
