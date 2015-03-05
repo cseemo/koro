@@ -86,6 +86,11 @@ var mongoose = require('mongoose'),
  			destination = 'Customer Vehicle';
  			break;
 
+ 		case 'Shipping Back':
+ 			console.log('Shipping Back');
+ 			destination = 'Budget HQ';
+ 			break;
+
  		default:
        		destinatin = 'Unknown';
 
