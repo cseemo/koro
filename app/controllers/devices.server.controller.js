@@ -67,7 +67,7 @@ var mongoose = require('mongoose'),
  	
 		
  	console.log('Device Serial Number: ', device.serialNumber);
- 	var details = [];
+ 	var details = device.details;
 			details.push({
 					type: req.body.huh,
 					updated: Date.now(),
@@ -76,7 +76,7 @@ var mongoose = require('mongoose'),
 					notes: req.body.notes,
 	
 				});
-			device.details.push(details);
+	device.details = details;
  	// var device = new Device ({
  	// 	type: req.body.type,
 		// notes: req.body.notes,
