@@ -59,10 +59,10 @@ var mongoose = require('mongoose'),
 
  	var details = [];
 			details.push({
-					type: 'New Device - Scanned In',
+					type: req.body.huh,
 					updated: Date.now(),
 					destination: 'New Inventory',
-					requestor: name,
+					requestor: req.body.user.displayName,
 					notes: req.body.notes,
 	
 				});
