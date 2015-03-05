@@ -48,9 +48,12 @@ var mongoose = require('mongoose'),
  	// res.status(200).send('Checked In');
 
  	// console.log('User: ', req.body.user);
- 	var parsed = JSON.parse(req.body.user);
- 	var name = parsed.displayName;
- 	console.log('Parsed Name:', name);
+ 	var json = JSON.parse(req.body);
+ 	console.log('JSON is: ', json);
+ 	var user = json.user;
+ 	console.log('User is: ', json);
+ 	var device = json.device;
+ 	console.log('Device is: ', json);
 
  	var details = [];
 			details.push({
