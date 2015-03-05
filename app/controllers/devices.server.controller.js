@@ -56,7 +56,16 @@ var mongoose = require('mongoose'),
  	// console.log('Device is: ', json);
  	console.log('Device: ', req.body.device);
  	console.log('User: ', req.body.user);
- 	var device = req.body.device;
+ 	// var device = req.body.device;
+ 	Device.findById(req.body.device._id).exec(function(err, device) {
+ 		if(err){
+ 			console.log('Error finding device: ', req.body.device._id);
+ 		}
+
+ 		console.log('Got the Device :', device);
+ 		var device = device;
+ 	});
+		
  	console.log('Device Serial Number: ', device.serialNumber);
  	var details = [];
 			details.push({
