@@ -80,7 +80,7 @@ var mongoose = require('mongoose'),
 
  	
 
- 		device.update(function(err, data) {
+ 		device.save(function(err, data) {
 		if (err) {
 			console.log('Error Saving Device', err);
 			return res.status(400).send({
