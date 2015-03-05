@@ -2655,13 +2655,33 @@ $scope.mytime = $scope.dt;
       	shop.$promise.then(function(){
       		$scope.shop = shop;
       		console.log('Got our shop', shop);
+      		return $scope.shop;
       	});
 
 
       };
+
+
+
+      $scope.getInfo = function(){
+      	console.log('Getting the info');
+      	var id = workorder._id;
+      	$scope.workorder = Workorders.get({ 
+				workorderId: id
+			});
+			$scope.workorder.$promise.then(function(){
+				console.log('Found our Workorder:  ', $scope.workorder);
+				console.log('Shop ID: ', $scope.workorder.shopId);
+				getShopInfo($scope.workorder.shopId);
+				return $scope.workorder;
+			});
+
+      };
+
+
     //Get Workorder Provider
     $scope.findWorkOrder = function(id) {
-     		console.log('Workorder: ', id);
+     		console.log('Find &&*&*&&&  Workorder: ', id);
 			$scope.workorder = Workorders.get({ 
 				workorderId: id
 			});

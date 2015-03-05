@@ -41,6 +41,55 @@ var mongoose = require('mongoose'),
 
 
  };
+
+  exports.appInventory = function(req, res) {
+ 	console.log('App Updates for Devices..');
+ 	console.log(req.body);
+ 	// res.status(200).send('Checked In');
+
+ 	// console.log('User: ', req.body.user);
+ 	var parsed = JSON.parse(req.body.user);
+ 	var name = parsed.displayName;
+ 	console.log('Parsed Name:', name);
+
+ 	var details = [];
+			details.push({
+					type: 'New Device - Scanned In',
+					updated: Date.now(),
+					destination: 'New Inventory',
+					requestor: name,
+					notes: req.body.notes,
+	
+				});
+
+ 	var device = new Device ({
+ 		type: req.body.type,
+		notes: req.body.notes,
+		serialNumber: req.body.serialNumber,
+		status: 'Available',
+		details: details,
+		user: parsed._id,
+		scan: req.body.scan
+ 	});
+
+ 	
+
+ 		device.save(function(err, data) {
+		if (err) {
+			console.log('Error Saving Device', err);
+			return res.status(400).send({
+				message: err
+			});
+		} else {
+			console.log('Device Saved', data);
+			res.status(211).send(data);
+		}
+	});
+
+
+ };
+
+
  exports.appCheckIn = function(req, res) {
  	console.log('Checking in new app...');
  	console.log(req.body);

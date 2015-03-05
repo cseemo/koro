@@ -20,6 +20,10 @@ app.route('/getAvailableDevices')
 	app.route('/devices/appCheckIn')
 		.post(devices.appCheckIn);
 
+	app.route('/devices/appInventory')
+		.post(devices.appInventory);
+
+
 	app.route('/scan')
 		.get(devices.lookForScan)
 
