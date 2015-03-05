@@ -64,7 +64,7 @@ var mongoose = require('mongoose'),
 
  		console.log('Got the Device :', device);
  		var device = device;
- 	});
+ 	
 		
  	console.log('Device Serial Number: ', device.serialNumber);
  	var details = [];
@@ -100,7 +100,7 @@ var mongoose = require('mongoose'),
 			res.status(211).send(data);
 		}
 	});
-
+});
 
  };
 
