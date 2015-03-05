@@ -56,7 +56,8 @@ var mongoose = require('mongoose'),
  	// console.log('Device is: ', json);
  	console.log('Device: ', req.body.device);
  	console.log('User: ', req.body.user);
-
+ 	var device = req.body.device;
+ 	console.log('Device Serial Number: ', device.serialNumber);
  	var details = [];
 			details.push({
 					type: req.body.huh,
@@ -66,20 +67,20 @@ var mongoose = require('mongoose'),
 					notes: req.body.notes,
 	
 				});
-
- 	var device = new Device ({
- 		type: req.body.type,
-		notes: req.body.notes,
-		serialNumber: req.body.serialNumber,
-		status: 'Available',
-		details: details,
-		user: parsed._id,
-		scan: req.body.scan
- 	});
+			device.details.push(details);
+ 	// var device = new Device ({
+ 	// 	type: req.body.type,
+		// notes: req.body.notes,
+		// serialNumber: req.body.serialNumber,
+		// status: 'Available',
+		// details: details,
+		// user: parsed._id,
+		// scan: req.body.scan
+ 	// });
 
  	
 
- 		device.save(function(err, data) {
+ 		device.update(function(err, data) {
 		if (err) {
 			console.log('Error Saving Device', err);
 			return res.status(400).send({
