@@ -55,6 +55,7 @@ var mongoose = require('mongoose'),
  	// var device = json.device;
  	// console.log('Device is: ', json);
  	console.log('Device: ', req.body.device);
+ 	console.log('User: ', req.body.user);
 
  	var details = [];
 			details.push({
