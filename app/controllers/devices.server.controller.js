@@ -57,6 +57,41 @@ var mongoose = require('mongoose'),
  	console.log('Device: ', req.body.device);
  	console.log('User: ', req.body.user);
  	// var device = req.body.device;
+ 	var destination;
+
+
+ 	switch(req.body.huh){
+ 		case 'Calibrating':
+ 			console.log('Calibration');
+ 			destination = 'Budget for Calibration';
+ 			break;
+
+ 		case 'Violating':
+ 			console.log('Calibration');
+ 			destination = 'Violation Reset';
+ 			break;
+
+ 		case 'Checking In':
+ 			console.log('Check In');
+ 			destination = 'Shop Shelf';
+ 			break;
+
+ 		case 'Removing':
+ 			console.log('Removal');
+ 			destination = 'Shop Inventory';
+ 			break;
+
+ 		 case 'Installing':
+ 			console.log('Installation');
+ 			destination = 'Customer Vehicle';
+ 			break;
+
+ 		default:
+       		destinatin = 'Unknown';
+
+
+
+ 	}
  	Device.findById(req.body.device._id).exec(function(err, device) {
  		if(err){
  			console.log('Error finding device: ', req.body.device._id);
@@ -71,7 +106,7 @@ var mongoose = require('mongoose'),
 			details.push({
 					type: req.body.huh,
 					updated: Date.now(),
-					destination: 'New Inventory',
+					destination: destination,
 					requestor: req.body.user.displayName,
 					notes: req.body.notes,
 	
