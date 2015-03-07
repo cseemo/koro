@@ -1,16 +1,78 @@
-<section data-ng-controller="DevicesController" data-ng-init="findOne()">
+
+<style>
+/*.form-group{
+    padding: 17px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}*/
+.makeMed {
+    font-size: 2em;
+}
+.main-body{
+    background-color: #555;
+    min-height: 100%;
+}
+.nostyle:hover, .nostyle:visited, .nostyle:link, .nostyle:active{
+    text-decoration: none;
+    cursor: pointer;
+}
+.bigPad{
+    padding-left: 15px;
+}
+h1, h2, h3{
+    color: #333;
+}
+.stickyTop{
+position: absolute;
+top: 0px;
+left: 0px;
+right: 00px;
+z-index: 999;
+
+}
+</style>
+<section data-ng-controller="DevicesController" data-ng-init="getDeviceDetails()">
+    <div class="main-body">
+      <div class="container">
+
+<div class="row">
+
+ 
+                        
+
+    <div class="container">
+     
+               <div class="panel panel-primary">
+                  <div class="panel-body">
+
+
+
+
+
     <div class="page-header">
         <h1>Edit Device</h1>
     </div>
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="update()" novalidate>
             <fieldset>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label class="control-label" for="name">Type</label>
                     <div class="controls">
                         <input type="text" data-ng-model="device.type" id="type" class="form-control" placeholder="Type" >
                     </div>
-                </div>
+                </div> -->
+                <div class="form-group">
+                        <label class="control-label" for="name">Type</label>
+                        <div class="controls">
+                            <select class="form-control" data-ng-model="deviceType" name="devicetype" data-ng-options="type for type in typeOfDevices"> <option value="">{{device.type}}</option></select>
+                        </div>
+                    </div>
                  <div class="form-group">
                     <label class="control-label" for="name">Serial Number</label>
                     <div class="controls">
@@ -18,9 +80,28 @@
                     </div>
                 </div>
                  <div class="form-group">
+                    <label class="control-label" for="name">Service Center</label>
+                    <div class="controls">
+                       <!--  <input type="text" data-ng-model="device.status" id="status" class="form-control" placeholder="Type" > -->
+                       <select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"><option value="">{{myshop.name}} {{myshop.address}} {{myshop.city}}, {{myshop.state}}</option></select>
+
+                       
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="control-label" for="name">Assigned Client</label>
+                    <div class="controls">
+                       <!--  <input type="text" data-ng-model="device.status" id="status" class="form-control" placeholder="Type" > -->
+
+                       <select class="form-control" ng-model="customer" data-ng-options="client as (client.displayName+' - '+client.billingCity+' '+client.billingState+' - '+client.vehicleYear+' '+client.vehicleMake+' '+client.vehicleModel) for client in clients"><option value="">{{offender.displayName}} {{offender.billingCity}} {{offender.billingState}} {{offender.vehicleYear}} {{offender.vehicleMake}} {{offender.vehicleModel}}</option><option value="">None</option></select>
+                    </div>
+                </div>
+                 <div class="form-group">
                     <label class="control-label" for="name">Status</label>
                     <div class="controls">
-                        <input type="text" data-ng-model="device.status" id="status" class="form-control" placeholder="Type" >
+                       <!--  <input type="text" data-ng-model="device.status" id="status" class="form-control" placeholder="Type" > -->
+
+                       <select class="form-control" data-ng-model="device.status" data-ng-options="opt for opt in statusOptions"><option value="">{{device.status}}</option></select>
                     </div>
                 </div>
                  <div class="form-group">
@@ -29,12 +110,12 @@
                         <input type="text" data-ng-model="device.notes" id="notes" class="form-control" placeholder="Type" >
                     </div>
                 </div>
-                 <div class="form-group">
+                <!--  <div class="form-group">
                     <label class="control-label" for="name">Details</label>
                     <div class="controls">
                         <input type="text" data-ng-model="device.details" id="notes" class="form-control" placeholder="Type" >
                     </div>
-                </div>
+                </div> -->
 
                 <div class="form-group">
                     <input type="submit" value="Update" class="btn btn-default">

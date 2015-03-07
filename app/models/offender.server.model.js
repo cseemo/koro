@@ -221,6 +221,21 @@ var OffenderSchema = new Schema({
 		type: String,
 		trim: true, 
 		default: 'Standard'
+	}, 
+	attorneyInfo: {
+		type: String,
+		trim: true, 
+		default: 'Standard'
+	}, 
+	trafficSchool: {
+		type: String,
+		trim: true, 
+		default: 'Standard'
+	}, 
+	insuranceAgent: {
+		type: String,
+		trim: true, 
+		default: 'Standard'
 	}
 
 

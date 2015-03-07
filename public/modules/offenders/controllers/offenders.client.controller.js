@@ -736,7 +736,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				dobMO: $scope.dobMO,
 				dobDAY: $scope.dobDAY,
 				dobYR: $scope.dobYR,
-				installType: $scope.installType
+				installType: $scope.installType,
+				trafficSchool: $scope.trafficSchool,
+				insuranceAgent: $scope.insuranceAgent,
+				attorneyInfo: $scope.attorneyInfo
 				
 			});
 			console.log("New Offender", offender);
@@ -1692,15 +1695,15 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
      	$scope.deviceChosen = true;
      	var device = $scope.availableDevices[row];
      	console.log('Device: ', device);
-     	var oldDeviceSN = $scope.offender.deviceSN;
-     	var oldDevice = Devices.query({serialNumber: oldDeviceSN});
-     	oldDevice.$promise.then(function(){
-     				oldDevice = oldDevice[0];
-     		     	console.log('oldDevice: ', oldDevice);
-			     	oldDevice.status = 'Pending Shop Movement';
-     				oldDevice.$update();
+     	// var oldDeviceSN = $scope.offender.deviceSN;
+     	// var oldDevice = Devices.query({serialNumber: oldDeviceSN});
+     	// oldDevice.$promise.then(function(){
+     	// 			oldDevice = oldDevice[0];
+     	// 	     	console.log('oldDevice: ', oldDevice);
+			   //   	oldDevice.status = 'Pending Shop Movement';
+     	// 			oldDevice.$update();
 
-     	});
+     	// });
 
 
      	$scope.offender.deviceSN = $scope.availableDevices[row]['serialNumber'];

@@ -917,8 +917,9 @@ job.start();
 //Charge all customers on AutoPay
 var jobCharge = new CronJob({
   // cronTime: '10 * * * * 0-6',
-   cronTime: '10 30 23 * * 0-6',
-  //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
+   // cronTime: '10 30 23 * * 0-6',
+   cronTime: '0 */1 * * * 1-7', 
+  // Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Auto Charge OnTick called');
   	var today = new moment();
@@ -947,10 +948,14 @@ var chargeIt = function(pmt, callback){
 	var offender = Offender.findById(pmt.offender).populate('user').exec(function(err, offender) {
 		if (err) {
 			console.log('Error Line 602 -- ', err);
-			return err;
+			return callback('Error'+err, null);
 		}
 
-		if (! offender) return console.log('Failed to load Offender ' + id);
+		if (! offender) {
+
+			 console.log('Failed to load Offender ' + pmt.offender);
+			 return callback('No Offender Found: '+pmt.offender, null);
+			}
 
 		console.log('Got our oFfender on line 608', offender);
 

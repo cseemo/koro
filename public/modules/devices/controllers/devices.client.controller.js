@@ -21,6 +21,9 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 		// }
 		// }
 
+		$scope.shops = Shops.query();
+		$scope.clients = Offenders.query();
+		
 		// Create new Device
 		$scope.create = function() {
 			console.log('Making new device');
@@ -65,8 +68,70 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 
 		// Update existing Device
 		$scope.update = function() {
-			console.log('Updateing');
-			var device = $scope.device ;
+			var device = $scope.device;
+			if($scope.deviceType){
+				console.log('Updateing Device',$scope.deviceType);
+				device.type = $scope.deviceType;
+
+			}else {
+				console.log('No Device Type');
+				console.log('Device: ', device);
+			}
+			
+			
+			device.type = $scope.deviceType;
+			if($scope.customer){
+				console.log('SCOPE.CUSTOMER Exists');
+				device.offender = $scope.customer._id;
+			} else if(device.offender){
+				console.log('No Scope.customer but we have device.offender', device.offender);
+			} else {
+				console.log('No offender assigned');
+				device.offender = null;
+			}
+
+			console.log('Device Status: ', device.status);
+
+			$scope.statusOptions = ['New Inventory', 'En Route to Shop', 'Pending Shop Movement', 'Deployed', 'Pending Removal', 'Pending Return Shipment', 'En Route to Budget', 'Out For Repair', 'Other'];
+			var destination;
+
+
+			switch(device.status){
+				case 'New Inventory':
+				console.log('New INventory');
+				destination = 'Budget Shelf';
+				break;
+
+				case 'En Route to Shop':
+				console.log('En Route to Shop');
+				destination = $scope.myshop.name+ ' in '+$scope.myshop.city+', '+$scope.myshop.state;
+				console.log('Shop: ', $scope.myshop);
+				break;
+
+				case 'Pending Shop Movement':
+				console.log('Pending Shop Movement');
+				destination = 'Shop Shelf';
+				break;
+
+				default:
+				console.log('Defualt');
+				destination = 'Unknown';
+			
+
+
+
+
+
+			}
+			
+			// console.log($scope.customer);
+			var details = {
+				requestor: $scope.authentication.user.displayName,
+				destination: destination,
+				type: device.status,
+				updated: Date.now(),
+			};
+			device.details.push(details);
 
 			device.$update(function() {
 				$location.path('devices/' + device._id);
@@ -91,10 +156,50 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 			$scope.device = Devices.get({ 
 				deviceId: $stateParams.deviceId
 			});
+			// console.log($scope.device);
+			// var shop = Shops.get({
+			// 	shopId: $scope.device.shopId
+			// });
+			// console.log('Got shops');
+
 		};
 
 		$scope.typeOfDevices = ['Brac Auditlock 1', 'Ali\'s Device', 'Other'];
+		$scope.statusOptions = ['New Inventory', 'En Route to Shop', 'Pending Shop Movement', 'Deployed', 'Pending Removal', 'Pending Return Shipment', 'En Route to Budget', 'Out For Repair', 'Other'];
 
+		$scope.getDeviceDetails = function(){
+			console.log('Test');
+
+			$scope.device = Devices.get({ 
+				deviceId: $stateParams.deviceId
+			});
+			$scope.device.$promise.then(function(){
+				var shop = Shops.get({ 
+				shopId: $scope.device.shopId
+			});
+				shop.$promise.then(function(){
+					console.log('Shop Name: ', shop.name);
+					$scope.myshop = shop;
+				})
+				if($scope.device && $scope.device.offender){
+					console.log('Got a device w/ offender');
+					console.log('Offender ID from Device: ', $scope.device.offender);
+
+				var offender = Offenders.get({
+					offenderId: $scope.device.offender
+				})
+				offender.$promise.then(function(){
+					console.log('Offender Name: ', offender.displayName);
+					$scope.offender = offender;
+
+				})
+			}
+				
+
+			})
+			
+
+		};
 
 		$scope.openModal = function(type){
 
