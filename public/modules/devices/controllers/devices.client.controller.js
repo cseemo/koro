@@ -194,6 +194,155 @@ $scope.statusOptions = ['New Inventory', 'En Route to Shop', 'Pending Shop Movem
 		// });
 		};
 
+		var changeDevice = function(device, offender){
+			console.log('Changing Device Data: ');
+			console.log('Device: ', device);
+			console.log('Offender: ', offender);
+
+
+			console.log('Device Status: ', device.status);
+
+				var destination;
+
+
+			switch(device.status){
+				case 'New Inventory':
+				console.log('New INventory');
+				destination = 'Budget Shelf';
+				break;
+
+				case 'En Route to Shop':
+				console.log('En Route to Shop');
+				destination = $scope.myshop.name+ ' in '+$scope.myshop.city+', '+$scope.myshop.state;
+				console.log('Shop: ', $scope.myshop);
+				break;
+
+				case 'Pending Shop Movement':
+				console.log('Pending Shop Movement');
+				destination = 'Shop Shelf';
+				break;
+
+				case 'Pending Shop Movement':
+				console.log('Pending Shop Movement');
+				destination = 'Shop Shelf';
+				break;
+
+				case 'Deployed':
+				console.log('Deployed');
+				if($scope.customer){
+					destination = $scope.customer.displayName+' '+$scope.customer.vehicleYear+' '+$scope.customer.vehicleMake+' '+$scope.customer.vehicleModel;
+				}else if (offender && offender!=='nada'){
+					console.log('Got an Offender');
+					
+					destination = offender.displayName+' '+offender.vehicleYear+' '+offender.vehicleMake+' '+offender.vehicleModel;
+				}else {
+					destination = 'Client\'s Vehicle';
+				}
+				
+				break;
+
+				case 'Pending Removal':
+				console.log('Pending Removeal');
+				destination = 'Shop Shelf - Or Calibration?';
+				break;
+
+				case 'En Route to Budget':
+				console.log('Coming to Budget');
+				destination = 'Budget HQ';
+				break;
+
+				case 'Out For Repair':
+				console.log('Out For Repair');
+				destination = 'Repair Facility/China';
+				break;
+
+				
+
+				default:
+				console.log('Defualt');
+				destination = 'Unknown';
+			
+
+
+
+
+
+			}
+			
+			// console.log($scope.customer);
+			var details = {
+				requestor: $scope.authentication.user.displayName,
+				destination: destination,
+				type: device.status,
+				updated: Date.now(),
+			};
+			device.details.push(details);
+
+			device.$update(function() {
+				$location.path('devices/' + device._id);
+				toastr.success('Device notes have been saved...');
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+
+
+
+		};
+
+		$scope.updateDeviceInfo = function(){
+			console.log('Updating Device Info::');
+			console.log('Device: ', $scope.device);
+			var device = $scope.device;
+			var offender = null;
+
+			if($scope.deviceType){
+				console.log('Updateing Device',$scope.deviceType);
+				// device.type = $scope.deviceType;
+				
+			}else {
+				console.log('No Device Type');
+				// console.log('Device: ', device);
+			}
+			
+			
+			// device.type = $scope.deviceType;
+
+
+			if($scope.customer){
+				console.log('SCOPE.CUSTOMER Exists');
+				device.offender = $scope.customer._id;
+				offender = $scope.customer;
+				changeDevice(device, offender);
+
+			} else if(device.offender){
+
+				console.log('No Scope.customer but we have device.offender', device.offender);
+				offender = Offenders.get({
+						offenderId: device.offender
+					});
+
+				offender.$promise.then(function(){
+					changeDevice(device, offender);
+
+
+
+				});
+
+
+
+
+			} else {
+				console.log('No offender assigned');
+				
+				changeDevice(device, offender);
+
+			}
+
+			
+
+
+		};
+
 		// Find a list of Devices
 		$scope.find = function() {
 			$scope.devices = Devices.query();

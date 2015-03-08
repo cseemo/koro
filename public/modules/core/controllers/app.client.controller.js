@@ -154,7 +154,8 @@
 
               console.log('Getting Stuff...', shop);
                     $scope.workorders = Workorders.query({ 
-                    shopId: shop._id
+                    shopId: shop._id,
+                    status: 'Complete'
                   });
                   console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
                   
@@ -175,9 +176,15 @@
                         totalRevenue = parseFloat(totalRevenue, 2)+parseFloat(wo.amount, 2);
                         console.log('Total Revenue so far: ', totalRevenue);
                       }
+                      if(wo.shopFee){
+                        console.log('Wo has a Shop Fee: ', wo.shopFee);
+                        totalOwedToShop = parseFloat(totalOwedToShop)+parseFloat(wo.shopFee);
+                      }
+
                       if(wo.pmtStatus !== 'Due'){
                         console.log('Paid...', wo);
                          paidRevenue = parseFloat(paidRevenue, 2)+parseFloat(wo.amount, 2);
+                        
                       }else {
                         console.log('Payment Due');
                         console.log(wo);
@@ -191,7 +198,9 @@
                     shop.totalInstalls = installCount;
                     shop.totalRevenue = totalRevenue;
                     shop.paidRevenue = paidRevenue;
-
+                    shop.totalOwedToShop = totalOwedToShop;
+                    shopBalance = parseFloat(totalOwedToShop)-parseFloat(paidRevenue);
+                    shop.shopBalance = shopBalance;
 
                   });
 

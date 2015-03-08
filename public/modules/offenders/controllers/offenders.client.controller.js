@@ -2386,7 +2386,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				shopId: $scope.serviceCenter._id, 
 				amount: chargeAmount,
 				creditsOwed: $scope.firstMonthCredit,
-				toWhomName: $scope.toWhomName
+				toWhomName: $scope.toWhomName,
+				shopFee: $scope.shopFee
 				
 			});
 
