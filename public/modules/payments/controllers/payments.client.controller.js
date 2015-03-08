@@ -1,8 +1,8 @@
 'use strict';
 
 // Payments controller
-angular.module('payments').controller('PaymentsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Payments',
-	function($scope, $stateParams, $location, Authentication, Payments ) {
+angular.module('payments').controller('PaymentsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Payments', '$filter', 
+	function($scope, $stateParams, $location, Authentication, Payments, $filter ) {
 		$scope.authentication = Authentication;
 
 		// Create new Payment
@@ -21,6 +21,24 @@ angular.module('payments').controller('PaymentsController', ['$scope', '$statePa
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
+		};
+
+		$scope.findPmtSummary = function(){
+			var pmts = Payments.query({
+				status: 'Paid',
+				
+			});
+			pmts.$promise.then(function(stuff){
+				console.log('Stuff: ', stuff);
+
+		
+			console.log('Pmts: ', pmts);
+			 $scope.sumpayments = $filter('orderBy')(pmts, '-paidDate');
+  			console.log('SumPayments: ', $scope.sumpayments);
+  		})
+
+
+
 		};
 
 		// Remove existing Payment

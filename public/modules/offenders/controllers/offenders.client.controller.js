@@ -3726,7 +3726,12 @@ $scope.makePmt = function(){
 			console.log('Has AuthCode -- need to mark as paid', payment.authCode);
 			payment.status = 'Paid';
 		}else{
-
+			if(!$scope.pmtOpt){
+				console.log('No payment option chosen...still due');
+				payment.paidDate = null;
+				payment.status = 'Due';
+				payment.$update();
+			}else 
 			if($scope.pmtOpt!=='Credit Card'){
 				payment.notes = 'In Person Payment Received by: '+$scope.authentication.user.displayName+'. '+$scope.payment.notes;
 				payment.paidDate = Date.now();

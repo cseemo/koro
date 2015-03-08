@@ -524,7 +524,7 @@ var mongoose = require('mongoose'),
 		'from_email': 'admin@budgetiid.com',
 		'from_name': 'Budget IID, LLC',
 		'to': [{
-			'email': 'cseemo@gmail.com', //offender.offenderEmail,
+			'email': offender.offenderEmail,
 			'name': offender.displayName,
 				'type': 'to'
 		}],
@@ -917,8 +917,8 @@ job.start();
 //Charge all customers on AutoPay
 var jobCharge = new CronJob({
   // cronTime: '10 * * * * 0-6',
-   // cronTime: '10 30 23 * * 0-6',
-   cronTime: '0 */1 * * * 1-7', 
+   cronTime: '10 30 23 * * 0-6',
+   // cronTime: '0/30 * * * * 0-6', 
   // Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
   	console.log('Auto Charge OnTick called');
@@ -957,7 +957,7 @@ var chargeIt = function(pmt, callback){
 			 return callback('No Offender Found: '+pmt.offender, null);
 			}
 
-		console.log('Got our oFfender on line 608', offender);
+		console.log('Got our oFfender on line 608', offender.displayName);
 
 	// var offender = offenderByID(pmt.offender, function(err, cus){
 	// 	if(err){
@@ -1036,6 +1036,9 @@ var chargeIt = function(pmt, callback){
 
 
 
+		}else {
+			console.log('Offneder has no CC on file - No Merchant ID & Payment ProfileID');
+			return callback(null, 'NO CC on File');
 		}
 
 	})
@@ -1046,6 +1049,7 @@ var chargeIt = function(pmt, callback){
 };
 var autoCharge = function(){
 console.log('Charging cards now...');
+var chargeReport = [];
 var today = moment().endOf('day');
 var tomorrow = moment(today).add(1, 'days');
 console.log('Today is: ', today._d);
@@ -1085,9 +1089,16 @@ console.log('Tomorrow will be : ', tomorrow._d);
 						var dueDate = item.dueDate;
 						var status = item.status;
 						console.log('This will be charged '+item.amount+' because it is '+item.status+' and it was due: '+item.dueDate);
+						
 						chargeIt(item, function(err, data){
-							console.log('Return from charge it line 704', err);
-							console.log('Data: ', data);
+							if(err){
+								console.log('Return from charge it line 704', err);
+								chargeReport.push({'Payment': item, 'Status': err});
+								return callback();
+							}
+							console.log('Pmts Line 1093 Return from ChargeIt: ', data);
+							chargeReport.push({'Payment': item, 'Status': data});
+							return callback();
 						});
 						// async.waterfall([
 						// 	function(){ callback(item);},
@@ -1131,11 +1142,23 @@ console.log('Tomorrow will be : ', tomorrow._d);
 
 
 					// if(item.billDate == n ){
+					}, function(){
+						console.log('Payment Report!!!');
+						// console.log('Data from callback line 1144: ', data);
+						console.log('Charge Report: ', chargeReport);
+						
+
 					});
+
+					// }).then(function(){
+					// 	console.log('Done w that shit');
+					// 	console.log('Charge Report: ', chargeReport);
+					// });
 			}
 		});
 
 	console.log('Done');
+	
 };
 
 // var job2 = new CronJob({

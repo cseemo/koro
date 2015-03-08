@@ -7,7 +7,8 @@ angular.module('payments').config(['$stateProvider',
 		$stateProvider.
 		state('listPayments', {
 			url: '/payments',
-			templateUrl: 'modules/payments/views/list-payments.client.view.html'
+			// templateUrl: 'modules/payments/views/list-payments.client.view.html'
+			templateUrl: 'modules/payments/views/summary-payment.client.view.html'
 		}).
 		state('createPayment', {
 			url: '/payments/create',

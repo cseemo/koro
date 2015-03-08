@@ -83,7 +83,7 @@ z-index: 999;
                     <label class="control-label" for="name">Service Center</label>
                     <div class="controls">
                        <!--  <input type="text" data-ng-model="device.status" id="status" class="form-control" placeholder="Type" > -->
-                       <select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"><option value="">{{myshop.name}} {{myshop.address}} {{myshop.city}}, {{myshop.state}}</option></select>
+                       <select class="form-control" data-ng-model="serviceCenter" name="Shops" data-ng-options="shop as (shop.name+' - '+shop.address+' '+shop.city+', '+shop.state) for shop in shops" data-ng-change="changeSvcCenter()"><option value="">{{myshop.name}} {{myshop.address}} {{myshop.city}} {{myshop.state}}</option></select>
 
                        
                     </div>

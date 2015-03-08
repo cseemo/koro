@@ -66,72 +66,123 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 			}
 		};
 
+
+$scope.statusOptions = ['New Inventory', 'En Route to Shop', 'Pending Shop Movement', 'Deployed', 'Pending Removal', 'Pending Return Shipment', 'En Route to Budget', 'Out For Repair', 'Other'];
+		
 		// Update existing Device
 		$scope.update = function() {
 			var device = $scope.device;
-			if($scope.deviceType){
-				console.log('Updateing Device',$scope.deviceType);
-				device.type = $scope.deviceType;
+			// if($scope.deviceType){
+			// 	console.log('Updateing Device',$scope.deviceType);
+			// 	device.type = $scope.deviceType;
 
-			}else {
-				console.log('No Device Type');
-				console.log('Device: ', device);
-			}
+			// }else {
+			// 	console.log('No Device Type');
+			// 	console.log('Device: ', device);
+			// }
 			
 			
-			device.type = $scope.deviceType;
-			if($scope.customer){
-				console.log('SCOPE.CUSTOMER Exists');
-				device.offender = $scope.customer._id;
-			} else if(device.offender){
-				console.log('No Scope.customer but we have device.offender', device.offender);
-			} else {
-				console.log('No offender assigned');
-				device.offender = null;
-			}
-
-			console.log('Device Status: ', device.status);
-
-			$scope.statusOptions = ['New Inventory', 'En Route to Shop', 'Pending Shop Movement', 'Deployed', 'Pending Removal', 'Pending Return Shipment', 'En Route to Budget', 'Out For Repair', 'Other'];
-			var destination;
+			// device.type = $scope.deviceType;
+			// if($scope.customer){
+			// 	console.log('SCOPE.CUSTOMER Exists');
+			// 	device.offender = $scope.customer._id;
+			// 	offender = $scope.customer;
+			// } else if(device.offender){
+			// 	console.log('No Scope.customer but we have device.offender', device.offender);
+			// 	var offender = Offenders.get({
+			// 			offenderId: device.offender
+			// 		});
 
 
-			switch(device.status){
-				case 'New Inventory':
-				console.log('New INventory');
-				destination = 'Budget Shelf';
-				break;
+			// } 
+			// else {
+			// 	console.log('No offender assigned');
+			// 	device.offender = null;
+			// 	offender = null;
+			// }
 
-				case 'En Route to Shop':
-				console.log('En Route to Shop');
-				destination = $scope.myshop.name+ ' in '+$scope.myshop.city+', '+$scope.myshop.state;
-				console.log('Shop: ', $scope.myshop);
-				break;
+			// offender.$promise.then(function(){
 
-				case 'Pending Shop Movement':
-				console.log('Pending Shop Movement');
-				destination = 'Shop Shelf';
-				break;
 
-				default:
-				console.log('Defualt');
-				destination = 'Unknown';
+
+			
+			// console.log('Device Status: ', device.status);
+
+			// 	var destination;
+
+
+			// switch(device.status){
+			// 	case 'New Inventory':
+			// 	console.log('New INventory');
+			// 	destination = 'Budget Shelf';
+			// 	break;
+
+			// 	case 'En Route to Shop':
+			// 	console.log('En Route to Shop');
+			// 	destination = $scope.myshop.name+ ' in '+$scope.myshop.city+', '+$scope.myshop.state;
+			// 	console.log('Shop: ', $scope.myshop);
+			// 	break;
+
+			// 	case 'Pending Shop Movement':
+			// 	console.log('Pending Shop Movement');
+			// 	destination = 'Shop Shelf';
+			// 	break;
+
+			// 	case 'Pending Shop Movement':
+			// 	console.log('Pending Shop Movement');
+			// 	destination = 'Shop Shelf';
+			// 	break;
+
+			// 	case 'Deployed':
+			// 	console.log('Deployed');
+			// 	if($scope.customer){
+			// 		destination = $scope.customer.displayName+' '+$scope.customer.vehicleYear+' '+$scope.customer.vehicleMake+' '+$scope.customer.vehicleModel;
+			// 	}else if (offender && offender!=='nada'){
+			// 		console.log('Got an Offender');
+					
+			// 		destination = offender.displayName+' '+offender.vehicleYear+' '+offender.vehicleMake+' '+offender.vehicleModel;
+			// 	}else {
+			// 		destination = 'Client\'s Vehicle';
+			// 	}
+				
+			// 	break;
+
+			// 	case 'Pending Removal':
+			// 	console.log('Pending Removeal');
+			// 	destination = 'Shop Shelf - Or Calibration?';
+			// 	break;
+
+			// 	case 'En Route to Budget':
+			// 	console.log('Coming to Budget');
+			// 	destination = 'Budget HQ';
+			// 	break;
+
+			// 	case 'Out For Repair':
+			// 	console.log('Out For Repair');
+			// 	destination = 'Repair Facility/China';
+			// 	break;
+
+				
+
+			// 	default:
+			// 	console.log('Defualt');
+			// 	destination = 'Unknown';
 			
 
 
 
 
 
-			}
+			// }
 			
-			// console.log($scope.customer);
-			var details = {
-				requestor: $scope.authentication.user.displayName,
-				destination: destination,
-				type: device.status,
-				updated: Date.now(),
-			};
-			device.details.push(details);
+			// // console.log($scope.customer);
+			// var details = {
+			// 	requestor: $scope.authentication.user.displayName,
+			// 	destination: destination,
+			// 	type: device.status,
+			// 	updated: Date.now(),
+			// };
+			// device.details.push(details);
 
 			device.$update(function() {
 				$location.path('devices/' + device._id);
@@ -139,6 +190,8 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
+
+		// });
 		};
 
 		// Find a list of Devices
@@ -174,13 +227,23 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 				deviceId: $stateParams.deviceId
 			});
 			$scope.device.$promise.then(function(){
-				var shop = Shops.get({ 
-				shopId: $scope.device.shopId
-			});
-				shop.$promise.then(function(){
-					console.log('Shop Name: ', shop.name);
-					$scope.myshop = shop;
-				})
+				if($scope.device.shopId){
+					var shop = Shops.get({ 
+					shopId: $scope.device.shopId
+					});
+					shop.$promise.then(function(){
+						console.log('Shop Name: ', shop.name);
+						$scope.myshop = shop;
+					})
+
+				}else{
+					$scope.myshop = {
+						name: 'Unassigned',
+						address: '',
+						city: ''
+					};
+				}
+	
 				if($scope.device && $scope.device.offender){
 					console.log('Got a device w/ offender');
 					console.log('Offender ID from Device: ', $scope.device.offender);
@@ -488,26 +551,67 @@ angular.module('devices').controller('DevicesController', ['$scope', '$statePara
 
      };
 
-     $scope.ok = function(){
-     	
+     $scope.ok = function(kind){
+     	console.log('Ok Prssed: kind is: ', kind);
      	var devices = $scope.devicesToShip;
+     	var destination = null;
+     	var type = null;
+     	var status = null;
+
      	angular.forEach(devices, function(device){
 			console.log('Device ID: ', device._id);
-			device.shop = $scope.authentication.user.shop;
-			device.status = 'En Route to Budget';
+
+			if(kind==='shipToShop'){
+				// device.shop = $scope.authentication.user.shop;
+				status = 'En Route to Shop';
+				type = 'Ship to Shop',
+				destination = 'Shop Info';
+
+			}else if (kind==='shipToBudget'){
+				status = 'En Route to Budget';
+				type = 'Ship to Budget',
+				destination = 'Budget Corporate';
+
+
+			}else if (kind==='shopCheckIn'){
+				status = 'Pending Deployment';
+				device.shop = $scope.authentication.user.shop;
+				type = 'Shop Check In',
+				destination = 'Shop Shelf';
+
+			}
+
+			else{
+				console.log('NO kind was detected');
+				status = 'Unknown';
+				// device.shop = $scope.authentication.user.shop;
+				type = 'Unknown',
+				destination = 'Unknown';
+
+			}
+			console.log('Status: ', status);
+			
+			device.status = status;
+
 			device.details.push({
-				type: 'Ship to Budget',
+				type: type,
 				updated: Date.now(),
-				destination: 'Budget Corporate',
+				destination: destination,
 				requestor: $scope.authentication.user.displayName
 			});
 			
+			console.log('Device before Saving: ', device);
+			device.$update(function(resp){
+				
 
-			device.$update();
+				console.log('Device Saved: ', resp);
+			});
 			
-			console.log('Device: ', device);
+			// console.log('Device: ', device);
 
 						})
+
+
      	 $modalInstance.close('submitted');
      	 var qtyDetails = devices.length+' device has';
      	 if(devices.length > 1) qtyDetails = devices.length+' devices have';
