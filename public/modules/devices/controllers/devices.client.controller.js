@@ -343,6 +343,15 @@ $scope.statusOptions = ['New Inventory', 'En Route to Shop', 'Pending Shop Movem
 
 		};
 
+		$scope.changeSvcCenter = function(){
+			console.log('Changing Service Center: Line 347: ');
+			console.log('Old SHop: ', $scope.myshop);
+			$scope.myshop = $scope.serviceCenter;
+			console.log('My SHop: ', $scope.myshop);
+			$scope.device.shopId = $scope.myshop._id;
+
+		};
+
 		// Find a list of Devices
 		$scope.find = function() {
 			$scope.devices = Devices.query();
