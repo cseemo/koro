@@ -35,8 +35,14 @@ var mongoose = require('mongoose'),
 
 		Workorder.remove().where({offender: id}).exec(function(err, wo) {
 		if (err) return err;
-		if (! wo) return new Error('Failed to load Payment ' + id);
+		if (! wo) return new Error('Failed to load Workorder ' + id);
 		console.log('Workorder Found: ', id);
+		});
+
+		Device.remove().where({offender: id}).exec(function(err, device) {
+		if (err) return err;
+		if (! device) return new Error('Failed to load Device ' + id);
+		console.log('Device Found: ', id);
 		});
 
 	  };
