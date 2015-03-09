@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('errors'),
 	Payment = mongoose.model('Payment'),
+	Device = mongoose.model('Device'),
 
 	Workorder = mongoose.model('Workorder'),
 	_ = require('lodash');
@@ -92,6 +93,96 @@ var mongoose = require('mongoose'),
 				});
 			}
 		});
+
+		//Get Devices
+			  	Device.find().exec(function(err, devices) {
+			if (err) {
+				console.log('Error !!! :', err);
+				return res.status(400).send({
+					message: err //errorHandler.getErrorMessage(err)
+				});
+			} else {
+				console.log('Got Devices: ');
+				async.forEach(devices, function(item, callback){
+					console.log('Offender: ', item.offender);
+
+						var offender = Offender.findById(item.offender).exec(function(err, offender) {
+							if (err) {
+								console.log('Error Line 111 cleanup -- ', err);
+								return err;
+							}
+
+							if (! offender) {
+								
+								deletePayments(item.offender);
+								return console.log('No Offender found');
+							}
+
+							console.log('Got our oFfender  --- *** Devices');
+						});
+
+					
+					// async.forEach(offenders, function(item, callback){
+					// console.log('Client ', item.displayName);
+					// console.log('Bill Date is: ', item.billDate);
+					// var d = new Date();
+					// var n = d.getDate();
+					// console.log('Todays date is: ', n);
+					// n = n-0+5;
+					// console.log('We are looking for people with a Bill Date of : ', n);
+
+
+
+				});
+			}
+		});
+
+
+		//Get Workorders
+
+			  	Workorder.find().exec(function(err, wos) {
+			if (err) {
+				console.log('Error !!! :', err);
+				return res.status(400).send({
+					message: err //errorHandler.getErrorMessage(err)
+				});
+			} else {
+				console.log('Got Workorders: ');
+				async.forEach(wos, function(item, callback){
+					console.log('Workorder: ', item.offender);
+
+						var offender = Offender.findById(item.offender).exec(function(err, offender) {
+							if (err) {
+								console.log('Error Line 47 cleanup -- ', err);
+								return err;
+							}
+
+							if (! offender) {
+								
+								deletePayments(item.offender);
+								return console.log('No Offender found');
+							}
+
+							console.log('Got our oFfender - WOrkorders ******');
+						});
+
+					
+					// async.forEach(offenders, function(item, callback){
+					// console.log('Client ', item.displayName);
+					// console.log('Bill Date is: ', item.billDate);
+					// var d = new Date();
+					// var n = d.getDate();
+					// console.log('Todays date is: ', n);
+					// n = n-0+5;
+					// console.log('We are looking for people with a Bill Date of : ', n);
+
+
+
+				});
+			}
+		});
+
+
 
 	  	//Get Each Workorder - Check if the Offender assigned to it still exists
 
