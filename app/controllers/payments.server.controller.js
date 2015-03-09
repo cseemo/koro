@@ -185,7 +185,7 @@ var mongoose = require('mongoose'),
 
 
 	  	//Get Each Workorder - Check if the Offender assigned to it still exists
-
+	  	res.status(200).send('Clean Up Excetued');
 
 	  };
 	  //Send Receipt for Cash Payment
