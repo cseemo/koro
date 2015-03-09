@@ -892,7 +892,7 @@ var CronJob = require('cron').CronJob;
 
 //Check who needs to be billed
 var job = new CronJob({
-  cronTime: '10 15 23 * * 0-6',
+  cronTime: '10 15 1 * * 0-6',
   // cronTime: '10 * * * * 0-6',
 
   //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
@@ -917,7 +917,7 @@ job.start();
 //Charge all customers on AutoPay
 var jobCharge = new CronJob({
   // cronTime: '10 * * * * 0-6',
-   cronTime: '10 30 23 * * 0-6',
+   cronTime: '10 30 1 * * 0-6',
    // cronTime: '0/30 * * * * 0-6', 
   // Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
   onTick: function() {
@@ -965,7 +965,7 @@ var chargeIt = function(pmt, callback){
 	// 		return callback(err);
 	// 	}
 		var cus = offender;
-		if(cus && cus.merchantCustomerId && cus.paymentProfileId){
+		if(cus && cus.merchantCustomerId && cus.paymentProfileId && pmt.amount > 0){
 			console.log('Auto Charge this bastard'+cus.displayName+' '+pmt.amount+':::'+pmt._id);
 			
 				var transaction = {
@@ -1146,7 +1146,7 @@ console.log('Tomorrow will be : ', tomorrow._d);
 						console.log('Payment Report!!!');
 						// console.log('Data from callback line 1144: ', data);
 						console.log('Charge Report: ', chargeReport);
-						
+
 
 					});
 
