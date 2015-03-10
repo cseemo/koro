@@ -1670,6 +1670,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
     
 
      $scope.updateFees = function(){
+     	console.log('Doing some updating...');
+     	console.log('Scope isntall fee', $scope.installFee);
+     	console.log('Scope Chosen: ', $scope.chosen);
      	$scope.budgetAdlFee = parseFloat($scope.installFee) - parseFloat($scope.shopFee);
      };
 
@@ -1889,13 +1892,32 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
       	// console.log('Scope Payment: ', $scope.payment);
       	if($scope.chosen==='New Install'){
       		$scope.emailSubject = 'Welcome to Budget IID, LLC';
+      		$scope.installFee = 75;
       		$scope.updateFees();
-      	}else{
+
+      	}
+      	if($scope.chosen==='Removal'){
+      		$scope.emailSubject = 'Budget IID Removal';
+      		$scope.installFee = 85;
+      		$scope.shopFee = 60;
+      		$scope.updateFees();
+
+      	}
+      	if($scope.chosen==='Calibration'){
+      		$scope.emailSubject = 'Budget IID Removal';
+      		$scope.installFee = 25;
+      		$scope.shopFee = 50;
+      		$scope.updateFees();
+
+      	}
+
+      	else{
       		$scope.shopFee = 60;
       		$scope.installFee = 25;
+      		$scope.emailSubject = 'Service Authorization from Budget IID, LLC';
       		$scope.updateFees();
       	}
-      	$scope.emailSubject = 'Service Authorization from Budget IID, LLC';
+      	
 
 
       };
@@ -2362,16 +2384,24 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         		chargeAmount = $scope.installFee;
         	} 
         	 if($scope.chosen==='30 Day Service') {
-        		chargeAmount = '0';
+        		// chargeAmount = '0';
+        		chargeAmount = $scope.installFee || '0';
         	}
         	if($scope.chosen==='Violation Reset') {
-        		chargeAmount = '50';
+        		// chargeAmount = '50';
+        		chargeAmount = $scope.installFee || '50';
         	}
         	if($scope.chosen==='Removal') {
-        		chargeAmount = '75';
+        		// chargeAmount = '75';
+        		chargeAmount = $scope.installFee || '75';
         	}
         	if($scope.chosen==='Calibration') {
-        		chargeAmount = '0';
+        		// chargeAmount = '0';
+        		chargeAmount = $scope.installFee || '0';
+        	}
+        	 if($scope.chosen==='Removal') {
+        		// chargeAmount = '0';
+        		chargeAmount = $scope.installFee || '85';
         	}
         	console.log('Charge Amount: ', chargeAmount);
         	console.log('$scope.installFee = ', $scope.installFee);

@@ -854,7 +854,7 @@ max-height: 300px;
       
         
          <label>Work Order Type</label>
-        	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"></select>
+        	  <select class="form-control" data-ng-model="chosen" name="chosen" data-ng-options="item for item in items" data-ng-change="changeType()"><option value=""></option></select>
 
         	  <br>
       
@@ -865,7 +865,7 @@ max-height: 300px;
 
   	
 <br>
-<span >
+
 
  
 
@@ -882,7 +882,7 @@ max-height: 300px;
 
         </center>
         <div class="col-md-4">
-        	 <label>Customer Install Fee</label>
+        	 <label>Customer Fee</label>
         	  <input type="text" data-ng-model="installFee"  data-ng-change="updateFees()" id="installFee" class="form-control" placeholder="80" >
         	</div>
            <div class="col-md-4">
@@ -895,21 +895,24 @@ max-height: 300px;
         	  <input type="text" data-ng-model="budgetAdlFee"  id="budgetAdlFee" class="form-control" placeholder="80" >
         	</div>
         	</div>
-<div class="row">
+<div class="row" data-ng-show="chosen==='New Install'">
+<div class="col-md-4">
+<label >Term of Service <em>(in Months)</em></label>
+  <input type="text" class="form-control"  data-ng-model="term" placeholder="Term of Service Agreement" maxlength="3">
+</div>
+
+
 <div class="col-md-4">
  <label>First Month Credit</label>
-        	  <input type="text" data-ng-model="firstMonthCredit"  id="firstMonthCredit" class="form-control" placeholder="0" >
-        	
+ <input type="text" data-ng-model="firstMonthCredit"  id="firstMonthCredit" class="form-control" placeholder="0" >  	
 </div>
 </div>
 
- <label>Term of Service <em>(in Months)</em></label>
-  <input type="text" class="form-control"  data-ng-model="term" placeholder="Term of Service Agreement" maxlength="3">
-
+ 
  
 
 
-</span>
+
   <br>
 
 

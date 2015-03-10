@@ -285,8 +285,8 @@ $scope.approveWorkOrderPayment = function(){
    						console.log('Got payment...', pmt);
 
    						});
-
-
+   						// pmt = pmt[0];
+   						// pmt.status = 'Due';
 						$http({
 					    method: 'post',
 					    url: '/chargeCard/'+wo._id,
@@ -378,7 +378,23 @@ $scope.approveWorkOrderPayment = function(){
 		};
 
 
-	
+		//Update Payment to Due
+		var updatePmtToDue = function(wo){
+			console.log('Updating Pmt to Due', wo);
+			//Get Payment with wo._id
+			console.log('ID: ', wo._id);
+			var pmt = Payments.query({
+				workorder: wo._id
+			});
+
+			pmt.$promise.then(function(){
+				pmt = pmt[0];
+				console.log('Got Payment Info: ', pmt);
+				pmt.status = 'Due';
+				pmt.$update();
+			})
+
+		};
 
 						//Shop Signs Agreement
 		$scope.signAgreement = function() {
@@ -389,9 +405,9 @@ $scope.approveWorkOrderPayment = function(){
 			toastr.success('Congratrulations, you have eSigned the documents.');
 			var Id = $scope.workorder._id;
 			var workorder = $scope.workorder;
-			workorder.authSigned = Date.now();
-			var shop = $scope.shop;
 			
+			var shop = $scope.shop;
+			updatePmtToDue(workorder);
 			workorder.$update().then(function(){
 			
 			$http({
@@ -409,6 +425,9 @@ $scope.approveWorkOrderPayment = function(){
 						console.log('Error!! ', data);
 					})
 					.success(function(data, status, headers, config) {
+						workorder.authSigned = Date.now();
+						workorder.$update();
+						
 						$scope.hideeSign=true;
 						console.log('Step = ',$scope.step);
 						var file = new Blob([data], {type: 'application/pdf'});

@@ -2227,6 +2227,11 @@ var chargeFirstMonth = function(body){
 		console.log('Offender: ', body.offender);
 		console.log('User: ', body.user);
 		console.log('Workorder: ', body.workinfo);
+		if(body.workinfo.authSigned){
+			console.log('This deal has already been signed!!! ***** DO NOT CHARRGE AGAIN!!!! ********');
+		}else {
+			
+
 		var firstMonth = parseFloat(body.offender.leaseFee)-parseFloat(body.workinfo.creditsOwed);
 		console.log('Customer owes us '+firstMonth+'for his first monthly payment');
 		var today = new moment();
@@ -2260,6 +2265,7 @@ var chargeFirstMonth = function(body){
 			console.log('No AutoPay - Invoice Generated');
 					
 		}
+	}
 
 };
 
@@ -2375,7 +2381,7 @@ exports.signAuth = function(req, res){
 
 	console.log('Sending Sign Auth Now');
 	console.log(req.body);
-	chargeFirstMonth(req.body);
+	
 	// console.log(req.query);
 	console.log(req.params);
 	console.log('Did we find Workorder Info, Offender Info, and User info?');
@@ -2396,6 +2402,7 @@ exports.signAuth = function(req, res){
 	// }
 	var workCharge;
 	if(req.body.workinfo.type==='New Install') {
+		chargeFirstMonth(req.body);
 		workCharge =  req.body.workinfo.amount || 89;
 	
 	}
@@ -2435,6 +2442,12 @@ exports.signAuth = function(req, res){
 			doc.pipe( fs.createWriteStream(myfileName) );
 			console.log('Piping that shit...', myfileName);
 		}
+		// else {
+		// 	myfileName = 'signedCustomer'+req.body.offender._id+'.pdf';
+		// 	doc.pipe( fs.createWriteStream(myfileName) );
+		// 	console.log('Piping that shit...', myfileName);
+
+		// }
 	
 	 
 	var today = new moment();

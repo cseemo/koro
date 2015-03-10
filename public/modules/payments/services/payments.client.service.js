@@ -48,7 +48,7 @@ angular.module('payments').factory('Payments', ['$resource',
 				workorder: wo._id,
 				pmtType: wo.type,
 				offender: off._id,
-				status: 'Due',
+				status: 'Pending',
 				notes: 'Pending Workorder -- Payment Due', 
 				amount: wo.amount,
 				
