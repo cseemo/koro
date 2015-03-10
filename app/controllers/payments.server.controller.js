@@ -62,6 +62,7 @@ var mongoose = require('mongoose'),
 				console.log('Got Payments: ');
 				async.forEach(payments, function(item, callback){
 					console.log('Offender: ', item.offender);
+					if(item.offender!==undefined){
 
 						var offender = Offender.findById(item.offender).exec(function(err, offender) {
 							if (err) {
@@ -77,6 +78,9 @@ var mongoose = require('mongoose'),
 
 							console.log('Got our oFfender');
 						});
+
+					}
+			
 
 					
 					// async.forEach(offenders, function(item, callback){
@@ -105,8 +109,9 @@ var mongoose = require('mongoose'),
 				console.log('Got Devices: ');
 				async.forEach(devices, function(item, callback){
 					console.log('Offender: ', item.offender);
+					if(item.offender!==undefined){
 
-						var offender = Offender.findById(item.offender).exec(function(err, offender) {
+												var offender = Offender.findById(item.offender).exec(function(err, offender) {
 							if (err) {
 								console.log('Error Line 111 cleanup -- ', err);
 								return err;
@@ -120,6 +125,9 @@ var mongoose = require('mongoose'),
 
 							console.log('Got our oFfender  --- *** Devices');
 						});
+
+					}
+
 
 					
 					// async.forEach(offenders, function(item, callback){
@@ -150,7 +158,7 @@ var mongoose = require('mongoose'),
 				console.log('Got Workorders: ');
 				async.forEach(wos, function(item, callback){
 					console.log('Workorder: ', item.offender);
-
+					if(item.offender!==undefined){
 						var offender = Offender.findById(item.offender).exec(function(err, offender) {
 							if (err) {
 								console.log('Error Line 47 cleanup -- ', err);
@@ -166,7 +174,7 @@ var mongoose = require('mongoose'),
 							console.log('Got our oFfender - WOrkorders ******');
 						});
 
-					
+					}
 					// async.forEach(offenders, function(item, callback){
 					// console.log('Client ', item.displayName);
 					// console.log('Bill Date is: ', item.billDate);
