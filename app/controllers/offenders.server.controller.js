@@ -6,6 +6,9 @@
 var mongoose = require('mongoose'),
 	// errorHandler = require('./errors'),
 	Offender = mongoose.model('Offender'),
+	Payment = mongoose.model('Payment'),
+	Device = mongoose.model('Device'),
+	Workorder = mongoose.model('Workorder'),
 	_ = require('lodash');
 
 	var Authorize = require('auth-net-types'),
@@ -17,6 +20,10 @@ var mongoose = require('mongoose'),
 	    key: '37HmG92v4J2yDsMp', //Budget Actual API
 	    sandbox: false //true // false
 	  });
+
+	  
+
+	  var payments = require('../../app/controllers/payments');
 
 //Delete Card Info
 var delCardInfo = function(off){
@@ -880,6 +887,31 @@ exports.update = function(req, res) {
 	});
 };
 
+
+//Delete Stuff
+var deleteStuff = function(id){
+	console.log('Deleting Stuff', id);
+
+	  	Payment.remove().where({offender: id}).exec(function(err, payment) {
+		if (err) return err;
+		if (! payment) return new Error('Failed to load Payment ' + id);
+		console.log('Payment Removed: ', id);
+		});
+
+		Workorder.remove().where({offender: id}).exec(function(err, wo) {
+		if (err) return err;
+		if (! wo) return new Error('Failed to load Workorder ' + id);
+		console.log('Workorder Found: ', id);
+		});
+
+		Device.remove().where({offender: id}).exec(function(err, device) {
+		if (err) return err;
+		if (! device) return new Error('Failed to load Device ' + id);
+		console.log('Device Found: ', id);
+		});
+
+
+};
 /**
  * Delete an Offender
  */
@@ -892,6 +924,7 @@ exports.delete = function(req, res) {
 				message: err //errorHandler.getErrorMessage(err)
 			});
 		} else {
+			deleteStuff(req.offender._id);
 			res.jsonp(offender);
 		}
 	});
