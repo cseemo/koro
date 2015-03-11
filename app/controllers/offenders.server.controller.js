@@ -1004,7 +1004,7 @@ exports.offenderByDl = function(req, res) {
  */
 exports.offenderByID = function(req, res, next, id) { Offender.findById(id).populate('user', 'displayName').exec(function(err, offender) {
 		if (err) return next(err);
-		if (! offender) return next(new Error('Failed to load Offender ' + id));
+		if (! offender) return next(new Error('Failed to load Offender ' + id+' at: Time/Date: '+Date.now()));
 		req.offender = offender ;
 		next();
 	});
