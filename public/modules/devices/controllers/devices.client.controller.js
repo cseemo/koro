@@ -463,6 +463,12 @@ $scope.statusOptions = ['New Inventory', 'En Route to Shop', 'Pending Shop Movem
             
            
 		  });
+		  modalInstance.result.then(function(result){
+		  	console.log('Result: ', result);
+		  	console.log('Test Device Test');
+		  	$scope.devices.push(result.Device);
+		  	$scope.init();
+		  });
 
 		  };
 
@@ -769,7 +775,7 @@ $scope.statusOptions = ['New Inventory', 'En Route to Shop', 'Pending Shop Movem
 
 						})
 
-
+		console.log('About tu submit');
      	 $modalInstance.close('submitted');
      	 var qtyDetails = devices.length+' device has';
      	 if(devices.length > 1) qtyDetails = devices.length+' devices have';
@@ -830,7 +836,7 @@ $scope.statusOptions = ['New Inventory', 'En Route to Shop', 'Pending Shop Movem
 			device.$save(function(response) {
 				console.log('Saved');
 				
-				 $modalInstance.close();
+				 $modalInstance.close({'Device': response});
 				toastr.info('This device has been added to the inventory');
 
 			}, function(errorResponse) {

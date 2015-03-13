@@ -222,9 +222,23 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
             }, 
             payment: function() {
             	return $scope.payments[id]
+            },
+            Row: function() {
+            	return id;
             }
           }
         });
+
+        modalInstance.result.then(function(result) {
+        	// console.log('Status: ', status);
+        	// console.log('Workorder on close: ', wo);
+        	// console.log('Payment on close: ', pmt);
+          // $scope.selected = selectedItem;
+          // console.log('Result from Payment Modal', result);
+          console.log('Modal info from openPmt ', result);
+          $scope.payments.splice(result, 1);
+           
+     	 });
 
 		};
 
@@ -251,12 +265,14 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
             
           }
         });
-        modalInstance.result.then(function() {
+        modalInstance.result.then(function(result) {
         	// console.log('Status: ', status);
         	// console.log('Workorder on close: ', wo);
         	// console.log('Payment on close: ', pmt);
           // $scope.selected = selectedItem;
-          
+          // console.log('Result from Payment Modal', result);
+          console.log('Modal info from openPmt ', result);
+           
 
         }, function(status, wo, pmt) {
           $log.info('Modal dismissed at: ' + new Date());
@@ -264,17 +280,25 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
         	console.log('Workorder on close: ', wo);
         	console.log('Payment on close: ', pmt);
           console.log('Returnnnnn: ', status);
-          if(status==='Paid'){
+          console.log('Return Status: ', status.Status);
+          if(status.Status==='Paid'){
           	console.log('Paid - strike that');
 
           	$scope.checklist[5]['strike'] = "done-true" ;
+          	if($scope.workorder.authSigned){
+          		$scope.orderComplete = true;
+          	}
+          	console.log('What is WO?', $scope.workorder);
+          	// updateChecklist($scope.workorder._id);
+          	$scope.findOne2();
           } else {
           	console.log('Turn off the strike');
           	console.log("ScopeWOrkorder", $scope.workorder);
           	// $scope.checklist[5]['strike'] = "";
           	var myEl = angular.element( document.querySelector( '#test5' ) );
 			myEl.removeClass('done-true'); 
-          	updateChecklist($scope.workorder._id);
+          	// updateChecklist($scope.workorder._id);
+          	$scope.findOne2();
           }
 
 
@@ -303,8 +327,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
             
           }
         });
-        modalInstance.result.then(function(selectedItem, offender) {
-          $scope.selected = selectedItem;
+        modalInstance.result.then(function(result) {
+          // $scope.selected = selectedItem;
+          console.log('Modal info from openPmtInfo ', result);
+         updateChecklist($scope.workorder._id);
         }, function() {
           $log.info('Modal dismissed at: ' + new Date());
         });
@@ -333,8 +359,11 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 
 		$scope.customerVideo = function() {
-			$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+			// $scope.workorder = $scope.findWorkOrder($scope.workorder._id);
 				// console.log('Wo is: ', wo);
+				$scope.workorder = Workorders.get({
+				workorderId: $scope.workorder._id
+			});
 				$scope.workorder.$promise.then(function() {
 					var wo = $scope.workorder;
 					console.log('Got the work order promise complete', $scope.workorder);
@@ -352,9 +381,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 		};
 
 		$scope.inspection = function() {
-			$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+			// $scope.workorder = $scope.findWorkOrder($scope.workorder._id);
 				// console.log('Wo is: ', wo);
-				$scope.workorder.$promise.then(function() {
+					$scope.workorder = Workorders.get({
+				workorderId: $scope.workorder._id
+			});
+					$scope.workorder.$promise.then(function() {
 					var wo = $scope.workorder;
 					console.log('Got the work order promise complete', $scope.workorder);
 					wo.inspected = Date.now();
@@ -391,8 +423,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 	            }
 	          }
 	        });
-	        modalInstance.result.then(function(selectedItem, offender) {
-	          $scope.selected = selectedItem;
+	        modalInstance.result.then(function(result) {
+	        	console.log('Result from eSign', result);
+	          // $scope.selected = selectedItem;
+	          updateChecklist($scope.workorder._id);
 	        }, function() {
 	          $log.info('Modal dismissed at: ' + new Date());
 	        });
@@ -534,9 +568,12 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			toastr.info('Customer has arrived: '+ Date.now());
 			console.log('Checking ', this);
 
-				$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+				// $scope.workorder = $scope.findWorkOrder($scope.workorder._id);
 				// console.log('Wo is: ', wo);
-				$scope.workorder.$promise.then(function() {
+					$scope.workorder = Workorders.get({
+				workorderId: $scope.workorder._id
+			});
+					$scope.workorder.$promise.then(function() {
 					var wo = $scope.workorder;
 					console.log('Got the work order promise complete', $scope.workorder);
 					wo.checkIn = Date.now();
@@ -1028,8 +1065,14 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
             }
           }
         });
-        modalInstance.result.then(function(selectedItem, offender) {
-          $scope.selected = selectedItem;
+        modalInstance.result.then(function(result) {
+        	console.log('Return Dat: ', result);
+          // $scope.selected = result.selectedItem;
+           // console.log('Sleected Item: ', result.seresult['offender']);
+           // var myData = JSON.parse(result);
+
+          console.log('Work order from Modal', result.Workorder);
+          $scope.getWorkOrders();
         }, function() {
           $log.info('Modal dismissed at: ' + new Date());
         });
@@ -1212,6 +1255,11 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
            
 		  });
 
+			modalInstance.result.then(function(result){
+				console.log('Result from Workorder Moda; ', result);
+				$scope.findOne2();
+			});
+
 		};
 
 				$scope.setNewWO = function(row){
@@ -1361,6 +1409,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
 							$scope.progress = progress;
 
+							console.log('Done updating the Checklist -- is this order complete? ');
+							console.log('AuthSigned: ', $scope.workorder.authSigned);
+							console.log('Pmt Status: ', $scope.workorder.pmtStatus);
 							if($scope.workorder.authSigned && ($scope.workorder.pmtStatus!=='Due' || $scope.workorder.amount==='0')){
 								console.log('Completed');
 								$scope.orderComplete = true;
@@ -2352,8 +2403,8 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
       
       $scope.ok = function() {
-      	console.log('Creating a New wowrk order');
-        $modalInstance.close($scope.selected.item);
+      	console.log('Creating a New wowrk order 123');
+        
         $scope.offender.assignedShop = $scope.serviceCenter._id;
         $scope.offender.pendingWorkType = $scope.chosen;
         console.log($scope.offender);
@@ -2430,8 +2481,16 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 				portalPayments.newPayment(workorder, $scope.offender);
 					
 				}
-					
-					
+					// $modalInstance.close($scope.selectedItem, $scope.offender, workorder);
+					var result = {
+						'Selected Item': $scope.selectedItem,
+						'Offender': $scope.offender, 
+						'Workorder': workorder
+					};
+					console.log('Results: ', result);
+					$modalInstance.close(result);
+					// , $scope.offender, workorder);
+
 					$scope.offender.pendingWorkOrder = response._id;
 					$scope.offender.term = $scope.term;
         			$scope.offender.$update();
@@ -2559,9 +2618,10 @@ $scope.mytime = $scope.dt;
 
 
     }
-  ]).controller('paymentDetailCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'payment', 'Payments',  function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, payment, Payments) {
+  ]).controller('paymentDetailCtrl', ['$scope', '$modalInstance', 'offender', 'Authentication', '$http', 'Workorders', 'Shops', '$location', 'payment', 'Payments', 'Row', function($scope, $modalInstance, offender, Authentication, $http, Workorders, Shops, $location, payment, Payments, Row) {
      $scope.authentication = Authentication;
      $scope.payment = payment;
+     $scope.row = Row;
 
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
@@ -2636,7 +2696,8 @@ $scope.mytime = $scope.dt;
 
     $scope.deletePayment = function(row){
     	console.log('Delete Payment', $scope.payment);
-    	$modalInstance.close();
+    	console.log('Row: ', row);
+    	$modalInstance.close(row);
     	// $scope.payments.splice(row,1)
     	var payment = Payments.get({paymentId: $scope.payment._id});
 
@@ -2661,7 +2722,10 @@ $scope.mytime = $scope.dt;
     $scope.changeSvcCenter = function(){
     	console.log('Line 2384 ');
     		var amt = $scope.workorder.amount;
-      		$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+      		$scope.workorder = Workorders.get({
+      			workorderId: $scope.workorder._id
+      		});
+
 			$scope.workorder.$promise.then(function() {
 				$scope.workorder.amount = amt;
 				 var shopAddy = $scope.serviceCenter.address+' '+$scope.serviceCenter.city+' '+$scope.serviceCenter.state+' '+$scope.serviceCenter.zipcode;
@@ -2745,7 +2809,10 @@ $scope.mytime = $scope.dt;
 			
 
 
-			$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+			$scope.workorder = Workorders.get({
+				workorderId: $scope.workorder._id
+			});
+
 			$scope.workorder.$promise.then(function() {
 
 					$scope.workorder.$remove(function() {
@@ -2753,9 +2820,9 @@ $scope.mytime = $scope.dt;
 						$modalInstance.close('Deleted');
 						toastr.success('Workorder has been deleted');
 						// $location.path('reload');
-						setTimeout(function(){ 
-							window.location.reload();
-						}, 1500);
+						// setTimeout(function(){ 
+						// 	window.location.reload();
+						// }, 1500);
 						
 					});
 			});
@@ -2771,20 +2838,25 @@ $scope.mytime = $scope.dt;
 
       $scope.ok = function() {
 
-
+      	var orderNotes = $scope.workorder.orderNotes;
+      	console.log('Order Notes: ', orderNotes);
       	console.log('Ok Pressed ', $scope.workorder);
      	var id = $scope.workorder._id; 
      	console.log('ID: :', id);
       	console.log('Serivce Fee: ', $scope.workorder.amount);
       	var amt = $scope.workorder.amount;
-      	var workorder = FindWos.findById(id);
-      		
+      	var workorder = Workorders.get({
+      		workorderId: id
+      	});
 
+      	// $scope.workorder.$update();
 			workorder.$promise.then(function(wo) {
 				console.log('WOO ===', wo);
+
 				$scope.workorder = wo;
 				$scope.workorder.amount = amt;
 		console.log('Workorder to Save/Modify ', $scope.workorder);
+		$scope.workorder.orderNotes = orderNotes;
         $modalInstance.close('Saving Work Order');
        
         console.log($scope.offender);
@@ -2792,12 +2864,13 @@ $scope.mytime = $scope.dt;
 			// Redirect after save
 			
 			$scope.offender.$update();
+
         	$scope.workorder.$update(function(){
 
         			console.log('Saved....reloading Page: ');
-        			setTimeout(function(){ 
-							window.location.reload();
-						}, 500);
+      //   			setTimeout(function(){ 
+						// 	window.location.reload();
+						// }, 500);
         			
         		});
 
@@ -3171,7 +3244,11 @@ $scope.mytime = $scope.dt;
     $scope.changeSvcCenter = function(){
     	console.log('2765');
     		var amt = $scope.workorder.amount;
-      		$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+      		// $scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+      			$scope.workorder = Workorders.get({
+				workorderId: $scope.workorder._id
+			});
+
 			$scope.workorder.$promise.then(function() {
 				$scope.workorder.amount = amt;
 				 var shopAddy = $scope.serviceCenter.address+' '+$scope.serviceCenter.city+' '+$scope.serviceCenter.state+' '+$scope.serviceCenter.zipcode;
@@ -3206,7 +3283,10 @@ $scope.mytime = $scope.dt;
       	console.log('Ok Pressed ', $scope.workorder);
       	console.log('Serivce Fee: ', $scope.workorder.amount);
       	var amt = $scope.workorder.amount;
-      		$scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+      		// $scope.workorder = $scope.findWorkOrder($scope.workorder._id);
+      			$scope.workorder = Workorders.get({
+				workorderId: $scope.workorder._id
+			});
 
 			$scope.workorder.$promise.then(function() {
 				$scope.workorder.amount = amt;
@@ -3797,7 +3877,7 @@ $scope.makePmt = function(){
 		
 	
 		payment.$update();
-		 $modalInstance.dismiss('paid', wos, payment);
+		 $modalInstance.dismiss({'Status': 'Paid', 'Workorder': wos, 'Payment': payment});
 		 toastr.success('Payment applied');
 	})
 
@@ -3864,7 +3944,8 @@ $scope.makePmt = function(){
 			// });
 			// console.log('Found our Workorder (return it):  ', $scope.workorder);
 			// return $scope.workorder;
-			findWorkOrder
+			console.log('Weve got a problem....******');
+			// findWorkOrder
 
 		};
 		$scope.payments = function() {
