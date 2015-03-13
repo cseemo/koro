@@ -1813,6 +1813,7 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 			// 		var offender = Offenders.get({ 
 			// 	offenderId: $scope.workorder.offender
 			// });
+			
 		};
 
 	  $scope.termoptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '24', '36', 'Other'];
@@ -2084,16 +2085,26 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
   	};
 
   	$scope.printAuth = function() {
-    	$modalInstance.close();
-  			console.log('Printing Work Auth');
+    	
+  			console.log('Printing Work Auth', workorder);
+
   			 $scope.findWorkOrder();
         	$scope.workorder.$promise.then(function(){
+        		console.log('Workodrd Done gotten...');
+        		var data = {
+        			workinfo: $scope.workorder,
+        			offender: $scope.offender,
+        			test: 'Testing'
+        		};
+
   			var Id = $scope.workorder._id;
+
   					$http({
-  					method: 'get',
+  					method: 'post',
 					responseType: 'arraybuffer',
 					url: '/viewWorkOrder/'+Id, 
-					
+					data: data
+
 								
 						})
 					.success(function(data, status) {
@@ -2103,13 +2114,24 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 					//////console.log('Data from LOA?? %o',data);
 					toastr.info('Please print the following document...');
 						$scope.myresults = 'Email Sent!';
-						
+						$modalInstance.close('Printing Authorizaton Now');
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		window.open(fileURL);
+			     		
+			     		
 						
 
 						// var file = new Blob([data], {type: 'application/pdf'});
 			   //   		var fileURL = URL.createObjectURL(file);
 			   //   		window.open(fileURL);
-			     	});
+			     	})
+			     	.error(function(err, data, status){
+			     		toastr.error('Pritnint failed...');
+			     		console.log('Error pRingint Auth', err);
+			     		console.log('Error printing Auth Data: ', data);
+			     		$modalInstance.close('Error Printing Authorizaton');
+			     	})
 
 				});
 
