@@ -405,12 +405,18 @@ $scope.approveWorkOrderPayment = function(){
 			});
 
 			pmt.$promise.then(function(){
+				if(pmt.length===0){
+					console.log('No matching payments');
+				}else {
+
+
 				pmt = pmt[0];
 				console.log('Got Payment Info: ', pmt);
 				pmt.status = 'Due';
 				pmt.$update();
+			}
 			})
-
+		
 		};
 
 						//Shop Signs Agreement
