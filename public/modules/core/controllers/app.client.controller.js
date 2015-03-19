@@ -274,6 +274,7 @@
 
              $scope.getReport = function() {
               $scope.lookUpPending = true;
+              $scope.lookUpDone = false;
               //Get a report of teh following info
               //Service Center -- # of WorkOrders -- # of Installs -- $$ Collected -- $$ Owed by Customer -- $$ owed to shop
               //Step 1 - Get all Service Centers iterate thru each and get 
