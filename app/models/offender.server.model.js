@@ -190,6 +190,10 @@ var OffenderSchema = new Schema({
 		type: Number,
 		default: 75
 	},
+	resetFee: {
+		type: Number,
+		default: 50
+	},
 	creditsOwed: {
 		type: Number,
 		default: 0

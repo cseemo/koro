@@ -418,6 +418,7 @@ exports.email = function(req, res){
 	var workCharge =req.body.workinfo.amount;
 	console.log('Lease Fee before FLOAT: ', req.body.offender.leaseFee);
 	var leaseFee = parseFloat(req.body.offender.leaseFee).toFixed(2);
+	var resetFee = parseFloat(req.body.offender.resetFee).toFixed(2);
 	console.log('Lease Fee: ', leaseFee);
 	console.log('Charge for Service: ', workCharge);
 	req.body.workinfo.apptDate = req.body.workinfo.apptDate  || '';
@@ -471,15 +472,25 @@ exports.email = function(req, res){
 		doc.addPage();
 
 		//Page 2 
-		doc.image('images/budgetKS2a.png', 0, 0,{width: 580});
+		doc.image('images/readyforpromo.png', 0, 0,{width: 580});
 
 		//Place Lease Fee on contract
-		doc.y = 333;
+		doc.y = 334;
 		doc.x = 342;
 		doc.fontSize(14);
 		doc.font('Times-Roman');
 		// doc.fillColor('#1b3959')
-		doc.text(leaseFee,{
+		doc.text(leaseFee+' plus tax',{
+			// align: 'center'
+		});
+
+		//Place Reset Fee on Contract
+		doc.y = 407;
+		doc.x = 342;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		// doc.fillColor('#1b3959')
+		doc.text(resetFee+' plus tax',{
 			// align: 'center'
 		});
 
