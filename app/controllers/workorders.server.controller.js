@@ -2230,7 +2230,7 @@ var chargeFirstMonth = function(body){
 		if(body.workinfo.authSigned){
 			console.log('This deal has already been signed!!! ***** DO NOT CHARRGE AGAIN!!!! ********');
 		}else {
-			
+
 
 		var firstMonth = parseFloat(body.offender.leaseFee)-parseFloat(body.workinfo.creditsOwed);
 		console.log('Customer owes us '+firstMonth+'for his first monthly payment');
@@ -2948,6 +2948,14 @@ exports.viewOrder = function(req, res){
 	console.log(req.body);
 	console.log(req.query);
 	console.log(req.params);
+	if(req.body.offender.user === null){
+		console.log('This Offender has no User');
+		req.body.offender.user = {
+			displayName: 'Unknown', 
+			email: 'budgetiid@gmail.com'
+		};
+		
+	}
 	console.log('Did we find Workorder Info, Offender Info, and User info?');
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress,
 	timesrun = 0;
