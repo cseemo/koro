@@ -445,6 +445,7 @@
               shopBalance = 0,
               totalRevenue = 0;
               var counter = 0;
+              var shopsRun = 0;
               $scope.shops = Shops.query();
               $scope.shops.$promise
               .then(function(shops){
@@ -463,19 +464,14 @@
                  //console.log('Revenue Update: '+totalRevenue+ '  Workorder Count: '+woCount);
 
                  //console.log('Shop ID: ', shop._id);
-
+                
                   getOtherStuff(shop, startDate, endDate, function(retShop){
                     console.log('Return SHop Info: ', retShop);
-                    counter++;
+                     counter++;
                     shop = retShop;
                     console.log('Count : ', counter);
 
-                    if(counter===$scope.shops.length){
-                      console.log('Shops and Counter === ', counter);
-                      console.log('Shop LEngth: ', $scope.shops.length);
-                      $scope.lookUpPending = false;
-                      $scope.lookUpDone = true;
-                    }
+                    
                   });
 
 
@@ -521,7 +517,14 @@
                   //   requestor: $scope.authentication.user.displayName
                  //console.log('*******************************************');
 
-                 console.log('Line 463');
+                 console.log('Line 463 - ShopsRun', shopsRun);
+                 shopsRun++;
+                 if(shopsRun===$scope.shops.length){
+                      console.log('Shops and Counter === ', counter);
+                      console.log('Shop LEngth: ', $scope.shops.length);
+                      $scope.lookUpPending = false;
+                      $scope.lookUpDone = true;
+                    }
 
                 });
       
