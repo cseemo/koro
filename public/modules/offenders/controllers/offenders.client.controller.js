@@ -2521,13 +2521,15 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
         			var restURL;
         			if(workorder.type==='New Install'){
-        				restURL = '/welcomeEmail';
+        				// restURL = '/welcomeEmail';
+        				//Tsting to get return PDF
+        				restURL = '/work/order'
         			}else{
         				restURL = '/work/order';
         			
         			}
 
-				console.log('Work order status...', $scope.workOrder);
+				console.log('Work order status...', workorder);
 
         			$http({
 					method: 'post',
@@ -2550,10 +2552,10 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 						$scope.myresults = 'Email Sent!!';
 						
 						
-
-						// var file = new Blob([data], {type: 'application/pdf'});
-			   //   		var fileURL = URL.createObjectURL(file);
-			   //   		window.open(fileURL);
+						//Show PDF
+						var file = new Blob([data], {type: 'application/pdf'});
+			     		var fileURL = URL.createObjectURL(file);
+			     		window.open(fileURL);
 			     		
 			     		
 
@@ -3244,7 +3246,7 @@ $scope.mytime = $scope.dt;
 					$location.path('/pending');
 						
 						
-
+						//Show PDF
 						// var file = new Blob([data], {type: 'application/pdf'});
 			   //   		var fileURL = URL.createObjectURL(file);
 			   //   		window.open(fileURL);

@@ -468,9 +468,17 @@ exports.email = function(req, res){
 		doc.addPage();
 
 		//Page 2 
-		doc.image('images/budgetKS2.png', 0, 0,{width: 580});
+		doc.image('images/budgetKS2a.png', 0, 0,{width: 580});
 
-
+		//Place Lease Fee on contract
+		doc.y = 333;
+		doc.x = 342;
+		doc.fontSize(14);
+		doc.font('Times-Roman');
+		// doc.fillColor('#1b3959')
+		doc.text('99.00',{
+			// align: 'center'
+		});
 
 
 		doc.addPage();
@@ -3028,6 +3036,7 @@ exports.viewOrder = function(req, res){
 		//Page 2 
 		doc.image('images/budgetKS2.png', 0, 0,{width: 580});
 
+	
 
 
 
