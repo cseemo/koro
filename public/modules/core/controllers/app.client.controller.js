@@ -451,6 +451,9 @@
               .then(function(shops){
 
                //console.log('Got our Shps', $scope.shops);
+               var shopsLength = $scope.shops.length;
+               // shopsLength = shopsLength+1;
+               console.log('# of Shops: ', shopsLength);
             angular.forEach($scope.shops, function(shop){
                   
                  console.log('------------SHOP  '+counter+'    ---------------------');
@@ -464,13 +467,19 @@
                  //console.log('Revenue Update: '+totalRevenue+ '  Workorder Count: '+woCount);
 
                  //console.log('Shop ID: ', shop._id);
-                
+                shopsRun++;
                   getOtherStuff(shop, startDate, endDate, function(retShop){
                     console.log('Return SHop Info: ', retShop);
                      counter++;
                     shop = retShop;
                     console.log('Count : ', counter);
 
+                 if(shopsRun > shopsLength){
+                      console.log('Shops and Counter === ', counter);
+                      console.log('Shop LEngth: ', $scope.shops.length);
+                      $scope.lookUpPending = false;
+                      $scope.lookUpDone = true;
+                    }
                     
                   });
 
@@ -518,13 +527,7 @@
                  //console.log('*******************************************');
 
                  console.log('Line 463 - ShopsRun', shopsRun);
-                 shopsRun++;
-                 if(shopsRun===$scope.shops.length){
-                      console.log('Shops and Counter === ', counter);
-                      console.log('Shop LEngth: ', $scope.shops.length);
-                      $scope.lookUpPending = false;
-                      $scope.lookUpDone = true;
-                    }
+                 
 
                 });
       
