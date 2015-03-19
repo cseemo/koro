@@ -885,7 +885,7 @@ exports.uploadFile = function (req, res, next) {
 	if(req.files) {
 		console.log('req.files: ', req.files);
 		if(req.files.size === 0) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: 'Empty file'
 			});
 		}
@@ -967,7 +967,7 @@ exports.uploadFile = function (req, res, next) {
 							console.log('Saving our Upload now');
 				upload.save(function(err) {
 					if(err) {
-						res.send(400, {
+						res.status(400).send({
 							message: getErrorMessage(err)
 						});
 					} else {

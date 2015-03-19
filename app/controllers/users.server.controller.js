@@ -36,7 +36,7 @@ exports.list = function(req, res) { User.find().exec(function(err, users) {
 				message: err
 			});
 		} else {
-			res.send('200', 'User has been Deleted');
+			res.status(200).send('User has been Deleted');
 		}
 	});
 };
@@ -228,7 +228,7 @@ function(e){
 });
 
 
-res.send('200', 'Password Reset for userid: '+req.profile._id);
+res.status(200).send('Password Reset for userid: '+req.profile._id);
 
 
 	};
@@ -257,7 +257,7 @@ exports.signup = function(req, res) {
 	// Then save the user 
 	user.save(function(err) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
@@ -267,7 +267,7 @@ exports.signup = function(req, res) {
 
 			req.login(user, function(err) {
 				if (err) {
-					res.send(401, err);
+					res.status(401).send(err);
 				} else {
 					res.jsonp(user);
 				}
@@ -334,13 +334,13 @@ exports.updateUser = function(req, res) {
 
 		user.save(function(err) {
 			if (err) {
-				return res.send(400, {
+				return res.status(400).send({
 					message: getErrorMessage(err)
 				});
 			} else {
 				req.login(user, function(err) {
 					if (err) {
-						res.send(400, err);
+						res.status(400).send(err);
 					} else {
 						res.jsonp(user);
 					}
@@ -348,7 +348,7 @@ exports.updateUser = function(req, res) {
 			}
 		});
 	} else {
-		res.send(400, {
+		res.status(400).send({
 			message: 'User is not signed in'
 		});
 	}
@@ -373,7 +373,7 @@ exports.updateUser2 = function(req, res) {
 
 		user.save(function(err) {
 			if (err) {
-				return res.send(400, {
+				return res.status(400).send({
 					message: getErrorMessage(err)
 				});
 			} else {
@@ -381,7 +381,7 @@ exports.updateUser2 = function(req, res) {
 			}
 		});
 	} else {
-		res.send(400, {
+		res.status(400).send({
 			message: 'Unable to update user'
 		});
 	}
@@ -407,13 +407,13 @@ exports.update = function(req, res) {
 
 		user.save(function(err) {
 			if (err) {
-				return res.send(400, {
+				return res.status(400).send({
 					message: getErrorMessage(err)
 				});
 			} else {
 				req.login(user, function(err) {
 					if (err) {
-						res.send(400, err);
+						res.status(400).send(err);
 					} else {
 						res.jsonp(user);
 					}
@@ -421,7 +421,7 @@ exports.update = function(req, res) {
 			}
 		});
 	} else {
-		res.send(400, {
+		res.status(400).send({
 			message: 'User is not signed in'
 		});
 	}
@@ -442,11 +442,11 @@ exports.setnewPW = function(req, res) {
 	user.resetPassword = true;
 	user.save(function(err) {
 							if (err) {
-								return res.send(400, {
+								return res.status(400).send({
 									message: getErrorMessage(err)
 								});
 							} else {
-										res.send({
+										res.status(200).send({
 											message: 'Password changed successfully'
 										});
 									}
@@ -474,15 +474,15 @@ exports.changePassword = function(req, res, next) {
 
 						user.save(function(err) {
 							if (err) {
-								return res.send(400, {
-									message: getErrorMessage(err)
-								});
+								return res.status(400).send({
+									message: getErrorMessage(err)});
+							
 							} else {
 								req.login(user, function(err) {
 									if (err) {
-										res.send(400, err);
+										res.status(400).send(err);
 									} else {
-										res.send({
+										res.status(200).send({
 											message: 'Password changed successfully'
 										});
 									}
@@ -490,23 +490,23 @@ exports.changePassword = function(req, res, next) {
 							}
 						});
 					} else {
-						res.send(400, {
+						res.status(400).send({
 							message: 'Passwords do not match'
 						});
 					}
 				} else {
-					res.send(400, {
+					res.status(400).send({
 						message: 'Current password is incorrect'
 					});
 				}
 			} else {
-				res.send(400, {
+				res.status(400).send({
 					message: 'User is not found'
 				});
 			}
 		});
 	} else {
-		res.send(400, {
+		res.status(400).send({
 			message: 'User is not signed in'
 		});
 	}
@@ -531,13 +531,13 @@ exports.resetPassword = function(req, res) {
 
 		user.save(function(err) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		}else{
 
 			////console.log('looks like the new password is updated',user.password);
-			return res.send(200, 'Yeah baby!!');
+			return res.status(200).send('Yeah baby!!');
 
 }
 
@@ -550,7 +550,7 @@ exports.resetPassword = function(req, res) {
 
 
 }else{
-	return res.send(400, {
+	return res.status(400).send({
 				message: 'DId not find a user to update'
 			});
 }
@@ -695,7 +695,7 @@ exports.userByID = function(req, res, next, id) {
 exports.requiresLogin = function(req, res, next) {
 	console.log('Require Login', req.body);
 	if (!req.isAuthenticated()) {
-		return res.send(401, {
+		return res.status(401).send({
 			message: 'User is not logged in'
 		});
 	}
@@ -714,7 +714,7 @@ exports.hasAuthorization = function(roles) {
 			if (_.intersection(req.user.roles, roles).length) {
 				return next();
 			} else {
-				return res.send(403, {
+				return res.status(403).send({
 					message: 'User is not authorized'
 				});
 			}
@@ -814,13 +814,13 @@ exports.removeOAuthProvider = function(req, res, next) {
 
 		user.save(function(err) {
 			if (err) {
-				return res.send(400, {
+				return res.status(400).send({
 					message: getErrorMessage(err)
 				});
 			} else {
 				req.login(user, function(err) {
 					if (err) {
-						res.send(400, err);
+						res.status(400).send(err);
 					} else {
 						res.jsonp(user);
 					}
