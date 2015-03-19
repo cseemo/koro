@@ -2391,7 +2391,7 @@ exports.signAuth = function(req, res){
 	if(req.body.offender.user === null){
 		console.log('This Offender has no User');
 		req.body.offender.user = {
-			displayName: 'Unknown', 
+			displayName: 'Budget IID', 
 			email: 'budgetiid@gmail.com'
 		};
 		
@@ -2960,7 +2960,7 @@ exports.viewOrder = function(req, res){
 	if(req.body.offender.user === null){
 		console.log('This Offender has no User');
 		req.body.offender.user = {
-			displayName: 'Unknown', 
+			displayName: 'Budget IID', 
 			email: 'budgetiid@gmail.com'
 		};
 

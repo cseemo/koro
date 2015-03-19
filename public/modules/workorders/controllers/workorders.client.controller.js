@@ -1,8 +1,8 @@
 'use strict';
 
 // Workorders controller
-angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', 'Payments', '$http', '$rootScope', 'Shops',  
-	function($scope, $stateParams, $location, Authentication, Workorders, Offenders, Payments, $http, $rootScope, Shops) {
+angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Offenders', 'Payments', '$http', '$rootScope', 'Shops', '$filter',   
+	function($scope, $stateParams, $location, Authentication, Workorders, Offenders, Payments, $http, $rootScope, Shops, $filter) {
 		$scope.authentication = Authentication;
 
 		// Create new Workorder
@@ -134,10 +134,12 @@ $scope.approveWorkOrderPayment = function(){
       end = start + $scope.numPerPage;
       // console.log('Start '+start+' and End '+end);
      
-      // console.log('Filtered Offenders', $scope.filteredWorkorders);
+      console.log('Filtered Workorders', $scope.filteredWorkorders);
       $scope.currentPage = page;
       $scope.currentPageWorkorders = $scope.filteredWorkorders.slice(start, end);
       // console.log('Current Page Offenders', $scope.currentPageWorkorders);
+
+
      angular.forEach($scope.currentPageWorkorders, function(item){
 		console.log('Workorder: ', item);
 		// item.shopName = 'Test';
@@ -202,7 +204,7 @@ $scope.approveWorkOrderPayment = function(){
 
      $scope.searchPending = function() {
       //////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
-      $scope.filteredWorkorders = $filter('filter')($scope.pendingWorkorders, $scope.tableData.searchKeywords);
+      $scope.filteredWorkorders = $filter('filter')($scope.workorders, $scope.tableData.searchKeywords);
 
       // {companyname: $scope.tableData.searchKeywords},
 
@@ -231,7 +233,7 @@ $scope.approveWorkOrderPayment = function(){
     };
 
     $scope.init = function() {
-    	console.log('Getting Workorders');
+    	console.log('Getting Workorders on init()');
     	$scope.workorders = Workorders.query();
     	$scope.workorders.$promise.then(function() {
 				// $scope.search();
@@ -242,6 +244,21 @@ $scope.approveWorkOrderPayment = function(){
 	
 
     };
+
+        $scope.WOinit = function() {
+    	console.log('Getting our Workorders');
+    	$scope.filteredWorkorders = Workorders.query();
+    	$scope.filteredWorkorders.$promise.then(function(data) {
+				// $scope.search();
+				// console.log('Data: ', data);
+				// console.log("Workorders: ", $scope.filteredWorkorders);
+				$scope.workorders = data;
+				return $scope.select($scope.currentPage);
+				});	
+	
+
+    };
+
 
 
 
@@ -427,7 +444,7 @@ $scope.approveWorkOrderPayment = function(){
 					.success(function(data, status, headers, config) {
 						workorder.authSigned = Date.now();
 						workorder.$update();
-						
+
 						$scope.hideeSign=true;
 						console.log('Step = ',$scope.step);
 						var file = new Blob([data], {type: 'application/pdf'});

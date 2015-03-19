@@ -142,7 +142,7 @@
         $scope.myObject = data;
       });
 
-             var getOtherStuff = function(shop){
+             var getOtherStuff = function(shop, startDate, endDate){
               var woCount = 0,
               installCount = 0,
               totalOwedToShop = 0,
@@ -155,15 +155,31 @@
               console.log('Getting Stuff...', shop);
                     $scope.workorders = Workorders.query({ 
                     shopId: shop._id,
-                    status: 'Complete'
+                    status: 'Complete',
+                   
                   });
                   console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
                   
                   
                   $scope.workorders.$promise
                   .then(function(wos){
-                    shop.workorders = wos;
+
+                    console.log('Start Date: ', startDate);
+                    console.log('End Date: ', endDate);
+
+                    var startDt = moment(startDate).format('YYYY-MM-DD');
+                    var endDt = moment(endDate).format('YYYY-MM-DD');
+                    // var startDt = startDate;
+                    // var endDt = endDate;
+                    var created;
                     angular.forEach(wos, function(wo){
+                      console.log('Created Date: ', wo.created);
+                      // 
+                      created = moment(wo.created).format('YYYY-MM-DD');
+                      console.log('Our comparison date: ', created);
+                      if(created >= startDt && created <= endDt){
+                        console.log('This Workorder shall be included');
+
                       console.log('^^^^^^^^^^WORKORDER   '+counter+'    ^^^^^^^^^^^^^^^^^');
                       console.log('WOrkorder...', wo);
                       woCount++;
@@ -192,6 +208,11 @@
                       }
                       console.log('This Shop has aWorkorder: ', woCount);
                         console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
+                         }else {
+                        console.log('Skipping Workorder');
+                      }
+
                   });
 
                     shop.totalWorkorders = woCount;
@@ -256,6 +277,18 @@
               //            - Get all Workorders Completed in Date Range w/ that ShopId
               //            - Get Workorder Details ($$ Owed, Paid or Owed)
               //Step 2 - Display?
+              var startDate;
+              var endDate;
+              console.log('Starting Date: ', $scope.startDt);
+              console.log('Ending Date', $scope.endDt);
+              if($scope.endDt < $scope.startDt){
+               console.log('Dates are Illogical - reversing them');
+               startDate = $scope.endDt
+               endDate = $scope.startDt;
+              } else {
+                startDate = $scope.startDt
+               endDate = $scope.endDt;
+              }
               var woCount = 0,
               installCount = 0,
               totalOwedToShop = 0,
@@ -267,11 +300,7 @@
               $scope.shops.$promise
               .then(function(shops){
                 console.log('Got our Shps', $scope.shops);
-
-                
-
-
-                angular.forEach($scope.shops, function(shop){
+            angular.forEach($scope.shops, function(shop){
                   counter++;
                   console.log('------------SHOP  '+counter+'    ---------------------');
                   woCount = 0;
@@ -285,7 +314,7 @@
 
                   console.log('Shop ID: ', shop._id);
 
-                  getOtherStuff(shop);
+                  getOtherStuff(shop, startDate, endDate);
                   // $scope.workorders = Workorders.query({ 
                   //   shopId: shop._id
                   // });
@@ -334,6 +363,74 @@
 
 
              };
+
+
+             //Date Picker Stuff
+
+
+ $scope.today = function() {
+        return $scope.dt = new Date();
+      };
+      $scope.today();
+      $scope.showWeeks = true;
+      $scope.toggleWeeks = function() {
+        return $scope.showWeeks = !$scope.showWeeks;
+      };
+      $scope.clear = function() {
+        return $scope.dt = null;
+      };
+      $scope.disabled = function(date, mode) {
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+      };
+      $scope.toggleMin = function() {
+        var _ref;
+        return $scope.minDate = (_ref = $scope.minDate) != null ? _ref : {
+          "null": new Date()
+        };
+      };
+      $scope.toggleMin();
+      $scope.openCalendar = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        return $scope.opened = true;
+      };
+      $scope.dateOptions = {
+        'year-format': "'yy'",
+        'starting-day': 7
+      };
+      $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
+      $scope.format = $scope.formats[0];
+   
+
+$scope.mytime = $scope.dt;
+      $scope.hstep = 1;
+      $scope.mstep = 5;
+      $scope.options = {
+        hstep: [1, 2, 3],
+        mstep: [1, 5, 10, 15, 25, 30]
+      };
+      $scope.ismeridian = true;
+      $scope.toggleMode = function() {
+        return $scope.ismeridian = !$scope.ismeridian;
+      };
+
+
+      $scope.update = function() {
+        var d;
+        d = new Date();
+        d.setHours(14);
+        d.setMinutes(0);
+        return $scope.mytime = d;
+      };
+
+      $scope.changed = function() {
+        return //////////console.log('Time changed to: ' + $scope.mytime);
+      };
+
+      return $scope.clear = function() {
+        return $scope.mytime = null;
+};
+
 
 
 
