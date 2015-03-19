@@ -85,12 +85,12 @@
           
 
           var getClientInfo = function(wo){
-            console.log('Getting Client Info: ', wo._id);
+           //console.log('Getting Client Info: ', wo._id);
             var client = Offenders.get({
               offenderId: wo.offender
             });
             client.$promise.then(function(client){
-              console.log('Got our client', client);
+             //console.log('Got our client', client);
               wo.clientName = client.displayName;
               wo.vehicleInfo = client.vehicleYear+' '+client.vehicleMake+' '+client.vehicleModel;
 
@@ -98,18 +98,18 @@
           };
 
           var getPmtInfo = function(wo){
-            console.log('Getting Payment Info: ', wo._id);
+           //console.log('Getting Payment Info: ', wo._id);
             var payment = Payments.query({
               workorder: wo._id
             });
             payment.$promise.then(function(pmt){
-              console.log('Got Payment Details: ', pmt);
+             //console.log('Got Payment Details: ', pmt);
               wo.payment = pmt;
             });
           };
 
           $scope.workorders.$promise.then(function(wos){
-            console.log('Got our workorders: ', wos);
+           //console.log('Got our workorders: ', wos);
             angular.forEach(wos, function(wo){
               getClientInfo(wo);
               getPmtInfo(wo);
@@ -120,7 +120,7 @@
 
             // });
             // $scope.payments.$promise.then(function(pmt){
-            //   console.log('Got our payments!!', pmt);
+            //  //console.log('Got our payments!!', pmt);
 
             // });
           
@@ -152,20 +152,20 @@
               paidRevenue = 0;
               var counter = 0;
 
-              console.log('Getting Stuff...', shop);
+             //console.log('Getting Stuff...', shop);
                     $scope.workorders = Workorders.query({ 
                     shopId: shop._id,
                     status: 'Complete',
                    
                   });
-                  console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
+                 //console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
                   
                   
                   $scope.workorders.$promise
                   .then(function(wos){
 
-                    console.log('Start Date: ', startDate);
-                    console.log('End Date: ', endDate);
+                   //console.log('Start Date: ', startDate);
+                   //console.log('End Date: ', endDate);
 
                     var startDt = moment(startDate).format('YYYY-MM-DD');
                     var endDt = moment(endDate).format('YYYY-MM-DD');
@@ -173,44 +173,44 @@
                     // var endDt = endDate;
                     var created;
                     angular.forEach(wos, function(wo){
-                      console.log('Created Date: ', wo.created);
+                     //console.log('Created Date: ', wo.created);
                       // 
                       created = moment(wo.created).format('YYYY-MM-DD');
-                      console.log('Our comparison date: ', created);
+                     //console.log('Our comparison date: ', created);
                       if(created >= startDt && created <= endDt){
-                        console.log('This Workorder shall be included');
+                       //console.log('This Workorder shall be included');
 
-                      console.log('^^^^^^^^^^WORKORDER   '+counter+'    ^^^^^^^^^^^^^^^^^');
-                      console.log('WOrkorder...', wo);
+                     //console.log('^^^^^^^^^^WORKORDER   '+counter+'    ^^^^^^^^^^^^^^^^^');
+                     //console.log('WOrkorder...', wo);
                       woCount++;
                       if(wo.type==='New Install'){
-                        console.log('Weve got an install!!');
+                       //console.log('Weve got an install!!');
                         installCount++;
                       }
                       if(wo.amount){
                         // totalRevenue = parseInt(totalRevenue)+parseInt(wo.amount);
                         totalRevenue = parseFloat(totalRevenue, 2)+parseFloat(wo.amount, 2);
-                        console.log('Total Revenue so far: ', totalRevenue);
+                       //console.log('Total Revenue so far: ', totalRevenue);
                       }
                       if(wo.shopFee){
-                        console.log('Wo has a Shop Fee: ', wo.shopFee);
+                       //console.log('Wo has a Shop Fee: ', wo.shopFee);
                         totalOwedToShop = parseFloat(totalOwedToShop)+parseFloat(wo.shopFee);
                       }
 
                       if(wo.pmtStatus !== 'Due'){
-                        console.log('Paid...', wo);
+                       //console.log('Paid...', wo);
                          paidRevenue = parseFloat(paidRevenue, 2)+parseFloat(wo.amount, 2);
                         
                       }else {
-                        console.log('Payment Due');
-                        console.log(wo);
+                       //console.log('Payment Due');
+                       //console.log(wo);
 
                       }
-                      console.log('This Shop has aWorkorder: ', woCount);
-                        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+                     //console.log('This Shop has aWorkorder: ', woCount);
+                       //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
                          }else {
-                        console.log('Skipping Workorder');
+                       //console.log('Skipping Workorder');
                       }
 
                   });
@@ -231,9 +231,9 @@
 
              //Open Modal for Workorder Details
                 $scope.openModal = function(type, row){
-                  console.log('Row: ', row);
+                 //console.log('Row: ', row);
 
-                  console.log('Opening Modal', type);
+                 //console.log('Opening Modal', type);
                   var template = 'modules/core/views/woDetails.html';
                   var size = 'lg';
                   var controller = 'woModalCtrl';
@@ -279,10 +279,10 @@
               //Step 2 - Display?
               var startDate;
               var endDate;
-              console.log('Starting Date: ', $scope.startDt);
-              console.log('Ending Date', $scope.endDt);
+             //console.log('Starting Date: ', $scope.startDt);
+             //console.log('Ending Date', $scope.endDt);
               if($scope.endDt < $scope.startDt){
-               console.log('Dates are Illogical - reversing them');
+              //console.log('Dates are Illogical - reversing them');
                startDate = $scope.endDt
                endDate = $scope.startDt;
               } else {
@@ -299,10 +299,10 @@
               $scope.shops = Shops.query();
               $scope.shops.$promise
               .then(function(shops){
-                console.log('Got our Shps', $scope.shops);
+               //console.log('Got our Shps', $scope.shops);
             angular.forEach($scope.shops, function(shop){
                   counter++;
-                  console.log('------------SHOP  '+counter+'    ---------------------');
+                 //console.log('------------SHOP  '+counter+'    ---------------------');
                   woCount = 0;
                   installCount = 0,
                   totalOwedToShop = 0,
@@ -310,35 +310,35 @@
                   shopBalance = 0,
                   totalRevenue = 0;
 
-                  console.log('Revenue Update: '+totalRevenue+ '  Workorder Count: '+woCount);
+                 //console.log('Revenue Update: '+totalRevenue+ '  Workorder Count: '+woCount);
 
-                  console.log('Shop ID: ', shop._id);
+                 //console.log('Shop ID: ', shop._id);
 
                   getOtherStuff(shop, startDate, endDate);
                   // $scope.workorders = Workorders.query({ 
                   //   shopId: shop._id
                   // });
-                  // console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
+                  ////console.log('WorkorderS: '+shop.name+': '+ $scope.workorders);
                   
                   
                   // $scope.workorders.$promise
                   // .then(function(wos){
                   //   shop.workorders = wos;
                   //   angular.forEach(wos, function(wo){
-                  //     console.log('^^^^^^^^^^WORKORDER   '+counter+'    ^^^^^^^^^^^^^^^^^');
-                  //     console.log('WOrkorder...');
+                  //    //console.log('^^^^^^^^^^WORKORDER   '+counter+'    ^^^^^^^^^^^^^^^^^');
+                  //    //console.log('WOrkorder...');
                   //     woCount++;
                   //     if(wo.type==='New Install'){
-                  //       console.log('Weve got an install!!');
+                  //      //console.log('Weve got an install!!');
                   //       installCount++;
                   //     }
                   //     if(wo.amount){
                   //       // totalRevenue = parseInt(totalRevenue)+parseInt(wo.amount);
                   //       totalRevenue = parseFloat(totalRevenue, 2)+parseFloat(wo.amount, 2);
-                  //       console.log('Total Revenue so far: ', totalRevenue);
+                  //      //console.log('Total Revenue so far: ', totalRevenue);
                   //     }
-                  //     console.log('This Shop has aWorkorder: ', woCount);
-                  //       console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+                  //    //console.log('This Shop has aWorkorder: ', woCount);
+                  //      //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
                   // });
 
                     // shop.totalWorkorders = woCount;
@@ -355,7 +355,7 @@
                   //   updated: Date.now(),
                   //   destination: 'Shop Shelf',
                   //   requestor: $scope.authentication.user.displayName
-                  console.log('*******************************************');
+                 //console.log('*******************************************');
                 });
       
 
