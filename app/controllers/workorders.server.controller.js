@@ -416,6 +416,9 @@ exports.email = function(req, res){
 	// //console.log('Quote Date: ',prepDate)
 	var termLength = req.body.offender.term;
 	var workCharge =req.body.workinfo.amount;
+	console.log('Lease Fee before FLOAT: ', req.body.offender.leaseFee);
+	var leaseFee = parseFloat(req.body.offender.leaseFee).toFixed(2);
+	console.log('Lease Fee: ', leaseFee);
 	console.log('Charge for Service: ', workCharge);
 	req.body.workinfo.apptDate = req.body.workinfo.apptDate  || '';
 	var apptDate = moment(req.body.workinfo.apptDate).format("MM/DD/YYYY");
@@ -476,7 +479,7 @@ exports.email = function(req, res){
 		doc.fontSize(14);
 		doc.font('Times-Roman');
 		// doc.fillColor('#1b3959')
-		doc.text('99.00',{
+		doc.text(leaseFee,{
 			// align: 'center'
 		});
 
