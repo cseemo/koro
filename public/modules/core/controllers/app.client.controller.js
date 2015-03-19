@@ -142,7 +142,7 @@
         $scope.myObject = data;
       });
 
-             var getOtherStuff = function(shop, startDate, endDate){
+             var getOtherStuff = function(shop, startDate, endDate, callback){
               var woCount = 0,
               installCount = 0,
               totalOwedToShop = 0,
@@ -211,6 +211,7 @@
 
                          }else {
                        //console.log('Skipping Workorder');
+
                       }
 
                   });
@@ -222,6 +223,7 @@
                     shop.totalOwedToShop = totalOwedToShop;
                     shopBalance = parseFloat(totalOwedToShop)-parseFloat(paidRevenue);
                     shop.shopBalance = shopBalance;
+                    callback(shop);
 
                   });
 
@@ -314,7 +316,10 @@
 
                  //console.log('Shop ID: ', shop._id);
 
-                  getOtherStuff(shop, startDate, endDate);
+                  getOtherStuff(shop, startDate, endDate, function(retShop){
+                    console.log('Return SHop Info: ', retShop);
+
+                  });
                   // $scope.workorders = Workorders.query({ 
                   //   shopId: shop._id
                   // });

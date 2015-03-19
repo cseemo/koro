@@ -221,8 +221,8 @@ z-index: 999;
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr data-ng-repeat="shop in shops track by $index">
-                        <td><a class="link" data-ng-click="openModal('workorders', $index)">{{shop.name}}</a></td>
+                    <tr data-ng-repeat="shop in shops track by $index" data-ng-hide="shop.totalWorkorders===0">
+                        <td><a class="link" data-ng-click="openModal('workorders', $index)">{{shop.name}} <br/>({{shop.installType}})</a></td>
                         <td>{{shop.city}}, {{shop.state}}</td>
                         <td>{{shop.totalWorkorders}}</td>
                         <td>{{shop.totalInstalls}}</td>
@@ -235,6 +235,7 @@ z-index: 999;
                          <td>{{shop.chargeRevenue | currency}}</td> -->
                    
                     </tr>
+
                 </tbody>
             </table>
 
