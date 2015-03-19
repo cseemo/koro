@@ -2388,6 +2388,15 @@ exports.signAuth = function(req, res){
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress,
 	timesrun = 0;
 
+	if(req.body.offender.user === null){
+		console.log('This Offender has no User');
+		req.body.offender.user = {
+			displayName: 'Unknown', 
+			email: 'budgetiid@gmail.com'
+		};
+		
+	}
+
 	// var workCharge;
 	// if(req.workorder.type==='New Install') {
 	// 	workCharge = 189;
@@ -2954,7 +2963,7 @@ exports.viewOrder = function(req, res){
 			displayName: 'Unknown', 
 			email: 'budgetiid@gmail.com'
 		};
-		
+
 	}
 	console.log('Did we find Workorder Info, Offender Info, and User info?');
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress,
