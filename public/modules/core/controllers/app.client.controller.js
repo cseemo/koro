@@ -134,13 +134,68 @@
 
 
         .controller('NavContainerCtrl', ['$scope', function($scope) {}]).
-    controller('DashboardCtrl', ['$scope', 'Authentication', '$filter', 'socket', '$timeout', 'Shops', 'Workorders', '$modal',  function($scope, Authentication, $filter, socket, $timeout, Shops, Workorders, $modal) {
+    controller('DashboardCtrl', ['$scope', 'Authentication', '$filter', 'socket', '$timeout', 'Shops', 'Workorders', '$modal', 'Payments',   function($scope, Authentication, $filter, socket, $timeout, Shops, Workorders, $modal, Payments) {
    
       
              socket.on('newconnect', function(data) {
         //console.log('Socket Data: %o', data);
         $scope.myObject = data;
       });
+
+
+            var processPmt = function(wo, pmt, shop, callback){
+              console.log('Processing Payment now');
+
+               woCount++;
+                      if(wo.type==='New Install'){
+                       console.log('Weve got an install!!');
+                        installCount++;
+                      }
+                      if(wo.amount){
+                        // totalRevenue = parseInt(totalRevenue)+parseInt(wo.amount);
+                        totalRevenue = parseFloat(totalRevenue, 2)+parseFloat(wo.amount, 2);
+                       //console.log('Total Revenue so far: ', totalRevenue);
+                      }
+                     
+                       //If the Shop collected Cash - add to Total Collected
+                       //IF the Shop is a Charge to the Customer add to Total Collected
+                       
+
+                       if(shop.installType!=='Shop to Charge Customer'){
+                        console.log('This shop charges the customer');
+
+                       }else{
+                        //The payment came to budget
+                        console.log('This guy did NOT keep the money');
+                       }
+                       //Add the TOTAL SHop Fees
+                        totalOwedToShop = parseFloat(totalOwedToShop)+parseFloat(wo.shopFee);
+                      console.log('This shop is owed '+totalOwedToShop+' so far...');
+
+                      if(wo.pmtStatus === 'Paid'){
+                       console.log('Paid...', wo.amount);
+                         paidRevenue = parseFloat(paidRevenue, 2)+parseFloat(wo.amount, 2);
+                        
+                      }else {
+                       console.log('Payment Due');
+                       //console.log(wo);
+
+                      }
+                     //console.log('This Shop has aWorkorder: ', woCount);
+                       //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
+                     
+                        console.log('Done with '+shop.name);
+                        return callback(shop);
+                  
+
+          };
+
+             var getPaymentInfo = function(wo, pmt, callback){
+              console.log('Getting Payment Details to return back');
+
+             };
+
 
              var getOtherStuff = function(shop, startDate, endDate, callback){
               var woCount = 0,
@@ -164,6 +219,7 @@
                   $scope.workorders.$promise
                   .then(function(wos){
 
+
                    //console.log('Start Date: ', startDate);
                    //console.log('End Date: ', endDate);
 
@@ -172,19 +228,59 @@
                     // var startDt = startDate;
                     // var endDt = endDate;
                     var created;
+
                     angular.forEach(wos, function(wo){
                      //console.log('Created Date: ', wo.created);
                       // 
-                      created = moment(wo.created).format('YYYY-MM-DD');
+                      created = moment(wo.completed).format('YYYY-MM-DD');
                      //console.log('Our comparison date: ', created);
                       if(created >= startDt && created <= endDt){
+                        
+
+                       var payment =  Payments.query({
+                          workorder: wo._id
+                          });
+                          
+                        payment.$promise
+                          .then(function(pmt){
+
+                               console.log('Payments are here - take first One', pmt);
+                            
+                            if(pmt.length > 0){
+                              
+                             
+                              pmt = pmt[0];
+                              console.log('Got the Payment ', pmt);
+                          
+
+                            } else {
+                            console.log('Payment does not exist');
+                            }
                        //console.log('This Workorder shall be included');
 
                      //console.log('^^^^^^^^^^WORKORDER   '+counter+'    ^^^^^^^^^^^^^^^^^');
                      //console.log('WOrkorder...', wo);
-                      woCount++;
+
+                     //Check if we need to get payment info
+                     woCount++
+
+                      if(wo.shopFee){
+                       console.log('Wo has a Shop Fee: ', wo.shopFee);
+                       console.log('WO ID: ', wo._id);
+                       totalOwedToShop = parseFloat(totalOwedToShop)+parseFloat(wo.shopFee);
+              
+                     } else {
+                      console.log('No Shop Fee');
+                      console.log('Process payment now...');
+                       
+
+
+                     }
+
+
+
                       if(wo.type==='New Install'){
-                       //console.log('Weve got an install!!');
+                       console.log('Weve got an install!!');
                         installCount++;
                       }
                       if(wo.amount){
@@ -192,40 +288,89 @@
                         totalRevenue = parseFloat(totalRevenue, 2)+parseFloat(wo.amount, 2);
                        //console.log('Total Revenue so far: ', totalRevenue);
                       }
-                      if(wo.shopFee){
-                       //console.log('Wo has a Shop Fee: ', wo.shopFee);
-                        totalOwedToShop = parseFloat(totalOwedToShop)+parseFloat(wo.shopFee);
-                      }
+                     
+                       //If the Shop collected Cash - add to Total Collected
+                       //IF the Shop is a Charge to the Customer add to Total Collected
+                       
 
-                      if(wo.pmtStatus !== 'Due'){
-                       //console.log('Paid...', wo);
+                       
+                       //Add the TOTAL SHop Fees
+                       
+                      console.log(shop.name+' is owed '+totalOwedToShop+' so far...');
+
+                      if(wo.pmtStatus === 'Paid'){
+                       console.log('Paid...'+ wo.amount+' via '+pmt.pmtOpt);
+
                          paidRevenue = parseFloat(paidRevenue, 2)+parseFloat(wo.amount, 2);
+                         console.log('Total Revenue Paid so far');
+
+                         if(shop.installType==='Shop to Charge Customer'){
+                            console.log(shop.name+' charges the customer directly');
+                             totalCollected = parseFloat(totalCollected, 2)+parseFloat(wo.amount, 2);
+                             console.log('Total Collected Thus Far: ', totalCollected);
+                         }else{
+                          //The payment came to budget
+                          if(pmt.pmtOpt==='Cash'){
+                            console.log('Cash Payment of '+pmt.amount);
+                             totalCollected = parseFloat(totalCollected, 2)+parseFloat(wo.amount, 2);
+                          }
+                          console.log('This guy did NOT keep the money');
+                         }
+
                         
                       }else {
-                       //console.log('Payment Due');
+                       console.log('Payment Due');
                        //console.log(wo);
 
                       }
-                     //console.log('This Shop has aWorkorder: ', woCount);
-                       //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
-                         }else {
-                       //console.log('Skipping Workorder');
 
-                      }
 
-                  });
 
-                    shop.totalWorkorders = woCount;
+                      
+
+                       console.log('-----------------------Done with '+shop.name);
+                    shop.totalWorkorders = parseInt(woCount);
                     shop.totalInstalls = installCount;
                     shop.totalRevenue = totalRevenue;
                     shop.paidRevenue = paidRevenue;
                     shop.totalOwedToShop = totalOwedToShop;
-                    shopBalance = parseFloat(totalOwedToShop)-parseFloat(paidRevenue);
+                    shop.totalCollected = totalCollected;
+                    shopBalance = parseFloat(totalOwedToShop)-parseFloat(totalCollected);
                     shop.shopBalance = shopBalance;
                     callback(shop);
 
+
+
+
+                        });
+} else {
+  console.log('Ignoring not in the timeframe');
+  callback(shop);
+}
+
+
+                     });
+
+                      //Should run after everything above it
+                    
+
+
+
+            
+      
                   });
+
+                     
+                    
+
+
+                  
+
+
+                    
+                   
+
 
 
              };
@@ -303,10 +448,11 @@
               $scope.shops = Shops.query();
               $scope.shops.$promise
               .then(function(shops){
+
                //console.log('Got our Shps', $scope.shops);
             angular.forEach($scope.shops, function(shop){
                   
-                 //console.log('------------SHOP  '+counter+'    ---------------------');
+                 console.log('------------SHOP  '+counter+'    ---------------------');
                   woCount = 0;
                   installCount = 0,
                   totalOwedToShop = 0,
@@ -321,6 +467,9 @@
                   getOtherStuff(shop, startDate, endDate, function(retShop){
                     console.log('Return SHop Info: ', retShop);
                     counter++;
+                    shop = retShop;
+                    console.log('Count : ', counter);
+
                     if(counter===$scope.shops.length){
                       console.log('Shops and Counter === ', counter);
                       console.log('Shop LEngth: ', $scope.shops.length);
@@ -371,11 +520,16 @@
                   //   destination: 'Shop Shelf',
                   //   requestor: $scope.authentication.user.displayName
                  //console.log('*******************************************');
+
+                 console.log('Line 463');
+
                 });
       
-
+          console.log('############## LINE 466 ################');
               });
 
+
+                console.log('!!!!!!   470   !!!!!!');
 
              };
 
