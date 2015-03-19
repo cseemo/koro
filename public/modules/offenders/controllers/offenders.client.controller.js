@@ -2521,9 +2521,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 
         			var restURL;
         			if(workorder.type==='New Install'){
-        				// restURL = '/welcomeEmail';
+        				restURL = '/welcomeEmail';
         				//Tsting to get return PDF
-        				restURL = '/work/order'
+        				// restURL = '/work/order'
         			}else{
         				restURL = '/work/order';
         			
@@ -2553,9 +2553,9 @@ angular.module('offenders').controller('OffendersController', ['$scope', '$state
 						
 						
 						//Show PDF
-						var file = new Blob([data], {type: 'application/pdf'});
-			     		var fileURL = URL.createObjectURL(file);
-			     		window.open(fileURL);
+						// var file = new Blob([data], {type: 'application/pdf'});
+			   //   		var fileURL = URL.createObjectURL(file);
+			   //   		window.open(fileURL);
 			     		
 			     		
 
