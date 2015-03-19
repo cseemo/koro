@@ -154,44 +154,66 @@ max-height: 300px;
                             <div class="th">
                                 Service Center
                                 <span class="fa fa-angle-up"
-                                      data-ng-click=" order('state') "
-                                      data-ng-class="{active: row == 'state'}"></span>
+                                      data-ng-click=" order('shopName') "
+                                      data-ng-class="{active: row == 'shopName'}"></span>
                                 <span class="fa fa-angle-down"
-                                      data-ng-click=" order('-state') "
-                                      data-ng-class="{active: row == '-state'}"></span>
+                                      data-ng-click=" order('-shopName') "
+                                      data-ng-class="{active: row == '-shopName'}"></span>
                             </div>
                         </th>
                         <th>
                             <div class="th">
                                 Status
                                 <span class="fa fa-angle-up"
-                                      data-ng-click=" order('state') "
-                                      data-ng-class="{active: row == 'state'}"></span>
+                                      data-ng-click=" order('status') "
+                                      data-ng-class="{active: row == 'status'}"></span>
                                 <span class="fa fa-angle-down"
-                                      data-ng-click=" order('-state') "
-                                      data-ng-class="{active: row == '-state'}"></span>
+                                      data-ng-click=" order('-status') "
+                                      data-ng-class="{active: row == '-status'}"></span>
                             </div>
                         </th>
                         <th>
                             <div class="th">
                                 Notes
                                 <span class="fa fa-angle-up"
-                                      data-ng-click=" order('state') "
-                                      data-ng-class="{active: row == 'state'}"></span>
+                                      data-ng-click=" order('orderNotes') "
+                                      data-ng-class="{active: row == 'orderNotes'}"></span>
                                 <span class="fa fa-angle-down"
-                                      data-ng-click=" order('-state') "
-                                      data-ng-class="{active: row == '-state'}"></span>
+                                      data-ng-click=" order('-orderNotes') "
+                                      data-ng-class="{active: row == '-orderNotes'}"></span>
                             </div>
                         </th>
                         <th>
                             <div class="th">
                                 Appointment Date
                                 <span class="fa fa-angle-up"
-                                      data-ng-click=" order('state') "
-                                      data-ng-class="{active: row == 'state'}"></span>
+                                      data-ng-click=" order('apptDate') "
+                                      data-ng-class="{active: row == 'apptDate'}"></span>
                                 <span class="fa fa-angle-down"
-                                      data-ng-click=" order('-state') "
-                                      data-ng-class="{active: row == '-state'}"></span>
+                                      data-ng-click=" order('-apptDate') "
+                                      data-ng-class="{active: row == '-apptDate'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Service Fee
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('amount') "
+                                      data-ng-class="{active: row == 'amount'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-amount') "
+                                      data-ng-class="{active: row == '-amount'}"></span>
+                            </div>
+                        </th>
+                         <th>
+                            <div class="th">
+                                Payment Status
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('pmtStatus') "
+                                      data-ng-class="{active: row == 'pmtStatus'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-pmtStatus') "
+                                      data-ng-class="{active: row == '-pmtStatus'}"></span>
                             </div>
                         </th>
                            
@@ -210,6 +232,8 @@ max-height: 300px;
                     <td>{{item.status}}</td>
                      <td>{{item.orderNotes}}</td>
                      <td>{{item.apptDate | date: 'short'}}</td>
+                     <td>{{item.amount | currency}}</td>
+                      <td>{{item.pmtStatus}}</td>
                     
 
                         
