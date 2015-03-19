@@ -273,6 +273,7 @@
 
 
              $scope.getReport = function() {
+              $scope.lookUpPending = true;
               //Get a report of teh following info
               //Service Center -- # of WorkOrders -- # of Installs -- $$ Collected -- $$ Owed by Customer -- $$ owed to shop
               //Step 1 - Get all Service Centers iterate thru each and get 
@@ -303,7 +304,7 @@
               .then(function(shops){
                //console.log('Got our Shps', $scope.shops);
             angular.forEach($scope.shops, function(shop){
-                  counter++;
+                  
                  //console.log('------------SHOP  '+counter+'    ---------------------');
                   woCount = 0;
                   installCount = 0,
@@ -318,8 +319,16 @@
 
                   getOtherStuff(shop, startDate, endDate, function(retShop){
                     console.log('Return SHop Info: ', retShop);
-
+                    counter++;
+                    if(counter===$scope.shops.length){
+                      console.log('Shops and Counter === ', counter);
+                      console.log('Shop LEngth: ', $scope.shops.length);
+                      $scope.lookUpPending = false;
+                      $scope.lookUpDone = true;
+                    }
                   });
+
+
                   // $scope.workorders = Workorders.query({ 
                   //   shopId: shop._id
                   // });
