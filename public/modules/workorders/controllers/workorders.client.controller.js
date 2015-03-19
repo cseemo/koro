@@ -119,7 +119,7 @@ $scope.approveWorkOrderPayment = function(){
     };
     $scope.filteredWorkorders= [];
     $scope.row = '';
-    $scope.numPerPageOpt = [3, 5, 10, 20];
+    $scope.numPerPageOpt = [5, 10, 20, 50, 100];
     $scope.numPerPage = $scope.numPerPageOpt[2];
     $scope.currentPage = 1;
     //$scope.currentPageDeals= $scope.getinit;
