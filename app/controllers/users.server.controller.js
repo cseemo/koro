@@ -96,7 +96,7 @@ exports.sendRegistration = function(req, res){
 
 
 
-var template_name='budget-registration';
+var template_name='swell-registration';
 
 var async = false;
 
@@ -210,7 +210,7 @@ var getErrorMessage = function(err) {
 
 
 
-var template_name='forgot-password';
+var template_name='swell-forgot-password';
 
 var async = false;
 
