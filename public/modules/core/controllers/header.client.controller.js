@@ -11,11 +11,12 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		if (!$scope.authentication.user) {
 			console.log('User Not Logged in');
           var test = $location.path();
-          test = test.substring(0,14);
-          // console.log('Test Path',test);
+          test = test.substring(0,15);
+          console.log('Test Path',test);
 
-          if(test==='/svccntrsignup' || test==='/workorderauth' || test==='/newshopsignup'){
-            console.log('Geting Something approved');
+			if(test==='/forgot_passwor' || test==='/reset_password' || test==='/signup'){
+            console.log('Resetting Password');
+          
           
           }else{
           	console.log('Please sign in');
