@@ -152,7 +152,7 @@ var getErrorMessage = function(err) {
 
 //Forgot Password
 	exports.forgotPW = function(req, res){
-		//console.log('Resetting Password');
+		console.log('Resetting Password');
 
 
 
@@ -160,11 +160,11 @@ var getErrorMessage = function(err) {
 //console.log('Request',req);
 
 		var message = {
-	// 'html': 'Thank You for Registering',
-	// 'text': 'Plain Text Email Content',
-	// 'subject': 'Registration Confirmation',
-	// 'from_email': 'admin@adsoap.com',
-	// 'from_name': 'New Users',
+	
+	'text': 'Plain Text Email Content',
+	'subject': 'Password Reset Instructions',
+	'from_email': 'admin@adsoap.com',
+	'from_name': 'Swell Farmacy',
 	'to': [{
 		'email': req.profile.email,
 		'name': req.profile.displayName,
