@@ -1,0 +1,55 @@
+<style>
+section{
+    background-color: #146586;
+    min-height: 100%;
+}
+</style>
+
+<section data-ng-controller="DispensariesController" data-ng-init="findOne()">
+	<div class="page-header">
+		<h1 data-ng-bind="dispensary.name"></h1>
+		<h1><a href="{{dispensary.url}}" target="_blank">{{dispensary.url}}</a></h1>
+	</div>
+
+	<div class="col-md-8 col-md-offset-2 panel" ng-init="getDispSpecials()">
+		
+		<table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>Dispensary Name</th>
+                        <th>Specials</th>
+                         
+                         </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="special in specials">
+                        <td>{{special.name}}</td>
+                        <td><ul>
+                            <li data-ng-repeat="stuff in special.data">
+                                {{stuff}}
+                                <br/><br/></li>
+                            </ul>
+                            
+                        </tr>
+                </tbody>
+            </table>
+
+	</div>
+	<div class="clearfix"></div>
+	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == dispensary.user._id))">
+		<a class="btn btn-primary" href="/#!/dispensaries/{{dispensary._id}}/edit">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a class="btn btn-primary" data-ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+	</div>
+	<small>
+		<em class="text-muted">
+			Posted on
+			<span data-ng-bind="dispensary.created | date:'mediumDate'"></span>
+			by
+			<span data-ng-bind="dispensary.user.displayName"></span>
+		</em>
+	</small>
+</section>

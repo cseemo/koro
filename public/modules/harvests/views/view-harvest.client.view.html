@@ -1,0 +1,41 @@
+<style>
+section{
+    background-color: #146586;
+    min-height: 100%;
+   
+}
+</style>
+<section data-ng-controller="HarvestsController" data-ng-init="findOne()">
+	<div class="page-header">
+		<h1 data-ng-bind="harvest.name"></h1>
+	</div>
+	<div class="panel panel-secondary">
+		Harvest Start: {{harvest.harvestBegin | date: 'medium'}}
+		<br/>
+		Harvest Complete: {{harvest.harvestEnd | date: 'medium'}}
+		<br/>
+		<ul>
+			Plants:
+			<li ng-repeat="plant in harvest.plants">
+				{{plant.number}} - {{plant.plantID}} - <label>Wet Weight: {{plant.wetWeight}} </label> ({{plant.plantWeighIn | date: 'short'}})
+			</li>
+		</ul>
+	
+	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == harvest.user._id))">
+		<a class="btn btn-primary" href="/#!/harvests/{{harvest._id}}/edit">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a class="btn btn-primary" data-ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+	</div>
+	<small>
+		<em class="text-muted">
+			Posted on
+			<span data-ng-bind="harvest.created | date:'mediumDate'"></span>
+			by
+			<span data-ng-bind="harvest.user.displayName"></span>
+		</em>
+	</small>
+	</div>
+</section>

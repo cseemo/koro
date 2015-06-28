@@ -1,0 +1,161 @@
+
+<style>
+/*.form-group{
+    padding: 17px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}*/
+.makeMed {
+    font-size: 2em;
+}
+section{
+    background-color: #146586;
+    min-height: 100%;
+}
+.nostyle:hover, .nostyle:visited, .nostyle:link, .nostyle:active{
+    text-decoration: none;
+    cursor: pointer;
+}
+.bigPad{
+    padding-left: 15px;
+}
+h1, h2, h3{
+    color: #333;
+}
+.stickyTop{
+position: absolute;
+top: 0px;
+left: 0px;
+right: 00px;
+z-index: 999;
+
+}
+
+
+.animate-enter, 
+.animate-leave
+{ 
+    -webkit-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+} 
+ 
+.animate-enter {
+    left: 100%;
+}
+.animate-enter.animate-enter-active {
+    left: 0;
+}
+ 
+.animate-leave {
+    left: 0;
+}
+.animate-leave.animate-leave-active{
+    left: -100%;
+}
+
+</style>
+
+<section data-ng-controller="HarvestsController" ng-init="newHarvest()">
+
+
+    <div class="main-body">
+         
+      <div class="panel panel-primary">
+         <div class="container">
+ <div class="col-md-12 stickyTop" data-ng-show="authNetErr">
+                            <span >
+                            <alert class="text-center" type="danger" >
+       {{authNetErr.message}}
+        </alert>
+
+                            </span>
+                            </div>
+
+                            <div class="col-md-12" data-ng-show="authNetResults">
+                            <span >
+                            <alert class="text-center" type="success" >
+       {{authNetResults}}
+        </alert>
+                            </span>
+                            </div>
+
+<div class="row">
+
+    <div class="col-md-12">
+     
+
+
+       
+            <fieldset>
+                
+            <div class="animate-switch-container" ng-switch on="page">
+                <div class="animate-switch" ng-switch-when="1">Page 1 
+                    <div class="form-group">
+                    <label class="control-label" for="name">Room ID</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="harvest.roomID" id="roomID" class="form-control" placeholder="Room ID" >
+                    </div>
+                    <label class="control-label" for="name">Harvest Name</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="harvest.name" id="name" class="form-control" placeholder="Harvest Name" >
+                    </div>
+                    <label class="control-label" for="numberOfPlants"># of Plants in Harvest</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="harvest.numberOfPlants" id="numberOfPlants" class="form-control" placeholder="How many plants will you be harvesting?" required>
+                    </div>
+
+                </div>
+                 <div class="form-group">
+                    <a class="btn btn-default" ng-click="next()">Next</a>
+                </div>
+
+            </div>
+                <div class="animate-switch" ng-switch-when="2">Page 2 
+                   
+                        <h2>{{harvest.roomID}}</h2>
+
+<a class="btn btn-primary" ng-click="restoreMe()">Restore</a>
+
+<div ng-repeat="plant in harvest.plants">
+
+  <form class="form-inline" role="form">
+    <div class="form-group">
+         <label>Plant #: {{plant.number}}</label>
+      <label class="sr-only" for="email">Plant ID:</label>
+      <input type="text" class="form-control" id="plantId" ng-model="plant.plantID" placeholder="Enter Plant ID" ng-blur="savePlant(plant)">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="pwd">Wet Weight:</label>
+      <input type="text" class="form-control" id="wetWeight" ng-model="plant.wetWeight" placeholder="Enter Wet Weight" ng-blur="savePlant(plant, 'true')">
+    </div>
+    <span ng-show="plant.wetWeight && plant.plantID"><i class="fa fa-check fa-2x"></i></span>
+   <!--  <button type="submit" class="btn btn-default" ng-click="savePlant(plant)">Save</button> -->
+  </form>
+</div>
+
+ <button type="submit" class="btn btn-default" ng-click="harvestComplete()">Complete</button> 
+                
+            </div>
+
+            </div>
+
+
+               
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+       
+    </div>
+</div>
+
+</section>
