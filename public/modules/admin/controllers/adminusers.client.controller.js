@@ -6,7 +6,6 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 		// Storage for our "switches" role type current condition (true or false)
 		$scope.roles = {};
 
-		 $scope.shops = Shops.query();
 
 		 $scope.changeSvcCenter = function() {
 		 	$scope.userB.shop = $scope.serviceCenter._id;
@@ -28,20 +27,7 @@ angular.module('admin').controller('AdminusersController', ['$scope', '$statePar
 					$scope.roles[$scope.userB.roles[i]] = true;
 				}
 
-				// //console.log('User Info: %o', $scope.userB);
-			////console.log('This %o ', this);
-				if($scope.userB && $scope.userB.shop){
-						// //console.log('User has a shop');
-						var shop = Shops.get({shopId: $scope.userB.shop});
-						shop.$promise.then(function(data){
-							// //console.log('Got our Shop Info: ', data);
-							$scope.userB.shopName = data.name;
-
-
-						})
-						
-
-					}
+		
 
 
 
@@ -196,25 +182,6 @@ $scope.notify = function() {
 				// //console.log('Go our users');
 				$scope.filteredUsers = $scope.users;
 
-				angular.forEach($scope.users, function(user){
-					// //console.log('User Name: ', user.displayName);
-					// //console.log('User Shop: ', user.shop);
-					if(user.shop){
-
-						var shop = Shops.get({shopId: user.shop});
-						shop.$promise.then(function(data){
-							// //console.log('Got our Shop Info: ', data);
-							user.shopName = data.name;
-
-
-						})
-						
-
-					}
-					
-
-
-				});
 
 
 				// //console.log('Returning...');
