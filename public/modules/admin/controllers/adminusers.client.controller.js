@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('admin').controller('AdminusersController', ['$scope', '$stateParams', 'Users', 'Shops',  '$location', 'Authentication', '$http', '$filter', 
-	function($scope, $stateParams, Users, Shops, $location, Authentication, $http, $filter) {
+angular.module('admin').controller('AdminusersController', ['$scope', '$stateParams', 'Users',  '$location', 'Authentication', '$http', '$filter', 
+	function($scope, $stateParams, Users, $location, Authentication, $http, $filter) {
 
 		// Storage for our "switches" role type current condition (true or false)
 		$scope.roles = {};
