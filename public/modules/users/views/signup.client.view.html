@@ -34,7 +34,7 @@ section{
 
 		
 
-		<form data-ng-submit="signup()" class="form-inline" novalidate autocomplete="off">
+		<form  class="form-inline" novalidate autocomplete="off">
 			
 				<div class="form-group">
 					<label for="firstName" class="sr-only">First Name</label>
@@ -62,7 +62,7 @@ section{
 
 		<div class="text-center form-group">
 					<br/><br/>
-					<button type="submit" class="btn btn-large btn-primary">Sign up</button>&nbsp; or&nbsp;
+					<button type="submit" class="btn btn-large btn-primary" ng-click="signup()">Sign up</button>&nbsp; or&nbsp;
 					<a href="/#!/signin" class="show-signup">Sign in</a>
 				</div>
 				<div data-ng-show="error" class="text-center text-danger">
@@ -71,3 +71,5 @@ section{
 	</div>
 </div>
 </section>
+
+

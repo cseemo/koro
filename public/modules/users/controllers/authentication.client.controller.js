@@ -6,7 +6,20 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
   //If a socket call comes for this user Fire off a toastr event
     
 		//If user is signed in then redirect back home
-		if ($scope.authentication.user) $location.path('/');
+		if (!$scope.authentication.user) {
+			console.log('User Not Logged in');
+          var test = $location.path();
+          test = test.substring(0,15);
+          console.log('Test Path',test);
+
+          if(test==='/forgot_passwor' || test==='/reset_password' || test==='/signup' || test==='/newshopsignup'){
+            console.log('Resetting Password');
+          	
+          }else{
+          	console.log('Please sign in');
+          	$location.path('/signin');
+		}
+		}
 
 		$scope.signup = function(io) {
 			// console.log('Paramt', $location.absUrl());
@@ -42,10 +55,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		};
 
 			$scope.sendReset = function(){
-					//console.log('Resetting Password');
+					console.log('Resetting Password');
 					var username = $scope.usertoReset;
 					$http.get('/forgot_password/'+username).success(function(response){
 						//console.log('email sent',response);
+						$scope.success = true;
+						$scope.message = 'An Email has been sent to your email account with instructions on how to reset your password';
 					});
 
 
