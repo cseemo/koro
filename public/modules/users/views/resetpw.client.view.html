@@ -1,14 +1,33 @@
 
-<div class="page-forgot" data-ng-controller="AuthenticationController" data-ng-init="findOne()">
+<style>
+.main-body { 
+  background: url(http://4.bp.blogspot.com/_ia4NUNcc2qI/TPaXSSz_YgI/AAAAAAAAABc/s0lH7PvXJkc/s1600/New_York_Black_And_White_1680X1050_Wallpaper.jpg) 
+    no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100vh;
+  }
+</style>
+<div class="page-signin" data-ng-controller="AuthenticationController">
 
-    <div class="signin-header">
-        <section class="logo text-center">
-            <a href="#/">{{main.brand}}</a>
-        </section>
-    </div>
 
     <div class="main-body">
+        <alert data-ng-show="error" class="text-center" type="danger" >
+       {{error}}
+        </alert>
+         <alert data-ng-show="message" class="text-center" type="success" >
+       Your Password has been changed. Please <a href="./#!/signin">Click Here</a> to login.
+        </alert>
         <div class="container">
+              <div class="panel col-md-4 col-md-offset-4">
             <div class="info text-center">
                 <p class="text-small">Please enter your new password. Then confirm it. </p>
             </div>
@@ -40,6 +59,7 @@
                     </div>
                 </form>
             </div>
+        </div>
         </div>
     </div>
 </div>
