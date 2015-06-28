@@ -1,16 +1,39 @@
-
-<div class="page-forgot" data-ng-controller="AuthenticationController">
-
-    <div class="signin-header">
-        <section class="logo text-center">
-            <a href="#/">{{main.brand}}</a>
-        </section>
-    </div>
+<style>
+section{ 
+  background: url(http://www.growweedeasy.com/sites/growweedeasy.com/files/dog-field-marijuana.jpg) 
+    no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+  }
+  .chad{
+    /*background-color: #222;*/
+    opacity: 1;
+  }
+  .panel{
+    opacity: .9;
+  }
+  </style>
+<div class="page-signin" data-ng-controller="AuthenticationController">
+ 
 
     <div class="main-body">
         <div class="container">
+               <div class="panel col-md-6 col-md-offset-3">
+        
             <div class="info text-center">
-                <p class="text-small">Enter your email address that you used to register. We'll send you an email with your username and a link to reset your password.</p>
+                <center>
+                    <img alt="Swell Farmacy" class="img-responsive text-center" src="modules/core/img/brand/logo.png" />
+                </center>
+                <p>Enter the username that you use with this portal. We'll send you an email with your username and a link to reset your password.</p>
             </div>
 
             <div class="form-container text-center">
@@ -28,6 +51,7 @@
                         <a class="btn btn-lg btn-block btn-primary btn-round" data-ng-click="sendReset()">Reset</a>
                     </div>
                 </form>
+                 <p class="text-center"><a href="#!/signin">Log In</a></p>
             </div>
         </div>
     </div>
