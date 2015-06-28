@@ -24,10 +24,10 @@ section{
   </style>
 
   <section class="row" data-ng-controller="AuthenticationController">
-	 <div class="container">
+	 
     <div class="panel col-md-10 col-md-offset-1">
     
-	<div class="col-md-12 text-center chad">
+	<div class="panel col-md-12 text-center chad">
 		
 	<img alt="Swell Farmacy" class="img-responsive text-center" src="modules/core/img/brand/logo.png" />
 		<h3 class="col-md-12 text-center">Register For Access</h3>
@@ -56,7 +56,11 @@ section{
 					<label for="password" class="sr-only">Password</label>
 					<input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
 				</div>
-				<div class="text-center form-group">
+				
+			
+		</form>
+
+		<div class="text-center form-group">
 					<br/><br/>
 					<button type="submit" class="btn btn-large btn-primary">Sign up</button>&nbsp; or&nbsp;
 					<a href="/#!/signin" class="show-signup">Sign in</a>
@@ -64,8 +68,6 @@ section{
 				<div data-ng-show="error" class="text-center text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>
-			
-		</form>
 	</div>
 </div>
 </section>
