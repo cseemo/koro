@@ -5,7 +5,8 @@ section{
 }
 </style>
 <section data-ng-controller="DispensariesController" data-ng-init="find()">
-    <div class="page-header">
+    <div class="container">
+        <div class="page-header">
         <h1>Dispensaries</h1>
     </div>
     <div class="list-group">
@@ -24,4 +25,5 @@ section{
     <div class="alert alert-warning text-center" data-ng-hide="!dispensaries.$resolved || dispensaries.length">
     	No Dispensaries yet, why don't you <a href="/#!/dispensaries/create">create one</a>?
     </div>
+</div>
 </section>

@@ -34,6 +34,12 @@ var HarvestSchema = new Schema({
 		default: null,
 		trim: true
 	},
+	totalWetWeight: {
+		type: Number,
+		default: null,
+		trim: true
+	},
+
 	plants: [{
 		number: {
 			type: Number,

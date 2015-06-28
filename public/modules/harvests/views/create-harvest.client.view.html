@@ -98,7 +98,7 @@ z-index: 999;
             <fieldset>
                 
             <div class="animate-switch-container" ng-switch on="page">
-                <div class="animate-switch" ng-switch-when="1">Page 1 
+                <div class="animate-switch" ng-switch-when="1">
                     <div class="form-group">
                     <label class="control-label" for="name">Room ID</label>
                     <div class="controls">
@@ -119,11 +119,11 @@ z-index: 999;
                 </div>
 
             </div>
-                <div class="animate-switch" ng-switch-when="2">Page 2 
+                <div class="animate-switch" ng-switch-when="2">
                    
-                        <h2>{{harvest.roomID}}</h2>
-
-<a class="btn btn-primary" ng-click="restoreMe()">Restore</a>
+                        <h2>{{harvest.roomID}} -- {{harvest.name}}</h2>
+<!-- 
+<a class="btn btn-primary" ng-click="restoreMe()">Restore</a> -->
 
 <div ng-repeat="plant in harvest.plants">
 

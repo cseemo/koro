@@ -23,7 +23,9 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
     $scope.harvestComplete = function(){
     	console.log('Harvest Complete');
     	$scope.harvest.harvestEnd =Date.now();
-    	$scope.harvest.$update();
+    	$scope.harvest.$update(function(){
+    		$location.path('/harvests');
+    	});
     };
 
     $scope.restoreMe = function(){
@@ -135,6 +137,19 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
 		// Find a list of Harvests
 		$scope.find = function() {
 			$scope.harvests = Harvests.query();
+			$scope.harvests.$promise.then(function(){
+				console.log('Got our harvests...- figure out total Weight');
+				var totalWeight = 0;
+				angular.forEach($scope.harvests, function(harvest){
+					console.log('Harvest...', harvest);
+					angular.forEach(harvest.plants, function(plant){
+					console.log('Plant...', plant);
+					totalWeight=parseFloat(totalWeight)+parseFloat(plant.wetWeight);
+					harvest.totalWetWeight = totalWeight;
+				});
+
+				});
+			})
 		};
 
 		// Find existing Harvest

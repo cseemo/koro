@@ -6,12 +6,16 @@ section{
 }
 </style>
 <section data-ng-controller="HarvestsController" data-ng-init="find()">
+   <div class="container">
     <div class="page-header">
         <h1>Harvests</h1>
     </div>
     <div class="list-group">
-        <a data-ng-repeat="harvest in harvests" data-ng-href="#!/harvests/{{harvest._id}}" class="list-group-item">
-			<label>Number of Plants: {{harvest.numberOfPlants}}</label>
+        <a data-ng-repeat="harvest in harvests | orderBy: '-totalWetWeight'" data-ng-href="#!/harvests/{{harvest._id}}" class="list-group-item">
+			<h4 class="list-group-item-heading" data-ng-bind="harvest.name"></h4>
+            <label>Number of Plants: {{harvest.numberOfPlants}}</label>
+            <br/>
+            <label>Total Wet Weight: {{harvest.totalWetWeight}}</label>
             <br/>
             <small class="list-group-item-text">
 				Posted on
@@ -19,10 +23,11 @@ section{
 				by
 				<span data-ng-bind="harvest.user.displayName"></span>
 			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="harvest.name"></h4>
+			
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!harvests.$resolved || harvests.length">
     	No Harvests yet, why don't you <a href="/#!/harvests/create">create one</a>?
     </div>
+</div>
 </section>
