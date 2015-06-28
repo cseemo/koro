@@ -5,7 +5,7 @@
     function($scope, $rootScope) {
 
           $scope.main = {
-            brand: "Budget IID",
+            brand: "Swell Farmacy",
             name: 'Justin Uftudrinch'
           };
           $scope.pageTransitionOpts = [
@@ -54,13 +54,13 @@
             }
           }, true);
           return ($scope.color = {
-            primary: '#273b42',
-            secondary: '#ec5f3c',
+            primary: '#006C91',
+            secondary: '#0181AA',
             success: '#449d44',
-            info: '#428bca',
-            infoAlt: '#666699',
-            warning: '#FAC552',
-            danger: '#E9422E',
+            info: '#045270',
+            infoAlt: '#313D52',
+            warning: '#F08A47',
+            danger: '#752E1E',
             chad: '#666699'
           });
 

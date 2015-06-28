@@ -883,16 +883,16 @@ max-height: 300px;
 
         </center>
         <div class="col-md-4">
-        	 <label>Customer Fee</label>
-        	  <input type="text" data-ng-model="installFee"  data-ng-change="updateFees()" id="installFee" class="form-control" placeholder="80" >
+        	 <label>Installation Fee </label>
+        	  <input type="text" data-ng-model="installFee" tooltip="The Installation Fee charged to the customer" tooltip-placement="top" data-ng-change="updateFees()" id="installFee" class="form-control" placeholder="80" >
         	</div>
            <div class="col-md-4">
           
-  <label>Shop Fee</label>
+  <label>Shop Fee (Charged to Budget)</label>
         	  <input type="text" data-ng-model="shopFee"  data-ng-change="updateFees()"  id="shopFee" class="form-control" placeholder="60" >
         	</div>
 <div class="col-md-4">
-        	  <label>Budget Difference</label>
+        	  <label>Budget Difference (In Exception Cases)</label>
         	  <input type="text" data-ng-model="budgetAdlFee"  id="budgetAdlFee" class="form-control" placeholder="80" >
         	</div>
         	</div>

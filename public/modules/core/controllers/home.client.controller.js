@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication', '$location', 'uiGmapGoogleMapApi', 
-	function($scope, Authentication, $location, uiGmapGoogleMapApi) {
+angular.module('core').controller('HomeController', ['$scope', 'Authentication', '$location', 'uiGmapGoogleMapApi', '$http', 
+	function($scope, Authentication, $location, uiGmapGoogleMapApi, $http) {
 		// uiGmapGoogleMapApi 'uiGmapGoogleMapApi',
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
@@ -11,13 +11,9 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 		if (!$scope.user) $location.path('/signin');
 
 
-		uiGmapGoogleMapApi.then(function(maps) {
-   
-          $scope.map = {center: {latitude: 51.219053, longitude: -94 }, zoom: 5 };
-        	$scope.options = {scrollwheel: false};
- 
+	
 
-    });
+		 
  
        
     }]);

@@ -11,56 +11,14 @@
         >
        
 
-            <li data-ng-show="authentication.hasRole('manager')===true">
+    <!--         <li data-ng-show="authentication.hasRole('manager')===true">
         <a href="#!/dashboard"> <i class="fa fa-bell"></i>
         <span>Service Center Summary</span>
          </a>
-         </li >
-          <li data-ng-show="authentication.hasRole('manager')===true">
-        <a href="#!/offenders"> <i class="fa fa-users"></i>
-        <span>Clients</span>
-         </a>
-         </li>
-          <li data-ng-show="authentication.hasRole('manager')===true">
-        <a href="#!/shops"> <i class="fa fa-building"></i>
-        <span>Service Centers</span>
-         </a>
-         </li >
-                   <li data-ng-show="authentication.hasRole('manager')===true">
-        <a href="#!/workorders"> <i class="fa fa-wrench"></i>
-        <span>Workorders</span>
-         </a>
-         </li >
-         <li data-ng-show="authentication.hasRole('manager')===true">
-        <a href="#!/devices"> <i class="fa fa-tablet"></i>
-        <span>Devices</span>
-         </a>
-         </li>
-                  <li data-ng-show="authentication.hasRole('admin')===true">
-        <a href="#!/adminusers"> <i class="fa fa-puzzle-piece"></i>
-        <span>Users</span>
-         </a>
-         </li>
-         
-        
-          <li  data-ng-show="authentication.hasRole('shop')===true">
-        <a href="#!/pending"> <i class="fa fa-car"></i>
-        <span>Pending Work Orders</span>
-         </a>
-         </li>
-         <li  data-ng-show="authentication.hasRole('shop')===true">
-        <a href="#!/lookUpCustomer"> <i class="fa fa-search"></i>
-        <span>Customer Search</span>
-         </a>
-         </li>
-         <li  data-ng-show="authentication.hasRole('shop')===true">
-        <a href="#!/shopdevices"> <i class="fa fa-tablet"></i>
-        <span>Devices</span>
-         </a>
-         </li>
+         </li > -->
 
-        
-   <!--      <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);" style="color: white; ">
+                 <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);" style="color: white; ">
+            
             <a href="#!/{{item.link}}">
                 <i class="{{item.icon}}"></i>
                 <span data-ng-bind="item.title"></span>
@@ -72,7 +30,37 @@
                     <a href="/#!/{{subitem.link}}" data-ng-bind="subitem.title"></a>
                 </li>
             </ul>
-        </li> -->
+        </li>
+
+           <li >
+        <a href="#!/specials"> <i class="fa fa-eye"></i>
+        <span>Competitor Specials</span>
+         </a>
+         </li >
+                
+
+               <li >
+        <a href="#!/cure"> <i class="fa fa-sun-o"></i>
+        <span>Dry/Cure</span>
+         </a>
+         </li >
+
+               <li >
+        <a href="#!/concentrate"> <i class="fa fa-fire"></i>
+        <span>Concentrates</span>
+         </a>
+         </li >
+
+           <li >
+        <a href="#!/preroll"> <i class="fa fa-leaf"></i>
+        <span>Pre-Rolls</span>
+         </a>
+         </li >
+          
+
+
+        
+
 
             
     </ul>

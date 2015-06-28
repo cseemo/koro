@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 	Deal = mongoose.model('Deal'),
 	_ = require('lodash'),
 	mandrill = require('mandrill-api/mandrill');
-
+var leafly = require('./leafly');
 
 var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	
@@ -36,6 +36,22 @@ var getErrorMessage = function(err) {
 	}
 
 	return message;
+};
+
+
+exports.getSpecials = function(req, res){
+	console.log('About to run some leafly...');
+	// leafly.getSpecials('a', 'b');
+	leafly.getSpecials({
+				    test: 'Test'
+				}, function(results) {
+				    // console.log('err:', err);
+				    console.log('Results: Line 53: ', results);
+				    res.status(200).send(results);
+
+				});
+
+
 };
 
 exports.sendQuote = function(req, res){
