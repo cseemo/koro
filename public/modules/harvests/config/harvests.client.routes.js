@@ -17,6 +17,18 @@ angular.module('harvests').config(['$stateProvider',
 			url: '/harvests/:harvestId',
 			templateUrl: 'modules/harvests/views/view-harvest.client.view.html'
 		}).
+		state('stage1Trim', {
+			url: '/trimStage1',
+			templateUrl: 'modules/harvests/views/trim-client.view.html',
+		}).
+		state('stage2Trim', {
+			url: '/trimStage2',
+			templateUrl: 'modules/harvests/views/trim-client.view.html'
+		}).
+		state('stage3Trim', {
+			url: '/trimStage3',
+			templateUrl: 'modules/harvests/views/trim-client.view.html'
+		}).
 		state('editHarvest', {
 			url: '/harvests/:harvestId/edit',
 			templateUrl: 'modules/harvests/views/edit-harvest.client.view.html'

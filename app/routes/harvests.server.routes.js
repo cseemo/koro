@@ -9,6 +9,19 @@ module.exports = function(app) {
 		.get(harvests.list)
 		.post(users.requiresLogin, harvests.create);
 
+	app.route('/getStage1Plants')
+		.get(harvests.getStage1Plants);
+
+	app.route('/getStage2Plants')
+		.get(harvests.getStage2Plants);
+
+	app.route('/getStage3Plants')
+		.get(harvests.getStage3Plants);
+
+		
+	app.route('/getReadyToHarvestPlants')
+		.get(harvests.getReadyToHarvestPlants);
+
 	app.route('/harvests/:harvestId')
 		.get(harvests.read)
 		.put(users.requiresLogin, harvests.hasAuthorization, harvests.update)

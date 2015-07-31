@@ -6,7 +6,51 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Harvest = mongoose.model('Harvest'),
+	Plant = mongoose.model('Plant'),
 	_ = require('lodash');
+
+
+exports.getStage1Plants = function(req, res){
+	console.log('Get stage 1 plants...');
+	Plant.find({stage1Complete: false, stage2Complete: false, stage3Complete: false, inProduction: true}).exec(function(err, plants){
+		console.log("Plants::: ", plants);
+		res.status(200).send(plants);
+	});
+
+
+};
+
+exports.getStage2Plants = function(req, res){
+	console.log('Get stage 1 plants...');
+	Plant.find({stage1Complete: true, stage2Complete: false, stage3Complete: false, inProduction: true}).exec(function(err, plants){
+		console.log("Plants::: ", plants);
+		res.status(200).send(plants);
+	});
+
+
+};
+
+
+
+exports.getStage3Plants = function(req, res){
+	console.log('Get stage 1 plants...');
+	Plant.find({stage1Complete: true, stage2Complete: true, stage3Complete: false, inProduction: true}).exec(function(err, plants){
+		console.log("Plants::: ", plants);
+		res.status(200).send(plants);
+	});
+
+
+};
+
+exports.getReadyToHarvestPlants = function(req, res){
+	console.log('Get Ready to harvest plants...');
+	Plant.find({stage1Complete: true, stage2Complete: true, stage3Complete: true, inProduction: true}).exec(function(err, plants){
+		console.log("Plants::: ", plants);
+		res.status(200).send(plants);
+	});
+
+
+};
 
 /**
  * Create a Harvest

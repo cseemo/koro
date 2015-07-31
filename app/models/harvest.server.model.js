@@ -34,11 +34,36 @@ var HarvestSchema = new Schema({
 		default: null,
 		trim: true
 	},
-	totalWetWeight: {
+	batchId: {
+			type: String,
+			default: null,
+			trim: true
+	},
+	harvestTotalWeight: {
 		type: Number,
 		default: null,
 		trim: true
 	},
+	trimWeight: {
+			type: Number,
+			default: null,
+			trim: true
+	},
+	wasteWeight: {
+			type: Number,
+			default: null,
+			trim: true
+		},
+	aBudsWeight: {
+			type: Number,
+			default: null,
+			trim: true
+		},
+	bBudsWeight: {
+			type: Number,
+			default: null,
+			trim: true
+		},
 
 	plants: [{
 		number: {
@@ -50,7 +75,12 @@ var HarvestSchema = new Schema({
 			default: null,
 			trim: true
 		},
-		wetWeight: {
+		aBudsWeight: {
+			type: Number,
+			default: null,
+			trim: true
+		},
+		bBudsWeight: {
 			type: Number,
 			default: null,
 			trim: true
@@ -58,7 +88,18 @@ var HarvestSchema = new Schema({
 		plantWeighIn: {
 			type: Date,
 			default: null
-		}
+		}, 
+		trimWeight: {
+			type: Number,
+			default: null,
+			trim: true
+		},
+		wasteWeight: {
+			type: Number,
+			default: null,
+			trim: true
+		},
+
 	}],
 	harvestBegin: {
 			type: Date,

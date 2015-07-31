@@ -5,9 +5,9 @@ angular.module('harvests').run(['Menus',
 	function(Menus) {
 		// Set top bar menu items
 
-		Menus.addMenuItem('topbar', 'Harvests', 'harvests', 'dropdown', '/harvests(/create)?', 'fa fa-tree');
-		Menus.addSubMenuItem('topbar', 'harvests', 'List Harvests', 'harvests');
-		Menus.addSubMenuItem('topbar', 'harvests', 'New Harvest', 'harvests/create');
+		// Menus.addMenuItem('topbar', 'Batches', 'harvests', 'dropdown', '/harvests(/create)?', 'fa fa-tree');
+		// Menus.addSubMenuItem('topbar', 'harvests', 'List Batches', 'harvests');
+		// Menus.addSubMenuItem('topbar', 'harvests', 'New Batch', 'harvests/create');
 		// Menus.addSubMenuItem('topbar', 'harvests', 'Edit Harvest', 'harvests/edit');
 	}
 ]);

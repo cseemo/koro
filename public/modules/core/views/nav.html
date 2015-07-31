@@ -1,4 +1,13 @@
+<style>
+.bigger{
 
+    transform:scale(4.0,4.0);
+    -ms-transform:scale(4.0,4.0); /* IE 9 */
+    -moz-transform:scale(4.0,4.0); /* Firefox */
+    -webkit-transform:scale(4.0,4.0); /* Safari and Chrome */
+    -o-transform:scale(4.0,4.0); /* Opera */
+}
+</style>
 <div class="nav-wrapper" name="nav-wrapper" >
 
     <ul id="nav"
@@ -39,23 +48,77 @@
          </li >
                 
 
-               <li >
-        <a href="#!/cure"> <i class="fa fa-sun-o"></i>
-        <span>Dry/Cure</span>
+        <li data-collapse-nav style="color: white; ">
+            
+             <a href="#!/clones"> <i class="fa fa-scissors"></i>
+        <span>Clones</span>
          </a>
-         </li >
 
-               <li >
-        <a href="#!/concentrate"> <i class="fa fa-fire"></i>
-        <span>Concentrates</span>
-         </a>
-         </li >
+            <ul >
+                <li  ng-class="{active: $uiRoute}">
+                      <a href="#!/clones/create"> <i class="fa fa-scissors"></i>
+                        <span>New Cuttings</span>
+                      </a>
+                </li>
+                 <li  ng-class="{active: $uiRoute}">
+                      <a href="#!/clones/transfer1"> <i class="fa fa-life-bouy"></i>
+                        <span>Transfer to Ebb 'n Flow</span>
+                      </a>
+                </li>
+                 <li  ng-class="{active: $uiRoute}">
+                      <a href="#!/clones/transfer2"> <i class="fa fa-database"></i>
+                        <span>Transfer to 3 Gallon</span>
+                      </a>
+                </li>
+            </ul>
+        </li>
 
-           <li >
-        <a href="#!/preroll"> <i class="fa fa-leaf"></i>
-        <span>Pre-Rolls</span>
+        <li data-collapse-nav style="color: white; ">
+            
+             <a href="#!/trim"> <i class="fa icon-cutweed fa-2x"></i>
+        <span>Trimmin'</span>
          </a>
-         </li >
+
+            <ul >
+                <li  ng-class="{active: $uiRoute}">
+                      <a href="#!/trimStage1"> <i class="icon-cutweed"></i>
+                        <span>Stage 1 Trim</span>
+                      </a>
+                </li>
+                 <li  ng-class="{active: $uiRoute}">
+                      <a href="#!/trimStage2"> <i class="icon-cutweed "></i>
+                        <span>Stage 2 Trim</span>
+                      </a>
+                </li>
+                 <li  ng-class="{active: $uiRoute}">
+                      <a href="#!/trimStage3"> <i class="icon-cutweed "></i>
+                        <span>Stage 3 Trim</span>
+                      </a>
+                </li>
+            </ul>
+        </li>
+
+
+        <li data-collapse-nav style="color: white; ">
+            
+             <a href="#!/harvests"> <i class="fa fa-tree"></i>
+        <span>Batches</span>
+         </a>
+
+            <ul >
+                <li  ng-class="{active: $uiRoute}">
+                      <a href="#!/harvests/create"> <i class="fa fa-align-justify"></i>
+                        <span>Create a New Batch</span>
+                      </a>
+                </li>
+                 <li  ng-class="{active: $uiRoute}">
+                      <a href="#!/harvests/edit"> <i class="fa fa-flag"></i>
+                        <span>Update Existing Batch</span>
+                      </a>
+                </li>
+                 
+            </ul>
+        </li>
           
 
 

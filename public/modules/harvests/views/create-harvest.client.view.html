@@ -104,10 +104,21 @@ z-index: 999;
                     <div class="controls">
                         <input type="text" data-ng-model="harvest.roomID" id="roomID" class="form-control" placeholder="Room ID" >
                     </div>
+                  </div>
+                   <div class="form-group">
+                    <label class="control-label" for="name">Batch ID</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="harvest.batchId" id="batchId" class="form-control" placeholder="Room ID" >
+                    </div>
+                  </div>
+
+                  <div class="form-group">
                     <label class="control-label" for="name">Harvest Name</label>
                     <div class="controls">
                         <input type="text" data-ng-model="harvest.name" id="name" class="form-control" placeholder="Harvest Name" >
                     </div>
+                  </div>
+                  <div class="form-group">
                     <label class="control-label" for="numberOfPlants"># of Plants in Harvest</label>
                     <div class="controls">
                         <input type="text" data-ng-model="harvest.numberOfPlants" id="numberOfPlants" class="form-control" placeholder="How many plants will you be harvesting?" required>
@@ -121,24 +132,61 @@ z-index: 999;
             </div>
                 <div class="animate-switch" ng-switch-when="2">
                    
-                        <h2>{{harvest.roomID}} -- {{harvest.name}}</h2>
+                        <h2>{{harvest.roomID}} -- {{harvest.name}} -- {{harvest.batchId}}</h2>
 <!-- 
 <a class="btn btn-primary" ng-click="restoreMe()">Restore</a> -->
 
 <div ng-repeat="plant in harvest.plants">
 
   <form class="form-inline" role="form">
+    <span data-ng-show="!plant.hideTheOptions">
     <div class="form-group">
          <label>Plant #: {{plant.number}}</label>
       <label class="sr-only" for="email">Plant ID:</label>
-      <input type="text" class="form-control" id="plantId" ng-model="plant.plantID" placeholder="Enter Plant ID" ng-blur="savePlant(plant)">
+      <input type="text" class="form-control" id="plantId" ng-model="plant.plantID" placeholder="Enter Plant ID" >
+
+      or <label>Choose a Plant</label>
+      <div class="form-group">
+
+                    <div class="controls">
+                       <select data-ng-model="ourPlantId"
+                                    data-ng-options="stuff as (stuff.strain+' '+stuff.plantId+' ('+stuff._id+')') for stuff in allOurReadyToHarvest"
+                                    data-ng-change="chooseAPlantToHarvest($index, plant)"
+                                    >
+                            </select> 
+                    </div>
+      </div>
+       <div class="form-group">
+        <button data-ng-click="hideOptions(plant)" class="btn btn-xs btn-success">Enter Weights</button>
+       </div>
+    </div>
+  </span>
+    <span data-ng-show="plant.hideTheOptions">
+      <div class="form-group">
+          <label>Plant #: {{plant.number}}</label>
+      <label class="sr-only" for="pwd">Plant ID: </label> {{plant.plantID}}
+
     </div>
     <div class="form-group">
-      <label class="sr-only" for="pwd">Wet Weight:</label>
-      <input type="text" class="form-control" id="wetWeight" ng-model="plant.wetWeight" placeholder="Enter Wet Weight" ng-blur="savePlant(plant, 'true')">
+      <label class="sr-only" for="pwd">A Buds Weight:</label>
+      <input type="text" class="form-control" id="aBudsWeight" ng-model="plant.aBudsWeight" placeholder="Enter A Buds Weight" ng-blur="savePlant(plant, 'true')">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="pwd">B Buds Weight:</label>
+      <input type="text" class="form-control" id="bBudsWeight" ng-model="plant.bBudsWeight" placeholder="Enter B Buds Weight" ng-blur="savePlant(plant, 'true')">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="pwd">Trim Weight:</label>
+      <input type="text" class="form-control" id="trimWeight" ng-model="plant.trimWeight" placeholder="Enter Trim Weight" ng-blur="savePlant(plant, 'true')">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="pwd">Waste Weight:</label>
+      <input type="text" class="form-control" id="wasteWeight" ng-model="plant.wasteWeight" placeholder="Enter Waste Weight" ng-blur="savePlant(plant, 'true')">
     </div>
     <span ng-show="plant.wetWeight && plant.plantID"><i class="fa fa-check fa-2x"></i></span>
    <!--  <button type="submit" class="btn btn-default" ng-click="savePlant(plant)">Save</button> -->
+
+ </span>
   </form>
 </div>
 
