@@ -1,0 +1,267 @@
+
+<style>
+/*.form-group{
+    padding: 17px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}*/
+.makeMed {
+    font-size: 2em;
+}
+section{
+    background-color: #146586;
+    min-height: 100%;
+}
+.nostyle:hover, .nostyle:visited, .nostyle:link, .nostyle:active{
+    text-decoration: none;
+    cursor: pointer;
+}
+.bigPad{
+    padding-left: 15px;
+}
+h1, h2, h3{
+    color: #333;
+}
+.stickyTop{
+position: absolute;
+top: 0px;
+left: 0px;
+right: 00px;
+z-index: 999;
+
+}
+
+
+.animate-enter, 
+.animate-leave
+{ 
+    -webkit-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+} 
+ 
+.animate-enter {
+    left: 100%;
+}
+.animate-enter.animate-enter-active {
+    left: 0;
+}
+ 
+.animate-leave {
+    left: 0;
+}
+.animate-leave.animate-leave-active{
+    left: -100%;
+}
+.bordered{
+        
+        background-color: #888;
+}
+</style>
+ <section data-ng-controller="ClonesController" data-ng-init="getCloneBoxes()">
+
+     <div class="main-body">
+           <div class="page header">
+            <h2>Transfer & Destroy Clones</h2>
+           </div> 
+
+     <div class="panel panel-primary col-md-10 col-md-offset-1">
+        <div class="container">
+          <div class="col-md-12 text-center">
+           
+                <h3>Choose a Clone Box to Transfer/Destroy:</h3>
+                 <p>    <form class="form-horizontal" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label" for="name">Box Id</label>
+                    <div class="controls">
+                       <select data-ng-model="cloneMommy"
+                                    data-ng-options="box._id for box in cloneBoxes"
+                                    >
+                            </select> 
+                    </div>
+                </div>
+               
+
+            </fieldset>
+             <button class="btn btn-info center-block" data-ng-click="chooseClones(cloneMommy)">Transfer/Destroy Clones</button>
+        </form>
+    </p>
+        </div>
+                <div class="col-md-12" data-ng-if="stage===1">
+            <h3>Clones in {{cloneMommy._id}}</h3>
+            <table class="table table-striped table-responsive">
+                <thead>
+                    <th >
+                        Puck Location
+                    </th>
+                    <th >
+                        Strain
+                    </th>
+                    <th colspan="3">
+                        Action
+                    </th>
+                    <th>
+                        Method of Destruction
+                    </th>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="clone in clones track by $index">
+                        <td>{{clone.puckLocation}} <span ng-show="clone.action">({{clone.action}})</span></td>
+                        <td>{{clone.strain}}</td>
+                        <td colspan="3">
+                            <button class="btn btn-success" data-ng-click="transferClone(clone, '16ozCup')">Move to 16oz Cup</button>
+                            <button class="btn btn-danger" data-ng-click="transferClone(clone, 'destroy')">Destroy</button>
+                        
+                        <span data-ng-show="clone.needPlantId">
+                           <br/>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Plant ID: </label>
+                             <input type="text" data-ng-model="clone.plantId" id="plantId" class="form-control" placeholder="Plant ID">
+                         </div>
+                          <div class="col-md-6">
+                              <label>Room ID: </label>
+                             <input type="text" data-ng-model="clone.roomId" id="roomId" class="form-control" placeholder="Room ID">
+                 
+                         </div>
+                     </div>
+                        </span>
+
+                        <span data-ng-show="clone.destroy">
+                            <br/>
+                        <span class="col-md-6">
+                            <div class="form-group">
+                    <label class="control-label" for="name">Method of Destruction</label>
+                    <div class="controls">
+                       <select data-ng-model="clone.destroyMethod" data-ng-options="way for way in destroyMethods" data-ng-change="changeDestructionMethod($index, clone)">
+                            </select> 
+                    </div>
+              </div>
+          </span>
+            <span class="col-md-6">
+                            <div class="form-group">
+                    <label class="control-label" for="name">Reason for Destruction</label>
+                    <div class="controls">
+                       <select data-ng-model="clone.destroyReason" data-ng-options="way for way in destroyReasons" data-ng->
+                            </select> 
+                    </div>
+              </div>
+          </span>
+                        </span>
+                        
+                    </td>
+                        <td>
+                            <span data-ng-show="clone.destroyMethod">
+                               {{clone.destroyMethod}} ({{clone.destroyReason}})
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+             <div class="form-group">
+                <hr>
+                <button class="btn btn-default " data-ng-click="saveBoxInfo()">Save/Update</button>
+            </div>        
+
+
+        </div>
+
+
+        <div class="col-md-12" data-ng-if="stage===2">
+            <h3>Clones in {{cloneMommy._id}}</h3>
+            <table class="table table-striped table-responsive">
+                <thead>
+                    <th >
+                        Puck Location
+                    </th>
+                    <th >
+                        Strain
+                    </th>
+                    <th colspan="3">
+                        Action
+                    </th>
+                    <th>
+                        Method of Destruction
+                    </th>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="clone in clones track by $index">
+                        <td>{{clone.puckLocation}} <span ng-show="clone.action">({{clone.action}})</span></td>
+                        <td>{{clone.strain}}</td>
+                        <td colspan="3">
+                            <button class="btn btn-success" data-ng-click="transferClone(clone, 'production')">Move to Production</button>
+                            <button class="btn btn-info" data-ng-click="transferClone(clone, 'mother')">Move to Mother</button>
+                            <button class="btn btn-danger" data-ng-click="transferClone(clone, 'destroy')">Destroy</button>
+                        
+                        <span data-ng-show="clone.needPlantId">
+                           <br/>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Plant ID: </label>
+                             <input type="text" data-ng-model="clone.plantId" id="plantId" class="form-control" placeholder="Plant ID">
+                         </div>
+                          <div class="col-md-6">
+                              <label>Room ID: </label>
+                             <input type="text" data-ng-model="clone.roomId" id="roomId" class="form-control" placeholder="Room ID">
+                 
+                         </div>
+                     </div>
+                        </span>
+
+                        <span data-ng-show="clone.destroy">
+                            <br/>
+                        <span class="col-md-6">
+                            <div class="form-group">
+                    <label class="control-label" for="name">Method of Destruction</label>
+                    <div class="controls">
+                       <select data-ng-model="clone.destroyMethod" data-ng-options="way for way in destroyMethods" data-ng-change="changeDestructionMethod($index, clone)">
+                            </select> 
+                    </div>
+              </div>
+          </span>
+            <span class="col-md-6">
+                            <div class="form-group">
+                    <label class="control-label" for="name">Reason for Destruction</label>
+                    <div class="controls">
+                       <select data-ng-model="clone.destroyReason" data-ng-options="way for way in destroyReasons" data-ng->
+                            </select> 
+                    </div>
+              </div>
+          </span>
+                        </span>
+                        
+                    </td>
+                        <td>
+                            <span data-ng-show="clone.destroyMethod">
+                               {{clone.destroyMethod}} ({{clone.destroyReason}})
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <hr>
+                <button class="btn btn-default " data-ng-click="saveBoxInfo()">Save/Update</button>
+            </div>
+             
+                      
+
+
+        </div>
+
+
+
+</div>
+</div>
+</div>
+</section>
