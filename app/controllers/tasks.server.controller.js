@@ -14,14 +14,14 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var task = new Task(req.body);
 	task.user = req.user;
-	console.log(req.io);
+	// console.log(req.io);
 	task.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-
+			console.log('About to send task to '+task.assignedTo);
 			req.io.emit(task.assignedTo,task );
 			res.jsonp(task);
 		}
