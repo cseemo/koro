@@ -110,6 +110,7 @@ app.use(multer({ dest: './public/uploads/'}));
 
 	// Passing the request url to environment locals
 	app.use(function(req, res, next) {
+		req.io = io;
 		res.locals.url = req.protocol + ':// ' + req.headers.host + req.url;
 		next();
 	});

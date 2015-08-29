@@ -1,4 +1,5 @@
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"></link>
+
+ <link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"></link>
  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <header class="top-header clearfix" data-ng-controller="HeaderController">
 
@@ -18,21 +19,42 @@
     </div>
 
     <div class="top-nav" >
+
+
      <ul class="nav-left list-unstyled">
-          <li class="dropdown text-normal nav-profile">
-       </li>
-       <!--   <li>
-                <a href="#/" data-toggle-nav-collapsed-min
-                             class="toggle-min"
-                             id="step3"
-                             ><i class="fa fa-bars"></i></a>
-            </li> -->
-          <!--   <li class="dropdown hidden-xs">
-                <a href="https://www.youtube.com/watch?v=OsK8l4zeWgs&list=PL613fdkLVMF0sOm40UWyJPPTxWcqMhgTE" target="_blank"><i class="fa fa-youtube-play"></i>   Online Training Videos</a>
-            </li> -->
+          
+            <li class="dropdown" data-ng-controller="TasksController" ng-init="getUserTasks()">
+            
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-bell-o"></i>
+                    <span class="badge badge-info">{{tasks.length}}</span>
+                </a>
+                <div class="dropdown-menu with-arrow panel panel-dark">
+                    <div class="panel-heading">
+                        You have {{tasks.length}} tasks.
+                    </div>
+                    <ul class="list-group">
+                        
+                        <!--  <center>
+                       
+                         <a style="curosr: pointer" data-ng-click="clearNotifications()">Clear All Tasks</a>
+                         </center> -->
+                        <li class="list-group-item" data-ng-repeat="task in tasks  | orderBy:predicate:reverse">
+                            <a href="javascript:;" ng-click="viewTask(task)" class="media">
+                                <span class="pull-left media-icon">
+                                    <!-- <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-bell-o"></i></span>
+                                </span> -->
+                                <div class="media-body">
+                                   
+                                    <span class="block">{{task.name}}</span>
+                                    <span data-ng-show="task.dueDate" class="text-muted"><label>Due By: </label>  {{task.dueDate | date:'medium'}}</span>
+                                </div>
+                            </a>
+                 </li>
             </ul>
-
-
+        </div>
+    </li>
+</ul>
 
         <ul class="nav-right pull-right list-unstyled">
        
@@ -74,3 +96,66 @@
     </div>
 
 </header>
+
+<script type="text/ng-template" id="taskModal.html">
+<style>
+h3{
+    color: #fff;
+    }  
+</style>
+  <div class="modal-header" style="background-color: #146586" ng-init="getEmailAddresses()">
+   <h3>{{task.name}}</h3>
+
+  </div>
+  <div class="modal-body">
+    <div class="text-center">
+    <p>Please provide any notes regarding this task and either mark it as Complete, or send it back to your manager notating there are problems</p>
+    </div>
+      <div class="form-group col-md-6">
+                   <label>Task Status:</label>
+                    <div class="controls">
+                      {{task.status}}
+                    </div>
+                </div>
+
+       <div class="form-group col-md-6">
+                   <label>Due Date:</label>
+                    <div class="controls">
+                      {{task.dueDate | date: 'medium'}}
+                    </div>
+                </div>
+
+    
+     <div class="form-group">
+                   <label>Task Details:</label>
+                    <div class="controls">
+                      {{task.details}}
+                    </div>
+                </div>
+
+                
+
+
+         <div class="form-group">
+                   <label>Was The Task Completed Successfully?:</label>
+                    <div class="controls">
+                       <button ng-hide="connected" class="btn btn-success" ng-click="comp=true"><i class="fa fa-thumbs-up"></i> Yes</button>
+  <button ng-hide="connected" class="btn btn-danger" ng-click="comp=false"><i class="fa fa-thumbs-down"></i> No</button>
+                    </div>
+                </div>
+ 
+ <div class="form-group">
+                   <label>Include Any Notes:</label>
+                    <div class="controls">
+                       <textarea class="form-control" rows="6" data-ng-model="notes" placeholder="...notes"></textarea>
+                    </div>
+                </div>
+
+ </div>
+ <div class="modal-footer">
+ <button ng-hide="connected" class="btn btn-success" ng-click="save('complete')"><i class="fa fa-check"></i> Task Complete</button>
+  <button ng-hide="connected" class="btn btn-danger" ng-click="save('jeopardy')"><i class="fa fa-frown-o"></i> Problem With Task</button>
+ <button class="btn btn-warning" ng-click="close()">Close</button>
+ </div>
+</script>
+
