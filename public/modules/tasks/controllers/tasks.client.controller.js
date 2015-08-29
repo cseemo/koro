@@ -8,17 +8,17 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 
 		//Update Task Notifications
 
-           socket.on(user._id, function(data) { 
+           // socket.on(user._id, function(data) { 
                
-                console.log('IO EVENT From Header MODAL .....!!!!!');
-                  console.log('Our IO Data: ', data);
-                  var prettyDate = $filter('date')(data.dueDate, 'short');
-                  toastr.info('You have a new task assigned to you. The task is due by '+prettyDate);
-                   var audio = new Audio('modules/core/sounds/ding.mp3');
-          			audio.play();
-                  $scope.getUserTasks();
+           //      console.log('IO EVENT From Header MODAL .....!!!!!');
+           //        console.log('Our IO Data: ', data);
+           //        var prettyDate = $filter('date')(data.dueDate, 'short');
+           //        toastr.info('You have a new task assigned to you. The task is due by '+prettyDate);
+           //         var audio = new Audio('modules/core/sounds/ding.mp3');
+          	// 		audio.play();
+           //        $scope.getUserTasks();
 
-                  });
+           //        });
 
 
 		$scope.getUserTasks = function(){

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$location', '$cookieStore', '$http', '$filter', 
-	function( $scope, Authentication, Menus, $location, $cookieStore, $http, $filter) {
+angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$location', '$cookieStore', '$http', '$filter', 'Tasks',  
+	function( $scope, Authentication, Menus, $location, $cookieStore, $http, $filter, Tasks) {
 		$scope.authentication = Authentication;
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
@@ -24,7 +24,104 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		}
 		}
 
+		// Update Task Notifications
 
+           socket.on(user._id, function(data) { 
+               
+                console.log('IO EVENT From Header MODAL .....!!!!!');
+                  console.log('Our IO Data: ', data);
+                  var prettyDate = $filter('date')(data.dueDate, 'short');
+                  toastr.info('You have a new task assigned to you. The task is due by '+prettyDate);
+                   var audio = new Audio('modules/core/sounds/ding.mp3');
+          			audio.play();
+                  $scope.getUserTasks();
+
+                  });
+
+
+           $scope.getUserTasks = function(){
+			console.log('Getting user tasks...');
+			Tasks.query({assignedTo: $scope.authentication.user._id, status: 'Due'}).$promise.then(function(tasks){
+				console.log('We found '+tasks.length+' tasks...');
+				$scope.tasks = tasks;
+				console.log(tasks);
+			})
+
+		};
+
+		$scope.viewTask = function(task){
+			console.log('Opening modal to view this task...', task);
+			var modalInstance;
+     modalInstance = $modal.open({
+         templateUrl: 'taskModal.html',
+          controller: function($scope, $modalInstance, user, task, $timeout, $filter, socket){
+           
+            $scope.user = user;
+            $scope.task = task;
+            
+
+            $scope.save = function(type){
+              console.log('Updating Task...', type);
+              if(type==='complete'){
+              	console.log('This task is complete...');
+              	task.complete = Date.now();
+              	task.completionNotes = $scope.notes;
+              	task.status = 'Pending Review';
+              	task.$update(function(){
+              		console.log("Done updtaeing the task...");
+              		console.log(task);
+              		$modalInstance.close();
+
+              	})
+              }else{
+              	console.log('Order not complete...');
+              	task.completionNotes = $scope.notes;
+              	task.status = 'Pending Review';
+              	task.$update(function(){
+              		console.log("Done updtaeing the task...");
+              		console.log(task);
+              		$modalInstance.close();
+
+              	})
+              }
+
+               
+
+            };
+
+            $scope.close = function(){
+              console.log('Closing Modal');
+              $modalInstance.dismiss('Closed');
+            };
+          },
+          resolve: { 
+            user: function() {
+              return $scope.authentication.user
+            }, 
+            task: function() {
+              return task
+            },
+            
+             
+          }
+        });
+
+
+        modalInstance.result.then(function(result) {
+          console.log('Modal finished..', result);
+
+          $scope.getUserTasks();
+
+       
+          
+        }, function() {
+        	
+          console.log('Modal dismissed at: ' + new Date());
+        });
+  
+		};
+
+		
 
 		// $scope.signin = function() {
 		// 	$http.post('/auth/signin', $scope.credentials).success(function(response) {
