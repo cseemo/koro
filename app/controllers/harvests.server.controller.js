@@ -44,7 +44,7 @@ exports.getStage3Plants = function(req, res){
 
 exports.getReadyToHarvestPlants = function(req, res){
 	console.log('Get Ready to harvest plants...');
-	Plant.find({stage1Complete: true, stage2Complete: true, stage3Complete: true, inProduction: true}).exec(function(err, plants){
+	Plant.find({stage1Complete: true, stage2Complete: true, stage3Complete: true, inProduction: true, plantWeighIn: null}).exec(function(err, plants){
 		console.log("Plants::: ", plants);
 		res.status(200).send(plants);
 	});

@@ -9,6 +9,10 @@ module.exports = function(app) {
 		.get(plants.list)
 		.post(users.requiresLogin, plants.create);
 
+		app.route('/finalWeighIn')
+		.post(plants.finalWeighIn);
+	
+
 	app.route('/plants/:plantId')
 		.get(plants.read)
 		.put(users.requiresLogin, plants.hasAuthorization, plants.update)

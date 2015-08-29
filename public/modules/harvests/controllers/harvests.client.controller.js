@@ -33,14 +33,75 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
 			plant.hideTheOptions = true;
 		};
 
-		$scope.chooseAPlantToHarvest = function(row, plant){
-			console.log('Plant: ', plant);
-			plant.plantID = this.ourPlantId.plantId;
-			console.log('Remove this plant from available plants...', row);
-			console.log($scope.allOurReadyToHarvest[row]);
-			var plant = $scope.allOurReadyToHarvest[row];
-			$scope.allOurReadyToHarvest.splice(row, 1);
-			return plant.IdDone = true;
+		//Mark the plant as weighedIn
+		var finalWeighIn = function(plants, harvest, callback){
+			console.log('Marking this plant as weighed in...', plants);
+			$http({
+									method: 'post',
+									
+									url: '/finalWeighIn', 
+									data: {
+										'plants': plants,
+										'harvest': harvest
+										
+										},
+												
+										})
+									.success(function(data, status) {
+										console.log(data);
+										callback();
+
+							}).error(function(err, status) {
+										console.log('Error: ', err);
+										callback();
+
+							});
+		};
+
+		$scope.chooseAPlantToHarvest = function(stuff, ourPlant){
+			console.log('Pull PLant from Available Plants....: ', ourPlant);
+			console.log('Stuff: ', stuff);
+
+			ourPlant.plantID = this.ourPlantId.plantId;
+			ourPlant.plantObjectId = stuff._id;
+			// console.log('Remove this plant from available plants...', row);
+
+			// var x = $scope.allOurReadyToHarvest.indexOf(plant);
+			// 	if(x != -1){
+			// 		console.log('Found our plant....');
+			// 		console.log(plant);
+			// 		$scope.allOurReadyToHarvest.splice(x,1);
+			// 		console.log('# of Available Plants: ', $scope.allOurReadyToHarvest.length);
+
+			// 	}else{
+			// 		console.log('PLant not in our available harvests...');
+			// 		// console.log(item);
+			// 	}
+
+			var i = 0;
+			angular.forEach($scope.allOurReadyToHarvest, function(plant){
+				console.log('Plant info...', plant._id);
+				var x = $scope.allOurReadyToHarvest.indexOf(plant);
+				console.log('X=', x);
+				if(stuff._id===plant._id){
+					console.log('Found our plant....');
+					console.log(plant);
+					
+					$scope.allOurReadyToHarvest.splice(i,1);
+					console.log('# of Available Plants: ', $scope.allOurReadyToHarvest.length);
+
+				}else{
+					console.log('PLant not in our available harvests...');
+					// console.log(item);
+				}
+				i++;
+
+			})
+			// // console.log($scope.allOurReadyToHarvest[row]);
+			// // var plant = $scope.allOurReadyToHarvest[row];
+			// // $scope.allOurReadyToHarvest.splice(row, 1);
+			ourPlant.hideTheOptions = true;
+			return ourPlant.IdDone = true;
 			
 		};
 
@@ -189,9 +250,39 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
 
     $scope.harvestComplete = function(){
     	console.log('Harvest Complete');
-    	$scope.harvest.harvestEnd =Date.now();
+    	console.log('Gotta go thru '+$scope.harvest.plants.length+' plants in this harvest...');
+    	var harvestTotalWeight = 0;
+    	var totalGoodWeight = 0;
+    	$scope.harvest.aBudsWeight = 0;
+    	$scope.harvest.bBudsWeight = 0;
+    	$scope.harvest.cBudsWeight = 0;
+    	$scope.harvest.trimWeight = 0;
+    	$scope.harvest.wasteWeight = 0;
+
+    	var plantsToFix = [];
+    	angular.forEach($scope.harvest.plants, function(plant){
+    		console.log('Plant...', plant._id);
+    		// console.log(plant);
+    		$scope.harvest.harvestTotalWeight=parseFloat(harvestTotalWeight)+parseFloat(plant.aBudsWeight)+parseFloat(plant.bBudsWeight)+parseFloat(plant.wasteWeight)+parseFloat(plant.trimWeight);
+			$scope.harvest.totalGoodWeight = parseFloat(totalGoodWeight)+parseFloat(plant.aBudsWeight)+parseFloat(plant.bBudsWeight);
+    		$scope.harvest.aBudsWeight = parseFloat($scope.harvest.aBudsWeight)+parseFloat(plant.aBudsWeight);
+    		$scope.harvest.bBudsWeight = parseFloat($scope.harvest.bBudsWeight)+parseFloat(plant.bBudsWeight);
+    		// $scope.harvest.cBudsWeight = parseFloat($scope.harvest.cBudsWeight)+parseFloat(plant.cBudsWeight);
+    		$scope.harvest.trimWeight = parseFloat($scope.harvest.trimWeight)+parseFloat(plant.trimWeight);
+    		$scope.harvest.wasteWeight = parseFloat($scope.harvest.wasteWeight)+parseFloat(plant.wasteWeight);
+    		plantsToFix.push(plant);
+    		plant.plantWeighIn = Date.now();
+    		
+    	});
+
+
+
+    		$scope.harvest.harvestEnd =Date.now();
     	$scope.harvest.$update(function(){
-    		$location.path('/harvests');
+    		finalWeighIn(plantsToFix, $scope.harvest, function(err, resp){
+    			 $location.path('/harvests');
+    		});
+    		
     	});
     };
 
@@ -313,9 +404,11 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
 					console.log('Harvest...', harvest);
 					angular.forEach(harvest.plants, function(plant){
 					console.log('Plant...', plant);
-					totalWeight=parseFloat(totalWeight)+parseFloat(plant.wetWeight);
-					harvest.totalWetWeight = totalWeight;
-				});
+					
+
+
+					});
+
 
 				});
 			})

@@ -43,8 +43,8 @@ var PlantSchema = new Schema({
 	},
 	wetWeight: {
 		type: Number,
-		default: null,
-		trim: true
+		default: 0,
+		
 	},
 	plantWeighIn: {
 		type: Date,
@@ -52,13 +52,23 @@ var PlantSchema = new Schema({
 	}, 
 	undefinedWeight: {
 		type: Number,
-		default: null,
-		trim: true
+		default: 0,
+		
 	},
 	wasteWeight: {
 		type: Number,
-		default: null,
-		trim: true
+		default: 0,
+		
+	},
+	aBudsWeight: {
+		type: Number,
+		default: 0,
+		
+	},
+	bBudsWeight: {
+		type: Number,
+		default: 0,
+		
 	},
 	motherId: {
 	type: String,

@@ -44,6 +44,11 @@ var HarvestSchema = new Schema({
 		default: null,
 		trim: true
 	},
+	totalGoodWeight: {
+		type: Number,
+		default: null,
+		trim: true
+	},
 	trimWeight: {
 			type: Number,
 			default: null,
@@ -74,6 +79,11 @@ var HarvestSchema = new Schema({
 			type: String,
 			default: null,
 			trim: true
+		},
+		plantObjectId: {
+		type: Schema.ObjectId,
+		ref: 'Plant',
+		default: null
 		},
 		aBudsWeight: {
 			type: Number,

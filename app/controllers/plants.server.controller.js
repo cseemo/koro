@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Plant = mongoose.model('Plant'),
 	_ = require('lodash');
+	 var async = require('async');
 
 /**
  * Create a Plant
@@ -24,6 +25,34 @@ exports.create = function(req, res) {
 			res.jsonp(plant);
 		}
 	});
+};
+
+
+//Final Weigh In
+exports.finalWeighIn = function(req, res){
+	console.log('Final weigh in...');
+	console.log(req.body);
+	var batchId = req.body.harvest.batchId;
+	async.forEach(req.body.plants, function(ourPlant, myCallback){
+		Plant.findById(ourPlant.plantObjectId).populate('user', 'displayName').exec(function(err, plant) {
+			plant.batchId = batchId;
+			plant.plantWeighIn = Date.now();
+			plant.wasteWeight = ourPlant.wasteWeight;
+			plant.trimWeight = ourPlant.trimWeight;
+			plant.aBudsWeight = ourPlant.aBudsWeight;
+			plant.bBudsWeight = ourPlant.bBudsWeight;
+
+			plant.save(function(){
+				console.log('Saved the plant!!!');
+				myCallback();
+			})
+		});
+
+	}, function(){
+		console.log('Done...');
+		res.status(200).send('Done');
+	});
+	
 };
 
 /**
