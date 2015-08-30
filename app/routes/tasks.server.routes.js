@@ -20,6 +20,18 @@ module.exports = function(app) {
 		.get(tasks.testPhone)
 		.post(tasks.testPhone);
 
+	app.route('/testSMS')
+		.get(tasks.testSMS)
+		.post(tasks.testSMS);
+
+	app.route('/myPhone')
+		.get(tasks.myPhone)
+		.post(tasks.myPhone);
+
+	app.route('/respondToPhone')
+		.get(tasks.respondToPhone)
+		.post(tasks.respondToPhone);
+
 
 	app.route('/tasks/:taskId')
 		.get(tasks.read)

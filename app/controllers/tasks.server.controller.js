@@ -7,15 +7,57 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Task = mongoose.model('Task'),
 	_ = require('lodash');
-
+	//require the Twilio module and create a REST client
+var client = require('twilio')('AC6093896bcbf42853d90e01d0ef078583', '0d1c3e0579bbf810c15435bb47bc7516');
 
 
 //Test Phone 
 exports.testPhone = function(req, res){
 	console.log('Testing Phone...');
-	var response = '<Response><Play>http://45.55.12.241:5000/modules/core/sounds/payYourBill.mp3</Play><Pause length="2"/><Say voice="alice">Hello, John. This is Alice with Budget IID. You owe us money. We want our money. Send us our money!.</Say><Say voice="alice">Call us back TODAY!.</Say></Response>'
+	var response = '<Response><Play>http://45.55.12.241:5000/modules/core/sounds/payYourBill.mp3</Play><Pause length="2"/><Gather action="http://45.55.12.241:5000/respondToPhone" method="GET"><Say voice="alice">Hello, John. This is Alice with Budget IID. You owe us money. We want our money. Press 1 if you plan on paying us by Friday. Press 2 if you can pay us right now.</Say></Gather><Say voice="alice">Call us back TODAY!.</Say></Response>'
 	res.status(200).send(response);
 };
+
+
+// Create (send) an SMS message
+// POST /2010-04-01/Accounts/ACCOUNT_SID/SMS/Messages
+// "create" and "update" aliases are in place where appropriate on PUT and POST requests
+exports.testSMS = function(req, res){
+	console.log('Test SMS...');
+	client.sms.messages.post({
+    to:'+16025185996',
+    from:'+15596343553',
+    body:'word to your mother.'
+}, function(err, text) {
+    console.log('You sent: '+ text.body);
+    console.log('Current status of this text message is: '+ text.status);
+});
+};
+
+exports.respondToPhone = function(req, res){
+	conosle.log('Resonse...');
+	console.log(req.body);
+	console.log(req.query);
+	var response = '<Response><Say voice="alice">Thank you.</Say></Response>'
+	res.status(200).send(response);
+
+};
+
+exports.myPhone = function(req, res){
+	console.log('Testing my phone...');
+	//This REST call using the master/default account for the client...
+client.makeCall({
+    to:'+16025185996',
+    from:'+15596343553',
+    url:'http://45.55.12.241:5000/testPhone'
+}, function(err, call) {
+    console.log('This call\'s unique ID is: ' + call.sid);
+    console.log('This call was created at: ' + call.dateCreated);
+});
+
+
+};
+
 /**
  * Create a Task
  */
