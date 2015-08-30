@@ -14,7 +14,7 @@ var client = require('twilio')('AC6093896bcbf42853d90e01d0ef078583', '0d1c3e0579
 //Test Phone 
 exports.testPhone = function(req, res){
 	console.log('Testing Phone...');
-	var response = '<Response><Gather action="http://45.55.12.241:5000/respondToPhone" method="GET"><Play>http://45.55.12.241:5000/modules/core/sounds/canYouPay.mp3</Play></Response>'
+	var response = '<Response><Gather action="http://45.55.12.241:5000/respondToPhone" method="GET"><Play>http://45.55.12.241:5000/modules/core/sounds/canYouPay.mp3</Play></Gather></Response>'
 	res.status(200).send(response);
 };
 
@@ -50,6 +50,7 @@ exports.respondToPhone = function(req, res){
 
 	// myStuff = 'We look forward to your payment. Please ensure we receive it no later than Friday at 5pm.';
 	var response = '<Response>'+myStuff+'</Response>'
+	console.log('Response: ', response);
 	res.status(200).send(response);
 
 };
