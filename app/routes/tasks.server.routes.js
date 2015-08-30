@@ -16,6 +16,11 @@ module.exports = function(app) {
 		.post(users.requiresLogin, tasks.rejectTask);
 		
 
+	app.route('/testPhone')
+		.get(tasks.testPhone)
+		.post(tasks.testPhone);
+
+
 	app.route('/tasks/:taskId')
 		.get(tasks.read)
 		.put(users.requiresLogin, tasks.hasAuthorization, tasks.update)
