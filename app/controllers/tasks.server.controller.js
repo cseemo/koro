@@ -14,7 +14,7 @@ var client = require('twilio')('AC6093896bcbf42853d90e01d0ef078583', '0d1c3e0579
 //Test Phone 
 exports.testPhone = function(req, res){
 	console.log('Testing Phone...');
-	var response = '<Response><Play>http://45.55.12.241:5000/modules/core/sounds/payYourBill.mp3</Play><Pause length="2"/><Gather action="http://45.55.12.241:5000/respondToPhone" method="GET"><Say voice="alice">Hello, John. This is Alice with Budget IID. You owe us money. We want our money. Press 1 if you plan on paying us by Friday. Press 2 if you can pay us right now.</Say></Gather><Say voice="alice">Call us back TODAY!.</Say></Response>'
+	var response = '<Response><Gather action="http://45.55.12.241:5000/respondToPhone" method="GET"><Play>http://45.55.12.241:5000/modules/core/sounds/canYouPay.mp3</Play></Response>'
 	res.status(200).send(response);
 };
 
@@ -41,15 +41,15 @@ exports.respondToPhone = function(req, res){
 	var myStuff = '';
 
 	if(req.query.Digits==='1'){
-		myStuff = 'We look forward to your payment. Please ensure we receive it no later than Friday at 5pm.';
+		myStuff = '<Play>http://45.55.12.241:5000/modules/core/sounds/payToday.mp3</Play>';
 	}
 	if(req.query.Digits==='2'){
-		myStuff = 'Please stand by your telephone. Someone will call you in the next 5 minutes to accept that payment.';
+		myStuff = '<Play>http://45.55.12.241:5000/modules/core/sounds/payByFriday.mp3</Play>';
 	}
 
 
 	// myStuff = 'We look forward to your payment. Please ensure we receive it no later than Friday at 5pm.';
-	var response = '<Response><Say voice="alice">Thank you.</Say><Say>'+myStuff+'</Say></Response>'
+	var response = '<Response>'+myStuff+'</Response>'
 	res.status(200).send(response);
 
 };
