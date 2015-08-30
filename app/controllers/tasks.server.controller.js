@@ -13,7 +13,8 @@ var mongoose = require('mongoose'),
 //Test Phone 
 exports.testPhone = function(req, res){
 	console.log('Testing Phone...');
-	res.status(200).send('That was awesome. I am so glad I did that.');
+	var response = '<Response><Say voice="alice">I hope htat worked.</Say></Response>'
+	res.status(200).send(response);
 };
 /**
  * Create a Task
