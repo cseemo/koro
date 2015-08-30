@@ -38,7 +38,16 @@ exports.respondToPhone = function(req, res){
 	console.log('Resonse...');
 	console.log(req.body);
 	console.log(req.query);
-	var response = '<Response><Say voice="alice">Thank you.</Say></Response>'
+	if(req.query.digits==='1'){
+		myStuff = 'We look forward to your payment. Please ensure we receive it no later than Friday at 5pm.';
+	}
+	if(req.query.digits==='2'){
+		myStuff = 'Please stand by your telephone. Someone will call you in the next 5 minutes to accept that payment.';
+	}
+
+
+	// myStuff = 'We look forward to your payment. Please ensure we receive it no later than Friday at 5pm.';
+	var response = '<Response><Say voice="alice">Thank you.</Say><Say>'+myStuff+'</Say></Response>'
 	res.status(200).send(response);
 
 };
@@ -53,6 +62,7 @@ client.makeCall({
 }, function(err, call) {
     console.log('This call\'s unique ID is: ' + call.sid);
     console.log('This call was created at: ' + call.dateCreated);
+    res.status(200).send('Completed..');
 });
 
 
