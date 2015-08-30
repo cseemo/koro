@@ -29,12 +29,28 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
            socket.on(user._id, function(data) { 
                
                 console.log('IO EVENT From Header MODAL .....!!!!!');
+
                   console.log('Our IO Data: ', data);
-                  var prettyDate = $filter('date')(data.dueDate, 'short');
-                  toastr.info('You have a new task assigned to you. The task is due by '+prettyDate);
-                   var audio = new Audio('modules/core/sounds/ding.mp3');
+                  if(data.status==='New Task'){
+                  	var prettyDate = $filter('date')(data.task.dueDate, 'short');
+                  	toastr.info('You have a new task assigned to you. The task is due by '+prettyDate);
+                    var audio = new Audio('modules/core/sounds/ding.mp3');
           			audio.play();
-                  $scope.getUserTasks();
+                  	return $scope.getUserTasks();
+                  }
+
+                  if(data.status==='Rejected'){
+                  	console.log('Your task was REJECTED')
+                  	var prettyDate = $filter('date')(data.task.rejected, 'short');
+
+                  	var prettyDueDate = $filter('date')(data.task.dueDate, 'short');
+                  	toastr.error('You had a task rejected at '+prettyDate+'. Please complete task before '+prettyDueDate);
+                    var audio = new Audio('modules/core/sounds/ding.mp3');
+          			audio.play();
+                  	return $scope.getUserTasks();
+                  }
+
+                  
 
                   });
 

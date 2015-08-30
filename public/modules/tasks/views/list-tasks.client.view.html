@@ -1,23 +1,314 @@
-<section data-ng-controller="TasksController" data-ng-init="find()">
-    <div class="page-header">
-        <h1>Tasks</h1>
+<style>
+.col-md-4{
+    padding: 10px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+h1, h2, h3, h4{
+    color: #333;
+}
+.main-body{
+    background-color: #146586;
+    /*font-family: "Comic Sans MS", "Comic Sans", cursive;
+    fo*/nt-size: 1.8em;
+}
+td{
+    font-size: 1em;
+
+}
+.scroll{
+overflow: scroll;  
+height: auto; 
+min-height: 100px; 
+max-height: 300px;
+}
+.link{
+    cursor: pointer;
+}
+</style>
+<section data-ng-controller="TasksController" data-ng-init="init()">
+    <div class="main-body">
+
+    <div class="container">
+      
+               <div class="panel panel-primary">
+               <div class="panel-header">
+                    <h1>Tasks</h1>
+               
+ 
+
+
     </div>
-    <div class="list-group">
-        <a data-ng-repeat="task in tasks" data-ng-href="#!/tasks/{{task._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="task.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="task.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading">{{task.name}} - {{task.status}}</h4>
-            <label>{{task.details}}</label>
-           <br/> <small class="list-group-item-text">
-                Due by {{task.dueDate | date: 'short'}}
-            </small>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!tasks.$resolved || tasks.length">
-    	No Tasks yet, why don't you <a href="/#!/tasks/create">create one</a>?
-    </div>
+    <div class="panel panel-primary">
+
+
+
+          <div class="panel-body">
+        
+            <div class="table-filters">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <input type="text"
+                               placeholder="Search..."
+                               class="form-control"
+                               data-ng-model="tableData.searchKeywords"
+                               data-ng-keyup="search()">
+                        {{tableData.searchKeywords}}
+                    </div>
+                    <div class="col-sm-3 col-xs-6 filter-result-info">
+                        <span>
+                            Showing {{currentPageTasks.length}}/{{filteredTasks.length}} Matches
+                        </span>              
+                    </div>
+                    
+
+                </div>
+            </div>
+
+            <table class="table table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                Assigned To
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('assignedTo.displayName') "
+                                      data-ng-class="{active: row == 'assignedTo.displayName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-assignedTo.displayName') "
+                                      data-ng-class="{active: row == '-assignedTo.displayName'}"></span>
+                            </div>
+                        </th>
+                         <th>
+                            <div class="th">
+                                Assigned
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('created') "
+                                      data-ng-class="{active: row == 'created'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-created') "
+                                      data-ng-class="{active: row == '-created'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Due
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('dueDate') "
+                                      data-ng-class="{active: row == 'dueDate'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-dueDate') "
+                                      data-ng-class="{active: row == '-dueDate'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Task Name
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('name') "
+                                      data-ng-class="{active: row == 'name'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-name') "
+                                      data-ng-class="{active: row == '-name'}"></span>
+                            </div>
+                        </th>
+          
+                      <!--   <th>
+                            <div class="th">
+                                Details
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('details') "
+                                      data-ng-class="{active: row == 'details'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-details') "
+                                      data-ng-class="{active: row == '-details'}"></span>
+                            </div>
+                        </th> -->
+                              <th>
+                            <div class="th">
+                                Status
+
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('status') "
+                                      data-ng-class="{active: row == 'status'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-status') "
+                                      data-ng-class="{active: row == '-status'}"></span>
+                            </div>
+                        </th>
+                            <!--   <th>
+                            <div class="th">
+                                Notes
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('completionNotes') "
+                                      data-ng-class="{active: row == 'completionNotes'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-completionNotes') "
+                                      data-ng-class="{active: row == '-completionNotes'}"></span>
+                            </div>
+                        </th> -->
+                         <th>
+                            <div class="th">
+                                Last Update
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('lastUpdate') "
+                                      data-ng-class="{active: row == 'lastUpdate'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-lastUpdate') "
+                                      data-ng-class="{active: row == '-lastUpdate'}"></span>
+                            </div>
+                        </th>
+
+
+                    </tr> 
+                </thead>
+                
+                <tbody>
+                    <tr class="link" ng-click="adminTaskView(item)" data-ng-repeat="item in currentPageTasks | orderBy: 'dueDate'">
+                   <td>{{item.assignedTo.displayName}}</td>
+                         <td>{{item.created | date: 'short'}}</td>
+                          <td>{{item.dueDate | date: 'short'}} <small>({{item.dueDate | timeago}})</small></td>
+                         <td>{{item.name}}</td>
+                        
+                    <!-- <td>{{item.details}}</td> -->
+                    <td>{{item.status}}
+                      <span ng-show="item.rejected && item.status==='Due'">
+                         <span class="small badge badge-danger">Rejected</span>
+                      </span>
+                    </td>
+                    <!-- <td>{{item.completionNotes}}</td> -->
+                     <td>{{item.lastUpdate | timeago}}</td>
+                   
+                    
+
+                        
+                    
+                   
+                    </tr>
+                </tbody>
+            </table>
+           
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                        <span>
+                            Show 
+                            <select data-ng-model="numPerPage"
+                                    data-ng-options="num for num in numPerPageOpt"
+                                    data-ng-change="onNumPerPageChange()">
+                            </select> 
+                            tasks per page
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredTasks.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+</div>
+</div>
+</div>
+</div>
 </section>
+
+
+<script type="text/ng-template" id="adminTaskModal.html">
+<style>
+h3{
+    color: #fff;
+    }  
+</style>
+  <div class="modal-header" style="background-color: #146586" ng-init="getEmailAddresses()">
+   <h3>Task Overview</h3>
+
+  </div>
+  <div class="modal-body">
+    <div class="text-center">
+    <p>Below you will find the pertinent details of this task as well as the option to Approve it or Reject it and require the assignee to complete the task again. </p>
+    </div>
+      <div class="form-group col-md-6">
+                   <label>Task Name:</label>
+                    <div class="controls">
+                      {{task.name}}
+                    </div>
+                </div>
+
+       <div class="form-group col-md-6">
+                   <label>Assigned To:</label>
+                    <div class="controls">
+                      {{task.assignedTo.displayName}}
+                    </div>
+                </div>
+    <div class="form-group col-md-6">
+                   <label>Task Status:</label>
+                    <div class="controls">
+                      {{task.status}}
+                    </div>
+                </div>
+
+       <div class="form-group col-md-6">
+                   <label>Due Date:</label>
+                    <div class="controls">
+                      {{task.dueDate | date: 'medium'}}
+                    </div>
+                </div>
+
+    
+     <div class="form-group">
+                   <label>Task Details:</label>
+                    <div class="controls">
+                      {{task.details}}
+                    </div>
+                </div>
+
+                
+
+
+         <div class="form-group">
+                   <label>Assignee Notes:</label>
+                    <div class="controls">
+                       {{item.completionNotes}}
+                       </div>
+                </div>
+ 
+<hr>
+<h4 class="text-center">What Say You?</h4>
+<div class="form-group">
+                   <label>Was the Task Completed Properly?:</label>
+                    <div class="controls text-center">
+                      <button ng-hide="connected" class="btn btn-success" ng-click="approved=true"><i class="fa fa-smile-o"></i> Yep, Yep</button>
+  <button ng-hide="connected" class="btn btn-danger" ng-click="approved=false"><i class="fa fa-frown-o"></i> Negative</button>
+
+                       </div>
+                </div>
+
+                <div class="form-group">
+                   <label>Include Any Notes:</label>
+                    <div class="controls">
+                       <textarea class="form-control" rows="6" data-ng-model="notes" placeholder="...notes"></textarea>
+                    </div>
+                </div>
+
+ </div>
+ <div class="modal-footer">
+ <button ng-hide="connected" data-ng-disabled="approved===undefined" class="btn btn-success" ng-click="save(approved)">Save</button>
+ 
+ <button class="btn btn-warning" ng-click="close()">Close</button>
+ </div>
+</script>

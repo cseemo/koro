@@ -179,7 +179,7 @@ angular.module('clones').controller('ClonesController', ['$scope', '$stateParams
 			Plants.get({plantId: plant_Id}).$promise.then(function(plant){
 				console.log('Got the plant...');
 				plant.plantId = plantId;
-				plant.roomid = 
+				plant.roomId = roomId;
 				console.log('Plant to save...', plant);
 				plant.$update();
 			})
@@ -301,7 +301,7 @@ angular.module('clones').controller('ClonesController', ['$scope', '$stateParams
 		//Get All Plants that are Mothers
 		$scope.getMommys = function(){
 			console.log('Get the moms');
-			Plants.query({mother: true}).$promise.then(function(moms){
+			Plants.query({isMother: true}).$promise.then(function(moms){
 				console.log('Got the mommms....', moms);
 				$scope.allOurMothers = moms;
 			});

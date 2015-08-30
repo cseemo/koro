@@ -33,20 +33,37 @@ exports.finalWeighIn = function(req, res){
 	console.log('Final weigh in...');
 	console.log(req.body);
 	var batchId = req.body.harvest.batchId;
-	async.forEach(req.body.plants, function(ourPlant, myCallback){
-		Plant.findById(ourPlant.plantObjectId).populate('user', 'displayName').exec(function(err, plant) {
-			plant.batchId = batchId;
-			plant.plantWeighIn = Date.now();
-			plant.wasteWeight = ourPlant.wasteWeight;
-			plant.trimWeight = ourPlant.trimWeight;
-			plant.aBudsWeight = ourPlant.aBudsWeight;
-			plant.bBudsWeight = ourPlant.bBudsWeight;
+	console.log('Batch ID: ', batchId);
 
-			plant.save(function(){
-				console.log('Saved the plant!!!');
-				myCallback();
-			})
+	async.forEach(req.body.plants, function(ourPlant, myCallback){
+		if(ourPlant.plantObjectId){
+
+
+		Plant.findById(ourPlant.plantObjectId).populate('user', 'displayName').exec(function(err, plant) {
+			if(err){
+				console.log('Error finding plant...', err);
+			}
+			if(!plant){
+				console.log('Cannot Find a plant...', ourPlant.plantObjectId);
+			}else{
+				console.log('Found our plant...', plant);
+				plant.batchId = batchId;
+				plant.plantWeighIn = Date.now();
+				plant.wasteWeight = ourPlant.wasteWeight;
+				plant.trimWeight = ourPlant.trimWeight;
+				plant.aBudsWeight = ourPlant.aBudsWeight;
+				plant.bBudsWeight = ourPlant.bBudsWeight;
+
+				plant.save(function(){
+					console.log('Saved the plant!!!');
+					myCallback();
+				})
+			}
 		});
+	}else{
+		console.log('Nothing to do here...');
+		myCallback();
+	}
 
 	}, function(){
 		console.log('Done...');
@@ -102,7 +119,7 @@ exports.delete = function(req, res) {
  * List of Plants
  */
 exports.list = function(req, res) { 
-	Plant.find().sort('-created').populate('user', 'displayName').exec(function(err, plants) {
+	Plant.find(req.query).sort('-created').populate('user', 'displayName').exec(function(err, plants) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

@@ -45,9 +45,12 @@
                                     <!-- <span class="btn-icon-lined btn-icon-round btn-info"><i class="fa fa-bell-o"></i></span>
                                 </span> -->
                                 <div class="media-body">
-                                   
+                                   <span class="pull-right" ng-show="task.rejected">
+                                   <span class="small badge badge-danger">Rejected</span>
+                                    </span>
                                     <span class="block">{{task.name}}</span>
-                                    <span data-ng-show="task.dueDate" class="text-muted"><label>Due By: </label>  {{task.dueDate | date:'medium'}}</span>
+                                    <span data-ng-show="task.dueDate" class="text-muted"><small><label>Due By: </label>  {{task.dueDate | date:'medium'}}</small></span>
+
                                 </div>
                             </a>
                  </li>
@@ -108,6 +111,22 @@ h3{
 
   </div>
   <div class="modal-body">
+       <div data-ng-show="task.rejected">
+ <h4 class="text-center">Task Rejected</h4>
+ <p class="text-center">Oh snap, son! It looks like your manager did not approve this task. You can see their notes below...once you have completed the task, please notate it on this screen. 
+ </p>
+<div class="form-group">
+                   <label>Rejection Notes:</label>
+                    <div class="controls">
+                      {{task.managerNotes}}
+                      </div>
+                </div>
+        <hr>
+
+ </div>
+
+
+
     <div class="text-center">
     <p>Please provide any notes regarding this task and either mark it as Complete, or send it back to your manager notating there are problems</p>
     </div>
@@ -152,6 +171,7 @@ h3{
                 </div>
 
  </div>
+
  <div class="modal-footer">
  <button ng-hide="connected" class="btn btn-success" ng-click="save('complete')"><i class="fa fa-check"></i> Task Complete</button>
   <button ng-hide="connected" class="btn btn-danger" ng-click="save('jeopardy')"><i class="fa fa-frown-o"></i> Problem With Task</button>

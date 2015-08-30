@@ -55,6 +55,22 @@ var TaskSchema = new Schema({
 		type: Date,
 		default: null
 	},
+	rejected: {
+		type: Date,
+		default: null
+	},
+	approved: {
+		type: Date,
+		default: null
+	},
+	lastUpdate: {
+		type: Date,
+		default: null
+	},
+	timesRejected: {
+		type: Number,
+		default: 0
+	},
 	completionNotes: {
 		type: String,
 		default: null,
@@ -65,6 +81,11 @@ var TaskSchema = new Schema({
 		ref: 'User'
 	},
 	status: {
+		type: String,
+		default: null,
+		trim: true
+	},
+	managerNotes: {
 		type: String,
 		default: null,
 		trim: true

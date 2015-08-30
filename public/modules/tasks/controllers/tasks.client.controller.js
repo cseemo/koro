@@ -1,24 +1,241 @@
 'use strict';
 
 // Tasks controller
-angular.module('tasks').controller('TasksController', ['$scope', '$stateParams', '$location', 'Authentication', 'Tasks', 'Users', '$modal', 'socket', '$filter',   
-	function($scope, $stateParams, $location, Authentication, Tasks, Users, $modal, socket, $filter) {
+angular.module('tasks').controller('TasksController', ['$scope', '$stateParams', '$location', 'Authentication', 'Tasks', 'Users', '$modal', 'socket', '$filter', '$http',   
+	function($scope, $stateParams, $location, Authentication, Tasks, Users, $modal, socket, $filter, $http) {
 		$scope.authentication = Authentication;
 
 
-		//Update Task Notifications
+		 //Table Stuff
 
-           // socket.on(user._id, function(data) { 
+  $scope.tableData = {
+      searchKeywords: '',
+    };
+    $scope.filteredTasks= [];
+    $scope.row = '';
+    $scope.numPerPageOpt = [10, 20, 50, 100, 250, 500];
+    $scope.numPerPage = $scope.numPerPageOpt[0];
+    $scope.currentPage = 1;
+    //$scope.currentPageDeals= $scope.getinit;
+    $scope.currentPageTasks= [];
+
+
+
+    $scope.select = function(page) {
+       
+      var end, start;
+      start = (page - 1) * $scope.numPerPage;
+      end = start + $scope.numPerPage;
+    
+      $scope.currentPage = page;
+      $scope.currentPageTasks = $scope.filteredTasks.slice(start, end);
+      
+    
+    return $scope.currentPageTasks;
+
+
+    };
+
+    $scope.onFilterChange = function() {
+      $scope.select(1);
+      $scope.currentPage = 1;
+      return $scope.row = '';
+    };
+    $scope.onNumPerPageChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.onOrderChange = function() {
+      $scope.select(1);
+      return $scope.currentPage = 1;
+    };
+    $scope.search = function() {
+      
+      $scope.filteredTasks = $filter('filter')($scope.Tasks, $scope.tableData.searchKeywords);
+
+      return $scope.onFilterChange();
+    };
+
+     $scope.searchPending = function() {
+      ////////////////console.log('Keywords: ', $scope.tableData.searchKeywords);
+      $scope.filteredTasks = $filter('filter')($scope.Tasks, $scope.tableData.searchKeywords);
+
+      // {companyname: $scope.tableData.searchKeywords},
+
+      /*$scope.filteredRegistrations = $filter('filter')($scope.registrations, {
+        firstName: $scope.searchKeywords,
+        lastName: $scope.searchKeywords,
+        confirmationNumber: $scope.searchKeywords,
+      });*/
+      return $scope.onFilterChange();
+    };
+
+
+    $scope.order = function(rowName) {
+      //console.log('Reordering by ',rowName);
+      ////////////////console.log('Scope.row ', $scope.row);
+      if ($scope.row === rowName) {
+        return;
+      }
+      $scope.row = rowName;
+      $scope.filteredTasks = $filter('orderBy')($scope.filteredTasks, rowName);
+      ////////////////console.log(rowName);
+      return $scope.onOrderChange();
+    };
+
+    // $scope.setCurrentOffender = function(ind) {
+    //   $scope.currentDevice = $scope.filteredTasks.indexOf(ind);
+    // };
+
+    $scope.init = function() {
+      console.log('Getting Tasks');
+ 
+       $http({
+          method: 'get',
+          url: '/allOfOurTasks',
+          })
+          .success(function(data, status) {
+            console.log('Got all of the Tasks WITH the shop data and client name!!!');
+            console.log(data);
+         $scope.Tasks = data;
+          $scope.filteredTasks = data;
+         return $scope.select($scope.currentPage);
+      }).error(function(err){
+        console.log(err);
+
+      });
+      
+  
+
+    };
+
+
+    //Alert Rep that their task was rejected
+    var alertRepOfRejection = function(task){
+      console.log('Alerting the rejection...');
+       $http.post('/rejectTask', task).success(function(response) {
+        console.log('Completed our notification...', response);
+
+     }).error(function(response) {
+       $scope.error = response.message;
+     });
+
+    };
+    //Admin View of Task
+    $scope.adminTaskView = function(task){
+      console.log('Opening modal to view this task...', task);
+      var modalInstance;
+     modalInstance = $modal.open({
+         templateUrl: 'adminTaskModal.html',
+          controller: function($scope, $modalInstance, user, task, $timeout, $filter, socket){
+           
+            $scope.user = user;
+            $scope.task = task;
+            
+
+            $scope.save = function(type){
+              console.log('Updating Task...', type);
+              console.log(task);
+
+              if($scope.notes){
+                task.managerNotes = $scope.notes;
+              }
+              task.lastUpdate = Date.now();
+
+              if(type===true){
+                //Task has been approved
+                console.log('Notes: ', $scope.notes);
+                task.approved = Date.now();
+                task.rejected = null;
+                task.status = 'Complete';
+                task.completed = Date.now();
+              }
+              if(type===false){
+                //task has been denied
+                console.log('Notes: ', $scope.notes);
+                task.rejected = Date.now();
+                task.timesRejected = parseInt(task.timesRejected)+1;
+                task.status = 'Due';
+              }
+              $modalInstance.close(task);
+
+              // if(type==='complete'){
+              //   console.log('This task is complete...');
+              //   task.complete = Date.now();
+              //   task.completionNotes = $scope.notes;
+              //   task.status = 'Pending Review';
+              //   task.$update(function(){
+              //     console.log("Done updtaeing the task...");
+              //     console.log(task);
+              //     $modalInstance.close();
+
+              //   })
+              // }else{
+              //   console.log('Order not complete...');
+              //   task.completionNotes = $scope.notes;
+              //   task.status = 'Pending Review';
+              //   task.$update(function(){
+              //     console.log("Done updtaeing the task...");
+              //     console.log(task);
+              //     $modalInstance.close();
+
+              //   })
+              // }
+
                
-           //      console.log('IO EVENT From Header MODAL .....!!!!!');
-           //        console.log('Our IO Data: ', data);
-           //        var prettyDate = $filter('date')(data.dueDate, 'short');
-           //        toastr.info('You have a new task assigned to you. The task is due by '+prettyDate);
-           //         var audio = new Audio('modules/core/sounds/ding.mp3');
-          	// 		audio.play();
-           //        $scope.getUserTasks();
 
-           //        });
+            };
+
+            $scope.close = function(){
+              console.log('Closing Modal');
+              $modalInstance.dismiss('Closed');
+            };
+          },
+          resolve: { 
+            user: function() {
+              return $scope.authentication.user
+            }, 
+            task: function() {
+              return task
+            },
+            
+             
+          }
+        });
+
+
+        modalInstance.result.then(function(result) {
+          console.log('Modal finished..', result);
+          Tasks.get({taskId: result._id}).$promise.then(function(ourTask){
+            console.log("Got our task....", ourTask);
+
+            ourTask.completed = result.completed,
+            ourTask.lastUpdate = result.lastUpdate,
+            ourTask.rejected = result.rejected,
+            ourTask.managerNotes = result.managerNotes,
+            ourTask.status = result.status,
+            ourTask.approved = result.approved,
+            ourTask.timesRejected = result.timesRejected,
+            ourTask.$update(function(){
+              console.log('Updated our task...');
+              console.log('Alert rep if the task was rejected...');
+              if(result.rejected){
+                console.log('This bitch WAS REJECTED!!!!');
+                alertRepOfRejection(result);
+              }
+            })
+
+          });
+
+       
+          
+        }, function() {
+          
+          console.log('Modal dismissed at: ' + new Date());
+        });
+
+    };
+
 
 
 		$scope.getUserTasks = function(){
@@ -47,6 +264,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
               if(type==='complete'){
               	console.log('This task is complete...');
               	task.complete = Date.now();
+                task.lastUpdate = Date.now();
               	task.completionNotes = $scope.notes;
               	task.status = 'Pending Review';
               	task.$update(function(){

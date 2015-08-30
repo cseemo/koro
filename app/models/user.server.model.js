@@ -44,7 +44,7 @@ var UserSchema = new Schema({
 	telephone: {
 		type: String,
 		trim: true,
-		default: '(844) 551-4883'
+		default: ''
 	},
 	email: {
 		type: String,
@@ -71,18 +71,12 @@ var UserSchema = new Schema({
 		type: String,
 		required: 'Provider is required'
 	},
-	shop: {
-		
-		type: Schema.ObjectId,
-		ref: 'Shop'
-	
-	},
 	providerData: {},
 	additionalProvidersData: {},
 	roles: {
 		type: [{
 			type: String,
-			enum: ['user', 'admin', 'shop']
+			enum: ['user', 'admin', 'manager']
 		}],
 		default: ['user']
 	},

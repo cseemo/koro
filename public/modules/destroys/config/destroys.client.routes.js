@@ -6,7 +6,7 @@ angular.module('destroys').config(['$stateProvider',
 		// Destroys state routing
 		$stateProvider.
 		state('listDestroys', {
-			url: '/destroys',
+			url: '/destroyLog',
 			templateUrl: 'modules/destroys/views/list-destroys.client.view.html'
 		}).
 		state('createDestroy', {

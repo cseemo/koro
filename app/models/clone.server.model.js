@@ -37,6 +37,11 @@ var CloneSchema = new Schema({
 		default: null,
 		trim: true
 	},
+	roomId: {
+		type: String,
+		default: null,
+		trim: true
+	},
 	puckLocation: {
 		type: String,
 		default: null,

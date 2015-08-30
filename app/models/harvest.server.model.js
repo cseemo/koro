@@ -75,7 +75,7 @@ var HarvestSchema = new Schema({
 			type: Number,
 			default: null
 		},
-		plantID: {
+		plantId: {
 			type: String,
 			default: null,
 			trim: true

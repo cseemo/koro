@@ -1,19 +1,261 @@
-<section data-ng-controller="PlantsController" data-ng-init="find()">
-    <div class="page-header">
-        <h1>Plants</h1>
+<style>
+.col-md-4{
+    padding: 10px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+h1, h2, h3, h4{
+    color: #333;
+}
+.main-body{
+    background-color: #146586;
+    /*font-family: "Comic Sans MS", "Comic Sans", cursive;
+    fo*/nt-size: 1.8em;
+}
+td{
+    font-size: 1em;
+
+}
+.scroll{
+overflow: scroll;  
+height: auto; 
+min-height: 100px; 
+max-height: 300px;
+}
+.link{
+    cursor: pointer;
+}
+</style>
+<section data-ng-controller="PlantsController" data-ng-init="init()">
+    <div class="main-body">
+
+    <div class="container">
+      
+               <div class="panel panel-primary">
+               <div class="panel-header">
+                    <h1>Plants</h1>
+               
+ 
+
+
     </div>
-    <div class="list-group">
-        <a data-ng-repeat="plant in plants" data-ng-href="#!/plants/{{plant._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="plant.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="plant.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="plant.name"></h4>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!plants.$resolved || plants.length">
-    	No Plants yet, why don't you <a href="/#!/plants/create">create one</a>?
-    </div>
+    <div class="panel panel-primary">
+
+
+
+          <div class="panel-body">
+        
+            <div class="table-filters">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <input type="text"
+                               placeholder="Search..."
+                               class="form-control"
+                               data-ng-model="tableData.searchKeywords"
+                               data-ng-keyup="search()">
+                        {{tableData.searchKeywords}}
+                    </div>
+                    <div class="col-sm-3 col-xs-6 filter-result-info">
+                        <span>
+                            Showing {{currentPagePlants.length}}/{{filteredPlants.length}} Matches
+                        </span>              
+                    </div>
+                    
+
+                </div>
+            </div>
+
+            <table class="table table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                Plant ID
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('assignedTo.displayName') "
+                                      data-ng-class="{active: row == 'assignedTo.displayName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-assignedTo.displayName') "
+                                      data-ng-class="{active: row == '-assignedTo.displayName'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Created
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('assignedTo.displayName') "
+                                      data-ng-class="{active: row == 'assignedTo.displayName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-assignedTo.displayName') "
+                                      data-ng-class="{active: row == '-assignedTo.displayName'}"></span>
+                            </div>
+                        </th>
+                         <th>
+                            <div class="th">
+                                Strain
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('created') "
+                                      data-ng-class="{active: row == 'created'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-created') "
+                                      data-ng-class="{active: row == '-created'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Room ID
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('name') "
+                                      data-ng-class="{active: row == 'name'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-name') "
+                                      data-ng-class="{active: row == '-name'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                Status
+
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('status') "
+                                      data-ng-class="{active: row == 'status'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-status') "
+                                      data-ng-class="{active: row == '-status'}"></span>
+                            </div>
+                        </th>
+                              
+
+
+                    </tr> 
+                </thead>
+                
+                <tbody>
+                    <tr class="link" ng-click="plantView(item)" data-ng-repeat="item in currentPagePlants">
+                   
+                   <td>{{item.plantId}}</td>
+                         <td>{{item.created | timeago}}  <small>({{item.created | date: 'short'}})</small></td>
+                         <td>{{item.strain}}</td>
+                        
+                    <td>{{item.roomId}}</td>
+                    <td>
+                        <!-- The Status is Dependent on a few things
+                        1. Production or Mother
+                        2. How far into Production if Production
+                            stage1Complete
+                            stage2Complete
+                            stage3Complete -->
+                          <span data-ng-show="item.inProduction===true">
+                            <span class="small badge badge-success">Production</span>
+                          </span>
+
+                          <span data-ng-show="item.isMother===true">
+                            <span class="small badge badge-info">Mother</span>
+                          </span>
+
+                      <!--   ifStage1 is Not Complete then this is a newbie -->
+                        <span ng-if="item.stage1Complete===false">
+                             <span class="small badge"> Initial Veg</span>
+                        </span>
+                        <!-- ifStage1 is Complete and stage 2 is not complete then this is in a cup -->
+                        <span ng-if="item.stage1Complete===true && item.stage2Complete===false">
+                           <span class="small badge"> Pending Stage 2 Trim</span>
+                        </span>
+                        <!-- ifStage1 is Complete && Stage 2 is complete && stage 3 is not complete its in ebb and flow -->
+                        <span ng-if="item.stage1Complete===true && item.stage2Complete===true && item.stage3Complete===false">
+                           <span class="small badge"> Pending Stage 3 Trim</span>
+                        </span>
+                       <!--  ifStage1 && 2 && 3 are complete - this is pending Harvest -->
+                       <span ng-if="item.stage1Complete===true && item.stage2Complete===true && item.stage3Complete===true && item.plantWeighIn===null">
+                           <span class="small badge badge-info"> Pending Harvest</span>
+                        </span>
+                        <!-- if Plant Weigh In is complete -- this is Harvested -->
+                        <span ng-if="item.stage1Complete===true && item.stage2Complete===true && item.stage3Complete===true && item.plantWeighIn!==null">
+                           <span class="small badge badge-success"> Harvested</span>
+                        </span>
+
+
+
+                    </td>
+                   
+                   
+                    
+
+                        
+                    
+                   
+                    </tr>
+                </tbody>
+            </table>
+           
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                        <span>
+                            Show 
+                            <select data-ng-model="numPerPage"
+                                    data-ng-options="num for num in numPerPageOpt"
+                                    data-ng-change="onNumPerPageChange()">
+                            </select> 
+                            plants per page
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredPlants.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+</div>
+</div>
+</div>
+</div>
 </section>
+
+
+<script type="text/ng-template" id="plantModal.html">
+<style>
+h3{
+    color: #fff;
+    }  
+</style>
+  <div class="modal-header" style="background-color: #146586" ng-init="getEmailAddresses()">
+   <h3>Plant Details</h3>
+
+  </div>
+  <div class="modal-body">
+    <div class="text-center">
+    <p>Please be nice to the plants...they are our friends. Until we chop them down, grind them up, and light them on fire!!!!</p>
+    <h4 class="text-center">Modify This Plant</h4>
+    <div class="inline-block">
+    <button class="btn btn-success" data-ng-click="modify='production'">Move to Production</button>
+    <button class="btn btn-info" data-ng-click="modify='mother'">Move to Mother</button>
+    <button class="btn btn-danger" data-ng-click="modify='destroy'">Destroy</button>
+                        
+    </div>
+    </div>
+
+
+
+ </div>
+ <div class="modal-footer">
+ <button ng-hide="connected" data-ng-disabled="modify===undefined" class="btn btn-success" ng-click="save(modify)">Save</button>
+ 
+ <button class="btn btn-warning" ng-click="close()">Close</button>
+ </div>
+</script>

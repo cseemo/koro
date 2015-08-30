@@ -1,19 +1,200 @@
-<section data-ng-controller="DestroysController" data-ng-init="find()">
-    <div class="page-header">
-        <h1>Destroys</h1>
+<style>
+.col-md-4{
+    padding: 10px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}
+h1, h2, h3, h4{
+    color: #333;
+}
+.main-body{
+    background-color: #146586;
+    /*font-family: "Comic Sans MS", "Comic Sans", cursive;
+    fo*/nt-size: 1.8em;
+}
+td{
+    font-size: 1em;
+
+}
+.scroll{
+overflow: scroll;  
+height: auto; 
+min-height: 100px; 
+max-height: 300px;
+}
+
+</style>
+<section data-ng-controller="DestroysController" data-ng-init="init()">
+    <div class="main-body">
+
+    <div class="container">
+      
+               <div class="panel panel-primary">
+               <div class="panel-header">
+                    <h1>Log of Destroyed Plants</h1>
+               
+ 
+
+
     </div>
-    <div class="list-group">
-        <a data-ng-repeat="destroy in destroys" data-ng-href="#!/destroys/{{destroy._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="destroy.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="destroy.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="destroy.name"></h4>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!destroys.$resolved || destroys.length">
-    	No Destroys yet, why don't you <a href="/#!/destroys/create">create one</a>?
-    </div>
+    <div class="panel panel-primary">
+
+
+   
+
+
+          <div class="panel-body">
+        
+            <div class="table-filters">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <input type="text"
+                               placeholder="Search..."
+                               class="form-control"
+                               data-ng-model="tableData.searchKeywords"
+                               data-ng-keyup="search()">
+                        {{tableData.searchKeywords}}
+                    </div>
+                    <div class="col-sm-3 col-xs-6 filter-result-info">
+                        <span>
+                            Showing {{currentPageDestroys.length}}/{{filteredDestroys.length}} Matches
+                        </span>              
+                    </div>
+                   
+
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                Destruction Date
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('created') "
+                                      data-ng-class="{active: row == 'created'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-created') "
+                                      data-ng-class="{active: row == '-created'}"></span>
+                            </div>
+                        </th>
+                         <th>
+                            <div class="th">
+                                Plant ID
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('clientName') "
+                                      data-ng-class="{active: row == 'clientName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-clientName') "
+                                      data-ng-class="{active: row == '-clientName'}"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                Destruction Method
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('shopName') "
+                                      data-ng-class="{active: row == 'shopName'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-shopName') "
+                                      data-ng-class="{active: row == '-shopName'}"></span>
+                            </div>
+                        </th>
+          
+                        <th>
+                            <div class="th">
+                                Destruction Reason
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('serialNumber') "
+                                      data-ng-class="{active: row == 'serialNumber'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-serialNumber') "
+                                      data-ng-class="{active: row == '-serialNumber'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                Destroyer
+
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('status') "
+                                      data-ng-class="{active: row == 'status'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-status') "
+                                      data-ng-class="{active: row == '-status'}"></span>
+                            </div>
+                        </th>
+                              <th>
+                            <div class="th">
+                                Weight Destroyed
+                                <span class="fa fa-angle-up"
+                                      data-ng-click=" order('notes') "
+                                      data-ng-class="{active: row == 'notes'}"></span>
+                                <span class="fa fa-angle-down"
+                                      data-ng-click=" order('-notes') "
+                                      data-ng-class="{active: row == '-notes'}"></span>
+                            </div>
+                        </th>
+
+
+                    </tr> 
+                </thead>
+                
+                <tbody>
+                    <tr data-ng-repeat="item in currentPageDestroys" >
+                    <td>{{item.created | date: 'short'}}</td>
+                         <td>{{item.plantId}}</td>
+                         <td>{{item.methodOfDestruction}}</td>
+                        
+                    <td>{{item.reasonToDestroy}}</td>
+                    <td>{{item.user.displayName}}</td>
+                    <td>{{item.weight}}</td>
+                   
+                    
+
+                        
+                    
+                   
+                    </tr>
+                </tbody>
+            </table>
+           
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                        <span>
+                            Show 
+                            <select data-ng-model="numPerPage"
+                                    data-ng-options="num for num in numPerPageOpt"
+                                    data-ng-change="onNumPerPageChange()">
+                            </select> 
+                            logs per page
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredDestroys.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+</div>
+</div>
+</div>
+</div>
 </section>

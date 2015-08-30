@@ -1,8 +1,8 @@
 'use strict';
 
 // Harvests controller
-angular.module('harvests').controller('HarvestsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Harvests', 'Plants', '$http', 
-	function($scope, $stateParams, $location, Authentication, Harvests, Plants, $http) {
+angular.module('harvests').controller('HarvestsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Harvests', 'Plants', '$http', 'Destroys', 
+	function($scope, $stateParams, $location, Authentication, Harvests, Plants, $http, Destroys) {
 		$scope.authentication = Authentication;
 
 
@@ -62,7 +62,7 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
 			console.log('Pull PLant from Available Plants....: ', ourPlant);
 			console.log('Stuff: ', stuff);
 
-			ourPlant.plantID = this.ourPlantId.plantId;
+			ourPlant.plantId = this.ourPlantId.plantId;
 			ourPlant.plantObjectId = stuff._id;
 			// console.log('Remove this plant from available plants...', row);
 
@@ -172,6 +172,36 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
     	$scope.showWeights = true;
     };
 
+    //Update the Waste Log
+    var updateWasteLog = function(weights, myPlant, stage){
+
+    	console.log('Adding to our destroy log');
+			console.log(weights);
+			console.log(myPlant);
+			console.log(stage);
+			console.log('That is the data we got....');
+			console.log('Do we have plant Id?? ', myPlant.plantId);
+
+			var destroy = new Destroys ({
+				user: $scope.authentication.user._id,
+				strain: myPlant.strain,
+				methodOfDestruction: 'Mulch',
+				reasonToDestroy: 'Waste',
+				weight: weights.wasteWeight,
+				type: 'Waste',
+				plantId: myPlant.plantId,
+				roomId: myPlant.roomId
+
+			});
+
+			// Redirect after save
+			destroy.$save(function(response) {
+				console.log('Saved Destruction...', response);
+			});
+
+    };
+
+
     $scope.saveTrim = function(weights, myPlant, stage){
     	console.log('Saveing', myPlant);
     	console.log('Weights', weights);
@@ -179,7 +209,7 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
     	console.log('Plant Resource??? ', $scope.plantToTrim);
     	Plants.get({plantId: myPlant._id}).$promise.then(function(plant){
     		console.log('Plants...', plant);
-    	
+    		updateWasteLog(weights, myPlant, stage);
     	if(stage===1){
     		var myWeights = {
     			totalWeight: weights.wetWeight,
@@ -272,6 +302,12 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
     		$scope.harvest.wasteWeight = parseFloat($scope.harvest.wasteWeight)+parseFloat(plant.wasteWeight);
     		plantsToFix.push(plant);
     		plant.plantWeighIn = Date.now();
+
+    		var weights = {
+    			wasteWeight: plant.wasteWeight
+    		};
+
+    		updateWasteLog(weights, plant, 'Harvest');
     		
     	});
 
@@ -279,6 +315,7 @@ angular.module('harvests').controller('HarvestsController', ['$scope', '$statePa
 
     		$scope.harvest.harvestEnd =Date.now();
     	$scope.harvest.$update(function(){
+
     		finalWeighIn(plantsToFix, $scope.harvest, function(err, resp){
     			 $location.path('/harvests');
     		});

@@ -22,10 +22,19 @@ exports.create = function(req, res) {
 			});
 		} else {
 			console.log('About to send task to '+task.assignedTo);
-			req.io.emit(task.assignedTo,task );
+			req.io.emit(task.assignedTo,{status: 'New Task', task: task} );
 			res.jsonp(task);
 		}
 	});
+};
+
+//Reject a task
+exports.rejectTask = function(req, res){
+	console.log('Time to reject this bitch!!!');
+	// console.log(req.body);
+	var task = req.body;
+	req.io.emit(task.assignedTo._id, {status: 'Rejected', task: task} );
+	res.status(200).send('Finished');
 };
 
 /**
@@ -71,6 +80,20 @@ exports.delete = function(req, res) {
 	});
 };
 
+//Get all tasks and populate user....
+exports.allOfOurTasks = function(req, res){
+	console.log('We shouldnt need this');
+	// {status: {$ne: 'Complete'}}
+	Task.find().sort('-created').populate('assignedTo').exec(function(err, tasks) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(tasks);
+		}
+	});
+};
 /**
  * List of Tasks
  */
