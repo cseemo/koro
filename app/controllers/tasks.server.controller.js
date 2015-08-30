@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
 //Test Phone 
 exports.testPhone = function(req, res){
 	console.log('Testing Phone...');
-	var response = '<Response><Say voice="alice">I hope htat worked.</Say></Response>'
+	var response = '<Response><Say voice="alice">You owe us money. We want our money. Send us our money!.</Say><Pause length="2"/><Say voice="alice">Call us back TODAY!.</Say></Response>'
 	res.status(200).send(response);
 };
 /**
