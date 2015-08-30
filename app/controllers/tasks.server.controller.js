@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
 
 
 //Test Phone 
-exports.testPhone = runction(req, res){
+exports.testPhone = function(req, res){
 	console.log('Testing Phone...');
 	res.status(204).send('That was awesome. I am so glad I did that.');
 };
