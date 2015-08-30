@@ -38,6 +38,7 @@ exports.respondToPhone = function(req, res){
 	console.log('Resonse...');
 	console.log(req.body);
 	console.log(req.query);
+	var mystuff = '';
 	if(req.query.digits==='1'){
 		myStuff = 'We look forward to your payment. Please ensure we receive it no later than Friday at 5pm.';
 	}
