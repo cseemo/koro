@@ -35,7 +35,7 @@ exports.testSMS = function(req, res){
 };
 
 exports.respondToPhone = function(req, res){
-	conosle.log('Resonse...');
+	console.log('Resonse...');
 	console.log(req.body);
 	console.log(req.query);
 	var response = '<Response><Say voice="alice">Thank you.</Say></Response>'
