@@ -39,11 +39,11 @@ exports.respondToPhone = function(req, res){
 	// console.log(req.body);
 	console.log(req.query);
 	var myStuff = '';
-	
-	if(req.query.digits==='1'){
+
+	if(req.query.Digits==='1'){
 		myStuff = 'We look forward to your payment. Please ensure we receive it no later than Friday at 5pm.';
 	}
-	if(req.query.digits==='2'){
+	if(req.query.Digits==='2'){
 		myStuff = 'Please stand by your telephone. Someone will call you in the next 5 minutes to accept that payment.';
 	}
 
