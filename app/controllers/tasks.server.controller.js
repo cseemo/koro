@@ -56,9 +56,24 @@ exports.phoneUpdate = function(req, res){
 		stateCalled = req.query.ToState,
 		time = req.query.Timestamp,
 		status = req.query.CallStatus,
+		callDuration = req.query.CallDuration,
 		answeredBy = req.query.AnsweredBy;
 
-	console.log('We have an update...')
+	console.log('We have an update...');
+
+	if(status==='in-progress'){
+		console.log('Someone answered the phone!!!');
+	}
+
+	if(status==='complete' && answeredBy==='machine'){
+		console.log('Voicemail Picked UP -- Dropped that bitch...');
+
+	}
+
+	if(status==='complete' && answeredBy==='human'){
+		console.log('We Played Our Message for '+callDuration+' seconds...not bad');
+		
+	}
 	res.status(200).send('Woot Woot');
 
 };
