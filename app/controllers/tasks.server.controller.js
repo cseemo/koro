@@ -8,7 +8,10 @@ var mongoose = require('mongoose'),
 	Task = mongoose.model('Task'),
 	_ = require('lodash');
 	//require the Twilio module and create a REST client
-var client = require('twilio')('AC6093896bcbf42853d90e01d0ef078583', '0d1c3e0579bbf810c15435bb47bc7516');
+// var client = require('twilio')('ACcf90e8e64f24e42c96032d895019a598', 'd4b5eb3cf25ff6d19f8ec49c8d1c1672'); //Test
+var client = require('twilio')('AC6093896bcbf42853d90e01d0ef078583', '0d1c3e0579bbf810c15435bb47bc7516'); //Live
+
+
 
 
 //Test Phone 
@@ -40,7 +43,7 @@ exports.phoneUpdate = function(req, res){
 	// console.log(req.body);
 	console.log(req.body);
 	
-	res.status(200).send(response);
+	res.status(200).send('Woot Woot');
 
 };
 
@@ -68,12 +71,22 @@ exports.respondToPhone = function(req, res){
 exports.myPhone = function(req, res){
 	console.log('Testing my phone...');
 	//This REST call using the master/default account for the client...
-client.makeCall({
+// client.makeCall({
+//     to:'+16025185996',
+//     from:'+15596343553',
+//     url:'http://45.55.12.241:5000/testPhone',
+//     StatusCallBack: 'http://45.55.12.241:5000/phoneUpdate',
+//     StatusCallBackMethod: 'Post',
+//     StatusCallBackEvent: ['initiated', 'ringing', 'answered', 'completed']
+client.calls.create({
     to:'+16025185996',
     from:'+15596343553',
     url:'http://45.55.12.241:5000/testPhone',
-    StatusCallBack: 'http://45.55.12.241:5000/phoneUpdate',
-    StatusCallBackMethod: 'Post'
+    statusCallback: 'http://45.55.12.241:5000/phoneUpdate?test=yep',
+    statusCallbackMethod: 'GET',
+    statusCallbackEvent: ['initiated', 'ringing', 'answered', 'completed'],
+    // method: 'GET'
+
 }, function(err, call) {
 	console.log(call);
     console.log('This call\'s unique ID is: ' + call.sid);
