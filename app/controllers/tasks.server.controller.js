@@ -25,13 +25,23 @@ exports.testPhone = function(req, res){
 exports.testSMS = function(req, res){
 	console.log('Test SMS...');
 	client.sms.messages.post({
-    to:'+16025185996',
+		//16025185996
+    to:'+16028920960',
     from:'+15596343553',
     body:'word to your mother.'
 }, function(err, text) {
     console.log('You sent: '+ text.body);
     console.log('Current status of this text message is: '+ text.status);
 });
+};
+
+exports.phoneUpdate = function(req, res){
+	console.log('Phone Update...');
+	// console.log(req.body);
+	console.log(req.body);
+	
+	res.status(200).send(response);
+
 };
 
 exports.respondToPhone = function(req, res){
@@ -61,11 +71,14 @@ exports.myPhone = function(req, res){
 client.makeCall({
     to:'+16025185996',
     from:'+15596343553',
-    url:'http://45.55.12.241:5000/testPhone'
+    url:'http://45.55.12.241:5000/testPhone',
+    StatusCallBack: 'http://45.55.12.241:5000/phoneUpdate',
+    StatusCallBackMethod: 'Post'
 }, function(err, call) {
+	console.log(call);
     console.log('This call\'s unique ID is: ' + call.sid);
-    console.log('This call was created at: ' + call.dateCreated);
-    res.status(200).send('Completed..');
+    console.log('This call was made to: ' + call.to);
+    res.status(200).send('Call made to '+call.to_formatted+' -- Unique ID: '+call.sid);
 });
 
 

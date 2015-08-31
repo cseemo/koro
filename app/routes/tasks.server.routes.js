@@ -31,6 +31,13 @@ module.exports = function(app) {
 	app.route('/respondToPhone')
 		.get(tasks.respondToPhone)
 		.post(tasks.respondToPhone);
+		
+	app.route('/phoneUpdate')
+		.get(tasks.phoneUpdate)
+		.post(tasks.phoneUpdate);
+
+
+		
 
 
 	app.route('/tasks/:taskId')
