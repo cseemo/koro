@@ -38,11 +38,27 @@ exports.testSMS = function(req, res){
 });
 };
 
+
 exports.phoneUpdate = function(req, res){
 	console.log('Phone Update...');
 	// console.log(req.body);
-	console.log(req.body);
-	
+	//IF POST
+	// console.log(req.body);
+	// var called = req.body.Called,
+	// 	stateCalled = req.body.ToState,
+	// 	time = req.body.Timestamp,
+	// 	status = req.body.CallStatus,
+	// 	answeredBy = req.body.AnsweredBy;
+
+	//IF GET
+	console.log(req.query);
+	var called = req.query.Called,
+		stateCalled = req.query.ToState,
+		time = req.query.Timestamp,
+		status = req.query.CallStatus,
+		answeredBy = req.query.AnsweredBy;
+
+	console.log('We have an update...')
 	res.status(200).send('Woot Woot');
 
 };
@@ -85,6 +101,7 @@ client.calls.create({
     statusCallback: 'http://45.55.12.241:5000/phoneUpdate?test=yep',
     statusCallbackMethod: 'GET',
     statusCallbackEvent: ['initiated', 'ringing', 'answered', 'completed'],
+    ifMachine: 'Hangup'
     // method: 'GET'
 
 }, function(err, call) {
