@@ -62,15 +62,15 @@ exports.phoneUpdate = function(req, res){
 	console.log('We have an update...');
 
 	if(status==='in-progress'){
-		console.log('Someone answered the phone!!!');
+		console.log('Someone/Something answered the phone!!!');
 	}
 
-	if(status==='complete' && answeredBy==='machine'){
+	if(status==='completed' && answeredBy==='machine'){
 		console.log('Voicemail Picked UP -- Dropped that bitch...');
 
 	}
 
-	if(status==='complete' && answeredBy==='human'){
+	if(status==='completed' && answeredBy==='human'){
 		console.log('We Played Our Message for '+callDuration+' seconds...not bad');
 		
 	}
