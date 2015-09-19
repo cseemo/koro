@@ -206,13 +206,19 @@ z-index: 999;
                         <span data-ng-show="clone.needPlantId">
                            <br/>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label>Plant ID: </label>
                              <input type="text" data-ng-model="clone.plantId" id="plantId" class="form-control" placeholder="Plant ID">
                          </div>
-                          <div class="col-md-6">
+                          <div class="col-md-4">
                               <label>Room ID: </label>
                              <input type="text" data-ng-model="clone.roomId" id="roomId" class="form-control" placeholder="Room ID">
+                 
+                         </div>
+                          <div class="col-md-4">
+                              <label>Top The Plant: </label><br/>
+                              <small>Please verify that you topped this plant.</small>
+                             <input type="checkbox" data-ng-model="clone.topped" id="roomId" placeholder="Room ID">
                  
                          </div>
                      </div>

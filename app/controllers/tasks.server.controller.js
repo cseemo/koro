@@ -27,15 +27,17 @@ exports.testPhone = function(req, res){
 // "create" and "update" aliases are in place where appropriate on PUT and POST requests
 exports.testSMS = function(req, res){
 	console.log('Test SMS...');
-	client.sms.messages.post({
+	client.messages.post({
 		//16025185996
-    to:'+16028920960',
+    to:'+16025185996',
     from:'+15596343553',
-    body:'word to your mother.'
+    body:'When this guy is right...you know you have an issue. Please contact us ASAP to make a payment.',
+    mediaUrl: 'http://www.quickmeme.com/img/3e/3e0769ca7774a9f3068b97aec608857587f038a651b923279806b746f82291bd.jpg'
 }, function(err, text) {
     console.log('You sent: '+ text.body);
     console.log('Current status of this text message is: '+ text.status);
 });
+	res.status(200).send('Done');
 };
 
 
@@ -110,7 +112,7 @@ exports.myPhone = function(req, res){
 //     StatusCallBackMethod: 'Post',
 //     StatusCallBackEvent: ['initiated', 'ringing', 'answered', 'completed']
 client.calls.create({
-    to:'+16025185996',
+    to:'+16023396773',
     from:'+15596343553',
     url:'http://45.55.12.241:5000/testPhone',
     statusCallback: 'http://45.55.12.241:5000/phoneUpdate?test=yep',

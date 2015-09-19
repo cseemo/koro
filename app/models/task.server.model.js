@@ -24,7 +24,7 @@ var TaskSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
-	assignedby: {
+	assignedBy: {
 		type: Schema.ObjectId,
 		ref: 'User'
 	},

@@ -6,8 +6,100 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Plant = mongoose.model('Plant'),
-	_ = require('lodash');
-	 var async = require('async');
+	_ = require('lodash'),
+	 CronJob = require('cron').CronJob,
+	Task = mongoose.model('Task'),
+	async = require('async'),
+	moment = require('moment');
+
+
+
+
+//Every Morning at 5am Check to see which Clones were topped 2 weeks ago. Then Create a New Task to Top it Again
+var checkForClones= new CronJob({
+  cronTime: '10 8 01 * * 0-6',
+  // cronTime: '0,10,20,30,40,50 * * * * 0-6',
+  // cronTime: '0 * * * * 0-6',
+
+  //Every minute at :00 - 7 days per week: '0 */1 * * * 1-7'
+  onTick: function() {
+  	console.log('Look for Clones that were Transfered TWO WEEKS AGO');
+  	var today = new moment();
+  	// var startDate = moment().hours(0).minutes(0).seconds(0);
+	var convertedPretty = moment(today).format("MM/DD/YYYY hh:mm:ss");
+	
+    console.log('Running Ontick!!', convertedPretty);
+    checkClonesForTopping(convertedPretty, function(data){
+    		console.log('Done Looking for Clones..', data);
+    });
+  },
+  start: false,
+  // timeZone: "America/Los_Angeles"
+});
+
+// console.log('Job.start about to executie!!');
+checkForClones.start();
+
+
+var checkClonesForTopping = function(date, callback){
+	console.log('Checking for Clones that need a topping...');
+
+	
+	var twoWeeksAgo = new moment().subtract(14, 'days').subtract(3, 'hours').format("MM/DD/YYYY hh:mm:ss");
+	var start = moment(twoWeeksAgo).hours(0).minutes(0).seconds(0);
+	var end = moment(twoWeeksAgo).hours(23).minutes(59).seconds(59);
+	var today = new moment();
+	console.log('After '+start._d+' and Before '+end._d);
+
+
+
+	Plant.find({created: {$lte:new Date(end), $gte: new Date(start)}}).exec(function(err, clones) {
+		if (err) {
+			console.log('Error finding Cloen...line 46: ', err);
+			return callback(err);
+			
+		} else {
+			console.log(clones);
+			//Go thru each using Async
+			//Generate a New Task to Top it due today by 5pm
+			//Easy, Peezy, Lemon Squeezy
+			async.forEach(clones, function(plant, mycallback){
+				console.log(plant);
+				//Create a New Task to Top That Plant
+				var task = new Task();
+				task.name = 'Top Plant ',
+				task.details = 'Top Plant ID:'+plant.plantId+' in Room '+plant.roomId;
+				task.dueDate = new moment(today).hours(20).minutes(0).seconds(0);
+				task.status = 'Pending Assignment';
+
+
+				task.save(function(err) {
+					if (err) {
+						return mycallback(err);
+					} else {
+						console.log('Just Saved Task');
+						return mycallback(null, task);
+						
+					}
+				});
+
+
+
+
+			}, function(){
+				console.log('Completed w/ clones...');
+				return callback('Good');
+			});
+
+			
+		}
+
+
+	});
+
+
+};
+
 
 /**
  * Create a Plant

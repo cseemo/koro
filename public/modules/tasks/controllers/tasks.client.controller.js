@@ -127,11 +127,29 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
       var modalInstance;
      modalInstance = $modal.open({
          templateUrl: 'adminTaskModal.html',
-          controller: function($scope, $modalInstance, user, task, $timeout, $filter, socket){
+          controller: function($scope, $modalInstance, user, task, $timeout, $filter, socket, Users){
            
             $scope.user = user;
             $scope.task = task;
             
+            $scope.assignTask = function(task){
+              console.log('Assigning Task NOw');
+              $scope.showUsers = true;
+              $scope.users = Users.query();
+
+            };
+
+            $scope.updateAssignTo = function(task, row, huh){
+              console.log('Assinging task ', task);
+              console.log(huh);
+              console.log('User ', row);
+              
+              $scope.showSave = true;
+              task.assignedBy = user._id,
+              
+             console.log(task);
+            };
+
 
             $scope.save = function(type){
               console.log('Updating Task...', type);
@@ -156,6 +174,13 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
                 task.rejected = Date.now();
                 task.timesRejected = parseInt(task.timesRejected)+1;
                 task.status = 'Due';
+              }
+              if(type==='Updated'){
+                console.log('Notes: ', $scope.notes);
+                task.assignedBy = $scope.user._id;
+                task.assignedTo = $scope.searchForUser._id;
+                task.status = 'Due';
+                console.log(task);
               }
               $modalInstance.close(task);
 
@@ -206,6 +231,8 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 
         modalInstance.result.then(function(result) {
           console.log('Modal finished..', result);
+
+
           Tasks.get({taskId: result._id}).$promise.then(function(ourTask){
             console.log("Got our task....", ourTask);
 
@@ -215,6 +242,8 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
             ourTask.managerNotes = result.managerNotes,
             ourTask.status = result.status,
             ourTask.approved = result.approved,
+            ourTask.assignedBy = result.assignedBy,
+            ourTask.assignedTo = result.assignedTo,
             ourTask.timesRejected = result.timesRejected,
             ourTask.$update(function(){
               console.log('Updated our task...');
@@ -223,6 +252,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
                 console.log('This bitch WAS REJECTED!!!!');
                 alertRepOfRejection(result);
               }
+              $scope.init();
             })
 
           });

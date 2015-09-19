@@ -72,6 +72,10 @@ var CloneSchema = new Schema({
 		type: Date,
 		default: null
 	},
+	topped: {
+		type: Date,
+		default: null
+	},
 	destroyReason: {
 		type: String,
 		default: null,

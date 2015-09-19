@@ -252,7 +252,16 @@ h3{
        <div class="form-group col-md-6">
                    <label>Assigned To:</label>
                     <div class="controls">
-                      {{task.assignedTo.displayName}}
+                     <span ng-show="task.assignedTo"> {{task.assignedTo.displayName}} </span>
+
+                     <span ng-hide="task.assignedTo"> 
+
+                     <a ng-show="!showUsers" class="btn btn-sm btn-info" ng-click="assignTask(task)">Assign Task Now</a></span>
+
+                     <input ng-show="showUsers" type="text" ng-model="searchForUser" typeahead="item as item.displayName for item in users |  filter:$viewValue | limitTo:5" class="form-control link" placeholder="Task Master"/><br>
+
+
+
                     </div>
                 </div>
     <div class="form-group col-md-6">
@@ -271,13 +280,27 @@ h3{
 
     
      <div class="form-group">
-                   <label>Task Details:</label>
+                   <label>Task Details:</label>  <button class="btn btn-secondary btn-xs"  ng-click="editDetails = !editDetails">Edit Details</button>
+                    <span ng-show="editDetails">
+                    <div class="controls">
+                          <textarea class="form-control" type="textarea" ng-model="task.details"></textarea>
+                    </div>
+                    </span>
+
+                  <span ng-show="!editDetails">
                     <div class="controls">
                       {{task.details}}
                     </div>
+                    </span>
                 </div>
 
-                
+         <div class="col-md-12 form-group">
+
+          <button ng-hide="!searchForUser" class="btn btn-success form-control" ng-click="save('Updated')">Save</button>
+           <hr>
+         </div>
+     
+              
 
 
          <div class="form-group">
