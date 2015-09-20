@@ -1,29 +1,118 @@
-<section data-ng-controller="TasksController" data-ng-init="findOne()">
+
+<style>
+/*.form-group{
+    padding: 17px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}*/
+.makeMed {
+    font-size: 2em;
+}
+section{
+    background-color: #146586;
+    min-height: 100%;
+}
+.nostyle:hover, .nostyle:visited, .nostyle:link, .nostyle:active{
+    text-decoration: none;
+    cursor: pointer;
+}
+.bigPad{
+    padding-left: 15px;
+}
+h1, h2, h3{
+    color: #333;
+}
+.stickyTop{
+position: absolute;
+top: 0px;
+left: 0px;
+right: 00px;
+z-index: 999;
+
+}
+
+
+.animate-enter, 
+.animate-leave
+{ 
+    -webkit-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+} 
+ 
+.animate-enter {
+    left: 100%;
+}
+.animate-enter.animate-enter-active {
+    left: 0;
+}
+ 
+.animate-leave {
+    left: 0;
+}
+.animate-leave.animate-leave-active{
+    left: -100%;
+}
+.bordered{
+        
+        background-color: #888;
+}
+</style>
+
+    
+     
+
+
+
+        	<section data-ng-controller="TasksController" data-ng-init="findOne()">
+
+
+    <div class="main-body">
 	<div class="page-header">
 		<h1 data-ng-bind="task.name"></h1>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == task.user._id))">
-		<a class="btn btn-primary" href="/#!/tasks/{{task._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<div class="container">
+
+	<div class="panel panel-primary col-md-10 col-md-offset-1">
+        <div class="container">
+        	<div class="row">
+				<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == task.user._id))">
+					<a class="btn btn-primary" href="/#!/tasks/{{task._id}}/edit">
+						<i class="glyphicon glyphicon-edit"></i>
+					</a>
+					<a class="btn btn-primary" data-ng-click="remove();">
+						<i class="glyphicon glyphicon-trash"></i>
+					</a>
+				</div>
+			</div>
+	
 		<div class="row">
 			<label>Task Details: </label> {{task.details}}<br/>
 			<label>Due Date: </label> {{task.dueDate | date: 'short'}} <br/>
 			<label>Status: </label> {{task.status}} <br/>
 			<label>Notes: </label> {{task.completionNotes}} <br/>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="task.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="task.user.displayName"></span>
-		</em>
-	</small>
+		</div>
+		<div class="row">
+			<small>
+				<em class="text-muted">
+					Posted on
+					<span data-ng-bind="task.created | date:'mediumDate'"></span>
+					by
+					<span data-ng-bind="task.user.displayName"></span>
+				</em>
+			</small>
+		</div>
+	</div>
+	</div>
+</div>
+
 </section>
 
 

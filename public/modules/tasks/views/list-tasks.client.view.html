@@ -310,6 +310,7 @@ h3{
                        </div>
                 </div>
  
+<div data-ng-show="authentication.hasRole('admin')===true">
 <hr>
 <h4 class="text-center">What Say You?</h4>
 <div class="form-group">
@@ -327,9 +328,12 @@ h3{
                        <textarea class="form-control" rows="6" data-ng-model="notes" placeholder="...notes"></textarea>
                     </div>
                 </div>
+        </div>
 
  </div>
  <div class="modal-footer">
+
+ <button data-ng-show="authentication.hasRole('admin')===true" class="btn btn-danger" ng-click="deleteTask(item)"><i class="fa fa-trash"></i>Delete Task</button>
  <button ng-hide="connected" data-ng-disabled="approved===undefined" class="btn btn-success" ng-click="save(approved)">Save</button>
  
  <button class="btn btn-warning" ng-click="close()">Close</button>

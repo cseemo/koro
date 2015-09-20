@@ -127,11 +127,11 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
       var modalInstance;
      modalInstance = $modal.open({
          templateUrl: 'adminTaskModal.html',
-          controller: function($scope, $modalInstance, user, task, $timeout, $filter, socket, Users){
+          controller: function($scope, $modalInstance, user, task, $timeout, $filter, socket, Users, Authentication){
            
             $scope.user = user;
             $scope.task = task;
-            
+            $scope.authentication = Authentication;
             $scope.assignTask = function(task){
               console.log('Assigning Task NOw');
               $scope.showUsers = true;
@@ -182,7 +182,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
                 task.status = 'Due';
                 console.log(task);
               }
-              $modalInstance.close(task);
+              $modalInstance.close({type: 'Save', task: task});
 
               // if(type==='complete'){
               //   console.log('This task is complete...');
@@ -215,6 +215,11 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
               console.log('Closing Modal');
               $modalInstance.dismiss('Closed');
             };
+
+            $scope.deleteTask = function(){
+             
+              $modalInstance.close({type: 'Deleted', task: $scope.task});
+            };
           },
           resolve: { 
             user: function() {
@@ -231,10 +236,23 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 
         modalInstance.result.then(function(result) {
           console.log('Modal finished..', result);
-
-
-          Tasks.get({taskId: result._id}).$promise.then(function(ourTask){
+          console.log('Find task w/ ID: ', result.task._id);
+          
+          Tasks.get({taskId: result.task._id}).$promise.then(function(ourTask){
             console.log("Got our task....", ourTask);
+            if(result.type==='Deleted'){
+            //Do Deletion
+            console.log('time to delete...');
+           
+            ourTask.$remove(function(){
+              $scope.init();
+            });
+
+          }else{
+            console.log('It was saved');
+          
+
+
 
             ourTask.completed = result.completed,
             ourTask.lastUpdate = result.lastUpdate,
@@ -254,9 +272,9 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
               }
               $scope.init();
             })
-
+          }
           });
-
+        
        
           
         }, function() {

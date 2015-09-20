@@ -1,19 +1,93 @@
+
+<style>
+/*.form-group{
+    padding: 17px;
+
+}
+.form-inline{
+    padding: 17px;
+
+}
+fieldset{
+    padding: 3px;
+}*/
+.makeMed {
+    font-size: 2em;
+}
+section{
+    background-color: #146586;
+    min-height: 100%;
+}
+.nostyle:hover, .nostyle:visited, .nostyle:link, .nostyle:active{
+    text-decoration: none;
+    cursor: pointer;
+}
+.bigPad{
+    padding-left: 15px;
+}
+h1, h2, h3{
+    color: #333;
+}
+.stickyTop{
+position: absolute;
+top: 0px;
+left: 0px;
+right: 00px;
+z-index: 999;
+
+}
+
+
+.animate-enter, 
+.animate-leave
+{ 
+    -webkit-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+} 
+ 
+.animate-enter {
+    left: 100%;
+}
+.animate-enter.animate-enter-active {
+    left: 0;
+}
+ 
+.animate-leave {
+    left: 0;
+}
+.animate-leave.animate-leave-active{
+    left: -100%;
+}
+.bordered{
+        
+        background-color: #888;
+}
+</style>
+
 <section data-ng-controller="TasksController" ng-init="getUsers()">
+    <div class="main-body">
+       
+
     <div class="page-header">
         <h1>New Task</h1>
     </div>
+     <div class="panel panel-primary col-md-10 col-md-offset-1">
+        <div class="container">
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="create()" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
+                    <label class="control-label" for="name">Task Name:</label>
                     <div class="controls">
                         <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label" for="name">Details</label>
+                    <label class="control-label" for="name">Task Details:</label>
                     <div class="controls">
                          <textarea class="form-control" rows="6" data-ng-model="details" placeholder="...notes"></textarea>
                    
@@ -21,18 +95,18 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="name">Assign To</label>
+                    <label class="control-label" for="name">Assign Task To:</label>
                     <div class="controls">
                        <select class="form-control" data-ng-model="assignTo" name="assignTo" data-ng-options="user.displayName for user in users"> <option value="First Available">First Available</option></select>
                     </div>
                 </div>
                 
-                <div class="form-group">
+              <!--   <div class="form-group">
                     <label class="control-label" for="name">Repeat</label>
                     <div class="controls">
                          <select class="form-control" data-ng-model="repeatTask" name="repeatTask" data-ng-options="opt for opt in repeatOptions"> <option value=""></option></select>
                     </div>
-                </div>
+                </div> -->
 
                 <span ng-show="repeatTask==='Never'">
                     <div class="form-group">
@@ -74,4 +148,7 @@
             </fieldset>
         </form>
     </div>
+  </div>
+</div>
+</div>
 </section>
