@@ -254,21 +254,21 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 
 
 
-            ourTask.completed = result.completed,
-            ourTask.lastUpdate = result.lastUpdate,
-            ourTask.rejected = result.rejected,
-            ourTask.managerNotes = result.managerNotes,
-            ourTask.status = result.status,
-            ourTask.approved = result.approved,
-            ourTask.assignedBy = result.assignedBy,
-            ourTask.assignedTo = result.assignedTo,
-            ourTask.timesRejected = result.timesRejected,
+            ourTask.completed = result.task.completed,
+            ourTask.lastUpdate = result.task.lastUpdate,
+            ourTask.rejected = result.task.rejected,
+            ourTask.managerNotes = result.task.managerNotes,
+            ourTask.status = result.task.status,
+            ourTask.approved = result.task.approved,
+            ourTask.assignedBy = result.task.assignedBy,
+            ourTask.assignedTo = result.task.assignedTo._id,
+            ourTask.timesRejected = result.task.timesRejected,
             ourTask.$update(function(){
               console.log('Updated our task...');
               console.log('Alert rep if the task was rejected...');
               if(result.rejected){
                 console.log('This bitch WAS REJECTED!!!!');
-                alertRepOfRejection(result);
+                alertRepOfRejection(result.task);
               }
               $scope.init();
             })
