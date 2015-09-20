@@ -8,7 +8,9 @@ var mongoose = require('mongoose'),
 	Task = mongoose.model('Task'),
 	_ = require('lodash');
 	//require the Twilio module and create a REST client
-// var client = require('twilio')('ACcf90e8e64f24e42c96032d895019a598', 'd4b5eb3cf25ff6d19f8ec49c8d1c1672'); //Test
+// var client = require('twilio'
+
+)('ACcf90e8e64f24e42c96032d895019a598', 'd4b5eb3cf25ff6d19f8ec49c8d1c1672'); //Test
 var client = require('twilio')('AC6093896bcbf42853d90e01d0ef078583', '0d1c3e0579bbf810c15435bb47bc7516'); //Live
 
 
@@ -177,6 +179,7 @@ exports.update = function(req, res) {
 
 	task.save(function(err) {
 		if (err) {
+			console.log(err);
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
