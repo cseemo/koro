@@ -8,130 +8,128 @@ var mongoose = require('mongoose'),
 	Task = mongoose.model('Task'),
 	_ = require('lodash');
 	//require the Twilio module and create a REST client
-// var client = require('twilio'
-
-)('ACcf90e8e64f24e42c96032d895019a598', 'd4b5eb3cf25ff6d19f8ec49c8d1c1672'); //Test
-var client = require('twilio')('AC6093896bcbf42853d90e01d0ef078583', '0d1c3e0579bbf810c15435bb47bc7516'); //Live
+// var client = require('twilio')('ACcf90e8e64f24e42c96032d895019a598', 'd4b5eb3cf25ff6d19f8ec49c8d1c1672'); //Test
+// var client = require('twilio')('AC6093896bcbf42853d90e01d0ef078583', '0d1c3e0579bbf810c15435bb47bc7516'); //Live
 
 
 
 
-//Test Phone 
-exports.testPhone = function(req, res){
-	console.log('Testing Phone...');
-	var response = '<Response><Gather action="http://45.55.12.241:5000/respondToPhone" method="GET"><Play>http://45.55.12.241:5000/modules/core/sounds/canYouPay.mp3</Play></Gather></Response>'
-	res.status(200).send(response);
-};
+// //Test Phone 
+// exports.testPhone = function(req, res){
+// 	console.log('Testing Phone...');
+// 	var response = '<Response><Gather action="http://45.55.12.241:5000/respondToPhone" method="GET"><Play>http://45.55.12.241:5000/modules/core/sounds/canYouPay.mp3</Play></Gather></Response>'
+// 	res.status(200).send(response);
+// };
 
 
-// Create (send) an SMS message
-// POST /2010-04-01/Accounts/ACCOUNT_SID/SMS/Messages
-// "create" and "update" aliases are in place where appropriate on PUT and POST requests
-exports.testSMS = function(req, res){
-	console.log('Test SMS...');
-	client.messages.post({
-		//16025185996
-    to:'+16025185996',
-    from:'+15596343553',
-    body:'When this guy is right...you know you have an issue. Please contact us ASAP to make a payment.',
-    mediaUrl: 'http://www.quickmeme.com/img/3e/3e0769ca7774a9f3068b97aec608857587f038a651b923279806b746f82291bd.jpg'
-}, function(err, text) {
-    console.log('You sent: '+ text.body);
-    console.log('Current status of this text message is: '+ text.status);
-});
-	res.status(200).send('Done');
-};
-
-
-exports.phoneUpdate = function(req, res){
-	console.log('Phone Update...');
-	// console.log(req.body);
-	//IF POST
-	// console.log(req.body);
-	// var called = req.body.Called,
-	// 	stateCalled = req.body.ToState,
-	// 	time = req.body.Timestamp,
-	// 	status = req.body.CallStatus,
-	// 	answeredBy = req.body.AnsweredBy;
-
-	//IF GET
-	console.log(req.query);
-	var called = req.query.Called,
-		stateCalled = req.query.ToState,
-		time = req.query.Timestamp,
-		status = req.query.CallStatus,
-		callDuration = req.query.CallDuration,
-		answeredBy = req.query.AnsweredBy;
-
-	console.log('We have an update...');
-
-	if(status==='in-progress'){
-		console.log('Someone/Something answered the phone!!!');
-	}
-
-	if(status==='completed' && answeredBy==='machine'){
-		console.log('Voicemail Picked UP -- Dropped that bitch...');
-
-	}
-
-	if(status==='completed' && answeredBy==='human'){
-		console.log('We Played Our Message for '+callDuration+' seconds...not bad');
-		
-	}
-	res.status(200).send('Woot Woot');
-
-};
-
-exports.respondToPhone = function(req, res){
-	console.log('Resonse...');
-	// console.log(req.body);
-	console.log(req.query);
-	var myStuff = '';
-
-	if(req.query.Digits==='1'){
-		myStuff = '<Play>http://45.55.12.241:5000/modules/core/sounds/payToday.mp3</Play>';
-	}
-	if(req.query.Digits==='2'){
-		myStuff = '<Play>http://45.55.12.241:5000/modules/core/sounds/payByFriday.mp3</Play>';
-	}
-
-
-	// myStuff = 'We look forward to your payment. Please ensure we receive it no later than Friday at 5pm.';
-	var response = '<Response>'+myStuff+'</Response>'
-	console.log('Response: ', response);
-	res.status(200).send(response);
-
-};
-
-exports.myPhone = function(req, res){
-	console.log('Testing my phone...');
-	//This REST call using the master/default account for the client...
-// client.makeCall({
+// // Create (send) an SMS message
+// // POST /2010-04-01/Accounts/ACCOUNT_SID/SMS/Messages
+// // "create" and "update" aliases are in place where appropriate on PUT and POST requests
+// exports.testSMS = function(req, res){
+// 	console.log('Test SMS...');
+// 	client.messages.post({
+// 		//16025185996
 //     to:'+16025185996',
 //     from:'+15596343553',
+//     body:'When this guy is right...you know you have an issue. Please contact us ASAP to make a payment.',
+//     mediaUrl: 'http://www.quickmeme.com/img/3e/3e0769ca7774a9f3068b97aec608857587f038a651b923279806b746f82291bd.jpg'
+// }, function(err, text) {
+//     console.log('You sent: '+ text.body);
+//     console.log('Current status of this text message is: '+ text.status);
+// });
+// 	res.status(200).send('Done');
+// };
+
+
+// exports.phoneUpdate = function(req, res){
+// 	console.log('Phone Update...');
+// 	// console.log(req.body);
+// 	//IF POST
+// 	// console.log(req.body);
+// 	// var called = req.body.Called,
+// 	// 	stateCalled = req.body.ToState,
+// 	// 	time = req.body.Timestamp,
+// 	// 	status = req.body.CallStatus,
+// 	// 	answeredBy = req.body.AnsweredBy;
+
+// 	//IF GET
+// 	console.log(req.query);
+// 	var called = req.query.Called,
+// 		stateCalled = req.query.ToState,
+// 		time = req.query.Timestamp,
+// 		status = req.query.CallStatus,
+// 		callDuration = req.query.CallDuration,
+// 		answeredBy = req.query.AnsweredBy;
+
+// 	console.log('We have an update...');
+
+// 	if(status==='in-progress'){
+// 		console.log('Someone/Something answered the phone!!!');
+// 	}
+
+// 	if(status==='completed' && answeredBy==='machine'){
+// 		console.log('Voicemail Picked UP -- Dropped that bitch...');
+
+// 	}
+
+// 	if(status==='completed' && answeredBy==='human'){
+// 		console.log('We Played Our Message for '+callDuration+' seconds...not bad');
+		
+// 	}
+// 	res.status(200).send('Woot Woot');
+
+// };
+
+// exports.respondToPhone = function(req, res){
+// 	console.log('Resonse...');
+// 	// console.log(req.body);
+// 	console.log(req.query);
+// 	var myStuff = '';
+
+// 	if(req.query.Digits==='1'){
+// 		myStuff = '<Play>http://45.55.12.241:5000/modules/core/sounds/payToday.mp3</Play>';
+// 	}
+// 	if(req.query.Digits==='2'){
+// 		myStuff = '<Play>http://45.55.12.241:5000/modules/core/sounds/payByFriday.mp3</Play>';
+// 	}
+
+
+// 	// myStuff = 'We look forward to your payment. Please ensure we receive it no later than Friday at 5pm.';
+// 	var response = '<Response>'+myStuff+'</Response>'
+// 	console.log('Response: ', response);
+// 	res.status(200).send(response);
+
+// };
+
+// exports.myPhone = function(req, res){
+// 	console.log('Testing my phone...');
+// 	//This REST call using the master/default account for the client...
+// // client.makeCall({
+// //     to:'+16025185996',
+// //     from:'+15596343553',
+// //     url:'http://45.55.12.241:5000/testPhone',
+// //     StatusCallBack: 'http://45.55.12.241:5000/phoneUpdate',
+// //     StatusCallBackMethod: 'Post',
+// //     StatusCallBackEvent: ['initiated', 'ringing', 'answered', 'completed']
+// client.calls.create({
+//     to:'+16023396773',
+//     from:'+15596343553',
 //     url:'http://45.55.12.241:5000/testPhone',
-//     StatusCallBack: 'http://45.55.12.241:5000/phoneUpdate',
-//     StatusCallBackMethod: 'Post',
-//     StatusCallBackEvent: ['initiated', 'ringing', 'answered', 'completed']
-client.calls.create({
-    to:'+16023396773',
-    from:'+15596343553',
-    url:'http://45.55.12.241:5000/testPhone',
-    statusCallback: 'http://45.55.12.241:5000/phoneUpdate?test=yep',
-    statusCallbackMethod: 'GET',
-    statusCallbackEvent: ['initiated', 'ringing', 'answered', 'completed'],
-    ifMachine: 'Hangup'
-    // method: 'GET'
+//     statusCallback: 'http://45.55.12.241:5000/phoneUpdate?test=yep',
+//     statusCallbackMethod: 'GET',
+//     statusCallbackEvent: ['initiated', 'ringing', 'answered', 'completed'],
+//     ifMachine: 'Hangup'
+//     // method: 'GET'
 
-}, function(err, call) {
-	console.log(call);
-    console.log('This call\'s unique ID is: ' + call.sid);
-    console.log('This call was made to: ' + call.to);
-    res.status(200).send('Call made to '+call.to_formatted+' -- Unique ID: '+call.sid);
-});
+// }, function(err, call) {
+// 	console.log(call);
+//     console.log('This call\'s unique ID is: ' + call.sid);
+//     console.log('This call was made to: ' + call.to);
+//     res.status(200).send('Call made to '+call.to_formatted+' -- Unique ID: '+call.sid);
+// });
 
 
-};
+// };
 
 /**
  * Create a Task
