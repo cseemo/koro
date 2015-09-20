@@ -34,11 +34,20 @@ angular.module('clones').controller('ClonesController', ['$scope', '$stateParams
 		//Get our Box Ids from All of our Clones
 		$scope.getCloneBoxes = function(){
 			console.log('Get our Box Ids....');
-
+			var path = $location.$$path;
+    		var stage = 1;
+    		if(path==='/clones/transfer1'){
+    			stage = 1;
+    			$scope.getQty = 'box.stage1';
+    		}
+    		if(path==='/clones/transfer2'){
+    			stage = 2;
+    			$scope.getQty = 'box.stage2';
+    		}
 
 			$http({
 				method: 'get',
-				url: '/getCloneBoxIds', 
+				url: '/getCloneBoxIds?stage='+stage, 
 				
 					})
 				.success(function(data, status) {

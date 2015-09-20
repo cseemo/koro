@@ -144,8 +144,8 @@ exports.harvestByID = function(req, res, next, id) {
  * Harvest authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.harvest.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
+	// if (req.harvest.user.id !== req.user.id) {
+	// 	return res.status(403).send('User is not authorized');
+	// }
 	next();
 };

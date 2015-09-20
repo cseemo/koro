@@ -69,9 +69,14 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 			//Set New Password Upon Reset
 			$scope.setNewPW = function(){
 			//console.log('Setting New Password');
-			if($scope.resetPasswordForm.newpw===$scope.resetPasswordForm.confirmpw){
+			console.log($scope.newpw+' <--- New Password');
+			console.log($scope.confirmpw+' <--- Confirm Password');
+
+			if($scope.newpw===$scope.confirmpw){
+				console.log("Passwords Match");
 				//$scope.mylocation = $routeParams.userId;
-			$scope.success = $scope.error = null;
+			$scope.success = $scope.error = $scope.pwNotMatch = null;
+			
 			//console.log('Scope: %o',$scope);
 			////console.log($location);
 			$http({
@@ -83,8 +88,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		.success(function(data, status) {
 	
 				// If successful show success message and clear form
-				$scope.resetPasswordForm.newpw=null;
-				$scope.resetPasswordForm.confirmpw=null;
+				$scope.newpw=null;
+				$scope.confirmpw=null;
 				$scope.success = true;
 				$scope.passwordDetails = null;
 				//console.log('Done baby!!!');
@@ -93,7 +98,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 				$scope.error = response.message;
 			});
 		}else{
-			window.alert('Passwords do not match');
+			console.log('Passwords DO NOT MATCH');
+			//window.alert('Passwords do not match');
+			$scope.pwNotMatch = true;
 		}
 
 

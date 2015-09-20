@@ -17,11 +17,23 @@ var mongoose = require('mongoose'),
 exports.getCloneBoxIds = function(req, res){
 	console.log('getting clone box ids...');
 	console.log('Query: ', req.query);
+	var inCup = false;
+	if(req.query.stage==='1'){
+		inCup = true;
+	}
+	console.log(inCup);
 	Clone.aggregate([
-		{$group: {_id: "$boxId"}}
+		{'$match': {activeClone: true}},
+		{'$project': { boxId: 1, activeClone: 1, strain: 1, inCup: 1,
+		stage1: { $cond: {if: {$eq: ['$inCup', false]}, then: 1, else: 0}}, 
+		stage2: { $cond: {if: {$eq: ['$inCup', true]}, then: 1, else: 0}}}},
+
+		{'$group': {_id: "$boxId", total: {$sum: 1}, stage1: {$sum: '$stage1'}, stage2: {$sum: '$stage2'}}}
+
+		
 
 
-				]).exec(function(err, results) {
+		]).exec(function(err, results) {
 		if (err) {
 			console.log('We gots an err...', err);
 			return callback('Error: '+err);
@@ -71,6 +83,7 @@ exports.update = function(req, res) {
 
 	clone.save(function(err) {
 		if (err) {
+			console.log(err);
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
@@ -128,8 +141,8 @@ exports.cloneByID = function(req, res, next, id) {
  * Clone authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.clone.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
+	// if (req.clone.user.id !== req.user.id) {
+	// 	return res.status(403).send('User is not authorized');
+	// }
 	next();
 };

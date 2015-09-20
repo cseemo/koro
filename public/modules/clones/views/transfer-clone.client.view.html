@@ -84,7 +84,7 @@ z-index: 999;
                     <label class="control-label" for="name">Box Id</label>
                     <div class="controls">
                        <select data-ng-model="cloneMommy"
-                                    data-ng-options="box._id for box in cloneBoxes"
+                                    data-ng-options="box as ('Box #'+box._id+' --- '+{{getQty}}+' Clones to Transfer') for box in cloneBoxes"
                                     >
                             </select> 
                     </div>

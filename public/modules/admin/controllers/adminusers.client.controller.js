@@ -73,6 +73,7 @@ $scope.notify = function() {
 				}
 			});
 
+			$scope.userB.displayName = $scope.userB.firstName + ' ' + $scope.userB.lastName;
 			////console.log('Scope %o', $scope);
 			//var userB = $scope.userB ;
 			//var user = $scope.user;

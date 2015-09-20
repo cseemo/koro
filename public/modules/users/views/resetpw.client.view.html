@@ -58,9 +58,23 @@
                     <div class="form-group">
                         <a class="btn btn-lg btn-block btn-primary btn-round" data-ng-click="setNewPW()">Confirm New Password</a>
                     </div>
+                    <div class="form-group" data-ng-show="pwNotMatch">
+                      <alert type="warning" class="text-center">
+                        <p>Those do not match.</p>
+                      </alert>
+                    </div>
+                    <div class="form-group" data-ng-show="success">
+                      <alert type="success" class="text-center">
+                        <p>Thank you. Your password has been reset. Please <a href="#!/signin">Click Here</a> to Sign-In.</p>
+                      </alert>
+                    </div>
+
+
+                    
                 </form>
             </div>
         </div>
         </div>
     </div>
 </div>
+

@@ -128,7 +128,7 @@
         <span>Destroy Log</span>
          </a>
          </li >
-         <li >
+         <li data-ng-show="authentication.hasRole('manager')===true">
         <a href="#!/adminusers"> <i class="fa fa-group"></i>
         <span>Users</span>
          </a>
