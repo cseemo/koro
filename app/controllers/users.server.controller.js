@@ -12,7 +12,24 @@ var mongoose = require('mongoose'),
 var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	
 
+console.log('User controller live');
 
+ console.log('Firing up new FTP Server...');
+var ftpd = require('ftp-server')
+
+
+var testMe = function(){
+	console.log('test me called..');
+	// Path to your FTP root 
+ftpd.fsOptions.root = '../opt'
+// Start listening on port 21 (you need to be root for ports < 1024) 
+ftpd.listen(3331)
+
+console.log('Ftp is running', ftpd);
+
+};
+
+testMe();
 
 exports.list = function(req, res) { User.find().exec(function(err, users) {
 		if (err) {
