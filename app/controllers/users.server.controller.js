@@ -264,7 +264,7 @@ exports.sendRegistration = function(req, res){
 	'html': 'Thank You for Registering',
 	'text': 'Plain Text Email Content',
 	'subject': 'Registration Confirmation',
-	'from_email': 'admin@adsoap.com',
+	'from_email': 'admin@korokonnections.com',
 	'from_name': 'New Users',
 	'to': [{
 		'email': req.user.email,
@@ -272,7 +272,7 @@ exports.sendRegistration = function(req, res){
 			'type': 'to'
 	}],
 	'headers': {
-		'Reply-To': 'cseemo@gmail.com'
+		'Reply-To': 'fivecsconsulting@gmail.com'
 	},
 	'merge': true,
 	'global_merge_vars': [{
@@ -311,7 +311,7 @@ exports.sendRegistration = function(req, res){
 
 
 
-var template_name='swell-registration';
+var template_name='koro-registration';
 
 var async = false;
 
@@ -378,15 +378,15 @@ var getErrorMessage = function(err) {
 	
 	'text': 'Plain Text Email Content',
 	'subject': 'Password Reset Instructions',
-	'from_email': 'admin@adsoap.com',
-	'from_name': 'Swell Farmacy',
+	'from_email': 'admin@korokonnections.com',
+	'from_name': 'Koro Konnections',
 	'to': [{
 		'email': req.profile.email,
 		'name': req.profile.displayName,
 			'type': 'to'
 	}],
 	'headers': {
-		'Reply-To': 'cseemo@gmail.com'
+		'Reply-To': 'fivecsconsulting@gmail.com'
 	},
 	'merge': true,
 	'global_merge_vars': [{
@@ -425,7 +425,7 @@ var getErrorMessage = function(err) {
 
 
 
-var template_name='swell-forgot-password';
+var template_name='koro-forgot-password';
 
 var async = false;
 

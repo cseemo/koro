@@ -24,9 +24,9 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 				return 'modules/core/views/dashboard.client.view.html';
 			}*/
 		}).
-		state('specials', {
-			url: '/specials',
-			templateUrl: 'modules/core/views/specials.client.view.html'
+		state('liveView', {
+			url: '/liveView',
+			templateUrl: 'modules/core/views/liveview.client.view.html'
 			
 		}).
 		state('lock', {

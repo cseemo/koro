@@ -26,7 +26,7 @@
          </a>
          </li > -->
 
-                 <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);" style="color: white; ">
+                 <li data-collapse-nav data-ng-repeat="item in menu.items" data-ng-if="item.shouldRender(authentication.user);" style="color: white; " data-ng-show="authentication.hasRole('manager')===true">
             
             <a href="#!/{{item.link}}">
                 <i class="{{item.icon}}"></i>
@@ -40,7 +40,11 @@
                 </li>
             </ul>
         </li>
-
+        <li>
+        <a href="#!/liveView"> <i class="fa fa-eye"></i>
+        <span>Live View</span>
+         </a>
+         </li >
          <li data-ng-show="authentication.hasRole('manager')===true">
         <a href="#!/adminusers"> <i class="fa fa-group"></i>
         <span>Users</span>
