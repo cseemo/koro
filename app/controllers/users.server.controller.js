@@ -53,15 +53,18 @@ server.on('client:connected', function(connection) {
   console.log(connection);
   connection.on('command:user', function(user, success, failure) {
   	console.log('Comman user');
-    if (user) {
-      username = user;
-      success();
-    } else {
-      failure();
-    }
+  	console.log(user);
+  	success();
+    // if (user) {
+    //   username = user;
+    //   success();
+    // } else {
+    //   failure();
+    // }
   });
 
   connection.on('command:pass', function(pass, success, failure) {
+  	console.log('Psasss');
     if (pass) {
       success(username);
     } else {
