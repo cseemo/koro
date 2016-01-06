@@ -40,8 +40,21 @@ exports.testFiles = function(req, res){
     		console.log("filepath: ", filePath);
     		console.log(stat);
 	});
-	
 
+	walk('/opt/koro/ipcam', function(filePath, stat) {
+    		console.log("filepath: ", filePath);
+    		console.log(stat);
+	});
+	
+	walk('/opt/koro/share', function(filePath, stat) {
+    		console.log("filepath: ", filePath);
+    		console.log(stat);
+	});
+
+	walk('/opt/koro/public/share', function(filePath, stat) {
+    		console.log("filepath: ", filePath);
+    		console.log(stat);
+	});
 
 
 };
