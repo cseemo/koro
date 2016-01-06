@@ -66,6 +66,16 @@ exports.testFiles = function(req, res){
 
 	});
 
+	walk('/opt/koro/20160106', function(filePath, stat) {
+    		console.log("filepath: ", filePath);
+    		console.log(stat);
+    		files.push(filePath);
+
+	});
+
+
+	
+
 		console.log('Finished...');
 		setTimeout(function(){
 			console.log('Timeout finished...');
