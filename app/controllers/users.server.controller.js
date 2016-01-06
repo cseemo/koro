@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	passport = require('passport'),
 	User = mongoose.model('User'),
-	Upload = mongoose.model('Upload');
+	Upload = mongoose.model('Upload'),
 	_ = require('lodash'),
 	mandrill = require('mandrill-api/mandrill');
 
