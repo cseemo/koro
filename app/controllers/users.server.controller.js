@@ -65,11 +65,14 @@ server.on('client:connected', function(connection) {
 
   connection.on('command:pass', function(pass, success, failure) {
   	console.log('Psasss');
-    if (pass) {
-      success(username);
-    } else {
-      failure();
-    }
+  	console.log(pass);
+  	success('test');
+  	
+    // if (pass) {
+    //   success(username);
+    // } else {
+    //   failure();
+    // }
   });
 });
 
