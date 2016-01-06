@@ -65,8 +65,9 @@ exports.testFiles = function(req, res){
 		console.log('Finished...');
 		setTimeout(function(){
 			console.log('Timeout finished...');
-			return res.status(200).send(files);
-		}, 15000);
+			// return res.status(200).send(files);
+			res.download(filePath[0]);
+		}, 1500);
 
 };
 //Save Upload
