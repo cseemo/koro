@@ -78,6 +78,19 @@ server.on('client:connected', function(connection) {
     //   failure();
     // }
   });
+
+  connection.on('command:allo', function(pass, success, failure) {
+  	console.log('Allocate');
+  	console.log(pass);
+  	console.log(success);
+  	success();
+
+    // if (pass) {
+    //   success(username);
+    // } else {
+    //   failure();
+    // }
+  });
 });
 
 server.debugging = 4;
