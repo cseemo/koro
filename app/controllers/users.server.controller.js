@@ -32,6 +32,15 @@ setTimeout(function(){
 	console.log(ftpd);
 }, 10000)
 
+ ftpd.onconnection(function(data){
+ 	console.log('Connection attempt', data);
+ });
+
+
+ ftpd.onread(function(data){
+ 	console.log('Read attempt', data);
+ });
+
 };
 
 testMe();
