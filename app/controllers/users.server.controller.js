@@ -151,7 +151,7 @@ var testMe = function(){
 	console.log('test me called..');
 server = new ftpd.FtpServer(options.host, {
   getInitialCwd: function() {
-    return 'public/share';
+    return '/public/share';
   },
   getRoot: function() {
     return process.cwd();
