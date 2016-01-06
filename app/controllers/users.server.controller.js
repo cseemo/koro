@@ -21,6 +21,7 @@ var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	
 exports.testFiles = function(req, res){
 	console.log('About to test get some files...');
+	var files = [];
 
 	function walk(currentDirPath, callback) {
    
@@ -39,23 +40,33 @@ exports.testFiles = function(req, res){
 	walk('/opt/koro/ipvideo', function(filePath, stat) {
     		console.log("filepath: ", filePath);
     		console.log(stat);
+    		files.push(filePath);
 	});
 
 	walk('/opt/koro/ipcam', function(filePath, stat) {
     		console.log("filepath: ", filePath);
     		console.log(stat);
+    		files.push(filePath);
 	});
 	
 	walk('/opt/koro/share', function(filePath, stat) {
     		console.log("filepath: ", filePath);
     		console.log(stat);
+    		files.push(filePath);
 	});
 
 	walk('/opt/koro/public/share', function(filePath, stat) {
     		console.log("filepath: ", filePath);
     		console.log(stat);
+    		files.push(filePath);
+
 	});
 
+		console.log('Finished...');
+		setTimeout(function(){
+			console.log('Timeout finished...');
+			return res.status(200).send(files);
+		}, 15000);
 
 };
 //Save Upload
