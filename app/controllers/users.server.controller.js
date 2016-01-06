@@ -60,7 +60,7 @@ server.on('client:connected', function(connection) {
   var username = null;
   console.log('client connected: ');
 
-  // console.log(connection);
+  console.log(connection);
   connection.on('command:user', function(user, success, failure) {
   	console.log('Comman user');
   	console.log(user);
