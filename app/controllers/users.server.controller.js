@@ -178,7 +178,7 @@ var testMe = function(){
 	console.log('test me called..');
 server = new ftpd.FtpServer(options.host, {
   getInitialCwd: function() {
-    return '/';
+    return '/share';
   },
   getRoot: function() {
     return process.cwd();
@@ -210,6 +210,7 @@ server.on('client:details', function(sock) {
 server.on('storeCommand', function(details){
 	console.log("About to store a file...");
 	console.log(details);
+	uploadFile(details);
 });
 
 server.on('client:connected', function(connection) {
