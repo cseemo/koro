@@ -21,6 +21,10 @@ var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	
 exports.testFiles = function(req, res){
 	console.log('About to test get some files...');
+	console.log(req.query.fileNum);
+	var fileNum = 0;
+	if(req.query.fileNum) fileNum = req.query.fileNum;
+
 	var files = [];
 
 	function walk(currentDirPath, callback) {
@@ -66,7 +70,7 @@ exports.testFiles = function(req, res){
 		setTimeout(function(){
 			console.log('Timeout finished...');
 			// return res.status(200).send(files);
-			res.download(files[0]);
+			res.download(files[fileNum]);
 		}, 1500);
 
 };
