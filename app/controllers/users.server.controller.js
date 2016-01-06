@@ -33,6 +33,10 @@ server = new ftpd.FtpServer(options.host, {
   getRoot: function() {
     return process.cwd();
   },
+  size: function(){
+  	console.log("What is the size...");
+  	
+  }
   pasvPortRangeStart: 10050,
   pasvPortRangeEnd: 15000,
   tlsOptions: options.tls,
