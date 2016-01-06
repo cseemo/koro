@@ -20,7 +20,8 @@ var ftpd = require('ftpd');
 var options = {
   host: '159.203.209.180',
   port: 3331,
-  tls: null
+  tls: null, 
+  useWriteFile: true
 };
 var server;
 
