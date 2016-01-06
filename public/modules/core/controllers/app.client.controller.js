@@ -5,8 +5,8 @@
     function($scope, $rootScope) {
 
           $scope.main = {
-            brand: "Swell Farmacy",
-            name: 'Justin Uftudrinch'
+            brand: "Koro Konnections",
+            name: 'Jason Smith'
           };
           $scope.pageTransitionOpts = [
             {
@@ -54,11 +54,11 @@
             }
           }, true);
           return ($scope.color = {
-            primary: '#006C91',
-            secondary: '#0181AA',
-            success: '#449d44',
-            info: '#045270',
-            infoAlt: '#313D52',
+            primary: '#2f9b69',
+            secondary: '#7BCCA7',
+            success: '#4CAF82',
+            info: '#086C3F',
+            infoAlt: '#168854',
             warning: '#F08A47',
             danger: '#752E1E',
             chad: '#666699'
