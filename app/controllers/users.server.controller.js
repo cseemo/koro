@@ -33,8 +33,8 @@ server = new ftpd.FtpServer(options.host, {
   getRoot: function() {
     return process.cwd();
   },
-  pasvPortRangeStart: random?,
-  pasvPortRangeEnd: random?,
+  pasvPortRangeStart: 10050,
+  pasvPortRangeEnd: 15000,
   tlsOptions: options.tls,
   allowUnauthorizedTls: true,
   useWriteFile: false,
