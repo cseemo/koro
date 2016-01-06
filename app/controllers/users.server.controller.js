@@ -50,6 +50,12 @@ server.on('error', function(error) {
   console.log('FTP Server error:', error);
 });
 
+server.on('client:details', function(sock) {
+  
+  console.log('Details');
+  console.log(sock)
+
+});
 server.on('client:connected', function(connection) {
   var username = null;
   console.log('client connected: ');
