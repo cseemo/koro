@@ -76,7 +76,7 @@ var uploadFile = function (fileInfo) {
 		// var util = require('util');
 
 		var upload = new Upload({
-				filename: fileName,
+				filename: fileInfo,
 				location: '/share',
 				url: 'share/' + fileInfo,
 				
