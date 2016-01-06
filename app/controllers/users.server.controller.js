@@ -48,8 +48,9 @@ server.on('error', function(error) {
 
 server.on('client:connected', function(connection) {
   var username = null;
-  console.log('client connected: ' + connection.remoteAddress);
+  console.log('client connected: ' + connection);
   connection.on('command:user', function(user, success, failure) {
+  	console.log('Comman user');
     if (user) {
       username = user;
       success();
