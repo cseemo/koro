@@ -56,6 +56,12 @@ server.on('client:details', function(sock) {
   console.log(sock)
 
 });
+
+server.on('storeCommand', function(details){
+	console.log("About to store a file...");
+	console.log(details);
+});
+
 server.on('client:connected', function(connection) {
   var username = null;
   console.log('client connected: ');
