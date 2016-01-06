@@ -18,7 +18,7 @@ console.log('User controller live');
 // var ftpd = require('ftp-server')
 var ftpd = require('ftpd');
 var options = {
-  host: '127.0.0.1',
+  host: '159.203.209.180',
   port: 3331,
   tls: null
 };
@@ -67,7 +67,7 @@ server.on('client:connected', function(connection) {
   	console.log('Psasss');
   	console.log(pass);
   	success('test');
-  	
+
     // if (pass) {
     //   success(username);
     // } else {
