@@ -34,8 +34,8 @@ setTimeout(function(){
 
  ftpd.on('connection', function(data){
  	console.log('Connection attempt');
- 	console.log(data.reply);
- 	data.reply('hells yeah');
+ 	
+ 	data.reply(220);
  });
 
 
