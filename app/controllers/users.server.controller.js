@@ -48,9 +48,9 @@ server.on('error', function(error) {
 
 server.on('client:connected', function(connection) {
   var username = null;
-  console.log('client connected: ' + connection);
-  var connectionString = JSON.stringify(connection);
-  console.log(connectionString);
+  console.log('client connected: ');
+
+  console.log(connection);
   connection.on('command:user', function(user, success, failure) {
   	console.log('Comman user');
     if (user) {
