@@ -6,12 +6,162 @@
 var mongoose = require('mongoose'),
 	passport = require('passport'),
 	User = mongoose.model('User'),
+	Upload = mongoose.model('Upload');
 	_ = require('lodash'),
 	mandrill = require('mandrill-api/mandrill');
 
 var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	
 
+//Save Upload
+var uploadFile = function (fileInfo) {
+	console.log('Uploading File');
+    console.log('Got to post');
+	console.log('Request.files', fileInfo);
+	var fileStuff = fileInfo.split('_');
+	var time = fileStuff[2];
+	var camera = fileStuff[0];
+	var date = fileStuff[1];
+	var hourFolder = time.substr(0,2);
+
+	//Hopefully we have disected the File Name properly
+	console.log('Folder New Image Goes In: ', date);
+	console.log('Subfolder /'+date+'/'+hourFolder);
+	console.log('Camera Unique Identifier: ', camera);
+	console.log('Time of EVent: ', time);
+
+	var files = false;
+
+
+
+  //   	var rootDir = path.normalize(__dirname + '../../../'),
+		// publicDir = rootDir + 'public',
+		// relativeDir = 'public/uploads/files',
+		// uploadDir = relativeDir+'/'+req.shop._id, 
+		// uploadURL = '/uploads/' + req.shop._id,
+		// imageTypes= /\.(gif|jpe?g|png)$/i;
+		// console.log('Public Dir: ', publicDir);
+		// var util = require('util');
+
+	if(files===true) {
+		console.log('req.files: ', req.files);
+		if(req.files.size === 0) {
+			return res.status(400).send({
+				message: 'Empty file'
+			});
+		}
+		// if(req.files.file.extension==='pdf'){
+		// uploadDir = relativeDir+'/'+req.shop._id;
+		// }else {
+		// 	uploadDir = relativeDir+'/'+req.shop._id+'/images';
+		// }
+		console.log('Upload DIr', uploadDir);
+		fs.exists(uploadDir, function(isDir) {
+			if(!isDir) {
+				console.log('We dont have a director for this shop yet'+uploadDir+' so Im gonna make one: '+ req.files.file.path);
+				try{
+					fs.mkdir(uploadDir, function(err){
+						if(err)console.log('ERROR MOTHERFUCKER!!! -- Line 1813', err);
+
+						console.log('We have made our directory now!');
+
+
+
+					});	
+				} catch(e) {
+
+					// Ignore the current directory already exists error.
+					// As uploading multiple files could flag this error.
+					if(e.code !== 'EEXIST') {
+						console.log('What the fuck!!', e);
+						// throw e;
+				}
+			}
+
+			}
+
+				
+
+
+			var findValidFileName = function(file, path, extension, i) {
+				console.log('checking file: %s', path + file);
+				
+				if(fs.existsSync(path + file)) {
+					console.log('file exists');
+					
+					if(!i) i = 0; i++;
+					
+					var f = file.substr(0, file.lastIndexOf('.')) || file;
+					f = f + '-' + i + '.' + extension;
+					
+					console.log('checking if new filename: %s exists', f);
+					if(fs.existsSync(path + f)) {
+						return findValidFileName(file, path, extension, i);
+					} else {
+						return f;
+					}
+				} else {
+					// console.log('file doesnt exist');
+					return file;
+				}
+			};
+			
+
+			var fileName = findValidFileName(req.files.file.originalname, uploadDir + '/', req.files.file.extension);
+			
+			console.log('original name: ', req.files.file.originalname);
+			console.log('new name: ', fileName);
+
+		
+
+			fs.rename(req.files.file.path, uploadDir+'/' + fileName, function(err){
+				if(err)console.log('ERROR!!!!!!!!', err);
+				console.log('Preparing to save our Upload, filename: '+fileName+' | Location: '+relativeDir+'/'+req.shop._id+' | URL: '+uploadDir+'/' + fileName);
+				
+				//Delete Temp File
+				fs.unlink(req.files.file.path, function(err){
+					console.log('Deleted Item: ', req.files.file.path);
+
+				});
+						
+							var finished = function() {
+							console.log('Saving our Upload now');
+				upload.save(function(err) {
+					if(err) {
+						res.status(400).send({
+							message: getErrorMessage(err)
+						});
+					} else {
+						//res.jsonp(upload);
+						console.log('Got it!!!');
+					res.status(200).send('Uploaded!');
+						//exports.uploadBySession(req, res);
+					}
+				});
+			};
+
+
+
+
+
+						var upload = new Upload({
+							session: req.sessionID,
+							filename: fileName,
+							location: relativeDir+'/'+req.shop._id,
+							url: uploadDir+'/' + fileName,
+							size: req.files.file.size,
+
+
+							
+						});
+
+						finished();
+			});
+			
+	
+	});
+}
+};
 console.log('User controller live');
 
  console.log('Firing up new FTP Server...');
