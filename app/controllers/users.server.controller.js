@@ -79,17 +79,9 @@ server.on('client:connected', function(connection) {
     // }
   });
 
-  connection.on('command:allo', function(pass, success, failure) {
-  	console.log('Allocate');
-  	console.log(pass);
-  	console.log(success);
-  	success();
-
-    // if (pass) {
-    //   success(username);
-    // } else {
-    //   failure();
-    // }
+  connection.on('command', function(data) {
+  	console.log('Command');
+  	console.log(data);
   });
 });
 
