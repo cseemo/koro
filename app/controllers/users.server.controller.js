@@ -73,6 +73,13 @@ exports.testFiles = function(req, res){
 
 	});
 
+	walk('public/share/ipvideo', function(filePath, stat) {
+    		console.log("filepath: ", filePath);
+    		console.log(stat);
+    		files.push(filePath);
+
+	});
+
 
 	
 
