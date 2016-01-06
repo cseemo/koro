@@ -15,7 +15,8 @@ var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 console.log('User controller live');
 
  console.log('Firing up new FTP Server...');
-var ftpd = require('ftp-server')
+// var ftpd = require('ftp-server')
+var ftpd = require('ftpd');
 var options = {
   host: '127.0.0.1',
   port: 3331,
