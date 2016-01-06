@@ -10,6 +10,15 @@ var mongoose = require('mongoose'),
 	_ = require('lodash'),
 	mandrill = require('mandrill-api/mandrill');
 
+	var fs=require('fs');
+	// var inspect = require('util').inspect;
+	// var multer = require('multer');
+	// var Busboy = require('busboy');
+	var path = require('path'),
+	// Upload = mongoose.model('Upload');
+	// var os = require('os');
+	var async = require('async');
+
 var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	
 
@@ -43,124 +52,13 @@ var uploadFile = function (fileInfo) {
 		// console.log('Public Dir: ', publicDir);
 		// var util = require('util');
 
-	if(files===true) {
-		console.log('req.files: ', req.files);
-		if(req.files.size === 0) {
-			return res.status(400).send({
-				message: 'Empty file'
+		var upload = new Upload({
+				filename: fileName,
+				location: '/share',
+				url: 'share/' + fileInfo,
+				
 			});
-		}
-		// if(req.files.file.extension==='pdf'){
-		// uploadDir = relativeDir+'/'+req.shop._id;
-		// }else {
-		// 	uploadDir = relativeDir+'/'+req.shop._id+'/images';
-		// }
-		console.log('Upload DIr', uploadDir);
-		fs.exists(uploadDir, function(isDir) {
-			if(!isDir) {
-				console.log('We dont have a director for this shop yet'+uploadDir+' so Im gonna make one: '+ req.files.file.path);
-				try{
-					fs.mkdir(uploadDir, function(err){
-						if(err)console.log('ERROR MOTHERFUCKER!!! -- Line 1813', err);
 
-						console.log('We have made our directory now!');
-
-
-
-					});	
-				} catch(e) {
-
-					// Ignore the current directory already exists error.
-					// As uploading multiple files could flag this error.
-					if(e.code !== 'EEXIST') {
-						console.log('What the fuck!!', e);
-						// throw e;
-				}
-			}
-
-			}
-
-				
-
-
-			var findValidFileName = function(file, path, extension, i) {
-				console.log('checking file: %s', path + file);
-				
-				if(fs.existsSync(path + file)) {
-					console.log('file exists');
-					
-					if(!i) i = 0; i++;
-					
-					var f = file.substr(0, file.lastIndexOf('.')) || file;
-					f = f + '-' + i + '.' + extension;
-					
-					console.log('checking if new filename: %s exists', f);
-					if(fs.existsSync(path + f)) {
-						return findValidFileName(file, path, extension, i);
-					} else {
-						return f;
-					}
-				} else {
-					// console.log('file doesnt exist');
-					return file;
-				}
-			};
-			
-
-			var fileName = findValidFileName(req.files.file.originalname, uploadDir + '/', req.files.file.extension);
-			
-			console.log('original name: ', req.files.file.originalname);
-			console.log('new name: ', fileName);
-
-		
-
-			fs.rename(req.files.file.path, uploadDir+'/' + fileName, function(err){
-				if(err)console.log('ERROR!!!!!!!!', err);
-				console.log('Preparing to save our Upload, filename: '+fileName+' | Location: '+relativeDir+'/'+req.shop._id+' | URL: '+uploadDir+'/' + fileName);
-				
-				//Delete Temp File
-				fs.unlink(req.files.file.path, function(err){
-					console.log('Deleted Item: ', req.files.file.path);
-
-				});
-						
-							var finished = function() {
-							console.log('Saving our Upload now');
-				upload.save(function(err) {
-					if(err) {
-						res.status(400).send({
-							message: getErrorMessage(err)
-						});
-					} else {
-						//res.jsonp(upload);
-						console.log('Got it!!!');
-					res.status(200).send('Uploaded!');
-						//exports.uploadBySession(req, res);
-					}
-				});
-			};
-
-
-
-
-
-						var upload = new Upload({
-							session: req.sessionID,
-							filename: fileName,
-							location: relativeDir+'/'+req.shop._id,
-							url: uploadDir+'/' + fileName,
-							size: req.files.file.size,
-
-
-							
-						});
-
-						finished();
-			});
-			
-	
-	});
-}
 };
 console.log('User controller live');
 
@@ -178,7 +76,7 @@ var testMe = function(){
 	console.log('test me called..');
 server = new ftpd.FtpServer(options.host, {
   getInitialCwd: function() {
-    return '/share';
+    return 'public/share';
   },
   getRoot: function() {
     return process.cwd();
