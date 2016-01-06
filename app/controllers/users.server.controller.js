@@ -19,7 +19,32 @@ var mongoose = require('mongoose'),
 
 var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	
+exports.testFiles = function(req, res){
+	console.log('About to test get some files...');
 
+	function walk(currentDirPath, callback) {
+   
+    fs.readdirSync(currentDirPath).forEach(function(name) {
+	        var filePath = path.join(currentDirPath, name);
+	        var stat = fs.statSync(filePath);
+	        if (stat.isFile()) {
+	            callback(filePath, stat);
+	        } else if (stat.isDirectory()) {
+	            walk(filePath, callback);
+	        }
+	    });
+	}
+
+
+	walk('/opt/koro/ipvideo', function(filePath, stat) {
+    		console.log("filepath: ", filePath);
+    		console.log(stat);
+	});
+	
+
+
+
+};
 //Save Upload
 var uploadFile = function (fileInfo) {
 	console.log('Uploading File');
