@@ -27,6 +27,11 @@ ftpd.listen(3331)
 
 console.log('Ftp is running', ftpd);
 
+setTimeout(function(){
+	console.log('FTP Info...');
+	console.log(ftpd);
+}, 10000)
+
 };
 
 testMe();
