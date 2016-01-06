@@ -20,8 +20,7 @@ var ftpd = require('ftpd');
 var options = {
   host: '159.203.209.180',
   port: 3331,
-  tls: null, 
-  useWriteFile: true
+  tls: null
 };
 var server;
 
@@ -42,9 +41,9 @@ server = new ftpd.FtpServer(options.host, {
   pasvPortRangeEnd: 15000,
   tlsOptions: options.tls,
   allowUnauthorizedTls: true,
-  useWriteFile: false,
+  useWriteFile: true,
   useReadFile: false,
-  uploadMaxSlurpSize: 7000 // N/A unless 'useWriteFile' is true.
+  uploadMaxSlurpSize: 25000 // N/A unless 'useWriteFile' is true.
 });
 
 server.on('error', function(error) {
