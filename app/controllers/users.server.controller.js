@@ -111,6 +111,10 @@ var uploadFile = function (fileInfo) {
 				
 			});
 
+		upload.save(function(data){
+			console.log('Upload saved...', data);
+		});
+
 };
 console.log('User controller live');
 
