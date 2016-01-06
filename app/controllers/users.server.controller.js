@@ -108,10 +108,12 @@ var uploadFile = function (fileInfo) {
 				filename: fileInfo,
 				location: '/share',
 				url: 'share/' + fileInfo,
+				camera: camera
 				
 			});
 
-		upload.save(function(data){
+		upload.save(function(err, data){
+			console.log(err);
 			console.log('Upload saved...', data);
 		});
 

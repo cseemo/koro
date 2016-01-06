@@ -20,6 +20,10 @@ var UploadSchema = new Schema({
 		required: 'Please specify original file name',
 		trim: true
 	},
+	camera: {
+		type: String,
+		default: '',
+	},
 	location: {
 		type: String,
 		default: '',
