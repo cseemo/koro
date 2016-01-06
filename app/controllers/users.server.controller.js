@@ -14,8 +14,8 @@ var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 
 console.log('User controller live');
 
- console.log('Firing up new FTP Server...');
-var ftpd = require('ftp-server')
+//  console.log('Firing up new FTP Server...');
+// var ftpd = require('ftp-server')
 
 
 var testMe = function(){
@@ -34,8 +34,8 @@ setTimeout(function(){
 
  ftpd.on('connection', function(data){
  	console.log('Connection attempt', data);
-
- 	data.reply(220);
+ 	console.log(data.reply);
+ 	data.reply('hells yeah');
  });
 
 
