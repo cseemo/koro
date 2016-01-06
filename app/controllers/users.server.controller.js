@@ -56,7 +56,7 @@ var path = require('path')
 /**
  * FS emulator
  */
-var fsWrapper = require('./fs')
+
 server.fsOptions = {}
 
 
@@ -93,16 +93,7 @@ server.on('connection', function (socket) {
   socket.dataInfo = null
   socket.username = null
 
-  /**
-   * Initialize filesystem
-   */
-  socket.fs = new fsWrapper.Filesystem(server.fsOptions)
-  // Catch-all
-  socket.fs.onError = function (err) {
-    if (!err.code) err.code = 550
-    socket.reply(err.code, err.message)
-  }
-
+ 
   /**
    * Socket response shortcut
    */
