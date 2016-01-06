@@ -14,9 +14,7 @@ var mongoose = require('mongoose'),
 	// var inspect = require('util').inspect;
 	// var multer = require('multer');
 	// var Busboy = require('busboy');
-	var path = require('path'),
-	// Upload = mongoose.model('Upload');
-	// var os = require('os');
+	var path = require('path');
 	var async = require('async');
 
 var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
