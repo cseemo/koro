@@ -145,7 +145,7 @@ var options = {
   port: 3331,
   tls: null,
   username: 'test',
-  pass: 'test1234'
+  password: 'test1234'
 };
 var server;
 
