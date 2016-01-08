@@ -143,9 +143,7 @@ var ftpd = require('ftpd');
 var options = {
   host: '159.203.209.180',
   port: 3331,
-  tls: null,
-  username: 'test',
-  password: 'test1234'
+  tls: null
 };
 var server;
 
