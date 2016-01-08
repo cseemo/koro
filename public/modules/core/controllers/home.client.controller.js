@@ -77,25 +77,30 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
 			var url = 'http://admin:opendoor6@63.229.71.113:81/pantiltcontrol.cgi?PanSingleMoveDegree='+panSpeed+'&TiltSingleMoveDegree='+tiltSpeed+'&PanTiltSingleMove='+dir;
 
-			var makeCall = window.open(url, 'Updating DND', "toolbar=no, scrollbars=no, resizable=yes, top=760, left=40, width=100, height=100");	
+			// var makeCall = window.open(url, 'Updating DND', "toolbar=no, scrollbars=no, resizable=yes, top=760, left=40, width=100, height=100");	
 			
-			setTimeout(function() {
-			makeCall.close();
+			// setTimeout(function() {
+			// makeCall.close();
 				
-			}, 3000);
+			// }, 3000);
 
 
-			// $http({
-			// 	method: 'GET',
-			// 	url: url,
+			$http({
+				method: 'POST',
+				url: '/testMovement',
+				data: {
+					speed: panSpeed,
+					direction: dir, 
+					url: url
+				}
 		
 
 
-			// }).success(function(data){
-			// 	console.log('Moved...');
-			// }).error(function(err){
-			// 	console.log('Error moving Dlink', err);
-			// });
+			}).success(function(data){
+				console.log('Moved...', data);
+			}).error(function(err){
+				console.log('Error moving Dlink', err);
+			});
 
 		};
 		$scope.getImage = function(){

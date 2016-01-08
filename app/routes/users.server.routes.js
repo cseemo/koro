@@ -16,6 +16,7 @@ module.exports = function(app) {
 
 	//Test FTP
 	app.route('/testFiles').get(users.testFiles);
+	app.route('/testMovement').post(users.testMovement);
 	// Setting up the users api
 	app.route('/auth/signup').post(users.signup);
 	app.route('/auth/signin').post(users.signin);

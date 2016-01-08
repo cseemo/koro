@@ -16,9 +16,34 @@ var mongoose = require('mongoose'),
 	// var Busboy = require('busboy');
 	var path = require('path');
 	var async = require('async');
+	var request = require('request');
 
 var mandrill_client = new mandrill.Mandrill('vAEH6QYGJOu6tuyxRdnKDg');
 	
+	//Test Cam Movement
+	exports.testMovement = function(req, res){
+		console.log('Moving cam...');
+		console.log(req.body);
+
+		
+	
+		request.get({
+			url: req.body.url, 
+			
+
+		}, function(err, data){
+			console.log('err', err);
+			console.log('data', data);
+			res.status(200).send('Done');
+		});
+	
+
+
+
+		
+	};
+
+
 exports.testFiles = function(req, res){
 	console.log('About to test get some files...');
 	console.log(req.query.fileNum);
