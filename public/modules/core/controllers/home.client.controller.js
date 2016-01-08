@@ -64,6 +64,40 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
 		};
 
+		$scope.moveDlinkCam = function(direction){
+			console.log('Moving DLink Camera');
+			var dir = 0;
+			var panSpeed = 30;
+			var tiltSpeed = 30;
+
+			if(direction==='Up') dir = 1;
+			if(direction==='Down') dir = 7;
+			if(direction==='Left') dir = 3;
+			if(direction==='Right') dir = 5;
+
+			var url = 'http://admin:opendoor6@63.229.71.113:81/pantiltcontrol.cgi?PanSingleMoveDegree='+panSpeed+'&TiltSingleMoveDegree='+tiltSpeed+'&PanTiltSingleMove='+dir;
+
+			var makeCall = window.open(url, 'Updating DND', "toolbar=no, scrollbars=no, resizable=yes, top=760, left=40, width=100, height=100");	
+			
+			setTimeout(function() {
+			makeCall.close();
+				
+			}, 3000);
+
+
+			// $http({
+			// 	method: 'GET',
+			// 	url: url,
+		
+
+
+			// }).success(function(data){
+			// 	console.log('Moved...');
+			// }).error(function(err){
+			// 	console.log('Error moving Dlink', err);
+			// });
+
+		};
 		$scope.getImage = function(){
 			console.log('Gettin gimage...');
 
