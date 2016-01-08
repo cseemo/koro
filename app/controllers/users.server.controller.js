@@ -111,6 +111,7 @@ exports.testFiles = function(req, res){
 		console.log('Finished...');
 		setTimeout(function(){
 			console.log('Timeout finished...');
+			console.log(files.length+' files sorted through....');
 			// return res.status(200).send(files);
 			res.download(files[fileNum]);
 		}, 1500);
