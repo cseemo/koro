@@ -113,7 +113,12 @@ exports.testFiles = function(req, res){
 			console.log('Timeout finished...');
 			console.log(files.length+' files sorted through....');
 			// return res.status(200).send(files);
-			res.download(files[fileNum]);
+			if(files[fileNum]) {
+				res.download(files[fileNum]);
+			}else{
+				console.log('That is not a valid fileNum...', fileNum);
+				res.download(files[fileNum-1]);
+			}
 		}, 1500);
 
 };
