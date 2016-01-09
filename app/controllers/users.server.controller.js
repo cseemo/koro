@@ -131,8 +131,18 @@ var uploadFile = function (fileInfo) {
 	var time = fileStuff[2];
 	var camera = fileStuff[0];
 	var date = fileStuff[1];
-	var hourFolder = time.substr(0,2);
+	var hourFolder = null;
+	if(time){
+		console.log('Older Camera');
+		hourFolder = time.substr(0,2);
+	}else{
+		console.log('Newer camera');
+		hourFolder = Unknown;
+		time = 'Need to parse still';
+	}
+	
 
+	
 	//Hopefully we have disected the File Name properly
 	console.log('Folder New Image Goes In: ', date);
 	console.log('Subfolder /'+date+'/'+hourFolder);
