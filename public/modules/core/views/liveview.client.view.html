@@ -107,12 +107,18 @@ z-index: 999;
         	<img ng-src="http://admin:opendoor5@63.229.71.113:80/video/mjpg.cgi" width="80%">
         	<img ng-src="http://admin:opendoor6@63.229.71.113:81/video/mjpg.cgi" width="80%">
         	<br/>
-        	<div>
+        	<div ng-show="moving">
+        		Stand By Moving Camera
+        	</div>
+        	<div ng-show="!moving">
         		<a ng-click="moveDlinkCam('Left')"><i class="fa fa-arrow-circle-left"></i></a>
         		<a ng-click="moveDlinkCam('Up')"><i class="fa fa-arrow-circle-up"></i></a>
         		<a ng-click="moveDlinkCam('Right')"><i class="fa fa-arrow-circle-right"></i></a>
         		<a ng-click="moveDlinkCam('Down')"><i class="fa fa-arrow-circle-down"></i></a>
-
+        		<br/>
+        		<span ng-click="changeSpeed('slow')"><i class="fa fa-backward"></i></span>
+        		{{speed}}
+        		<span ng-click="changeSpeed('fast')"><i class="fa fa-forward"></i></span>
         	</div>
         	<img ng-src="http://admin:openDoor@192.168.0.105/cgi-bin/mjpg/video.cgi" width="80%">
         	<br/>

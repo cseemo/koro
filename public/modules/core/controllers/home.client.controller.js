@@ -10,10 +10,30 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 		// If user is not signed in then redirect back home
 		if (!$scope.user) $location.path('/signin');
 		$scope.action = false;
+		$scope.speed = 5;
+		$scope.camSpeed = 10;
+		$scope.moving = false;
+
+		$scope.changeSpeed = function(type){
+			console.log('Changing Camera Speed...', $scope.speed);
+			if(type==='slow'){
+				$scope.speed = $scope.speed - 1;
+				if($scope.speed < 2) $scope.speed = 1;
+
+
+			}
+
+			if(type==='fast'){
+				$scope.speed = $scope.speed - 0+1;
+				if($scope.speed > 9) $scope.speed = 10;
+			}
+		};
+
 		$scope.moveCam = function(direction){
 			console.log('Moving cam');
+			
 			var action; 
-			var speed = 5;
+			var speed = 5
 			var code = direction;
 			$scope.action = !$scope.action;
 				if($scope.action) {
@@ -67,8 +87,9 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 		$scope.moveDlinkCam = function(direction){
 			console.log('Moving DLink Camera');
 			var dir = 0;
-			var panSpeed = 30;
-			var tiltSpeed = 30;
+			var panSpeed = $scope.speed*5;
+			var tiltSpeed = $scope.speed*5;
+			$scope.moving = true;
 
 			if(direction==='Up') dir = 1;
 			if(direction==='Down') dir = 7;
@@ -98,8 +119,10 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
 			}).success(function(data){
 				console.log('Moved...', data);
+				$scope.moving = false;
 			}).error(function(err){
 				console.log('Error moving Dlink', err);
+				$scope.moving = false;
 			});
 
 		};
